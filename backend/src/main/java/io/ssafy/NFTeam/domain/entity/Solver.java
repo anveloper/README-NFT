@@ -1,12 +1,5 @@
 package io.ssafy.NFTeam.domain.entity;
 
-//public class Solver {
-//
-//    private String ID;
-//
-//    private Integer NFT_id;
-//}
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
