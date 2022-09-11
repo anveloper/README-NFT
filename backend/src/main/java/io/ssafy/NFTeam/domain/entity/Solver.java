@@ -1,21 +1,11 @@
 package io.ssafy.NFTeam.domain.entity;
 
-//public class Solver {
-//
-//    private String ID;
-//
-//    private Integer NFT_id;
-//}
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -25,15 +15,13 @@ import javax.persistence.Id;
 public class Solver {
 
     @Id
-    @GeneratedValue
-    private Long ID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long solverId;
 
-    @Column(nullable = false)
-    private String loginId;
-    @Column(nullable = false)
-    private String password;
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "user_id")
+    private String userId;
 
+    @Column(name = "nft_id")
+    private String nftId;
 
 }
