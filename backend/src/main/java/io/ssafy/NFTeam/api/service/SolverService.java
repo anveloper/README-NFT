@@ -15,13 +15,12 @@ public class SolverService {
     private final SolverRepository solverRepository;
 
     // 문제를 풀었는지 확인
-    public boolean isSolved(SolverRequestDto solverRequestDto) {
+    public boolean isSolved(String userId, String nftId) {
         try {
-            List<Solver> nftList = solverRepository.findByUserId(solverRequestDto.getUserId());
+            List<Solver> nftList = solverRepository.findByNftId(nftId);
             for (Solver nft: nftList) {
-                String solvedNft = nft.getNftId();
-                String checkNft = solverRequestDto.getNftId();
-                if(solvedNft.equals(checkNft)) {
+                String nftSolver = nft.getUserId();
+                if(nftSolver.equals(userId)) {
                     return true;
                 }
             }
