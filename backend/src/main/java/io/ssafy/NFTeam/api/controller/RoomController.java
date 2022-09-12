@@ -1,8 +1,8 @@
 package io.ssafy.NFTeam.api.controller;
 
-import io.ssafy.NFTeam.domain.entity.Room;
-import io.ssafy.NFTeam.domain.repository.RoomRepository;
-import io.ssafy.NFTeam.exceptions.RoomNotFoundException;
+import io.ssafy.NFTeam.api.request.RoomPostReq;
+import io.ssafy.NFTeam.api.response.RoomGetRes;
+import io.ssafy.NFTeam.api.service.RoomServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +19,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class RoomController {
-    private final RoomRepository roomRepository;
-
+    private final RoomServiceImpl roomServiceImpl;
+    HttpStatus status;
+    HashMap<String, Object> result;
     @GetMapping("/room")
     @ApiOperation(value = "Room 전체 조회", notes = "Room 전체 조회")
     ResponseEntity<Map<String, Object>> getAllRoom() {
-        HashMap<String, Object> result = new HashMap<>();
-        HttpStatus status;
+        result = new HashMap<>();
         try {
-            List<Room> rooms =  roomRepository.findAll();
+            List<RoomGetRes> rooms =  roomServiceImpl.getRooms();
             result.put("msg", "Room 정보 조회에 성공하였습니다.");
             result.put("rooms", rooms);
             status = HttpStatus.OK;
@@ -42,10 +42,9 @@ public class RoomController {
     @GetMapping("/room/{id}")
     @ApiOperation(value = "Room 조회", notes = "Id를 통한 Room 조회")
     ResponseEntity<Map<String, Object>> getRoomById(@PathVariable Long id){
-        HashMap<String, Object> result = new HashMap<>();
-        HttpStatus status;
+        result = new HashMap<>();
         try {
-            Room room = roomRepository.findById(id).orElseThrow(()->new RoomNotFoundException(id));
+            RoomGetRes room = roomServiceImpl.getRoomById(id);
             result.put("msg", "Room 정보 조회에 성공하였습니다.");
             result.put("room", room);
             status = HttpStatus.OK;
@@ -59,11 +58,10 @@ public class RoomController {
 
     @PostMapping("/room")
     @ApiOperation(value = "Room 생성", notes = "Room 생성 후 생성된 Room 반환")
-    ResponseEntity<Map<String, Object>> createRoom(@RequestBody Room room) {
-        HashMap<String, Object> result = new HashMap<>();
-        HttpStatus status;
+    ResponseEntity<Map<String, Object>> createRoom(@RequestBody RoomPostReq requestDto) {
+        result = new HashMap<>();
         try {
-            Room createdRoom = roomRepository.save(room);
+            RoomGetRes createdRoom = roomServiceImpl.createRoom(requestDto);
             result.put("msg", "Room 생성에 성공하였습니다.");
             result.put("room", createdRoom);
             status = HttpStatus.CREATED;
@@ -78,10 +76,9 @@ public class RoomController {
     @DeleteMapping("/room/{id}")
     @ApiOperation(value = "Room 삭제", notes = "Id를 통한 Room 삭제")
     ResponseEntity<Map<String, Object>> deleteRoom(@PathVariable Long id) {
-        HashMap<String, Object> result = new HashMap<>();
-        HttpStatus status;
+        result = new HashMap<>();
         try {
-            roomRepository.deleteById(id);
+            roomServiceImpl.deleteRoom(id);
             result.put("msg", "Room 삭제에 성공하였습니다.");
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
