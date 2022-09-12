@@ -1,7 +1,7 @@
 package io.ssafy.NFTeam.api.controller;
 
 import io.ssafy.NFTeam.api.request.SolverPostReq;
-import io.ssafy.NFTeam.api.service.SolverService;
+import io.ssafy.NFTeam.api.service.SolverServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class SolverController {
 
-    private final SolverService solverService;
+    private final SolverServiceImpl solverService;
 
     @PostMapping("/solver")
     @ApiOperation(value = "문제를 푼다", notes = "사용자 아이디와 nft 아이디를 통해 사용자의 푼 nft 리스트에 등록한다.")
