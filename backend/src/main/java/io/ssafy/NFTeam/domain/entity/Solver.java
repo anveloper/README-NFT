@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -18,15 +15,13 @@ import javax.persistence.Id;
 public class Solver {
 
     @Id
-    @GeneratedValue
-    private Long ID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long solverId;
 
-    @Column(nullable = false)
-    private String loginId;
-    @Column(nullable = false)
-    private String password;
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "wallet_address")
+    private String walletAddress;
 
+    @Column(name = "nft_address")
+    private String nftAddress;
 
 }
