@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface SolverRepository extends JpaRepository<Solver, Long> {
     Optional<Solver> findById(Long id);
-    List<Solver> findByUserId(String userId);
-    List<Solver> findByNftId(String nftId);
+    List<Solver> findByWalletAddress(String walletAddress);
+    List<Solver> findByNftAddress(String nftAddress);
 }

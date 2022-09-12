@@ -18,10 +18,10 @@ public class Solver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long solverId;
 
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "wallet_address")
+    private String walletAddress;
 
-    @Column(name = "nft_id")
-    private String nftId;
+    @Column(name = "nft_address")
+    private String nftAddress;
 
 }
