@@ -1,5 +1,8 @@
 package io.ssafy.NFTeam.domain.repository;
 
+import io.ssafy.NFTeam.api.request.RoomPostReq;
+import io.ssafy.NFTeam.api.response.RoomGetRes;
+import io.ssafy.NFTeam.api.service.RoomServiceImpl;
 import io.ssafy.NFTeam.domain.entity.Room;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -14,20 +17,20 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class RoomRepositoryTest {
     @Autowired
-    private RoomRepository roomRepository;
+    private RoomServiceImpl roomServiceImpl;
 
     @Test
     @Transactional
     public void testRoom() throws Exception{
         //given
-        Room room = new Room();
-        room.setHost("kww");
-        room.setCreatedAt("2022-09-10");
-        room.setTitle("testRoom");
+        RoomPostReq roomPostReq = new RoomPostReq();
+        roomPostReq.setHost("kww");
+        roomPostReq.setCreatedAt("2022-09-10");
+        roomPostReq.setTitle("testRoom");
 
         //when
-        Long createdRoomId = roomRepository.createRoom(room).getRoomId();
-        Room findRoom = roomRepository.findRoom(createdRoomId);
+        Long createdRoomId = roomServiceImpl.createRoom(roomPostReq).getRoomId();
+        RoomGetRes findRoom = roomServiceImpl.getRoomById(createdRoomId);
 
         //then
         Assertions.assertThat(createdRoomId).isEqualTo(findRoom.getRoomId());
