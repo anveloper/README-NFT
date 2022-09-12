@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -18,9 +19,11 @@ public class Solver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long solverId;
 
+    @NotNull
     @Column(name = "wallet_address")
     private String walletAddress;
 
+    @NotNull
     @Column(name = "nft_address")
     private String nftAddress;
 
