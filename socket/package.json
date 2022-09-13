@@ -1,0 +1,21 @@
+{
+  "name": "socket",
+  "version": "1.0.0",
+  "description": "Socket.io Server",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.19.0",
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.19.0",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "socket.io": "^4.5.2"
+  }
+}
