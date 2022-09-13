@@ -16,11 +16,13 @@ public class Love {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long loveId;
 
     @NotNull
-    private String userId;
+    @Column(name = "wallet_address")
+    private String walletAddress;
 
     @NotNull
-    private String nftId;
+    @Column(name = "nft_address")
+    private String nftAddress;
 }

@@ -11,20 +11,20 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LovePostReq {
 
-    private String userId;
-    private String nftId;
+    private String walletAddress;
+    private String nftAddress;
 
     @Builder
-    public LovePostReq(String userId, String nftId){
-        this.userId = userId;
-        this.nftId = nftId;
+    public LovePostReq(String nftAddress, String walletAddress){
+        this.walletAddress = walletAddress;
+        this.nftAddress = nftAddress;
     }
 
     //resquest dto 로 받은 Posts 객체를 entity 화하여 저장하는 용도
     public Love toEntity(){
         return Love.builder()
-                .userId(userId)
-                .nftId(nftId)
+                .walletAddress(walletAddress)
+                .nftAddress(nftAddress)
                 .build();
     }
 
