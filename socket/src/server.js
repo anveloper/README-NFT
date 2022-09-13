@@ -40,6 +40,7 @@ const countRoom = (roomName) => {
 };
 
 const answers = [];
+const solvers = [];
 
 io.on("connection", (socket) => {
   socket["nickname"] = "none";
@@ -70,9 +71,15 @@ io.on("connection", (socket) => {
     socket.to(room).emit("new_message", socket.nickname, msg);
     done(msg);
   });
-  socket.on("set_answer", (roomName, answer) => (answers[roomName] = answer));
+  socket.on("set_answer", (roomName, answer) => {
+    answers[roomName] = answer;
+    solvers[roomName] = ""; // 문제가 바뀌면 정답자도 초기화
+  });
   socket.on("get_answer", (roomName) =>
-    socket.emit("send_answer", answers[roomName] ?? "미정")
+    socket.emit(
+      "send_answer",
+      answers[roomName] ?? "아직 정답이 등록되지 않았습니다."
+    )
   );
   socket.on("nickname", (nickname) => (socket["nickname"] = nickname));
 });
