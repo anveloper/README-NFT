@@ -34,6 +34,11 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation("org.junit.vintage:junit-vintage-engine") {
+		exclude group: "org.hamcrest", module: "hamcrest-core"
+	}
+
+
 
 	// 추가
 	implementation 'mysql:mysql-connector-java'
@@ -41,7 +46,6 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger2:3.0.0'
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
-
 
 }
 
