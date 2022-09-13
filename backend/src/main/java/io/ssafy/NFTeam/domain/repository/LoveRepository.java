@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LoveRepository extends JpaRepository<Love, Long> {
-    public Optional<Love> findByUserIdAndNftId(String userId, String nftId);
-    public long countByNftId(String nftId);
-    public List<Love> findUserIdByUserId(String userId);
+    public Optional<Love> findByWalletAddressAndNftAddress(String walletAddress, String nftAddress);
+    public long countByNftAddress(String walletAddress);
+    public List<Love> findByWalletAddress(String walletAddress);
 
 }

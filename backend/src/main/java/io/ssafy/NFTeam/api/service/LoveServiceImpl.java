@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor //final or NonNull 옵션 필드를 전부 포함한 생성자 만들어줌
@@ -18,7 +19,7 @@ public class LoveServiceImpl implements LoveService{
 
     public long addLove(LovePostReq requestDto) {
 
-        Love love = loveRepository.findByUserIdAndNftId(requestDto.getUserId(), requestDto.getNftId()).orElse(null);
+        Love love = loveRepository.findByWalletAddressAndNftAddress(requestDto.getWalletAddress(), requestDto.getNftAddress()).orElse(null);
 
         // 현재 목록에 없는 경우, 추가
         if(love == null){
@@ -26,18 +27,19 @@ public class LoveServiceImpl implements LoveService{
         }
         // 현재 목록에 있는 경우, 삭제
         else{
-            loveRepository.deleteById(love.getID());
+            loveRepository.deleteById(love.getLoveId());
         }
 
         // 해당 nft의 좋아요 개수
-        long count = loveRepository.countByNftId(requestDto.getNftId());
+        long count = loveRepository.countByNftAddress(requestDto.getNftAddress());
 
         return count;
     }
 
 
-    public List<Love> getUserNft(String userId) {
-        List<Love> nfts = loveRepository.findUserIdByUserId(userId);
+    public List<LoveGetRes> getUserNft(String walletAddress) {
+
+        List<LoveGetRes> nfts = loveRepository.findByWalletAddress(walletAddress).stream().map(LoveGetRes::new).collect(Collectors.toList());
 
         return nfts;
     }
