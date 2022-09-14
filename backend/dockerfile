@@ -10,7 +10,7 @@ COPY src src
 #RUN chmod +x gradlew
 #RUN ["./gradlew", "clean", "bootJar"]
 COPY . .
-RUN ./gradlew clean bootJar
+RUN ["./gradlew", "clean", "bootJar"]
 
 # 내가 추가한 부분
 ARG JAR_FILE=build/libs/*.jar
