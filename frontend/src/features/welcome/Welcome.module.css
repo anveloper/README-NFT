@@ -1,4 +1,89 @@
 .Welcome {
-  background-image: url("@/");
+  background-image: url("../../assets/08.jpg");
+  width: 100%;
+  height: 100%;
   background-size: cover;
+}
+
+/* WelcomeNavbar */
+.WelcomeNavbar {
+  display: flex;
+  padding: 15px;
+  /* text-align: center; */
+}
+
+.img {
+  height: 32px;
+  margin-left: 4px;
+  /* display: flex; */
+  align-items: flex-start;
+}
+
+.WelcomeNavbarLink {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.WelcomeNavbarText {
+  margin-right: 20px;
+}
+
+/* WalletAddress */
+.WalletAddress {
+  padding-top: 30px;
+}
+
+.WalletAddressText {
+  align-items: center;
+  text-align: center;
+  /* justify-content: center; */
+}
+
+.WalletAddressBox {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.WalletAddressPallete {
+  width: 800px;
+  height: 700px;
+}
+
+.WalletAddressRegister {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 55%;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+
+.WalletAddressRegister input {
+  border-bottom: 1px solid blue;
+  width: 850px;
+  height: 80px;
+  margin-right: 20px;
+
+  /* background: none; */
+
+  border-image: url("../../assets/inputbox.svg");
+  /* object-fit: cover; */
+}
+
+.WalletAddressRegister button {
+  border: none;
+  width: 233px;
+  height: 80px;
+  left: 1330px;
+  top: 712px;
+
+  background: #79c4f2;
+  border-radius: 50px;
+
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 45px;
 }
