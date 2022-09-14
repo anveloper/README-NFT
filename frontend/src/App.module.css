@@ -11,6 +11,7 @@
 
 .content {
   position: absolute;
+  overflow-x: hidden;
   top: 40px;
   left: 0;
   width: 100%;
