@@ -12,7 +12,9 @@ RUN chmod +x gradlew
 RUN ["./gradlew", "clean", "bootJar"]
 
 # 내가 추가한 부분
-#ARG JAR_FILE=build/libs/*.jar
-#COPY ${JAR_FILE} app.jar
-COPY --from=build /app/build/libs/*jar app.jar
+RUN ["mkdir", "-p", "/build"]
+RUN ["mkdir", "-p", "/app/build"]
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+
 ENTRYPOINT ["java", "-jar", "/app.jar"]
