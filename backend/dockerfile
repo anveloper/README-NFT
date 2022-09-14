@@ -1,10 +1,16 @@
 # java 8 위에서 스프링 부트 앱이 실행
 FROM openjdk:8-jdk-alpine AS build
 WORKDIR /var/jenkins_home/workspace/deployment/backend
+VOLUME /tmp
 COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 RUN chmod +x gradlew
-RUN ["./gradlew", "clean", "bootJar"]
+RUN ["./gradlew build", "clean", "bootJar"]
+
+# 내가 추가한 부분
+ARG JAR_FILE_PATH=build/libs/*.jar
+COPY ${JAR_FILE_PATH} app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
