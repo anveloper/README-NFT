@@ -1,0 +1,65 @@
+.navBar {
+  height: 40px;
+  position: sticky;
+  background: #79c4f2;
+  z-index: 1100;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoBox {
+  height: 32px;
+  margin-left: 4px;
+}
+
+.img {
+  height: 32px;
+  margin-left: 4px;
+}
+
+.navButtonBox {
+  margin-right: 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.navButtonBox button {
+  height: 32px;
+  margin-right: 4px;
+  justify-content: center;
+  background: #fcf5e9;
+  border: 1px solid #fddf61;
+  border-radius: 4px;
+  padding: 4px;
+}
+.navButtonBox button:hover {
+  color: #79c4f2;
+  background: #fddf61;
+}
+
+.profileTag {
+  height: 32px;
+  margin-right: 4px;
+  justify-content: center;
+  background: #fcf5e9;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+.avatar {
+  width: 30px;
+  height: 30px;
+  background: #fcf5e9;
+  border: 1px solid #fddf61;
+  border-radius: 100%;
+}
+.nameTag {
+  margin-left: 4px;
+}
