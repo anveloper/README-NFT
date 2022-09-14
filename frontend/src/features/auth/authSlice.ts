@@ -1,55 +1,55 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import Axios from '../../api/Axios';
-import { RootState } from '../../app/store';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import Axios from "../../api/Axios";
+import { RootState } from "../../app/store";
 
-export interface AuthState{
+export interface AuthState {
   userAddress: string;
-  status: 'idle' | 'loading' | 'success' | 'failed';
+  status: "idle" | "loading" | "success" | "failed";
 }
 
 const initialState: AuthState = {
-  userAddress: '',
-  status:'idle',
-}
+  userAddress: "asd",
+  status: "idle",
+};
 
 // Smart-contract에 요청할 이름
 export const loginUser = createAsyncThunk(
-  'auth/getUserAddress',
+  "auth/getUserAddress",
   // string type으로 들어오지만, axios에 대입할 때 AxiosRequestConfig에 들어갈 값이 any..
   async (loginUserAddress: any, { rejectWithValue }) => {
     try {
       // const response = await Axios.get('/', loginUserAddress);
-      const response = { data : loginUserAddress }
+      const response = { data: loginUserAddress };
       return response.data;
-    } catch(err) {
+    } catch (err) {
       return rejectWithValue(err);
     }
   }
-)
+);
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     logoutUser: (state) => {
-      state.userAddress = '';
-      state.status = 'idle';
-    }
+      state.userAddress = "";
+      state.status = "idle";
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
-      .addCase(loginUser.fulfilled, (state, {payload}) => {
-        state.status = 'success';
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        state.status = "success";
         state.userAddress = payload;
       })
       .addCase(loginUser.rejected, (state) => {
-        state.status = 'failed';
+        state.status = "failed";
       });
-  }
-})
+  },
+});
 
 // actions
 export const { logoutUser } = authSlice.actions;
