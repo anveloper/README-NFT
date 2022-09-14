@@ -7,9 +7,8 @@ COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 COPY src src
-#RUN chmod +x gradlew
-#RUN ["./gradlew", "clean", "bootJar"]
 COPY . .
+RUN chmod +x gradlew
 RUN ["./gradlew", "clean", "bootJar"]
 
 # 내가 추가한 부분
