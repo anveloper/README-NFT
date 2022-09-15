@@ -21,7 +21,7 @@ WORKDIR /app
 
 RUN mkdir ./build
 
-ADD ./build ./build
+ADD /jenkins_home/workspace/deployment/frontend/build ./build
 
 ###
 RUN rm /etc/nginx/conf.d/default.conf
