@@ -14,15 +14,23 @@ RUN ["npm", "run", "build"]
 # FROM nginx:stable-alpine as production-stage
 FROM nginx:alpine
 
+## 추가 ##
+RUN mkdir /jenkins_home/workspace/deployment/frontend
 
-COPY --from=build /jenkins_home/workspace/deployment/frontend/build /usr/share/nginx/html
+WORKDIR /jenkins_home/workspace/deployment/frontend
 
+RUN mkdir ./build
+
+ADD ./build ./build
+
+###
 RUN rm /etc/nginx/conf.d/default.conf
 
-# COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/
+# COPY --from=build /jenkins_home/workspace/deployment/frontend/build /usr/share/nginx/html
+
 COPY ./nginx.conf /etc/nginx/conf.d
 
-COPY --from=build /jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+# COPY --from=build /jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
