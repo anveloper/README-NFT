@@ -7,8 +7,12 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+# 추가
+RUN mkdir ./build
 
 RUN npm run build
+
+ADD ./build ./build
 
 # FROM nginx:stable-alpine as production-stage
 FROM nginx:stable-alpine
@@ -19,7 +23,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 #COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 # COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/
-COPY ./nginx.conf /etc/nginx/conf.d/
+COPY ./nginx.conf /etc/nginx/conf.d
 
 EXPOSE 80
 
