@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import styles from "./Main.module.css";
 const NFTList = () => {
-  return <div className={styles.listContainer}>NFTList</div>;
+  const listRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    listRef.current?.scrollIntoView({
+      block: "center",
+      behavior: "smooth",
+    });
+  }, []);
+  return (
+    <div className={styles.listContainer} ref={listRef}>
+      NFTList
+    </div>
+  );
 };
 
 export default NFTList;
