@@ -3,7 +3,7 @@ FROM node:16.15.0 as builder
 
 WORKDIR /var/jenkins_home/workspace/deployment/frontend
 
-COPY package*.json .
+COPY package*.json ./
 
 COPY . .
 
