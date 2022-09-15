@@ -15,9 +15,9 @@ RUN ["npm", "run", "build"]
 FROM nginx:alpine
 
 ## 추가 ##
-RUN mkdir /jenkins_home/workspace/deployment/frontend
+RUN mkdir /app
 
-WORKDIR /jenkins_home/workspace/deployment/frontend
+WORKDIR /app
 
 RUN mkdir ./build
 
