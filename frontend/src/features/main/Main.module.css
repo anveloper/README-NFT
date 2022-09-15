@@ -11,12 +11,40 @@
   position: relative;
   z-index: 2;
 }
+.carouselWapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+.carouselContent {
+  background: #dddddd50;
+  width: 60vw;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 40px;
+  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    0.8s both;
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
+}
+.carouselItem {
+  height: 100%;
+  border: 1px solid black;
+}
 .leftCloud {
   z-index: 2;
-  width: 60%;
+  width: 80vw;
   position: absolute;
-  left: 0;
+  left: -20vw;
   bottom: -10vh;
   -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s
     both;
@@ -25,9 +53,10 @@
 
 .rightCloud {
   z-index: 2;
-  width: 50%;
+  width: 60%;
+  aspect-ratio: 2/1;
   position: absolute;
-  right: 0;
+  right: -10vw;
   bottom: -5vh;
   -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
@@ -56,39 +85,78 @@
 /* Live component */
 .liveContainer {
   background: skyblue;
-  height: 100vh;
+  height: 80vh;
 }
 /* NFT list component */
 .listContainer {
   background: pink;
-  height: 100vh;
+  height: 80vh;
 }
 
+/*  */
+
 /* Content */
-.btnBox {
+.tab {
   position: relative;
   z-index: 3;
   width: 100%;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.btnBox {
+  width: 100%;
+  display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 8px;
+  gap: 40px;
 }
 .btn {
-  width: 320px;
-  height: 80px;
-  background: #fcf5e9;
-  border: 1px solid #fddf61;
-  color: #3b82bf;
-  border-radius: 1rem;
-  font-size: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
   margin-bottom: 8px;
 }
-.btn:hover {
-  background: #fddf61;
-  color: #fcf5e9;
+.btn:active {
+  transform: scale(0.9);
+}
+.btn img {
+  width: 120px;
+  aspect-ratio: 1/1;
+  background: grey;
+  border-radius: 100%;
+  margin-bottom: 4px;
+  box-shadow: 5px 5px 5px black;
+}
+.btn p {
+  width: 160px;
+  color: #3b82bf;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+}
+.btn p:hover {
+  background: #fddf6130;
+  color: #3b82bf;
   transition: all 0.3s;
 }
+
+/* Under line */
+.underBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.underLine {
+  width: 160px;
+  height: 10px;
+  background: #3b82bf;
+  border-radius: 1rem;
+}
+
 /* 애니메이션 */
 @-webkit-keyframes slide-right {
   0% {
@@ -110,7 +178,6 @@
     transform: translateX(0);
   }
 }
-
 @-webkit-keyframes slide-left {
   0% {
     -webkit-transform: translateX(200%);
@@ -129,5 +196,30 @@
   100% {
     -webkit-transform: translateX(0);
     transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
   }
 }

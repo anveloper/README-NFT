@@ -28,6 +28,7 @@ function App() {
           <div className={styles.content}>
             <Routes>
               <Route path="/" element={<Main />}>
+                <Route index element={<LiveList />} />
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>

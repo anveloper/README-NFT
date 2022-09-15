@@ -4,7 +4,8 @@
   "description": "Socket.io Server",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "server": "babel-node src/server.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
