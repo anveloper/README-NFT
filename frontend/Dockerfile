@@ -14,6 +14,7 @@ RUN ["npm", "run", "build"]
 # FROM nginx:stable-alpine as production-stage
 FROM nginx:alpine
 
+RUN rm /etc/nginx/conf.d/default.conf
 ## 추가 ##
 RUN mkdir /app
 
@@ -22,9 +23,6 @@ WORKDIR /app
 RUN mkdir ./build
 
 COPY --from=build /jenkins_home/workspace/deployment/frontend/build ./build
-
-###
-RUN rm /etc/nginx/conf.d/default.conf
 
 # COPY --from=build /jenkins_home/workspace/deployment/frontend/build /usr/share/nginx/html
 
