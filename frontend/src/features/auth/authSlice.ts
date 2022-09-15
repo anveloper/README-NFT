@@ -1,14 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import Axios from "../../api/Axios";
+// import Axios from "../../api/Axios";
 import { RootState } from "../../app/store";
 
 export interface AuthState {
   userAddress: string;
+  userName: string;
+  userAvatar: string;
   status: "idle" | "loading" | "success" | "failed";
 }
 
 const initialState: AuthState = {
   userAddress: "asd",
+  userName: "",
+  userAvatar: "",
   status: "idle",
 };
 
