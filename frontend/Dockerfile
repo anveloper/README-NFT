@@ -1,5 +1,5 @@
 # FROM node:16.15.0 as builder
-FROM node:16.15.0 as builder
+FROM node:16.15.0 AS build
 
 WORKDIR /var/jenkins_home/workspace/deployment/frontend
 
@@ -11,16 +11,16 @@ COPY . .
 
 RUN ["npm", "run", "build"]
 
-COPY . .
-
 # FROM nginx:stable-alpine as production-stage
-FROM nginx:stable-alpine
+FROM nginx:alpine
 
+#COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build /var/jenkins_home/workspace/deployment/frontend/build /usr/share/nginx/html
 
 # RUN rm /etc/nginx/conf.d/default.conf
 RUN rm /etc/nginx/sites-available/default.conf
-#COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /var/jenkins_home/workspace/deployment/frontend/build /usr/share/nginx/html
+
 # COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/
 COPY ./nginx.conf /etc/nginx/conf.d
 
