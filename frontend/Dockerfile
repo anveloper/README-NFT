@@ -5,20 +5,19 @@ WORKDIR /var/jenkins_home/workspace/deployment/frontend
 
 COPY package*.json ./
 
-COPY . .
-
 RUN npm install
 
-COPY . .
-
 RUN npm run build
+
+COPY . .
 
 # FROM nginx:stable-alpine as production-stage
 FROM nginx:stable-alpine
 
 COPY --from=builder /var/jenkins_home/workspace/deployment/frontend/build /usr/share/nginx/html
 
-RUN rm /etc/nginx/conf.d/default.conf
+# RUN rm /etc/nginx/conf.d/default.conf
+RUN rm /etc/nginx/sites-available/default.conf
 #COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 # COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/
 COPY ./nginx.conf /etc/nginx/conf.d
