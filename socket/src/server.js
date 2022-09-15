@@ -3,15 +3,8 @@ import SocketIO from "socket.io";
 import express from "express";
 import cors from "cors";
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 const app = express();
-
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    credentials: true,
-  })
-);
 
 const server = http.createServer(app);
 const io = SocketIO(server, {
@@ -41,8 +34,10 @@ const countRoom = (roomName) => {
 
 const answers = [];
 const solvers = [];
+const roomSize = [];
 
 io.on("connection", (socket) => {
+  const { rooms } = io.sockets.adapter;
   socket["nickname"] = "none";
   socket.emit("init_room", publicRooms());
   socket.onAny((event) => {
@@ -72,6 +67,8 @@ io.on("connection", (socket) => {
     done(msg);
   });
   socket.on("set_answer", (roomName, answer) => {
+    rooms[roomName]["answer"] = answer;
+    rooms[roomName]["solver"] = "";
     answers[roomName] = answer;
     solvers[roomName] = ""; // 문제가 바뀌면 정답자도 초기화
   });
