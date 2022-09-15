@@ -1,7 +1,7 @@
 # FROM node:16.15.0 as builder
 FROM node:16.15.0 AS build
 
-WORKDIR /jenkins_home/workspace/deployment/frontend
+# WORKDIR /jenkins_home/workspace/deployment/frontend
 
 COPY package*.json ./
 
@@ -21,7 +21,7 @@ WORKDIR /app
 
 RUN mkdir ./build
 
-COPY --from=build /jenkins_home/workspace/deployment/frontend/build ./build
+COPY --from=build /frontend/build ./build
 
 ###
 RUN rm /etc/nginx/conf.d/default.conf
