@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import UnderLine from "./UnderLine";
@@ -9,14 +9,22 @@ import BtnNFT from "../../../assets/btn/btn_nft.svg";
 
 const MainTab = () => {
   const [under, setUnder] = useState("");
+  const tabRef = useRef<HTMLDivElement | null>(null);
+  const handleScroll = () => {
+    tabRef.current?.scrollIntoView({
+      block: "start",
+      behavior: "smooth",
+    });
+  };
   return (
     <div className={styles.tab}>
-      <div className={styles.btnBox}>
+      <div className={styles.btnBox} ref={tabRef}>
         <Link to="/live">
           <button
             className={styles.btnContainer}
             onClick={() => {
               setUnder("left");
+              handleScroll();
             }}
           >
             <p className={styles.btn}>
@@ -30,6 +38,7 @@ const MainTab = () => {
             className={styles.btnContainer}
             onClick={() => {
               setUnder("right");
+              handleScroll();
             }}
           >
             <p className={styles.btn}>
