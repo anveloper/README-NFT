@@ -11,11 +11,11 @@ import NFTList from "./features/main/NFTList";
 import Detail from "./features/detail/Detail";
 import Welcome from "./features/welcome/Welcome";
 import Login from "./features/auth/Login";
+import MyPage from "./features/mypage/MyPage";
 // css
 import styles from "./App.module.css";
 import { useAppSelector } from "./app/hooks";
 import { selectUserAddress } from "./features/auth/authSlice";
-import MyPage from "./features/mypage/MyPage";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
