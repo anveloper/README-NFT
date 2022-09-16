@@ -7,8 +7,8 @@ import LogoText from "../../../assets/logo_text.svg";
 const WelcomeNavbar = () => {
   return (
     <div className={styles.WelcomeNavbar}>
-      <img className={styles.img} src={LogoImg} />
-      <img className={styles.img} src={LogoText} />
+      <img className={styles.img} src={LogoImg} alt="" />
+      <img className={styles.img} src={LogoText} alt="" />
       <div className={styles.WelcomeNavbarLink}>
         <h5 className={styles.WelcomeNavbarText}>CONNECT WALLET</h5>
         <h5 className={styles.WelcomeNavbarText}>STORY</h5>
