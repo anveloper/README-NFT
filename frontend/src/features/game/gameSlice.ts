@@ -2,21 +2,28 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Socket } from "socket.io-client";
 import { RootState } from "../../app/store";
 
+export interface RoomConfig {
+  title: string;
+  host: string;
+  cnt: number;
+}
 export interface GameState {
-  roomList: [];
+  roomList: RoomConfig[];
   socket: Socket | undefined;
-  userName: string;
+  hostUserName: string;
   roomName: string;
+  roomCnt: number;
   answer: string;
   color: string;
   status: "idle" | "loading" | "failed";
 }
 
 const initialState: GameState = {
-  roomList: [],
+  roomList: [{ title: "asdf", host: "asdf", cnt: 3 }],
   socket: undefined,
-  userName: "",
+  hostUserName: "",
   roomName: "",
+  roomCnt: 0,
   answer: "",
   color: "",
   status: "idle",
@@ -32,12 +39,17 @@ export const gameSlice = createSlice({
     setRoomList: (state, { payload }) => {
       state.roomList = payload;
     },
+    setRoomInfo: (state, { payload }) => {
+      state.roomName = payload.roomName;
+      state.hostUserName = payload.hostUserName;
+      state.roomCnt = payload.roomCnt;
+    },
   },
   extraReducers: {},
 });
 
-export const { setSocket, setRoomList } = gameSlice.actions;
-
+export const { setSocket, setRoomList, setRoomInfo } = gameSlice.actions;
 export const selectSocket = (state: RootState) => state.game.socket;
+export const selectRoomList = (state: RootState) => state.game.roomList;
 
 export default gameSlice.reducer;

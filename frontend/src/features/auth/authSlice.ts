@@ -10,8 +10,8 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  userAddress: "asd",
-  userName: "",
+  userAddress: "asdfasdfasdf",
+  userName: "test01",
   userAvatar: "",
   status: "idle",
 };
@@ -60,5 +60,5 @@ export const { logoutUser } = authSlice.actions;
 
 // selector
 export const selectUserAddress = (state: RootState) => state.auth.userAddress;
-
+export const selectUserName = (state: RootState) => state.auth.userName;
 export default authSlice.reducer;
