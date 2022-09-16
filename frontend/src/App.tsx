@@ -22,22 +22,22 @@ function App() {
   return (
     <div className={styles.container}>
       {userAddress ? (
-        <>
+        <div>
           <BackgroundCloud />
           <Navbar />
           <div className={styles.content}>
             <Routes>
               <Route path="/" element={<Main />}>
-                <Route index element={<LiveList />} />
+                <Route element={<LiveList />} />
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>
               <Route path="/detail" element={<Detail />} />
-              <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/game/:roomName" element={<p></p>}/>
             </Routes>
           </div>
-        </>
+        </div>
       ) : (
         <Welcome />
       )}

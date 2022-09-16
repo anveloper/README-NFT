@@ -26,7 +26,8 @@
 
 .carouselContent {
   background: #dddddd50;
-  width: 60vw;
+  width: 100vw;
+  max-width: 60vw;
   height: 80%;
   display: flex;
   flex-direction: column;
@@ -112,7 +113,7 @@
   justify-content: center;
   gap: 40px;
 }
-.btn {
+.btnContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,27 +121,34 @@
   border: none;
   margin-bottom: 8px;
 }
+.btnContainer:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.btn {
+  width: 120px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  background: whitesmoke;
+  box-shadow: 5px 5px 5px #00000030;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 4px;
+}
 .btn:active {
   transform: scale(0.9);
 }
 .btn img {
-  width: 120px;
-  aspect-ratio: 1/1;
-  background: grey;
-  border-radius: 100%;
-  margin-bottom: 4px;
-  box-shadow: 5px 5px 5px black;
+  height: 80px;
 }
-.btn p {
+.btnText {
   width: 160px;
   color: #3b82bf;
   border-radius: 1rem;
   font-size: 1.5rem;
-}
-.btn p:hover {
-  background: #fddf6130;
-  color: #3b82bf;
-  transition: all 0.3s;
 }
 
 /* Under line */
