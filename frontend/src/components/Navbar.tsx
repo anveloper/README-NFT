@@ -23,6 +23,9 @@ const Navbar = () => {
         <Link to="/login">
           <button>로그인</button>
         </Link>
+        <Link to="/mypage">
+          <button>마이페이지</button>
+        </Link>
       </div>
       <div className={styles.profileTag}>
         <img src={profileImg} alt="" className={styles.avatar} />
