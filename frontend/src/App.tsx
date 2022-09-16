@@ -1,6 +1,6 @@
 // core
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 // components
 import Navbar from "./components/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
@@ -11,6 +11,7 @@ import NFTList from "./features/main/NFTList";
 import Detail from "./features/detail/Detail";
 import Welcome from "./features/welcome/Welcome";
 import Login from "./features/auth/Login";
+import Game from "./features/game/Game";
 // css
 import styles from "./App.module.css";
 import { useAppSelector } from "./app/hooks";
@@ -18,23 +19,24 @@ import { selectUserAddress } from "./features/auth/authSlice";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
-
+  const { pathname } = useLocation();
+  console.log(pathname);
   return (
     <div className={styles.container}>
       {userAddress ? (
         <div>
           <BackgroundCloud />
-          <Navbar />
+          {pathname.length < 16 && <Navbar />}
           <div className={styles.content}>
             <Routes>
               <Route path="/" element={<Main />}>
-                <Route element={<LiveList />} />
+                <Route index element={<LiveList />} />
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>
               <Route path="/detail" element={<Detail />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/game/:roomName" element={<p></p>}/>
+              <Route path="/game/:roomName" element={<Game />} />
             </Routes>
           </div>
         </div>
