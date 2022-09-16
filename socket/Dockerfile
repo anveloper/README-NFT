@@ -1,19 +1,37 @@
-FROM node:10
+FROM node:16.15.0 AS build
 
-WORKDIR /usr/src/app
+WORKDIR /jenkins_home/workspace/deployment/socket/
 
 COPY package*.json ./
-RUN npm install
 
-RUN npm install -g pm2 
-
-RUN npm ci --only=production
-ENV NODE_ENV production
+RUN ["npm", "install"]
 
 COPY . .
 
+RUN ["npm", "run", "build"]
+
+FROM node:16.15.0
+
+RUN mkdir /app
+
+WORKDIR /app
+
+RUN mkdir ./dist
+
+RUN ["npm", "install", "pm2", "-g"]
+
+# # 얘 뭐지?
+# RUN npm ci --only=production
+
+# # 얘도 뭐지?
+# ENV NODE_ENV production
+COPY . .
+
+COPY --from=build /jenkins_home/workspace/deployment/socket/dist ./dist
+
 EXPOSE 5000
 
-RUN npm run build
-
-CMD ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
+# CMD ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
+# CMD ["pm2-runtime", "start", "npm", "--", "run", "server.js"]
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]
+# CMD ["pm2", "start", "server.js"]
