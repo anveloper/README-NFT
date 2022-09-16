@@ -15,6 +15,7 @@ import Login from "./features/auth/Login";
 import styles from "./App.module.css";
 import { useAppSelector } from "./app/hooks";
 import { selectUserAddress } from "./features/auth/authSlice";
+import MyPage from "./features/mypage/MyPage";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -35,6 +36,7 @@ function App() {
               <Route path="/detail" element={<Detail />} />
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/mypage" element={<MyPage />} />
             </Routes>
           </div>
         </>
