@@ -1,0 +1,291 @@
+.mainContainer {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Carousel CSS */
+.carouselContainer {
+  height: 79vh;
+  position: relative;
+  z-index: 2;
+}
+.carouselWapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.carouselContent {
+  background: #dddddd50;
+  width: 100vw;
+  max-width: 60vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 40px;
+  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    0.8s both;
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
+}
+.carouselItem {
+  height: 100%;
+  border: 1px solid black;
+}
+.leftCloud {
+  z-index: 2;
+  width: 60vw;
+  position: absolute;
+  left: -3vw;
+  bottom: -17vh;
+  -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s
+    both;
+  animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+}
+.rightCloud {
+  z-index: 1;
+  width: 50vw;
+  aspect-ratio: 2/1;
+  position: absolute;
+  right: 0;
+  bottom: -17vh;
+  -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.leftPlane {
+  z-index: 2;
+  position: absolute;
+  left: 5%;
+  bottom: 30%;
+  -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s
+    both;
+  animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s both;
+}
+
+.rightPlane {
+  z-index: 2;
+  position: absolute;
+  right: 5%;
+  bottom: 60%;
+  -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s
+    both;
+  animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s both;
+}
+
+/* Live component */
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+.liveContainer {
+  background: #79c4f250;
+  border-radius: 3rem;
+  padding: 2rem;
+  width: 72vw;
+  max-width: 1368px;
+  height: 100%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow-y: auto;
+  gap: 8px;
+}
+/* NFT list component */
+.listContainer {
+  background: rgba(255, 192, 203, 0.40);
+  border-radius: 3rem;
+  padding: 2rem;
+  width: 72vw;
+  max-width: 1368px;
+  height: 100%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow-y: auto;
+  gap: 8px;
+}
+
+/*  */
+
+/* Content */
+.tab {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    0.8s both;
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
+}
+.btnBox {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 40px;
+}
+.btnContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
+  margin-bottom: 8px;
+}
+.btnContainer:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.btn {
+  width: 120px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  background: whitesmoke;
+  box-shadow: 5px 5px 5px #00000030;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.btn:active {
+  transform: scale(0.9);
+}
+.btn img {
+  width: 78px;
+}
+.btnText {
+  margin-top: 4px;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  width: 160px;
+  color: #3b82bf;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+}
+
+/* modal */
+.modalBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 8px;
+}
+.modalText,
+.modalInput {
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  font-size: 1.2rem;
+}
+.modalInput {
+  border: none;
+  border-bottom: 2px solid #534d4d;
+}
+.modalInput:focus {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #feca60;
+}
+/* Under line */
+.underBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.underLine {
+  width: 160px;
+  height: 10px;
+  background: #3b82bf;
+  border-radius: 1rem;
+}
+
+/* 애니메이션 */
+@-webkit-keyframes slide-right {
+  0% {
+    -webkit-transform: translateX(-150%);
+    transform: translateX(-150%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+@keyframes slide-right {
+  0% {
+    -webkit-transform: translateX(-150%);
+    transform: translateX(-150%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+@-webkit-keyframes slide-left {
+  0% {
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+@keyframes slide-left {
+  0% {
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}

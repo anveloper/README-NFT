@@ -1,0 +1,295 @@
+.Welcome {
+  background-image: url("../../assets/08.jpg");
+  /* width: 100vw; */
+  /* height: 100vh; */
+  background-size: cover;
+  /* background-repeat: repeat-y; */
+  overflow-x: hidden;
+  font-family: "IM_Hyemin-Bold";
+
+  /* object-fit: cover; */
+}
+
+/* WelcomeNavbar */
+.WelcomeNavbar {
+  display: flex;
+  padding: 15px;
+  /* text-align: center; */
+}
+
+.img {
+  height: 32px;
+  margin-left: 4px;
+  /* display: flex; */
+  align-items: flex-start;
+}
+
+.WelcomeNavbarLink {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.WelcomeNavbarText {
+  margin-right: 20px;
+}
+
+/* WalletAddress */
+.WalletAddress {
+  padding-top: 30px;
+}
+
+.WalletAddressText {
+  align-items: center;
+  text-align: center;
+  /* justify-content: center; */
+}
+
+.WalletAddressBox {
+  display: flex;
+  position: relative;
+  width: 100vw;
+}
+
+.WalletAddressPallete {
+  width: 50vw;
+  height: 65vh;
+}
+
+.WalletAddressRegister {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 55vw;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+
+.WalletAddressRegister input {
+  border-bottom: 1px solid blue;
+  width: 48vw;
+  height: 8vh;
+  margin-right: 20px;
+
+  /* background: none; */
+
+  border-image: url("../../assets/inputbox.svg");
+  /* object-fit: cover; */
+}
+
+.WalletAddressRegister button {
+  border: none;
+  width: 10vw;
+  height: 8vh;
+  left: 1330px;
+  top: 712px;
+
+  background: #79c4f2;
+  border-radius: 50px;
+
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 3em;
+
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+/* NFTDescription */
+.NFTDescription {
+  align-items: center;
+  text-align: center;
+}
+
+/* NFTCard */
+.NFTCard {
+  display: inline-block;
+  position: relative;
+  width: 20vw;
+  height: 65vh;
+  justify-content: center;
+  margin-top: 10rem;
+
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding: 2em;
+}
+
+.NFTtape1 {
+  position: absolute;
+  width: 6.7vw;
+  height: 5.5vh;
+  left: -15%;
+  top: -3%;
+
+  background: rgba(59, 130, 191, 0.7);
+  transform: rotate(-46.45deg);
+}
+
+.NFTtape2 {
+  position: absolute;
+  width: 6.7vw;
+  height: 5.5vh;
+  left: 80%;
+  top: 95%;
+
+  background: rgba(59, 130, 191, 0.7);
+  transform: rotate(-33.71deg);
+}
+
+.NFTCardImg {
+  width: 12vw;
+
+  margin-top: 1.5em;
+  margin-bottom: 2em;
+}
+
+.NFTCardText {
+  display: flex;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.NFTTextTitle {
+  text-align: left;
+}
+
+.NFTTextMain {
+  margin-left: auto;
+}
+
+/* GameDescription */
+.GameDescription {
+  align-items: center;
+  text-align: center;
+
+  margin-top: 10rem;
+  margin-bottom: 10rem;
+}
+
+.GameDescriptionTitle {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.GameFrame {
+  margin-top: 5rem;
+  width: 45vw;
+}
+
+.GameDescriptionImg {
+  position: relative;
+}
+
+.GameDescriptionCatImg {
+  width: 10vw;
+
+  position: absolute;
+  top: 0.1%;
+  left: 22%;
+}
+
+.GameDescriptionRabbitImg {
+  width: 10vw;
+
+  position: absolute;
+  top: 75%;
+  left: 68%;
+}
+
+/* RoadMap */
+.RoadMap {
+  align-items: center;
+  text-align: center;
+
+  margin-bottom: 10rem;
+}
+
+/* RoadMapImg */
+.RoadMapImg {
+  margin-top: 10rem;
+}
+
+.RoadMapSigns {
+  display: flex;
+
+  justify-content: center;
+}
+
+.RoadMapSign {
+  position: relative;
+  margin-left: 3rem;
+  margin-right: 3rem;
+}
+
+.RoadMapSignImg {
+  width: 17vw;
+}
+
+.RoadMapPercent {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+.RoadMapGoal {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+.RoadMapPosition {
+  position: relative;
+}
+
+.RoadMapCar {
+  position: absolute;
+  top: 5%;
+  left: 75%;
+}
+
+/* DeveloperInfo */
+.DeveloperInfo {
+  align-items: center;
+  text-align: center;
+}
+
+.DeveloperImgInfo {
+  position: relative;
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+.DeveloperFrame {
+  width: 13vw;
+}
+
+.DeveloperImg {
+  position: absolute;
+  width: 7vw;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+/* Developers */
+.Developers {
+  align-items: center;
+  text-align: center;
+}
+
+.DevelopersInfo {
+  display: inline-block;
+}
+
+.DeveloperSort {
+  display: flex;
+  margin-bottom: 2rem;
+  margin-top: 5rem;
+}

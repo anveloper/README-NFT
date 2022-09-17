@@ -1,0 +1,48 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+.slide img {
+  width: 60vw;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  left: -7vw;
+}
+
+.slide {
+  transform: scale(0.4);
+  transition: transform 300ms;
+  opacity: 0.8;
+  z-index: 9;
+}
+
+.activeSlide {
+  transform: scale(1);
+  opacity: 1;
+  position: relative;
+  z-index: 10;
+}
+
+.arrow {
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.arrow svg {
+  transition: color 300ms;
+}
+
+.arrow svg:hover {
+  color: #68edff;
+}
+
+.next {
+  right: 0%;
+  top: 50%;
+}
+
+.prev {
+  left: 0%;
+  top: 50%;
+}
