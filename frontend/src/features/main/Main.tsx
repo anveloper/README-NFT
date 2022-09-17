@@ -18,7 +18,7 @@ import styles from "./Main.module.css";
 const socketURL =
   process.env.NODE_ENV !== "production"
     ? "http://localhost:5000"
-    : "https://j7b108.p.ssafy.io";
+    : "https://j7b108.p.ssafy.io:5000";
 
 const Main = () => {
   const socket = useAppSelector(selectSocket);
