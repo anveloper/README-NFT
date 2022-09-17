@@ -8,7 +8,7 @@ import BtnLive from "../../../assets/btn/btn_live.svg";
 import BtnNFT from "../../../assets/btn/btn_nft.svg";
 
 const MainTab = () => {
-  const [under, setUnder] = useState("");
+  const [under, setUnder] = useState("left");
   const tabRef = useRef<HTMLDivElement | null>(null);
   const handleScroll = () => {
     tabRef.current?.scrollIntoView({
