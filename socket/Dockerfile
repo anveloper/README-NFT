@@ -32,6 +32,6 @@ COPY --from=build /jenkins_home/workspace/deployment/socket/dist ./dist
 EXPOSE 5000
 
 # CMD ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
-# CMD ["pm2-runtime", "start", "npm", "--", "run", "server.js"]
-CMD ["pm2-runtime", "start", "ecosystem.config.js"]
+CMD ["pm2-runtime", "start", "npm", "--", "run", "server.js"]
+# CMD ["pm2-runtime", "start", "ecosystem.config.js"]
 # CMD ["pm2", "start", "server.js"]
