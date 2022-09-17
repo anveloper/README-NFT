@@ -2,10 +2,11 @@
 @import "~slick-carousel/slick/slick-theme.css";
 
 .slide img {
-  width: 600px;
+  width: 60vw;
+  max-width: 600px;
   margin: 0 auto;
   position: relative;
-  left: -35%;
+  left: -7vw;
 }
 
 .slide {

@@ -1,0 +1,139 @@
+.container {
+  width: 320px;
+  height: 290px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 5px 5px 5px #00000030;
+  position: relative;
+}
+
+.img {
+  width: 90%;
+  aspect-ratio: 12/10;
+  margin-bottom: 8px;
+}
+
+.badge {
+  position: absolute;
+  top: 200px;
+  right: 1rem;
+}
+
+.container > div,
+.container > div > p {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.container > div {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.container:hover,
+.container:active {
+  border: 2px solid #d93d04;
+  -webkit-animation: heartbeat 1s ease-in-out both;
+  animation: heartbeat 1s ease-in-out both;
+}
+
+.title {
+  width: 240px;
+  height: 24px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.title .track {
+  position: absolute;
+  white-space: nowrap;
+  will-change: transform;
+}
+.title .track:hover {
+  animation: marquee 5s linear infinite;
+}
+.content {
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  font-size: 1.2rem;
+}
+.cntBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.cnt {
+  width: 24px;
+}
+.n {
+  width: 24px;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  font-size: 1rem;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (hover: hover) and (min-width: 700px) {
+  .animated-title .content {
+    -webkit-transform: translateY(calc(100% - 8rem));
+    transform: translateY(calc(100% - 8rem));
+  }
+}
+
+@-webkit-keyframes heartbeat {
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  8% {
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  16% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+@keyframes heartbeat {
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  8% {
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  16% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
