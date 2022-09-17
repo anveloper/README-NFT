@@ -18,15 +18,46 @@
 .cloudTwo {
   background: url("../assets/bg-cloud/bg_cloud02.svg");
   background-size: cover;
-  -webkit-animation: kenburns-bottom-right 10s ease-out infinite
-    alternate-reverse both;
+  -webkit-animation: kenburns-bottom-right 10s ease-out infinite alternate-reverse both;
   animation: kenburns-bottom-right 10s ease-out infinite alternate-reverse both;
 }
 .cloudThr {
   background: url("../assets/bg-cloud/bg_cloud03.svg");
   background-size: cover;
-  -webkit-animation: kenburns-bottom-left 15s ease-out infinite
-    alternate-reverse both;
+  -webkit-animation: kenburns-bottom-left 15s ease-out infinite alternate-reverse both;
+  animation: kenburns-bottom-left 15s ease-out infinite alternate-reverse both;
+}
+
+/* flower */
+.flowerOne,
+.flowerTwo,
+.flowerThr {
+  width: 90%;
+  height: 90%;
+  top: -8%;
+  left: 6%;
+  position: absolute;
+  z-index: 5;
+}
+
+.flowerOne {
+  background: url("../assets/bg-flower/bg_flower03.svg");
+
+  background-size: cover;
+  -webkit-animation: kenburns-right 12s ease-out infinite alternate-reverse both;
+  animation: kenburns-right 12s ease-out infinite alternate-reverse both;
+}
+
+.flowerTwo {
+  background: url("../assets/bg-flower/bg_flower01.svg");
+  background-size: cover;
+  -webkit-animation: kenburns-bottom-right 10s ease-out infinite alternate-reverse both;
+  animation: kenburns-bottom-right 10s ease-out infinite alternate-reverse both;
+}
+.flowerThr {
+  background: url("../assets/bg-flower/bg_flower02.svg");
+  background-size: cover;
+  -webkit-animation: kenburns-bottom-left 15s ease-out infinite alternate-reverse both;
   animation: kenburns-bottom-left 15s ease-out infinite alternate-reverse both;
 }
 

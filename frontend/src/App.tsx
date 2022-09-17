@@ -8,7 +8,8 @@ import BackgroundCloud from "./components/BackgroundCloud";
 import Main from "./features/main/Main";
 import LiveList from "./features/main/LiveList";
 import NFTList from "./features/main/NFTList";
-import Detail from "./features/detail/Detail";
+import Detail from "./features/detail/NFTDetail";
+import Sell from "./features/detail/NFTSell";
 import Welcome from "./features/welcome/Welcome";
 import Login from "./features/auth/Login";
 import Game from "./features/game/Game";
@@ -35,6 +36,8 @@ function App() {
                 <Route path="/list" element={<NFTList />} />
               </Route>
               <Route path="/detail" element={<Detail />} />
+              <Route path="/sell" element={<Sell />} />
+              <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
               <Route path="/mypage" element={<MyPage />} />
