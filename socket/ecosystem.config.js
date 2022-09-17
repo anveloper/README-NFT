@@ -1,5 +1,5 @@
 module.exports = [{
-  script: 'babel-node dist/server.js',
+  script: 'dist/server.js',
   name: 'npm',
   // exec_mode: 'cluster',
   // instances: 2,
