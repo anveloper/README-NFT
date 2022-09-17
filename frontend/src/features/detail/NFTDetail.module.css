@@ -1,0 +1,136 @@
+@charset "utf-8";
+
+@font-face {
+  font-family: "Pretendard_Regular";
+  src: url("../../assets/fonts/Pretendard-Regular.woff");
+}
+
+@font-face {
+  font-family: "NanumSquareRoundB";
+  src: url("../../assets/fonts/NanumSquareRoundB.ttf");
+}
+
+.detail {
+  height: 100%;
+  /* margin: 0; */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #ecf6ff; */
+
+  font-family: "NanumSquareRoundB";
+}
+
+.detail_container {
+  height: fit-content;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 60px;
+  grid-row-gap: 5px;
+
+  z-index: 15;
+}
+
+.cards {
+  background-color: white;
+  color: black;
+  width: 350px;
+  height: 600px;
+
+  border-radius: 40px;
+
+  display: flex;
+  flex-direction: column;
+  /* justify-items: center; */
+  justify-content: center;
+  align-items: center;
+}
+
+/* .card_contents_front {
+  width: 300px;
+  height: 90%;
+
+  background-color: #fcf5e9;
+  color: black;
+} */
+
+.card_img {
+  width: 100%;
+  height: 300px;
+  margin-bottom: 10px;
+
+  background-color: #fcf5e9;
+  color: black;
+}
+
+.card_img_info {
+  width: 300px;
+  height: 220px;
+  padding: 20px;
+  border-radius: 20px;
+
+  background-color: #fcf5e9;
+  color: black;
+}
+
+/* .card_contents_back {
+  width: 300px;
+  height: 90%;
+
+  background-color: #fcf5e9;
+  color: black;
+} */
+
+.card_contents_back_price {
+  width: 300px;
+  height: 150px;
+  margin-bottom: 20px;
+
+  background-color: #fcf5e9;
+  color: black;
+
+  border-radius: 20px;
+}
+
+.card_contents_back_history {
+  width: 300px;
+  height: 300px;
+  margin-bottom: 10px;
+
+  background-color: #fcf5e9;
+  color: black;
+
+  border-radius: 20px;
+}
+
+.card_button {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+
+  padding: 10px 20px 10px 20px;
+  margin: 10px;
+
+  font-size: 18px;
+
+  white-space: nowrap;
+  font-family: "NanumSquareRoundB";
+
+  background-color: #fddf61;
+}
+
+.card_buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 판매/등록 배경 */
+.sell_background {
+  width: 100%;
+  height: 100%;
+
+  background-color: #fcf5e9;
+  z-index: 10;
+}
