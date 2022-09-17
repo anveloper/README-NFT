@@ -34,6 +34,7 @@ const Main = () => {
 
   useEffect(() => {
     if (!socket) {
+      console.log(socketURL);
       dispatch(setSocket(io(socketURL)));
     } else {
       console.log("연결된 소켓 정보", socket);

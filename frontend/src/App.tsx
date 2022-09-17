@@ -21,7 +21,6 @@ import { selectUserAddress } from "./features/auth/authSlice";
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
   const { pathname } = useLocation();
-  console.log(pathname);
   return (
     <div className={styles.container}>
       {userAddress ? (
