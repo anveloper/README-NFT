@@ -6,8 +6,6 @@ COPY package*.json ./
 
 RUN ["npm", "install"]
 
-RUN ["npm", "install", "pm2", "-g"]
-
 COPY . .
 
 RUN ["npm", "run", "build"]
@@ -20,7 +18,7 @@ WORKDIR /app
 
 RUN mkdir ./dist
 
-# RUN ["npm", "install", "pm2", "-g"]
+RUN ["npm", "install", "pm2", "-g"]
 
 # # 얘 뭐지?
 # RUN npm ci --only=production
@@ -35,5 +33,5 @@ EXPOSE 5000
 
 # CMD ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
 # CMD ["pm2-runtime", "start", "npm", "--", "run", "server.js"]
-CMD ["pm2-runtime", "start", "ecosystem.config.js"]
+CMD ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
 # CMD ["pm2", "start", "server.js"]
