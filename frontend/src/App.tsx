@@ -1,6 +1,6 @@
 // core
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 // components
 import Navbar from "./components/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
@@ -12,6 +12,8 @@ import Detail from "./features/detail/NFTDetail";
 import Sell from "./features/detail/NFTSell";
 import Welcome from "./features/welcome/Welcome";
 import Login from "./features/auth/Login";
+import Game from "./features/game/Game";
+import MyPage from "./features/mypage/MyPage";
 // css
 import styles from "./App.module.css";
 import { useAppSelector } from "./app/hooks";
@@ -19,13 +21,13 @@ import { selectUserAddress } from "./features/auth/authSlice";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
-
+  const { pathname } = useLocation();
   return (
     <div className={styles.container}>
       {userAddress ? (
-        <>
+        <div>
           <BackgroundCloud />
-          <Navbar />
+          {pathname.length < 16 && <Navbar />}
           <div className={styles.content}>
             <Routes>
               <Route path="/" element={<Main />}>
@@ -37,9 +39,11 @@ function App() {
               <Route path="/sell" element={<Sell />} />
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/game/:roomName" element={<Game />} />
+              <Route path="/mypage" element={<MyPage />} />
             </Routes>
           </div>
-        </>
+        </div>
       ) : (
         <Welcome />
       )}

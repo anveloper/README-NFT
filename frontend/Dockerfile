@@ -1,27 +1,35 @@
-FROM node:16.15.0 as builder
+# FROM node:16.15.0 as builder
+FROM node:16.15.0 AS build
 
-WORKDIR /var/jenkins_home/workspace/deployment/frontend
+WORKDIR /jenkins_home/workspace/deployment/frontend
 
 COPY package*.json ./
 
-RUN npm install
+RUN ["npm", "install"]
 
 COPY . .
-# 추가
 
-RUN npm run build
+RUN ["npm", "run", "build"]
 
 # FROM nginx:stable-alpine as production-stage
-FROM nginx:stable-alpine
-
-COPY --from=builder /var/jenkins_home/workspace/deployment/frontend/build /usr/share/nginx/html
+FROM nginx:alpine
 
 RUN rm /etc/nginx/conf.d/default.conf
+## 추가 ##
+RUN mkdir /app
 
-#COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/default.conf
-# COPY --from=build-stage /var/jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/
+WORKDIR /app
+
+RUN mkdir ./build
+
+COPY --from=build /jenkins_home/workspace/deployment/frontend/build ./build
+
+# COPY --from=build /jenkins_home/workspace/deployment/frontend/build /usr/share/nginx/html
+
 COPY ./nginx.conf /etc/nginx/conf.d
 
-EXPOSE 80
+# COPY --from=build /jenkins_home/workspace/deployment/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD ["nginx", "-g","daemon off;"]
+EXPOSE 3000
+
+CMD ["nginx", "-g", "daemon off;"]

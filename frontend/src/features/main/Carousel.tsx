@@ -11,8 +11,8 @@ const Carousel = () => {
   return (
     <div className={styles.carouselContainer}>
       <CarouselSwiper />
-      <Cloud1 className={styles.rightCloud} />
-      <Cloud2 className={styles.leftCloud} />
+      <Cloud1 className={styles.leftCloud} />
+      <Cloud2 className={styles.rightCloud} />
       <Plane1 className={styles.leftPlane} />
       <Plane2 className={styles.rightPlane} />
     </div>

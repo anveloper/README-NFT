@@ -20,11 +20,11 @@ const Navbar = () => {
         <Link to="/detail">
           <button>NFT상세</button>
         </Link>
-        <Link to="/welcome">
-          <button>웰컴</button>
-        </Link>
         <Link to="/login">
           <button>로그인</button>
+        </Link>
+        <Link to="/mypage">
+          <button>마이페이지</button>
         </Link>
       </div>
       <div className={styles.profileTag}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import UnderLine from "./UnderLine";
@@ -9,29 +9,42 @@ import BtnNFT from "../../../assets/btn/btn_nft.svg";
 
 const MainTab = () => {
   const [under, setUnder] = useState("");
+  const tabRef = useRef<HTMLDivElement | null>(null);
+  const handleScroll = () => {
+    tabRef.current?.scrollIntoView({
+      block: "start",
+      behavior: "smooth",
+    });
+  };
   return (
     <div className={styles.tab}>
-      <div className={styles.btnBox}>
+      <div className={styles.btnBox} ref={tabRef}>
         <Link to="/live">
           <button
-            className={styles.btn}
+            className={styles.btnContainer}
             onClick={() => {
               setUnder("left");
+              handleScroll();
             }}
           >
-            <img src={BtnLive} alt="" />
-            <p>실시간 리드미</p>
+            <p className={styles.btn}>
+              <img src={BtnLive} alt="" />
+            </p>
+            <p className={styles.btnText}>실시간 리드미</p>
           </button>
         </Link>
         <Link to="/list">
           <button
-            className={styles.btn}
+            className={styles.btnContainer}
             onClick={() => {
               setUnder("right");
+              handleScroll();
             }}
           >
-            <img src={BtnNFT} alt="" />
-            <p>NFT 구경하기</p>
+            <p className={styles.btn}>
+              <img src={BtnNFT} alt="" />
+            </p>
+            <p className={styles.btnText}>NFT 구경하기</p>
           </button>
         </Link>
       </div>
