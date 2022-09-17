@@ -1,16 +1,58 @@
-import React, { useState } from "react";
-
+// core
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
+// state
+import {
+  resetMessages,
+  selectHostUserName,
+  selectRoomCnt,
+  selectRoomName,
+  selectSocket,
+} from "./gameSlice";
+import { selectUserAddress } from "../auth/authSlice";
+// component
+import NewHelmet from "../../components/NewHelmet";
+import ChatBox from "./components/ChatBox";
 import CanvasSpring from "../../assets/live-item/canvas_spring.svg";
+// css
 import styles from "./Game.module.css";
+import TimerBox from "./components/TimerBox";
 const Game = () => {
+  const userAddress = useAppSelector(selectUserAddress);
+  const socket = useAppSelector(selectSocket);
+  const roomName = useAppSelector(selectRoomName);
+  const hostUserName = useAppSelector(selectHostUserName);
+  const roomCnt = useAppSelector(selectRoomCnt);
+
   const [tabFlag, setTabFlag] = useState(true);
-  const [time, setTime] = useState(40);
-  let per = Math.round(((60 - time) * 100) / 60);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(resetMessages());
+  }, [dispatch]);
+
+  const handleExit = () => {
+    if (socket) {
+      socket.emit("leave_room", roomName);
+      if (hostUserName === userAddress) {
+        socket.emit("host_leave", roomName);
+      }
+    }
+    dispatch(resetMessages());
+    navigate("/live");
+  };
   return (
     <div className={styles.container}>
+      <NewHelmet
+        title={roomName}
+        description={`${hostUserName}님의 리드미 게임룸입니다.`}
+      />
       <div className={styles.content}>
         <div className={styles.btnBox}>
-          <button className={styles.exit}>종료</button>
+          <button className={styles.exit} onClick={handleExit}>
+            종료
+          </button>
         </div>
         <div className={styles.canvasBox}>
           <div className={styles.answerBox}>
@@ -42,13 +84,7 @@ const Game = () => {
             </div>
           </div>
         </div>
-        <div className={styles.timerBox}>
-          <div className={styles.timeSlider}>
-            <div className={styles.time} style={{ width: `${per}%` }} />
-            <p className={styles.remain}>남은 시간 : {time}초</p>
-          </div>
-          <button className={styles.submit}>제출</button>
-        </div>
+      <TimerBox/>
       </div>
       <div className={styles.social}>
         <div className={styles.notiBox}>알림창이 위치할 자리입니다.</div>
@@ -63,30 +99,10 @@ const Game = () => {
             className={tabFlag ? "" : `${styles.active}`}
             onClick={() => setTabFlag(false)}
           >
-            참여자
+            참여자({roomCnt})
           </button>
         </div>
-        <div className={styles.chatBox}>
-          <div className={styles.chatList}>
-            <div className={styles.chatItem}>닉네임과 채팅내용 1</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 2</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 3</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 4</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 5</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 6</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 7</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 8</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 9</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 10</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 11</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 12</div>
-            <div className={styles.chatItem}>닉네임과 채팅내용 13</div>
-          </div>
-        </div>
-        <div className={styles.inputBox}>
-          <input className={styles.input} type="text" />
-          <button className={styles.send}>전송</button>
-        </div>
+        <ChatBox />
       </div>
     </div>
   );

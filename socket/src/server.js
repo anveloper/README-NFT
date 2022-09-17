@@ -59,18 +59,19 @@ io.on("connection", (socket) => {
     } else {
       done(roomName, countRoom(roomName), rooms.get(roomName)["host"]);
     }
-    console.log(rooms);
     socket.to(roomName).emit("welcome", socket.nickname, countRoom(roomName));
     io.sockets.emit("room_change", publicRooms());
   });
-  socket.on("leave_room", (roomName, done) => {
+  socket.on("leave_room", (roomName) => {
     socket.leave(roomName);
-    done();
+    socket.to(roomName).emit("bye", socket.nickname, countRoom(roomName) - 1);
+    io.sockets.emit("room_change", publicRooms());
   });
   socket.on("disconnecting", () => {
-    socket.rooms.forEach((room) =>
-      socket.to(room).emit("bye", socket.nickname, countRoom(room) - 1)
-    );
+    socket.rooms.forEach((room) => {
+      socket.leave(room);
+      socket.to(room).emit("bye", socket.nickname, countRoom(room) - 1);
+    });
   });
   socket.on("disconnect", () => {
     io.sockets.emit("room_change", publicRooms());
@@ -79,6 +80,7 @@ io.on("connection", (socket) => {
   // chat
   socket.on("new_message", (room, msg, done) => {
     socket.to(room).emit("new_message", socket.nickname, msg);
+    // console.log("NewMessage", `${room}: ${msg}`);
     done(msg);
   });
   socket.on("set_answer", (roomName, answer) => {

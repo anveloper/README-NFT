@@ -7,6 +7,11 @@ export interface RoomConfig {
   host: string;
   cnt: number;
 }
+export interface ChatConfig {
+  type: "other" | "mine" | "system";
+  name: string;
+  msg: string;
+}
 export interface GameState {
   roomList: RoomConfig[];
   socket: Socket | undefined;
@@ -15,6 +20,7 @@ export interface GameState {
   roomCnt: number;
   answer: string;
   color: string;
+  messages: ChatConfig[];
   status: "idle" | "loading" | "failed";
 }
 
@@ -26,6 +32,7 @@ const initialState: GameState = {
   roomCnt: 0,
   answer: "",
   color: "",
+  messages: [{ type: "system", name: "관리자", msg: "대화를 시작합니다." }],
   status: "idle",
 };
 
@@ -39,17 +46,43 @@ export const gameSlice = createSlice({
     setRoomList: (state, { payload }) => {
       state.roomList = payload;
     },
+    setRoomCnt: (state, { payload }) => {
+      state.roomCnt = payload;
+    },
     setRoomInfo: (state, { payload }) => {
       state.roomName = payload.roomName;
       state.hostUserName = payload.hostUserName;
       state.roomCnt = payload.roomCnt;
     },
+    setMessages: (state, { payload: { type, name, msg } }) => {
+      state.messages.push({ type, name, msg });
+    },
+    resetMessages: (state) => {
+      state.messages = [
+        { type: "system", name: "관리자", msg: "대화를 시작합니다." },
+      ];
+    },
   },
   extraReducers: {},
 });
-
-export const { setSocket, setRoomList, setRoomInfo } = gameSlice.actions;
+// redusers
+export const {
+  setSocket,
+  setRoomList,
+  setRoomCnt,
+  setRoomInfo,
+  setMessages,
+  resetMessages,
+} = gameSlice.actions;
+// selector
 export const selectSocket = (state: RootState) => state.game.socket;
+export const selectRoomName = (state: RootState) => state.game.roomName;
+export const selectHostUserName = (state: RootState) => state.game.hostUserName;
+export const selectRoomCnt = (state: RootState) => state.game.roomCnt;
 export const selectRoomList = (state: RootState) => state.game.roomList;
+export const selectMessages = (state: RootState) => state.game.messages;
 
+export const MSG = (type: string, name: string, msg: string) => {
+  return { type: type, name: name, msg: msg };
+};
 export default gameSlice.reducer;
