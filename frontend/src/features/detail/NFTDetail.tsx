@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./Detail.module.css";
+import styles from "./NFTDetail.module.css";
 
 const Detail = () => {
   const navigate = useNavigate();

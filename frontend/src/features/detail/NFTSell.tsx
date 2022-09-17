@@ -1,4 +1,4 @@
-import styles from "./Detail.module.css";
+import styles from "./NFTDetail.module.css";
 import BackgroundFlower from "../../components/BackgroundFlower";
 
 const Sell = () => {
