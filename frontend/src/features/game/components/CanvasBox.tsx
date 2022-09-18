@@ -28,8 +28,6 @@ const CanvasBox = () => {
   }, [boxRef, window.innerWidth, window.innerHeight]);
 
   const [mousePos, setMousePos] = useState<Coordinate | undefined>(undefined);
-  const [dataPos, setDataPos] = useState<Coordinate | undefined>(undefined);
-  const [dataColor, setDataColor] = useState("#000000");
   const [isPaint, setIsPaint] = useState(false);
 
   const getCoordinate = (event: MouseEvent): Coordinate | undefined => {
@@ -44,7 +42,11 @@ const CanvasBox = () => {
     };
   };
 
-  const drawLine = (befMousePos: Coordinate, affMousePos: Coordinate) => {
+  const drawLine = (
+    befMousePos: Coordinate,
+    affMousePos: Coordinate,
+    color: string
+  ) => {
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -57,7 +59,6 @@ const CanvasBox = () => {
       ctx.moveTo(befMousePos.x, befMousePos.y);
       ctx.lineTo(affMousePos.x, affMousePos.y);
       ctx.closePath();
-
       ctx.stroke();
     }
   };
@@ -75,12 +76,14 @@ const CanvasBox = () => {
       if (isPaint) {
         const newMousePos = getCoordinate(event);
         if (mousePos && newMousePos) {
-          drawLine(mousePos, newMousePos);
+          drawLine(mousePos, newMousePos, color);
           setMousePos(newMousePos);
           if (socket) {
             const data = {
-              x: newMousePos.x,
-              y: newMousePos.y,
+              x0: mousePos.x,
+              y0: mousePos.y,
+              x1: newMousePos.x,
+              y1: newMousePos.y,
               color,
             };
             socket.emit("draw_data", hostUserName, data);
@@ -109,17 +112,15 @@ const CanvasBox = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPaint, paint, exitPaint]);
-  // data 받아서 그리기
+  // data drawing
   useEffect(() => {
     if (socket) {
       socket.on("draw_data", (data) => {
-        const { x, y, color } = data;
-        setDataPos({ x, y });
-        setDataColor(color);
+        const { x0, y0, x1, y1, color } = data;
+        drawLine({ x: x0, y: y0 }, { x: x1, y: y1 }, color);
       });
     }
   }, [socket]);
-
   return (
     <div ref={boxRef} className={styles.canvasBox}>
       <canvas

@@ -104,7 +104,6 @@ io.on("connection", (socket) => {
     // rooms.get(session)["data"].push(data);
     const dataList = rooms.get(session)["data"];
     dataList.push(data);
-    console.log(data);
     socket.to(session).emit("draw_data", data);
   });
 });
