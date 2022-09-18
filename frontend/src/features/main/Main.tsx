@@ -16,7 +16,9 @@ import RoomButton from "./components/RoomButton";
 import styles from "./Main.module.css";
 
 const socketURL =
-  process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "";
+  process.env.NODE_ENV !== "production"
+    ? "http://localhost:5000"
+    : "https://j7b108.p.ssafy.io";
 
 const Main = () => {
   const socket = useAppSelector(selectSocket);
@@ -32,6 +34,7 @@ const Main = () => {
 
   useEffect(() => {
     if (!socket) {
+      console.log(socketURL);
       dispatch(setSocket(io(socketURL)));
     } else {
       console.log("연결된 소켓 정보", socket);

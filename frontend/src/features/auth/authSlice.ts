@@ -10,8 +10,8 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  userAddress: "asdfasdfasdf",
-  userName: "test01",
+  userAddress: `testAddress-${Math.floor(Math.random() * 123456)}`,
+  userName: `testName-${Math.floor(Math.random() * 100)}`,
   userAvatar: "",
   status: "idle",
 };
