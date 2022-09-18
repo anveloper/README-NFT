@@ -23,10 +23,10 @@ const publicRooms = () => {
   rooms.forEach((_, key) => {
     if (!sids.get(key)) {
       const cnt = rooms.get(key).size;
-      const host = rooms.get(key)["host"];
+      const title = rooms.get(key)["title"];
       const data = {
-        title: key,
-        host: host,
+        host: key,
+        title: title,
         cnt: cnt,
       };
       publicRooms.push(data);
@@ -35,8 +35,8 @@ const publicRooms = () => {
   return JSON.stringify(publicRooms);
 };
 
-const countRoom = (roomName) => {
-  return io.sockets.adapter.rooms.get(roomName)?.size;
+const countRoom = (session) => {
+  return io.sockets.adapter.rooms.get(session)?.size;
 };
 
 io.on("connection", (socket) => {
@@ -49,28 +49,35 @@ io.on("connection", (socket) => {
   });
 
   // room
-  socket.on("enter_room", (userAddress, nickname, roomName, done) => {
+  socket.on("enter_room", (userAddress, nickname, roomTitle, done) => {
     socket["nickname"] = nickname;
-    socket.join(roomName);
-    const cnt = countRoom(roomName);
-    if (cnt === 1) {
-      rooms.get(roomName)["host"] = userAddress;
-      done(roomName, countRoom(roomName), rooms.get(roomName)["host"]);
-    } else {
-      done(roomName, countRoom(roomName), rooms.get(roomName)["host"]);
-    }
-    socket.to(roomName).emit("welcome", socket.nickname, countRoom(roomName));
+    socket["address"] = userAddress;
+    const session = userAddress;
+    socket.join(session);
+    rooms.get(session)["title"] = roomTitle;
+    rooms.get(session)["data"] = [];
+    done(rooms.get(session)["title"], countRoom(session), session);
+    socket.to(session).emit("welcome", socket.nickname, countRoom(session));
     io.sockets.emit("room_change", publicRooms());
   });
-  socket.on("leave_room", (roomName) => {
-    socket.leave(roomName);
-    socket.to(roomName).emit("bye", socket.nickname, countRoom(roomName) - 1);
+  socket.on("join_room", (userAddress, nickname, hostAddress, done) => {
+    socket["nickname"] = nickname;
+    socket["address"] = userAddress;
+    const session = hostAddress;
+    socket.join(session);
+    done(rooms.get(session)["title"], countRoom(session), session);
+    socket.to(session).emit("welcome", socket.nickname, countRoom(session));
+    io.sockets.emit("room_change", publicRooms());
+  });
+  socket.on("leave_room", (session) => {
+    socket.leave(session);
+    socket.to(session).emit("bye", socket.nickname, countRoom(session) - 1);
     io.sockets.emit("room_change", publicRooms());
   });
   socket.on("disconnecting", () => {
-    socket.rooms.forEach((room) => {
-      socket.leave(room);
-      socket.to(room).emit("bye", socket.nickname, countRoom(room) - 1);
+    socket.rooms.forEach((session) => {
+      socket.leave(session);
+      socket.to(session).emit("bye", socket.nickname, countRoom(session) - 1);
     });
   });
   socket.on("disconnect", () => {
@@ -78,22 +85,28 @@ io.on("connection", (socket) => {
   });
 
   // chat
-  socket.on("new_message", (room, msg, done) => {
-    socket.to(room).emit("new_message", socket.nickname, msg);
+  socket.on("new_message", (session, msg, done) => {
+    socket.to(session).emit("new_message", socket.nickname, msg);
     // console.log("NewMessage", `${room}: ${msg}`);
     done(msg);
   });
-  socket.on("set_answer", (roomName, answer) => {
-    rooms.get(roomName)["answer"] = answer;
-    rooms.get(roomName)["solver"] = "";
+  socket.on("set_answer", (session, answer) => {
+    rooms.get(session)["answer"] = answer;
+    rooms.get(session)["solver"] = "";
   });
-  socket.on("get_answer", (roomName) =>
+  socket.on("get_answer", (session) =>
     socket.emit(
       "send_answer",
-      rooms.get(roomName)["answer"] ?? "아직 정답이 등록되지 않았습니다."
+      rooms.get(session)["answer"] ?? "아직 정답이 등록되지 않았습니다."
     )
   );
-  socket.on("nickname", (nickname) => (socket["nickname"] = nickname));
+  socket.on("draw_data", (session, data) => {
+    // rooms.get(session)["data"].push(data);
+    const dataList = rooms.get(session)["data"];
+    dataList.push(data);
+    console.log(data);
+    socket.to(session).emit("draw_data", data);
+  });
 });
 
 const handleListen = (err) =>
