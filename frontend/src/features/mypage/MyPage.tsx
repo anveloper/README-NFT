@@ -11,7 +11,7 @@ const MyPage = () => {
         <MyInfo />
       </div>
 
-      <div className={styles.MyNFTInfo}>
+      <div className={styles.MyNFTView}>
         <MyNFTList />
       </div>
     </div>

@@ -24,6 +24,7 @@ const LiveList = () => {
   const navigator = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [registerRoomName, setRegisterRoomName] = useState("");
+  const [registrtHostAddress, setRegisterHostAddress] = useState("");
   useEffect(() => {
     if (socket) {
       socket.on("connect", () => {
@@ -46,18 +47,19 @@ const LiveList = () => {
   const handleJoinRoom = () => {
     if (socket) {
       socket.emit(
-        "enter_room",
+        "join_room",
         userAddress,
         userName,
-        registerRoomName,
-        (room: string, cnt: number, host: any) => {
+        registrtHostAddress,
+        (title: string, cnt: number, host: any) => {
           setModalOpen(false);
+          console.log(host);
           setRegisterRoomName("");
           dispatch(
             setRoomInfo({
-              roomName: room,
-              hostUserName: host,
+              roomName: title,
               roomCnt: cnt,
+              hostUserName: host,
             })
           );
           navigator(`/game/${host}`);
@@ -82,12 +84,14 @@ const LiveList = () => {
         return (
           <LiveItem
             key={index}
+            value={room.host}
             title={room.title}
             cnt={room.cnt}
             host={room.host}
             handleJoinRoom={() => {
               setModalOpen(true);
               setRegisterRoomName(room.title);
+              setRegisterHostAddress(room.host);
             }}
           />
         );

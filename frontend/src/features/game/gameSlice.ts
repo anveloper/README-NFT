@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { Socket } from "socket.io-client";
 import { RootState } from "../../app/store";
 
@@ -31,7 +31,7 @@ const initialState: GameState = {
   roomName: "",
   roomCnt: 0,
   answer: "",
-  color: "",
+  color: "#000000",
   messages: [{ type: "system", name: "관리자", msg: "대화를 시작합니다." }],
   status: "idle",
 };
@@ -54,6 +54,9 @@ export const gameSlice = createSlice({
       state.hostUserName = payload.hostUserName;
       state.roomCnt = payload.roomCnt;
     },
+    setColor: (state, { payload }) => {
+      state.color = payload;
+    },
     setMessages: (state, { payload: { type, name, msg } }) => {
       state.messages.push({ type, name, msg });
     },
@@ -71,6 +74,7 @@ export const {
   setRoomList,
   setRoomCnt,
   setRoomInfo,
+  setColor,
   setMessages,
   resetMessages,
 } = gameSlice.actions;
@@ -81,7 +85,7 @@ export const selectHostUserName = (state: RootState) => state.game.hostUserName;
 export const selectRoomCnt = (state: RootState) => state.game.roomCnt;
 export const selectRoomList = (state: RootState) => state.game.roomList;
 export const selectMessages = (state: RootState) => state.game.messages;
-
+export const selectColor = (state: RootState) => state.game.color;
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };

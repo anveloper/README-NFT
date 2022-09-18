@@ -53,7 +53,7 @@ const Main = () => {
     setModalOpen(false);
     setRegisterRoomName("");
   };
-  const handleJoinRoom = () => {
+  const handleEnterRoom = () => {
     if (socket) {
       socket.emit(
         "enter_room",
@@ -66,8 +66,8 @@ const Main = () => {
           dispatch(
             setRoomInfo({
               roomName: room,
-              hostUserName: host,
               roomCnt: cnt,
+              hostUserName: host,
             })
           );
           navigator(`/game/${host}`);
@@ -78,7 +78,7 @@ const Main = () => {
   return (
     <div className={styles.mainContainer} ref={mainRef}>
       <NewHelmet
-        title="목록"
+        title="리드미 & NFT"
         description="README 게임 라이브 목록 및 NFT 목록이 나타납니다."
       />
       <Carousel />
@@ -89,7 +89,7 @@ const Main = () => {
       <Modal
         open={modalOpen}
         close={closeModal}
-        fn={handleJoinRoom}
+        fn={handleEnterRoom}
         header="내 마음을 읽어줘 - 방 만들기"
       >
         <div className={styles.modalBox}>
@@ -103,7 +103,7 @@ const Main = () => {
             }}
             onKeyUp={(e) => {
               if (e.key === "Enter") {
-                handleJoinRoom();
+                handleEnterRoom();
               }
             }}
           />

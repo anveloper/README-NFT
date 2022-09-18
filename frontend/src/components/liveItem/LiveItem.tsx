@@ -13,7 +13,7 @@ const LiveItem = (prop: any) => {
     <button
       className={styles.container}
       onClick={() => {
-        handleJoinRoom(title);
+        handleJoinRoom(host);
       }}
     >
       <img className={styles.img} src={IMG} alt="" />
