@@ -109,6 +109,7 @@ const CanvasBox = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPaint, paint, exitPaint]);
+  // data 받아서 그리기
   useEffect(() => {
     if (socket) {
       socket.on("draw_data", (data) => {
