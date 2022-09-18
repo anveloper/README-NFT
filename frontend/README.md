@@ -17,3 +17,7 @@
   ```bash
   $ npm install react-helmet-async
   ```
+- socket.io-client
+  ```bash
+  $ npm install socket.io-client
+  ```
