@@ -6,12 +6,12 @@ const MyInfo = () => {
     <div className={styles.MyInfo}>
       <MyProfile />
 
-      <div>
-        <h6>보유한 NFT</h6>
+      <div className={styles.MyNFTInfo}>
+        <p className={styles.MyNFTInfoButton}>보유한 NFT</p>
         <hr />
-        <h6>찜한 NFT</h6>
+        <p className={styles.MyNFTInfoButton}>찜한 NFT</p>
         <hr />
-        <h6>내가 그린 NFT</h6>
+        <p className={styles.MyNFTInfoButton}>내가 그린 NFT</p>
       </div>
     </div>
   );
