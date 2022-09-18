@@ -9,8 +9,7 @@ import "./token/ERC721/ERC721.sol";
 // 판매 등록
 contract SaleFactory is Ownable {
     address public admin;
-    uint256[] public onSaleAnimalTokenArray; // 판매 중 토큰 기록
-    mapping(uint256 => address) public sales;
+    address[] public sales; // 토큰 별 판매 주소
 
     ERC20 public erc20Contract;
     ReadmeToken public readMeContract;
@@ -27,7 +26,7 @@ contract SaleFactory is Ownable {
     ) {
         admin = msg.sender;
 
-        erc20Contract = IERC20(_currencyAddress);
+        erc20Contract = ERC20(_currencyAddress);
         readMeContract = ReadmeToken(_nftAddress);
     }
 
@@ -49,17 +48,22 @@ contract SaleFactory is Ownable {
         address nftAddress
     ) public onlyOwner returns (address) {
         
+        address seller = readMeContract.ownerOf(itemId);
+
         erc20Contract = ERC20(currencyAddress); 
         readMeContract =  ReadmeToken(nftAddress);
         
-        require(readMeContract != address(0), "Invalid Address");
+        require(address(readMeContract) != address(0), "Invalid Address");
 
-        require(msg.sender == readMeContract.ownerOf(itemId), "Not your NFT");
+        require(address(erc20Contract) != address(0), "Invalid Address");
+
+        require(msg.sender == seller, "Not your NFT");
 
         require(startPrice > 0, "Price is zero");
 
         Sale SaleContract = new Sale(
             admin,
+            seller,
             itemId,
             startPrice,
             startTime,
@@ -69,14 +73,12 @@ contract SaleFactory is Ownable {
             nftAddress
         );
 
-        sales[itemId] = address(SaleContract);
-        onSaleAnimalTokenArray.push(itemId);
+        sales[itemId] = address(SaleContract); // 판매 주소 기록
 
-        // Sale 컨트랙트로의 (임시)소유권 이전
-        readMeContract.transferFrom(address(this), address(SaleContract), itemId);
+        // 토큰 소유권(판매자 -> Sale)
+        readMeContract.transferFrom(seller, address(SaleContract), itemId);
 
         return address(SaleContract);
-  
     }
 
     function allSales() public view returns (address[] memory) {
@@ -91,8 +93,7 @@ contract Sale {
     address admin;
     uint256 public saleStartTime; 
     uint256 public saleEndTime;
-    uint256 public startPrice;
-    uint256 public purchasePrice;
+    uint256 public startPrice; // 경매: 최소입찰가, 즉시 구매가
     uint256 public tokenId;
     address public currencyAddress;
     address public nftAddress; 
@@ -114,7 +115,6 @@ contract Sale {
         address _seller,
         uint256 _tokenId,
         uint256 _startPrice,
-        uint256 _purchasePrice,
         uint256 startTime,
         uint256 endTime,
         bool _saleType,
@@ -124,8 +124,7 @@ contract Sale {
         admin = _admin;
         seller = _seller;
         tokenId = _tokenId;
-        startPrice = startPrice;
-        purchasePrice = _purchasePrice;
+        startPrice = _startPrice;
         saleStartTime = startTime;
         saleEndTime = endTime;
         saleType = _saleType;
@@ -135,59 +134,91 @@ contract Sale {
         erc20Contract = ERC20(_currencyAddress); 
         readMeContract = ReadmeToken(_nftAddress);
     }
-
+    
+    // 가격 제안
     function bid(uint256 bid_amount) public onlySeller onlyAfterStart onlyBeforeEnd returns (bool){
         address bidder = msg.sender;
 
+        require(bid_amount > 0, "Zero Price");
         require(erc20Contract.balanceOf(bidder) >= bid_amount, "Not enough Token");
-        require(erc20Contract.approve(bidder, bid_amount), "Not approved for ERC20");
+        // require(erc20Contract.approve(address(Sale), bid_amount), "Not approved for ERC20");
         
         // 경매
-        if(saletype == false) {
+        if(saleType == false) {
+            require(bid_amount > startPrice, "Please Over startPrice");
             require(bid_amount > highestBid, "Your bid is lower than HighestBid");
 
             highestBid = bid_amount;
             highestBidder = bidder;
         }
+
         // 즉시 구매
-        else if(saletype == true) {
-            require(bid_amount > purchasePrice, "Your bid is lower than purchasePrice");
-            purchase();
+        else if(saleType == true) {
+            if(bid_amount < startPrice && highestBid < bid_amount){
+                highestBid = bid_amount;
+                highestBidder = bidder;
+            } else {
+                purchase(bid_amount);
+            }
+            
         }
 
         return true;
     }
 
+    // 즉시 구매
+    function purchase(uint bid_amount) public payable onlySeller onlyAfterStart onlyBeforeEnd returns (bool){
 
-    function purchase() public payable onlySeller onlyAfterStart onlyBeforeEnd returns (bool){
-        address purchaser = msg.sender;
-        
-        require(erc20Contract.approve(bidder, bid_amount), "Not approved for ERC20");
-        // 구매자가 Sale한테 특정 금액만큼 송금 권한 주기
-        erc20Contract.approve(address(this), NowhighestBid);
-        // 가격 지불(송금)
-        payable(NowhighestBidder).transfer(NowhighestBid);
-        // 소유권 이전
-        readMeContract.safeTransferFrom(address(this), NowhighestBidder, tokenId);
+        // require(erc20Contract.approve(bidder, bid_amount), "Not approved for ERC20");
+        buyer = msg.sender;
+
+        // 소유권 이전 : Sale -> 구매자(purchaser)
+        readMeContract.transferFrom(address(this), buyer, tokenId);
+
+        // 송금 : 구매자 -> Sale
+        erc20Contract.approve(address(this), bid_amount); // 권한 부여
+        // Sale -> 판매자
+        payable(seller).transfer(bid_amount);
 
         _end();
+
+        return true;
     }
 
 
-    // 구매 완료 : 판매 종료 시각 이후 최고 입찰가가 구매 완료를 하는 함수
-    function confirmItem() public payable onlySeller isSaleOver{
-        // 구매자가 Sale한테 특정 금액만큼 송금 권한 주기
-        erc20Contract.approve(address(this), NowhighestBid);
-        // 가격 지불(송금)
-        payable(NowhighestBidder).transfer(NowhighestBid);
-        // 소유권 이전
-        readMeContract.safeTransferFrom(address(this), NowhighestBidder, tokenId);
+    // 판매 시간 이후 구매(경매/즉시 구매)
+    function confirmItem(uint bid_amount) public payable onlySeller isSaleOver returns(bool){
+        
+        address confirmer = msg.sender;
+
+        require(confirmer != address(0), "address(0) is not allowed");
+        require(confirmer == highestBidder, "Your not a Highest Bidder");
+
+        // 소유권 이전 : Sale -> 구매자(purchaser)
+        readMeContract.transferFrom(address(this), confirmer, tokenId);
+
+        // 송금 : 구매자 -> Sale
+        erc20Contract.approve(address(this), bid_amount); // 권한 부여
+        // Sale -> 판매자
+        payable(confirmer).transfer(bid_amount);
+
         _end();
+
+        return true;
     }
     
     // 판매 철회
-    function cancelSales() public {
-        // TODO
+    function cancelSales() public returns (bool) {
+        address requestor = msg.sender;
+
+        require(requestor == admin || requestor == seller, "You do not have permission");
+
+        // 소유권 이전 : Sale -> 구매자(purchaser)
+        readMeContract.transferFrom(address(this), requestor, tokenId);
+
+        _end();
+
+        return true;
     }
 
     // 남은 시간 계산
@@ -206,7 +237,6 @@ contract Sale {
             uint256,
             uint256,
             address,
-            uint256,
             address,
             address
         )
@@ -214,11 +244,10 @@ contract Sale {
         return (
             saleStartTime,
             saleEndTime,
-            minPrice,
-            purchasePrice,
+            startPrice,
             tokenId,
-            highestBidder,
             highestBid,
+            highestBidder,
             currencyAddress,
             nftAddress
         );
@@ -252,7 +281,12 @@ contract Sale {
     }
 
     modifier onlyBeforeEnd() {
-        require(block.timestamp < saleEndTime, "Time over");
+        require(block.timestamp <= saleEndTime, "Time over");
+        _;
+    }
+
+    modifier isSaleOver() {
+        require(block.timestamp > saleEndTime, "Time over");
         _;
     }
 }
