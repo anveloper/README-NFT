@@ -30,7 +30,7 @@ const SaleFactory = artifacts.require("SaleFactory");
      // SaleFactory -> Sale: bid(즉시구매) -> purchase
      // SaleFactory -> Sale -> cancel
      it("Bid and confirm", async () => {
-        const admin = accounts[0];
+        const admin = accounts[0]; // 나
         const seller = accounts[1];
         const bidder1 = accounts[2];
         const bidder2 = accounts[3]; // purchaser
@@ -55,7 +55,7 @@ const SaleFactory = artifacts.require("SaleFactory");
         }
         
         // 초기 ERC20 토큰 부여
-        await SsafyTokenContract.mint(100000, { from: admin }); // 관리자(나?)가 100000 민팅
+        await SsafyTokenContract.mint(100000, { from: admin }); // 호출자(나)에게 100000 민팅
         // 관리자가 각각 1000 토큰씩 부여
         await SsafyTokenContract.forceToTransfer(admin, seller, 1000, { from: admin });
         await SsafyTokenContract.forceToTransfer(admin, bidder1, 1000, { from: admin });
@@ -64,9 +64,9 @@ const SaleFactory = artifacts.require("SaleFactory");
         // seller 의 NFT 생성
         await ReadmeTokenContract.create(seller, uri, { from: seller });
         // 현재 토큰 번호
-        tokenNo = await ReadmeTokenContract.current();
+        Item = await ReadmeTokenContract.current();
         // tokenNo => BN { negative: 0, words: [ 1, <1 empty item> ], length: 1, red: null }
-        tokenNo = tokenNo.words[0];
+        Item = Item.words[0];
 
         // 계약을 진행할 contract 
         currencyAddress = SsafyTokenContract.address;
@@ -77,6 +77,25 @@ const SaleFactory = artifacts.require("SaleFactory");
         startTime = parseInt(startTime.getTime() / 1000); //  초단위로 변환
         // 종료 시간 : + 10초
         endTime = startTime + 10;
+        // 입력 가격
+        startPrice = 10;
+        // 판매 타입
+        saleType = false;
+
+        // Sale Contract 생성
+        await SaleFactoryContract.createSale(
+            Item,
+            startPrice,
+            startTime,
+            endTime,
+            saleType,
+            currencyAddress,
+            nftAddress,
+            { from: admin }
+        );
+        
+        // 생성된 SaleContract 주소 반환
+        const currentSale = await SaleFactoryContract.allSales(Item);
 
          // TODO
          // 다음을 테스트를 통과해야합니다.

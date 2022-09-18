@@ -69,6 +69,7 @@ contract ReadmeToken is ERC721, Ownable{
         return newTokenId;
     }
 
+
     // 소유한 토큰 목록 변경 함수
     function _removeTokenFromList(address to, address from, uint256 tokenId) public {
         
