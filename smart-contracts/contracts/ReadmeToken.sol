@@ -12,6 +12,8 @@ contract ReadmeToken is ERC721, Ownable{
     Counters.Counter private _tokenIds;
 
     // 내 소유 nft
+    // 백엔드처럼 동작하려면 struct로 처리해야할 것 같음
+    // item 정보를 가지고 오기 위한 metadataURI, itemId, item_create
     mapping(address => uint256[]) private _ownedTokens;
 
     // 내가 그린 nft
@@ -19,6 +21,9 @@ contract ReadmeToken is ERC721, Ownable{
 
     // metadataURI
     mapping(uint256 => string) metadataURIs;
+
+    // 특정 item 정보
+    // metadata 처리 or 단일 token정보 조회
 
     // 생성된 토큰 확인
     event Mint(
