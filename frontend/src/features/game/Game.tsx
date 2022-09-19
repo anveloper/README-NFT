@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 // state
 import {
-  resetMessages,
+  resetRoomInfo,
   selectHostUserName,
   selectRoomCnt,
   selectRoomName,
@@ -30,9 +30,10 @@ const Game = () => {
   const [tabFlag, setTabFlag] = useState(true);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  useEffect(() => {}, [socket]);
   useEffect(() => {
-    dispatch(resetMessages());
+    return () => {
+      dispatch(resetRoomInfo());
+    };
   }, [dispatch]);
 
   const handleExit = () => {
@@ -42,7 +43,7 @@ const Game = () => {
         socket.emit("host_leave", hostUserName);
       }
     }
-    dispatch(resetMessages());
+    dispatch(resetRoomInfo());
     navigate("/live");
   };
 
@@ -50,7 +51,11 @@ const Game = () => {
     e.preventDefault();
     dispatch(setColor(e.target.value));
   };
-
+  const handleCanvasReset = () => {
+    if (socket) {
+      socket.emit("reset_canvas", hostUserName);
+    }
+  };
   return (
     <div className={styles.container}>
       <NewHelmet
@@ -97,8 +102,14 @@ const Game = () => {
               </button>
             </form>
             <div className={styles.erase}>
-              <button>지우개</button>
-              <button>초기화</button>
+              <button
+                onClick={() => {
+                  dispatch(setColor("#ffffff"));
+                }}
+              >
+                지우개
+              </button>
+              <button onClick={handleCanvasReset}>초기화</button>
             </div>
           </div>
         </div>
