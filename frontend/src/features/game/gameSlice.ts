@@ -60,7 +60,12 @@ export const gameSlice = createSlice({
     setMessages: (state, { payload: { type, name, msg } }) => {
       state.messages.push({ type, name, msg });
     },
-    resetMessages: (state) => {
+    resetRoomInfo: (state) => {
+      state.hostUserName = "";
+      state.roomName = "";
+      state.roomCnt = 0;
+      state.answer = "";
+      state.color = "#000000";
       state.messages = [
         { type: "system", name: "관리자", msg: "대화를 시작합니다." },
       ];
@@ -76,7 +81,7 @@ export const {
   setRoomInfo,
   setColor,
   setMessages,
-  resetMessages,
+  resetRoomInfo,
 } = gameSlice.actions;
 // selector
 export const selectSocket = (state: RootState) => state.game.socket;

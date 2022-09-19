@@ -39,7 +39,7 @@
   height: 40px;
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .exit {
   width: 80px;
@@ -111,6 +111,9 @@
 }
 .canvas:hover {
   cursor: url("../../assets/live-item/brush.svg") 8 78, auto;
+}
+.eraseCursor:hover {
+  cursor: url("../../assets/live-item/eraser.svg") 40 40, auto;
 }
 .springOne {
   position: absolute;

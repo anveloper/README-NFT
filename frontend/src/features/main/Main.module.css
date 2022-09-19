@@ -109,7 +109,7 @@
   min-height: 60vh;
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   flex-wrap: wrap;
   align-content: flex-start;
   overflow-y: auto;
@@ -126,7 +126,7 @@
   min-height: 60vh;
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   flex-wrap: wrap;
   align-content: flex-start;
   overflow-y: auto;
@@ -199,7 +199,7 @@
 .modalBox {
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 8px;
 }
 .modalText,
