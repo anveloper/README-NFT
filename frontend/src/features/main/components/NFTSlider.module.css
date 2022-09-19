@@ -2,22 +2,22 @@
 @import "~slick-carousel/slick/slick-theme.css";
 
 .slide img {
-  width: 60vw;
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
   position: relative;
-  left: -7vw;
 }
 
 .slide {
-  transform: scale(0.4);
+  transform: scale(0.8);
   transition: transform 300ms;
   opacity: 0.8;
   z-index: 9;
+  overflow: visible;
 }
 
 .activeSlide {
-  transform: scale(1);
+  transform: scale(2);
   opacity: 1;
   position: relative;
   z-index: 10;
@@ -39,10 +39,21 @@
 
 .next {
   right: 0%;
-  top: 50%;
+  top: 0%;
 }
 
 .prev {
   left: 0%;
-  top: 50%;
+  top: 0%;
+}
+
+.next > svg,
+.prev > svg {
+  color: #68edff;
+  transform: scale(4);
+}
+
+.next > svg:hover,
+.prev > svg:hover {
+  color: #21658f;
 }
