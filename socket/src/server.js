@@ -107,6 +107,11 @@ io.on("connection", (socket) => {
     dataList.push(data);
     socket.to(session).emit("draw_data", data);
   });
+  socket.on("reset_canvas", (session) => {
+    rooms.get(session)["data"] = [];
+    socket.emit("reset_draw");
+    socket.to(session).emit("reset_draw");
+  });
 });
 
 const handleListen = (err) =>
