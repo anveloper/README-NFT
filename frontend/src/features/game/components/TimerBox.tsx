@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useAppDispatch } from "../../../app/hooks";
 
 // css
 import styles from "../Game.module.css";
+import { setTimeover } from "../gameSlice";
 const TimerBox = () => {
-  const MAX_TIME = 100;
+  const MAX_TIME = 5;
   const [time, setTime] = useState(MAX_TIME);
   const [isStart, setIsStart] = useState(false);
   let per = Math.round(((time) * 100) / MAX_TIME);
+
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     const countdown = setInterval(() => {
       if (isStart && time > 0) {
@@ -15,10 +20,12 @@ const TimerBox = () => {
       if (time === 0) {
         setIsStart(false);
         setTime(MAX_TIME);
+        dispatch(setTimeover());        
       }
     }, 1000);
     return () => clearInterval(countdown);
-  }, [isStart, time]);
+  }, [dispatch, isStart, time]);
+  
   return (
     <div className={styles.timerBox}>
       <div className={styles.timeSlider}>
