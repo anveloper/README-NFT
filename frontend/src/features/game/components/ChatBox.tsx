@@ -7,7 +7,6 @@ import {
   setMessages,
   setRoomCnt,
   MSG,
-  selectRoomName,
   selectHostUserName,
 } from "../gameSlice";
 
@@ -17,7 +16,6 @@ const ChatBox = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const lastRef = useRef<HTMLDivElement | null>(null);
   const messages = useAppSelector(selectMessages);
-  const roomName = useAppSelector(selectRoomName);
   const hostUserName = useAppSelector(selectHostUserName);
   const socket = useAppSelector(selectSocket);
   const dispatch = useAppDispatch();
@@ -72,11 +70,12 @@ const ChatBox = () => {
                   {`${msg.name} : (${msg.type}) ${msg.msg}`}
                 </div>
               );
-            else return (
-              <div ref={lastRef} key={index} className={styles.chatItem}>
-                {`${msg.name} : (${msg.type}) ${msg.msg}`}
-              </div>
-            );
+            else
+              return (
+                <div ref={lastRef} key={index} className={styles.chatItem}>
+                  {`${msg.name} : (${msg.type}) ${msg.msg}`}
+                </div>
+              );
           })}
         </div>
       </div>
