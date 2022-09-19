@@ -9,15 +9,22 @@ import "./token/ERC721/ERC721.sol";
 // 판매 등록
 contract SaleFactory is Ownable {
     address public admin;
-    address[] public sales; // 토큰 별 판매 주소
+    mapping(uint256 => address) public sales; // 토큰 별 판매 주소
 
-    ERC20 public erc20Contract;
-    ReadmeToken public readMeContract;
+    ERC20 public erc20Contract; // ssafy wallet 껍데기
+    ERC721 public erc721Contract; // nft 발행 및 erc721 사용을 위한 껍데기
 
-    // 판매 등록
+    // 판매자의 판매 등록
     event NewSale(
-        address indexed _saleContract,
-        address indexed _owner
+        address indexed saleContractAddress,
+        address indexed owner,
+        address currencyAddress,
+        address nftAddress,
+        uint256 startPrice,
+        uint256 tokenId,
+        uint256 saleStartTime,
+        uint256 saleEndTime,
+        bool saleType
     );
 
     constructor(
@@ -27,18 +34,16 @@ contract SaleFactory is Ownable {
         admin = msg.sender;
 
         erc20Contract = ERC20(_currencyAddress);
-        readMeContract = ReadmeToken(_nftAddress);
+        erc721Contract = ERC721(_nftAddress);
     }
 
-    // 토큰 별 판매 계약 주소
+    // SaleContract 주소 반환
     function getSaleAddress(uint256 tokenId) public view returns (address) {
         return sales[tokenId];
     }
 
-    /**
-     * @dev 반드시 구현해야하는 함수입니다. 
-     */
     function createSale (
+        address seller,
         uint256 itemId,
         uint256 startPrice,
         uint256 startTime,
@@ -46,18 +51,14 @@ contract SaleFactory is Ownable {
         bool saleType, // 경매 or 즉시 구매
         address currencyAddress,
         address nftAddress
-    ) public onlyOwner returns (address) {
-        
-        address seller = readMeContract.ownerOf(itemId);
+    ) public returns (address) {
 
         erc20Contract = ERC20(currencyAddress); 
-        readMeContract =  ReadmeToken(nftAddress);
+        erc721Contract =  ERC721(nftAddress);
         
-        require(address(readMeContract) != address(0), "Invalid Address");
-
-        require(address(erc20Contract) != address(0), "Invalid Address");
-
-        require(msg.sender == seller, "Not your NFT");
+        // seller 검사
+        require(seller != address(0), "Invalid Address");
+        require(seller == erc721Contract.ownerOf(itemId), "Your not owner of this NFT");
 
         require(startPrice > 0, "Price is zero");
 
@@ -76,13 +77,13 @@ contract SaleFactory is Ownable {
         sales[itemId] = address(SaleContract); // 판매 주소 기록
 
         // 토큰 소유권(판매자 -> Sale)
-        readMeContract.transferFrom(seller, address(SaleContract), itemId);
+        erc721Contract.transferFrom(seller, address(SaleContract), itemId);
 
         return address(SaleContract);
     }
 
-    function allSales() public view returns (address[] memory) {
-        return sales;
+    function allSales(uint256 itemId) public view returns (address) {
+        return sales[itemId];
     }
 }
 
