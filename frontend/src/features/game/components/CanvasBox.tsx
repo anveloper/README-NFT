@@ -53,7 +53,7 @@ const CanvasBox = () => {
     if (ctx) {
       ctx.strokeStyle = color;
       ctx.lineJoin = "round";
-      ctx.lineWidth = 8;
+      ctx.lineWidth = color !== "#ffffff" ? 8 : 40;
 
       ctx.beginPath();
       ctx.moveTo(befMousePos.x, befMousePos.y);
@@ -84,7 +84,7 @@ const CanvasBox = () => {
               y0: mousePos.y,
               x1: newMousePos.x,
               y1: newMousePos.y,
-              color,
+              color: color,
             };
             socket.emit("draw_data", hostUserName, data);
           }
@@ -119,7 +119,14 @@ const CanvasBox = () => {
         const { x0, y0, x1, y1, color } = data;
         drawLine({ x: x0, y: y0 }, { x: x1, y: y1 }, color);
       });
+      socket.on("reset_draw", () => {
+        if (!canvasRef.current) return;
+        const canvas: HTMLCanvasElement = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
+      });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
   return (
     <div ref={boxRef} className={styles.canvasBox}>
@@ -127,7 +134,11 @@ const CanvasBox = () => {
         width={canvasWidth}
         height={canvasHeight}
         ref={canvasRef}
-        className={styles.canvas}
+        className={
+          color !== "#ffffff"
+            ? `${styles.canvas}`
+            : `${styles.canvas} ${styles.eraseCursor}`
+        }
         style={{
           width: `${canvasWidth}px`,
           height: `${canvasHeight}px`,
