@@ -44,9 +44,10 @@ io.on("connection", (socket) => {
   const { rooms } = io.sockets.adapter;
   socket["nickname"] = "none";
   socket.emit("init_room", publicRooms());
-  socket.onAny((event) => {
-    console.log(`SocketIO Event: ${event}`);
-  });
+
+  // socket.onAny((event) => {
+  //   console.log(`SocketIO Event: ${event}`);
+  // }); // 모든 이벤트 리스너
 
   // room
   socket.on("enter_room", (userAddress, nickname, roomTitle, done) => {
