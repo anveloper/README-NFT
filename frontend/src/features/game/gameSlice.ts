@@ -21,6 +21,8 @@ export interface GameState {
   answer: string;
   color: string;
   messages: ChatConfig[];
+  timeover: boolean;
+  started: boolean;
   status: "idle" | "loading" | "failed";
 }
 
@@ -33,6 +35,8 @@ const initialState: GameState = {
   answer: "",
   color: "#000000",
   messages: [{ type: "system", name: "관리자", msg: "대화를 시작합니다." }],
+  timeover: false,
+  started: true,
   status: "idle",
 };
 
@@ -70,6 +74,12 @@ export const gameSlice = createSlice({
         { type: "system", name: "관리자", msg: "대화를 시작합니다." },
       ];
     },
+    setTimeover: (state) => {
+      state.timeover = !state.timeover;
+    },
+    setStarted: (state) => {
+      state.started = !state.started;
+    },
   },
   extraReducers: {},
 });
@@ -82,6 +92,8 @@ export const {
   setColor,
   setMessages,
   resetRoomInfo,
+  setTimeover,
+  setStarted,
 } = gameSlice.actions;
 // selector
 export const selectSocket = (state: RootState) => state.game.socket;
@@ -91,6 +103,8 @@ export const selectRoomCnt = (state: RootState) => state.game.roomCnt;
 export const selectRoomList = (state: RootState) => state.game.roomList;
 export const selectMessages = (state: RootState) => state.game.messages;
 export const selectColor = (state: RootState) => state.game.color;
+export const selectTimeover = (state: RootState) => state.game.timeover;
+export const selectStarted = (state: RootState) => state.game.started;
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };
