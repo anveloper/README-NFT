@@ -16,7 +16,8 @@ contract BidBuy {
     uint256 public purchasePrice; // 구매 가격
     uint256 public tokenId;
     address public currencyAddress;
-    address public nftAddress; 
+    address public nftAddress;
+    address public nowAddress;
     bool public ended; 
  
     // 최고 입찰 상태
@@ -25,6 +26,7 @@ contract BidBuy {
 
     IERC20 public erc20Contract; 
     IERC721 public erc721Contract;
+    ReadmeToken public readmeContract;
 
     // 현재 입찰 현황
     event BidMade(
@@ -126,6 +128,10 @@ contract BidBuy {
         erc721Contract.transferFrom(address(this), purchaser, tokenId);
 
         emit BuyEnded(address(this), tokenId, purchaser, purchasePrice);
+
+        readmeContract = ReadmeToken(nowAddress);
+
+        readmeContract.removeTokenFromList(purchaser, seller, tokenId);
 
         _end();
 
