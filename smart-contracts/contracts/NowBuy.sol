@@ -6,7 +6,7 @@ import "./ReadmeToken.sol";
 import "./token/ERC20/ERC20.sol";
 import "./token/ERC721/ERC721.sol";
 
-contract Buy {
+contract BidBuy {
     address public seller;
     address public buyer;
     address admin;
