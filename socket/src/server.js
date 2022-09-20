@@ -56,6 +56,7 @@ io.on("connection", (socket) => {
     const session = userAddress;
     socket.join(session);
     rooms.get(session)["title"] = roomTitle;
+    rooms.get(session)["started"] = false;
     rooms.get(session)["data"] = [];
     done(rooms.get(session)["title"], countRoom(session), session);
     socket.to(session).emit("welcome", socket.nickname, countRoom(session));
@@ -64,6 +65,7 @@ io.on("connection", (socket) => {
   socket.on("join_room", (userAddress, nickname, hostAddress, done) => {
     socket["nickname"] = nickname;
     socket["address"] = userAddress;
+    socket["solved"] = false;
     const session = hostAddress;
     socket.join(session);
     done(rooms.get(session)["title"], countRoom(session), session);
@@ -87,8 +89,13 @@ io.on("connection", (socket) => {
 
   // chat
   socket.on("new_message", (session, msg, done) => {
+    if (msg.include(rooms.get(session)["answer"])) {
+      if (!rooms.get(session)["solver"])
+      rooms.get(session)["solver"] = socket["address"];
+      socket.join("solvers::" + session);
+      socket["solved"] = true;
+    }
     socket.to(session).emit("new_message", socket.nickname, msg);
-    // console.log("NewMessage", `${room}: ${msg}`);
     done(msg);
   });
   socket.on("set_answer", (session, answer) => {

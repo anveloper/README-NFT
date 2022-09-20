@@ -109,11 +109,14 @@
   height: 100%;
   background: white;
 }
+.submitModal section {
+  position:relative
+}
 .canvas:hover {
-  cursor: url("../../assets/live-item/brush.svg") 8 78, auto;
+  cursor: url("../../assets/live-item/brush.svg") 0 70, auto;
 }
 .eraseCursor:hover {
-  cursor: url("../../assets/live-item/eraser.svg") 40 40, auto;
+  cursor: url("../../assets/live-item/eraser.svg") 0 40, auto;
 }
 .springOne {
   position: absolute;
