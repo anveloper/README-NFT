@@ -67,10 +67,10 @@ contract Sale is Ownable {
         sales[tokenId] = address(BidBuyContract); // 판매 주소 기록
     
         // 토큰 소유권(판매자 -> Sale)
-        erc721Contract.transferFrom(seller, address(Sale), tokenId);
+        erc721Contract.transferFrom(seller, address(this), tokenId);
 
         // 토큰 소유권(Sale -> BidBuyContract)
-        erc721Contract.transferFrom(address(Sale), address(BidBuyContract), tokenId);
+        erc721Contract.transferFrom(address(this), address(BidBuyContract), tokenId);
 
         return address(BidBuyContract);
     }

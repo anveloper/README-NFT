@@ -2,6 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "./access/Ownable.sol";
+import "./ReadmeToken.sol";
 import "./token/ERC20/IERC20.sol";
 import "./token/ERC721/IERC721.sol";
 
@@ -41,8 +42,6 @@ contract BidBuy {
         address winner,
         uint256 amount
     );
-    
-    event SaleEnded(address winner, uint256 amount);
 
     constructor(
         address _seller,
@@ -71,12 +70,12 @@ contract BidBuy {
         address bidder = msg.sender;
         bool result = false;
 
-        // 지갑 잔액 확인
-        require(erc20Contract.balanceOf(bidder) >= bid_amount, "Not enough Token");
-        // 지갑이 bidder에게 돈 사용 권한을 주었는지 확인
-        require(erc20Contract.approve(bidder, bid_amount), "Not approved for ERC20");
         // 입찰 금액 확인
         require(bid_amount > 0, "Zero Price");
+        // 지갑이 bidder에게 돈 사용 권한을 주었는지 확인
+        require(erc20Contract.approve(bidder, bid_amount), "Not approved for ERC20");
+        // 지갑 잔액 확인
+        require(erc20Contract.balanceOf(bidder) >= bid_amount, "Not enough Token");
         // 최저 입찰 금액 초과 확인
         require(bid_amount > startPrice, "Please Over startPrice");
         // 현재 최고 입찰 금액 초과 확인

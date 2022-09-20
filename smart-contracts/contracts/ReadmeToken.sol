@@ -72,16 +72,18 @@ contract ReadmeToken is ERC721, Ownable{
 
 
     // 소유한 토큰 목록 변경 함수
-    function removeTokenFromList(address to, address from, string memory metadataURI) public {
+    function removeTokenFromList(address to, address from, uint256 tokenId) public {
         
         uint256 tokenList = _ownedTokens[from].length;
 
         uint256 lasTokenIdx = tokenList - 1;
 
-        _ownedTokens[to].push(metadataURI);
+        string memory meta = metadataURIs[tokenId];        
+
+        _ownedTokens[to].push(meta);
 
         for(uint256 i = 0; i < tokenList; i ++){
-            if(keccak256(bytes(metadataURI)) == keccak256(bytes(_ownedTokens[from][i]))){
+            if(keccak256(bytes(meta)) == keccak256(bytes(_ownedTokens[from][i]))){
 
                 _ownedTokens[from][i] = _ownedTokens[from][lasTokenIdx];
 
