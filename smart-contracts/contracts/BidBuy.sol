@@ -2,6 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "./access/Ownable.sol";
+import "./ReadmeToken.sol";
 import "./token/ERC20/IERC20.sol";
 import "./token/ERC721/IERC721.sol";
 
@@ -9,14 +10,14 @@ import "./token/ERC721/IERC721.sol";
 contract BidBuy {
     address public seller;
     address public buyer;
-    address admin;
     uint256 public saleStartTime; 
     uint256 public saleEndTime;
-    uint256 public startPrice; // 경매: 최소입찰가, 즉시 구매가
+    uint256 public startPrice; // 최저
+    uint256 public purchasePrice; // 구매 가격
     uint256 public tokenId;
     address public currencyAddress;
-    address public nftAddress; 
-    bool public saleType;
+    address public nftAddress;
+    address public nowAddress;
     bool public ended; 
  
     // 최고 입찰 상태
@@ -24,120 +25,143 @@ contract BidBuy {
     uint256 public highestBid;
 
     IERC20 public erc20Contract; 
-    IERC721 public readMeContract;
+    IERC721 public erc721Contract;
+    ReadmeToken public readmeContract;
 
-    event HighestBidIncereased(address bidder, uint256 amount);
-    event SaleEnded(address winner, uint256 amount);
+    // 현재 입찰 현황
+    event BidMade(
+        address BidBuyContractAddress,
+        uint256 tokenId,
+        address bidder,
+        uint256 amount,
+        address currencyAddress
+    );
+
+    // 입찰 기간 종료 후, 입찰자가 있는 경우의 구매 현황
+    event BuyEnded(
+        address BidBuyContractAddress,
+        uint256 tokenId,
+        address winner,
+        uint256 amount
+    );
 
     constructor(
-        address _admin,
         address _seller,
-        uint256 _tokenId,
+        uint256 _startTime,
+        uint256 _endTime,
         uint256 _startPrice,
-        uint256 startTime,
-        uint256 endTime,
-        bool _saleType,
+        uint256 _tokenId,
         address _currencyAddress,
         address _nftAddress
     ) {
-        admin = _admin;
+        require(_startPrice > 0);
         seller = _seller;
-        tokenId = _tokenId;
+        saleStartTime = _startTime;
+        saleEndTime = _endTime;
         startPrice = _startPrice;
-        saleStartTime = startTime;
-        saleEndTime = endTime;
-        saleType = _saleType;
+        tokenId = _tokenId;
         currencyAddress = _currencyAddress;
         nftAddress = _nftAddress;
         ended = false;
         erc20Contract = IERC20(_currencyAddress); 
-        readMeContract = IERC721(_nftAddress);
+        erc721Contract = IERC721(_nftAddress);
     }
     
-    // 가격 제안
+    // 입찰
     function bid(uint256 bid_amount) public onlySeller onlyAfterStart onlyBeforeEnd returns (bool){
         address bidder = msg.sender;
+        bool result = false;
 
+        // 입찰 금액 확인
         require(bid_amount > 0, "Zero Price");
+        // 지갑이 bidder에게 돈 사용 권한을 주었는지 확인
+        require(erc20Contract.approve(bidder, bid_amount), "Not approved for ERC20");
+        // 지갑 잔액 확인
         require(erc20Contract.balanceOf(bidder) >= bid_amount, "Not enough Token");
-        // require(erc20Contract.approve(address(Sale), bid_amount), "Not approved for ERC20");
-        
-        // 경매
-        if(saleType == false) {
-            require(bid_amount > startPrice, "Please Over startPrice");
-            require(bid_amount > highestBid, "Your bid is lower than HighestBid");
+        // 최저 입찰 금액 초과 확인
+        require(bid_amount > startPrice, "Please Over startPrice");
+        // 현재 최고 입찰 금액 초과 확인
+        require(bid_amount > highestBid, "Your bid is lower than HighestBid");
 
-            highestBid = bid_amount;
-            highestBidder = bidder;
-        }
 
-        // 즉시 구매
-        else if(saleType == true) {
-            if(bid_amount < startPrice && highestBid < bid_amount){
-                highestBid = bid_amount;
-                highestBidder = bidder;
-            } else {
-                purchase(bid_amount);
+        // 새로운 입찰자 등장
+        if (highestBidder != address(0)) {
+            // 새로운 입찰자에게 지갑 사용 권한 승인
+            erc20Contract.approve(bidder, highestBid);
+
+            if(erc20Contract.balanceOf(address(this)) != 0){
+                // 기존 최고 입찰자에게 컨트랙트가 환불
+                erc20Contract.transferFrom(address(this), highestBidder, highestBid);
             }
-            
+        }
+        // 승인받은 입찰자가 컨트랙트에게 토큰 전송
+        erc20Contract.transferFrom(bidder, address(this), bid_amount);
+
+        // 최고 입찰자와 입찰 금액 변경
+        highestBid = bid_amount;
+        highestBidder = bidder;
+
+        emit BidMade(address(this), tokenId, bidder, highestBid, currencyAddress);
+
+        // 입찰자 확인
+        if(highestBidder == bidder){
+            result = true;
         }
 
-        return true;
+        return result;
     }
 
-    // 즉시 구매
-    function purchase(uint bid_amount) public payable onlySeller onlyAfterStart onlyBeforeEnd returns (bool){
-
-        // require(erc20Contract.approve(bidder, bid_amount), "Not approved for ERC20");
-        buyer = msg.sender;
-
-        // 소유권 이전 : Sale -> 구매자(purchaser)
-        readMeContract.transferFrom(address(this), buyer, tokenId);
-
-        // 송금 : 구매자 -> Sale
-        erc20Contract.approve(address(this), bid_amount); // 권한 부여
-        // Sale -> 판매자
-        payable(seller).transfer(bid_amount);
-
-        _end();
-
-        return true;
-    }
-
-
-    // 판매 시간 이후 구매(경매/즉시 구매)
-    function confirmItem(uint bid_amount) public payable onlySeller isSaleOver returns(bool){
+    // 입찰 기간 종료 후, 입찰자가 있는 경우의 구매
+    function purchase(uint finalPrice) public onlySeller isSaleOver returns (bool){
+        address purchaser = msg.sender;
+        bool result = false;
         
-        address confirmer = msg.sender;
+        purchasePrice = finalPrice;
 
-        require(confirmer != address(0), "address(0) is not allowed");
-        require(confirmer == highestBidder, "Your not a Highest Bidder");
+        // 지갑이 최종 입찰자에게 돈 사용 권한을 주었는지 확인
+        require(erc20Contract.approve(purchaser, purchasePrice), "Not approved for ERC20");
 
-        // 소유권 이전 : Sale -> 구매자(purchaser)
-        readMeContract.transferFrom(address(this), confirmer, tokenId);
+        // 송금 : Sale -> 구매자
+        erc20Contract.transferFrom(address(this), seller, purchasePrice);
 
-        // 송금 : 구매자 -> Sale
-        erc20Contract.approve(address(this), bid_amount); // 권한 부여
-        // Sale -> 판매자
-        payable(confirmer).transfer(bid_amount);
+        // 소유권 이전 : BidBuy -> 구매자(purchaser)
+        erc721Contract.transferFrom(address(this), purchaser, tokenId);
+
+        emit BuyEnded(address(this), tokenId, purchaser, purchasePrice);
+
+        readmeContract = ReadmeToken(nowAddress);
+
+        readmeContract.removeTokenFromList(purchaser, seller, tokenId);
 
         _end();
 
-        return true;
+        // 소유권 확인
+        if(erc721Contract.ownerOf(tokenId) == purchaser){
+            result = true;
+        }
+
+        return result;
     }
     
-    // 판매 철회
-    function cancelSales() public returns (bool) {
+    // 입찰 기간 종료 후, 입찰자가 없는 경우
+    function close() public onlySeller isSaleOver returns (bool){
         address requestor = msg.sender;
+        bool result = false;
+        
+        // 아무나 종료할 수 없음
+        require(requestor == seller, "You do not have permission");
 
-        require(requestor == admin || requestor == seller, "You do not have permission");
-
-        // 소유권 이전 : Sale -> 구매자(purchaser)
-        readMeContract.transferFrom(address(this), requestor, tokenId);
+        // 소유권 재이전 : BidBuy -> 판매자
+        erc721Contract.transferFrom(address(this), seller, tokenId);
 
         _end();
 
-        return true;
+        // 소유권 확인
+        if(erc721Contract.ownerOf(tokenId) == requestor){
+            result = true;
+        }
+
+        return result;
     }
 
     // 남은 시간 계산
@@ -150,6 +174,9 @@ contract BidBuy {
         public
         view
         returns (
+            address,
+            address,
+            uint256,
             uint256,
             uint256,
             uint256,
@@ -157,18 +184,23 @@ contract BidBuy {
             uint256,
             address,
             address,
-            address
+            address,
+            bool
         )
     {
         return (
+            seller,
+            buyer,
             saleStartTime,
             saleEndTime,
             startPrice,
             tokenId,
+            purchasePrice,
             highestBid,
             highestBidder,
             currencyAddress,
-            nftAddress
+            nftAddress,
+            ended
         );
     }
 

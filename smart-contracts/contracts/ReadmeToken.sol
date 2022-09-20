@@ -76,10 +76,21 @@ contract ReadmeToken is ERC721, Ownable{
         
         uint256 tokenList = _ownedTokens[from].length;
         uint256 lasTokenIdx = tokenList - 1;
+<<<<<<< HEAD
         string memory meta = metadataURIs[tokenId];        
         _ownedTokens[to].push(meta);
         for(uint256 i = 0; i < tokenList; i ++){
             if(keccak256(bytes(meta)) == keccak256(bytes(_ownedTokens[from][i]))){
+=======
+
+        string memory meta = metadataURIs[tokenId];        
+
+        _ownedTokens[to].push(meta);
+
+        for(uint256 i = 0; i < tokenList; i ++){
+            if(keccak256(bytes(meta)) == keccak256(bytes(_ownedTokens[from][i]))){
+
+>>>>>>> 0b7f0b2fa6e941ccdba0e8589f2987c57842d026
                 _ownedTokens[from][i] = _ownedTokens[from][lasTokenIdx];
                 _ownedTokens[from].pop();
                 break;
