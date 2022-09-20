@@ -63,3 +63,81 @@
 .nameTag {
   margin-left: 4px;
 }
+
+/* ProfileModal */
+.ProfileModal {
+  width: 25vw;
+  height: 85vh;
+
+  /* z-index: 0; */
+  position: absolute;
+  top: 100%;
+  left: 75%;
+
+  background-color: #fcf5e9;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14),
+    0px 1.20588px 7.2353px rgba(0, 0, 0, 0.0912224),
+    0px 0.500862px 3.00517px rgba(0, 0, 0, 0.07),
+    0px 0.181152px 1.08691px rgba(0, 0, 0, 0.0487776);
+  border-radius: 20px;
+}
+
+.ProfileModalBackground {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 92%;
+  height: 94%;
+}
+
+.ProfileModalMyInfo {
+  height: 30vh;
+  background-color: #ffffff;
+  border-radius: 20px 20px 0px 0px;
+  text-align: center;
+  align-items: center;
+  /* position: relative; */
+
+  margin-bottom: 0.5vh;
+}
+
+.ProfileModalCloseButton {
+  /* position: absolute; */
+  /* left: 90%; */
+  /* text-align: right; */
+}
+
+.ProfileModalImgBox {
+  width: 8vw;
+  height: 8vw;
+  border-radius: 70%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+
+  background-color: #fddf61;
+}
+
+.ProfileModalImg {
+  width: 7vw;
+}
+
+.ProfileModalNotification {
+  height: 50vh;
+  margin-top: 0.5vh;
+  background-color: #ffffff;
+  border-radius: 0px 0px 20px 20px;
+}
+
+.ProfileModalNotificationText {
+  display: flex;
+  padding: 1rem;
+}
+
+.ProfileModalNotificationTextDelete {
+  margin-left: auto;
+}
