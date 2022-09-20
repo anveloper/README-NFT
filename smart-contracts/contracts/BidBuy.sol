@@ -23,8 +23,8 @@ contract BidBuy {
     address public highestBidder; 
     uint256 public highestBid;
 
-    ERC20 public erc20Contract; 
-    ReadmeToken public readMeContract;
+    IERC20 public erc20Contract; 
+    IERC721 public readMeContract;
 
     event HighestBidIncereased(address bidder, uint256 amount);
     event SaleEnded(address winner, uint256 amount);
@@ -50,8 +50,8 @@ contract BidBuy {
         currencyAddress = _currencyAddress;
         nftAddress = _nftAddress;
         ended = false;
-        erc20Contract = ERC20(_currencyAddress); 
-        readMeContract = ReadmeToken(_nftAddress);
+        erc20Contract = IERC20(_currencyAddress); 
+        readMeContract = IERC721(_nftAddress);
     }
     
     // 가격 제안
