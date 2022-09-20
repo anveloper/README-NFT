@@ -4,7 +4,15 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
-
+.mainContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+.mainContainer::-webkit-scrollbar-thumb {
+  background-color: #79c4f2;
+  width: 10px;
+  max-height: 5rem;
+  border-radius: 1rem;
+}
 /* Carousel CSS */
 .carouselContainer {
   margin: 12px;

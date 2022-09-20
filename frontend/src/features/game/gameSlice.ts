@@ -19,10 +19,13 @@ export interface GameState {
   roomName: string;
   roomCnt: number;
   answer: string;
+  answerLength: number;
   color: string;
   messages: ChatConfig[];
   timeover: boolean;
   started: boolean;
+  solver: string;
+  solversCnt: number;
   status: "idle" | "loading" | "failed";
 }
 
@@ -33,10 +36,13 @@ const initialState: GameState = {
   roomName: "",
   roomCnt: 0,
   answer: "",
+  answerLength: 0,
   color: "#000000",
   messages: [{ type: "system", name: "관리자", msg: "대화를 시작합니다." }],
   timeover: false,
-  started: true,
+  started: false,
+  solver: "",
+  solversCnt: 0,
   status: "idle",
 };
 
@@ -74,11 +80,22 @@ export const gameSlice = createSlice({
         { type: "system", name: "관리자", msg: "대화를 시작합니다." },
       ];
     },
+    setAnswer: (state, { payload }) => {
+      state.answer = payload;
+    },
+    setAnswerLength: (state, { payload }) => {
+      state.answerLength = payload;
+    },
     setTimeover: (state) => {
       state.timeover = !state.timeover;
     },
     setStarted: (state) => {
       state.started = !state.started;
+    },
+    setSolvers: (state, { payload: { solver, solversCnt, roomCnt } }) => {
+      state.solver = solver;
+      state.solversCnt = solversCnt;
+      state.roomCnt = roomCnt;
     },
   },
   extraReducers: {},
@@ -92,8 +109,11 @@ export const {
   setColor,
   setMessages,
   resetRoomInfo,
+  setAnswer,
+  setAnswerLength,
   setTimeover,
   setStarted,
+  setSolvers,
 } = gameSlice.actions;
 // selector
 export const selectSocket = (state: RootState) => state.game.socket;
@@ -103,8 +123,13 @@ export const selectRoomCnt = (state: RootState) => state.game.roomCnt;
 export const selectRoomList = (state: RootState) => state.game.roomList;
 export const selectMessages = (state: RootState) => state.game.messages;
 export const selectColor = (state: RootState) => state.game.color;
+export const selectAnswer = (state: RootState) => state.game.answer;
+export const selectAnswerLength = (state: RootState) => state.game.answerLength;
 export const selectTimeover = (state: RootState) => state.game.timeover;
 export const selectStarted = (state: RootState) => state.game.started;
+export const selectSolver = (state: RootState) => state.game.solver;
+export const selectSolversCnt = (state: RootState) => state.game.solversCnt;
+
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };

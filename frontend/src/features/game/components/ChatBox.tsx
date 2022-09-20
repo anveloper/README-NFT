@@ -8,6 +8,8 @@ import {
   setRoomCnt,
   MSG,
   selectHostUserName,
+  setAnswerLength,
+  setSolvers,
 } from "../gameSlice";
 
 import styles from "../Game.module.css";
@@ -21,6 +23,10 @@ const ChatBox = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (socket) {
+      // socket.onAny((event) => {
+      //   console.log(`SocketIO Event: ${event}`, event);
+      // }); // 모든 이벤트 리스너
+
       socket.on("bye", (user: string, cnt: number) => {
         dispatch(setRoomCnt(cnt));
         dispatch(
@@ -35,10 +41,17 @@ const ChatBox = () => {
       });
       socket.on("new_message", (user: string, msg: string) => {
         dispatch(setMessages(MSG("other", user, msg)));
-        console.log("NewMessage", `${user}: ${msg}`);
+        // console.log("NewMessage", `${user}: ${msg}`);
+      });
+      socket.on("reset_answer", (cnt) => {
+        socket.emit("reset_answer", hostUserName);
+        dispatch(setAnswerLength(cnt));
+      });
+      socket.on("solve_cnt", (solver, solversCnt, roomCnt) => {
+        dispatch(setSolvers({ solver, solversCnt, roomCnt }));
       });
     }
-  }, [dispatch, socket]);
+  }, [dispatch, hostUserName, socket]);
 
   useEffect(() => {
     lastRef.current?.scrollIntoView({

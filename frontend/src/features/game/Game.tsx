@@ -14,6 +14,7 @@ import {
 import { selectUserAddress } from "../auth/authSlice";
 // component
 import NewHelmet from "../../components/NewHelmet";
+import AnswerBox from "./components/AnswerBox";
 import CanvasBox from "./components/CanvasBox";
 import TimerBox from "./components/TimerBox";
 import ChatBox from "./components/ChatBox";
@@ -31,10 +32,12 @@ const Game = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   useEffect(() => {
+    if (!hostUserName) navigate("/live");
     return () => {
       dispatch(resetRoomInfo());
     };
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleExit = () => {
     if (socket) {
@@ -69,15 +72,7 @@ const Game = () => {
           </button>
         </div>
         <div className={styles.contentBox}>
-          <div className={styles.answerBox}>
-            <p style={{ width: "120px" }} />
-            <div>
-              <p>정</p>
-              <p>답</p>
-              <p>란</p>
-            </div>
-            <p className={styles.what}>14/273</p>
-          </div>
+          <AnswerBox />
           <div className={styles.paperBox}>
             <img className={styles.springOne} src={CanvasSpring} alt="" />
             <img className={styles.springTwo} src={CanvasSpring} alt="" />
