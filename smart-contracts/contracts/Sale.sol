@@ -25,6 +25,10 @@ contract Sale is Ownable {
         uint256 tokenId
     );
 
+    event print(
+        uint256 tokenId
+    );
+
     constructor(
         address _currencyAddress,
         address _nftAddress
@@ -53,6 +57,11 @@ contract Sale is Ownable {
 
         require(seller == erc721Contract.ownerOf(tokenId), "Your not owner of this NFT");
 
+        // 토큰 소유권(판매자 -> Sale)
+        erc721Contract.transferFrom(seller, address(this), tokenId);
+        
+        emit print(tokenId);
+
         // 새로운 경매 판매 생성
         BidBuy BidBuyContract = new BidBuy(
             seller,
@@ -66,11 +75,10 @@ contract Sale is Ownable {
 
         sales[tokenId] = address(BidBuyContract); // 판매 주소 기록
     
-        // 토큰 소유권(판매자 -> Sale)
-        erc721Contract.transferFrom(seller, address(this), tokenId);
-
         // 토큰 소유권(Sale -> BidBuyContract)
         erc721Contract.transferFrom(address(this), address(BidBuyContract), tokenId);
+        
+        emit print(tokenId);
 
         return address(BidBuyContract);
     }
@@ -92,6 +100,9 @@ contract Sale is Ownable {
 
         require(seller == erc721Contract.ownerOf(tokenId), "Your not owner of this NFT");
 
+        // 토큰 소유권(판매자 -> Sale)
+        erc721Contract.transferFrom(seller, address(this), tokenId);
+
         // 새로운 즉시 구매 판매 생성
         NowBuy NowBuyContract = new NowBuy(
             seller,
@@ -105,9 +116,7 @@ contract Sale is Ownable {
 
         sales[tokenId] = address(NowBuyContract); // 판매 주소 기록
     
-        // 토큰 소유권(판매자 -> Sale)
-        erc721Contract.transferFrom(seller, address(this), tokenId);
-
+        
         // 토큰 소유권(Sale -> NowBuyContract)
         erc721Contract.transferFrom(address(this), address(NowBuyContract), tokenId);
 
@@ -463,7 +472,7 @@ contract NowBuy {
         return true;
     }
 
-    // 가격 제안 수락 
+    // 가격 제안 수락(시간 초과 전)
     function acceptOffer(uint offer_amount, address _offer) public payable onlySeller onlyAfterStart onlyBeforeEnd returns (bool){
     
         address _seller = msg.sender; // 이 함수를 호출하는 사람은 판매자
@@ -580,4 +589,3 @@ contract NowBuy {
         _;
     }
 }
-
