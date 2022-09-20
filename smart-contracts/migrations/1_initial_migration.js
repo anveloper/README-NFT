@@ -1,12 +1,11 @@
 //const Migrations = artifacts.require("Migrations");
-// 상호작용할 계약을 truffle에게 알리는 역할
-const SsafyToken = artifacts.require("SsafyToken");
-const ReadmeToken = artifacts.require("ReadmeToken");
-const SaleFactory = artifacts.require("SaleFactory");
+const Ssafy = artifacts.require("SsafyToken");
+const Readme = artifacts.require("ReadmeToken");
+const SaleFac = artifacts.require("Sale");
 
-// module.exports : 함수 내보내기, deployer를 첫번째 매개변수로 가짐
+// module.exports : 내보내기, deployer를 첫번째 매개변수로 가짐
 module.exports = async function (deployer) {
-  let NFTAddr = await deployer.deploy(ReadmeToken);
-  let TokenAddr = await deployer.deploy(SsafyToken, "SSAFY", "SSF", 0);
-  let NFTAuctionAddr = await deployer.deploy(SaleFactory, SsafyToken.address, ReadmeToken.address);
+  let SsafyToken = await deployer.deploy(Ssafy, "SSAFY", "SSF", 0);
+  let ReadmeToken = await deployer.deploy(Readme);
+  let Sale = await deployer.deploy(SaleFac, Ssafy.address, Readme.address);
 };
