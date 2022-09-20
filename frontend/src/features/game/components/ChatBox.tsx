@@ -7,7 +7,7 @@ import {
   setMessages,
   setRoomCnt,
   MSG,
-  selectRoomName,
+  selectHostUserName,
 } from "../gameSlice";
 
 import styles from "../Game.module.css";
@@ -16,7 +16,7 @@ const ChatBox = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const lastRef = useRef<HTMLDivElement | null>(null);
   const messages = useAppSelector(selectMessages);
-  const roomName = useAppSelector(selectRoomName);
+  const hostUserName = useAppSelector(selectHostUserName);
   const socket = useAppSelector(selectSocket);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -52,7 +52,7 @@ const ChatBox = () => {
       return;
     }
     if (socket) {
-      socket.emit("new_message", roomName, newMessage, (msg: string) => {
+      socket.emit("new_message", hostUserName, newMessage, (msg: string) => {
         dispatch(setMessages(MSG("mine", "나", msg)));
         setNewMessage("");
         inputRef.current?.focus();
@@ -64,17 +64,19 @@ const ChatBox = () => {
       <div className={styles.chatBox}>
         <div className={styles.chatList}>
           {messages.map((msg, index) => {
-            return (
-              <div key={index} className={styles.chatItem}>
-                {`${msg.name} : (${msg.type}) ${msg.msg}`}
-              </div>
-            );
+            if (index !== messages.length - 1)
+              return (
+                <div key={index} className={styles.chatItem}>
+                  {`${msg.name} : (${msg.type}) ${msg.msg}`}
+                </div>
+              );
+            else
+              return (
+                <div ref={lastRef} key={index} className={styles.chatItem}>
+                  {`${msg.name} : (${msg.type}) ${msg.msg}`}
+                </div>
+              );
           })}
-          <div
-            ref={lastRef}
-            className={styles.chatList}
-            style={{ display: "none" }}
-          />
         </div>
       </div>
       <div className={styles.inputBox}>

@@ -12,13 +12,14 @@ contract ReadmeToken is ERC721, Ownable{
     Counters.Counter private _tokenIds;
 
     // 내 소유 nft
-    mapping(address => uint256[]) private _ownedTokens;
+    mapping(address => string[]) private _ownedTokens;
 
     // 내가 그린 nft
     mapping(address => uint256[]) private _drawTokens;
 
     // metadataURI
     mapping(uint256 => string) metadataURIs;
+
 
     // 생성된 토큰 확인
     event Mint(
@@ -39,7 +40,7 @@ contract ReadmeToken is ERC721, Ownable{
     }
 
     // 소유한 NFT 조회
-    function getOwnedTokens(address owner) public view returns (uint256[] memory) {
+    function getOwnedTokens(address owner) public view returns (string[] memory) {
         require (owner != address(0), "Not your nft");
         return _ownedTokens[owner];
     }
@@ -51,40 +52,36 @@ contract ReadmeToken is ERC721, Ownable{
     }
 
     // NFT 발행
-    function create(address to, string memory _metadataURI) public returns (uint256) {
+    function create(string memory _metadataURI) public returns (uint256) {
         _tokenIds.increment();
 
         metadataURIs[_tokenIds.current()] = _metadataURI;
 
         uint256 newTokenId = _tokenIds.current();
 
-        _mint(to, newTokenId);
+        _mint(msg.sender, newTokenId);
 
-        _ownedTokens[to].push(newTokenId);
+        _ownedTokens[msg.sender].push(_metadataURI);
 
-        _drawTokens[to].push(newTokenId);
+        _drawTokens[msg.sender].push(newTokenId);
         
-        emit Mint(newTokenId, to, _metadataURI);
+        emit Mint(newTokenId, msg.sender, _metadataURI);
 
         return newTokenId;
     }
 
+
     // 소유한 토큰 목록 변경 함수
-    function _removeTokenFromList(address to, address from, uint256 tokenId) public {
+    function removeTokenFromList(address to, address from, uint256 tokenId) public {
         
         uint256 tokenList = _ownedTokens[from].length;
-
         uint256 lasTokenIdx = tokenList - 1;
-
-        _ownedTokens[to].push(tokenId);
-
+        string memory meta = metadataURIs[tokenId];        
+        _ownedTokens[to].push(meta);
         for(uint256 i = 0; i < tokenList; i ++){
-            if(tokenId == _ownedTokens[from][i]){
-
+            if(keccak256(bytes(meta)) == keccak256(bytes(_ownedTokens[from][i]))){
                 _ownedTokens[from][i] = _ownedTokens[from][lasTokenIdx];
-
                 _ownedTokens[from].pop();
-
                 break;
             }
         }

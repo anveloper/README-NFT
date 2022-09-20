@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { Socket } from "socket.io-client";
 import { RootState } from "../../app/store";
 
@@ -21,6 +21,8 @@ export interface GameState {
   answer: string;
   color: string;
   messages: ChatConfig[];
+  timeover: boolean;
+  started: boolean;
   status: "idle" | "loading" | "failed";
 }
 
@@ -31,8 +33,10 @@ const initialState: GameState = {
   roomName: "",
   roomCnt: 0,
   answer: "",
-  color: "",
+  color: "#000000",
   messages: [{ type: "system", name: "관리자", msg: "대화를 시작합니다." }],
+  timeover: false,
+  started: true,
   status: "idle",
 };
 
@@ -54,13 +58,27 @@ export const gameSlice = createSlice({
       state.hostUserName = payload.hostUserName;
       state.roomCnt = payload.roomCnt;
     },
+    setColor: (state, { payload }) => {
+      state.color = payload;
+    },
     setMessages: (state, { payload: { type, name, msg } }) => {
       state.messages.push({ type, name, msg });
     },
-    resetMessages: (state) => {
+    resetRoomInfo: (state) => {
+      state.hostUserName = "";
+      state.roomName = "";
+      state.roomCnt = 0;
+      state.answer = "";
+      state.color = "#000000";
       state.messages = [
         { type: "system", name: "관리자", msg: "대화를 시작합니다." },
       ];
+    },
+    setTimeover: (state) => {
+      state.timeover = !state.timeover;
+    },
+    setStarted: (state) => {
+      state.started = !state.started;
     },
   },
   extraReducers: {},
@@ -71,8 +89,11 @@ export const {
   setRoomList,
   setRoomCnt,
   setRoomInfo,
+  setColor,
   setMessages,
-  resetMessages,
+  resetRoomInfo,
+  setTimeover,
+  setStarted,
 } = gameSlice.actions;
 // selector
 export const selectSocket = (state: RootState) => state.game.socket;
@@ -81,7 +102,9 @@ export const selectHostUserName = (state: RootState) => state.game.hostUserName;
 export const selectRoomCnt = (state: RootState) => state.game.roomCnt;
 export const selectRoomList = (state: RootState) => state.game.roomList;
 export const selectMessages = (state: RootState) => state.game.messages;
-
+export const selectColor = (state: RootState) => state.game.color;
+export const selectTimeover = (state: RootState) => state.game.timeover;
+export const selectStarted = (state: RootState) => state.game.started;
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };

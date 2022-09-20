@@ -1,18 +1,20 @@
 // image
-import rabbit from "../../../assets/characters/rabbit.svg";
+import cat from "../../../assets/characters/cat.svg";
 // css
 import styles from "../MyPage.module.css";
 
 const MyProfile = () => {
   return (
     <div className={styles.MyProfile}>
-      <div>
-        <img src={rabbit} alt="" />
+      <div className={styles.MyProfileImgBox}>
+        <img className={styles.MyProfileImg} src={cat} alt="" />
       </div>
 
-      <h2>Nickname</h2>
-      <h5>Wallet Address</h5>
-      <h3>1000 SSF</h3>
+      <div className={styles.MyProfileTextBox}>
+        <h2 className={styles.MyProfileText}>Nickname</h2>
+        <h4 className={styles.MyProfileTex}>Wallet Address</h4>
+        <h3 className={styles.MyProfileText}>1000 SSF</h3>
+      </div>
     </div>
   );
 };

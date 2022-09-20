@@ -6,16 +6,18 @@ import styles from "../MyPage.module.css";
 const MyNFTCard = () => {
   return (
     <div className={styles.MyNFTCard}>
-      <img src={lion} alt="" />
+      <img className={styles.MyNFTCardImg} src={lion} alt="" />
 
       <div>
-        <h4>NFT Name</h4>
-        <p>Creater</p>
-      </div>
+        <div className={styles.MyNFTCardTextBox}>
+          <h4 className={styles.MyNFTCardLeftText}>NFT Name</h4>
+          <p className={styles.MyNFTCardRightText}>Creater</p>
+        </div>
 
-      <div>
-        <h5>22 SSF</h5>
-        <p>First Solver</p>
+        <div className={styles.MyNFTCardTextBox}>
+          <h5 className={styles.MyNFTCardLeftText}>22 SSF</h5>
+          <p className={styles.MyNFTCardRightText}>First Solver</p>
+        </div>
       </div>
     </div>
   );
