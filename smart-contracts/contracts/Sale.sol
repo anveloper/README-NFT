@@ -5,6 +5,7 @@ import "./access/Ownable.sol";
 import "./token/ERC20/IERC20.sol";
 import "./token/ERC721/IERC721.sol";
 import "./BidBuy.sol";
+import "./NowBuy.sol";
 
 // 판매 등록
 contract Sale is Ownable {

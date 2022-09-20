@@ -4,140 +4,156 @@ pragma solidity ^0.8.4;
 import "./access/Ownable.sol";
 import "./token/ERC20/IERC20.sol";
 import "./token/ERC721/IERC721.sol";
+import "./ReadmeToken.sol";
 
 // 경매 구매
 contract NowBuy {
     address public seller;
     address public buyer;
-    address admin;
+    uint256 public fixedPrice;
     uint256 public saleStartTime; 
     uint256 public saleEndTime;
-    uint256 public startPrice; // 경매: 최소입찰가, 즉시 구매가
     uint256 public tokenId;
     address public currencyAddress;
-    address public nftAddress; 
-    bool public saleType;
-    bool public ended; 
- 
-    // 최고 입찰 상태
-    address public highestBidder; 
-    uint256 public highestBid;
+    address public nftAddress;
+    address public nowAddress;
+    bool public ended;
+
+    mapping(address => uint256) offers; // 제안자들의 주소에 대해서 제안 가격을 mapping
+    address[] offersAddress;
+    uint256 public offersIndex; // 오퍼 배열의 길이
 
     IERC20 public erc20Contract; 
-    IERC721 public readMeContract;
+    IERC721 public erc721Contract;
+    ReadmeToken public readmeContract;
 
-    event HighestBidIncereased(address bidder, uint256 amount);
-    event SaleEnded(address winner, uint256 amount);
+    event OfferMade(address _nowBuyContract, uint256 _tokenId, address _offer, uint256 _amount);
+    event BuyNow(address _nowBuyContract, uint256 _tokenId, address _buyer, uint256 _amount);
+    event AcceptOffer(address _nowBuyContract, uint256 _tokenId, address _offer, uint256 _amount);
 
     constructor(
-        address _admin,
         address _seller,
+        uint256 _startTime,
+        uint256 _endTime,
+        uint256 _fixedPrice,
         uint256 _tokenId,
-        uint256 _startPrice,
-        uint256 startTime,
-        uint256 endTime,
-        bool _saleType,
         address _currencyAddress,
         address _nftAddress
     ) {
-        admin = _admin;
         seller = _seller;
         tokenId = _tokenId;
-        startPrice = _startPrice;
-        saleStartTime = startTime;
-        saleEndTime = endTime;
-        saleType = _saleType;
+        fixedPrice = _fixedPrice;
+        saleStartTime = _startTime;
+        saleEndTime = _endTime;
         currencyAddress = _currencyAddress;
         nftAddress = _nftAddress;
         ended = false;
-        erc20Contract = IERC20(_currencyAddress); 
-        readMeContract = IERC721(_nftAddress);
+        erc20Contract = IERC20(_currencyAddress);
+        erc721Contract = IERC721(_nftAddress);
     }
     
     // 가격 제안
-    function bid(uint256 bid_amount) public onlySeller onlyAfterStart onlyBeforeEnd returns (bool){
-        address bidder = msg.sender;
+    function makeOffer(uint256 offer_amount) public returns (bool) {
+        address offer = msg.sender;
+        require(offer_amount > 0, "Offered Zero Price");
+        require(erc20Contract.approve(offer, offer_amount), "Not Approved for ERC20");
+        require(erc20Contract.balanceOf(offer) >= offer_amount, "Not Enough Token");
+        require(offer_amount < fixedPrice, "Can't Make Offer Price Too High");
 
-        require(bid_amount > 0, "Zero Price");
-        require(erc20Contract.balanceOf(bidder) >= bid_amount, "Not enough Token");
-        // require(erc20Contract.approve(address(Sale), bid_amount), "Not approved for ERC20");
+        // 송금: 구매자 -> Sale
+        erc20Contract.approve(offer, offer_amount);
+        // 배열에 푸시
+        offersAddress.push(offer);
+
+        // 제안한 사람이 또 한번 제안했을 경우
+        if (offers[offer] != 0 ) { // 이미 오퍼한 가격이 있으면 환불해준 다음에 진행
+            erc20Contract.transferFrom(address(this), offer, offers[offer]); // 컨트랙트에서 돈을 뺌
+            offers[offer] = 0; // 구매자 주소에 대한 입금액을 0원으로 함
+        }
+
+        erc20Contract.transferFrom(offer, address(this), offer_amount);
         
-        // 경매
-        if(saleType == false) {
-            require(bid_amount > startPrice, "Please Over startPrice");
-            require(bid_amount > highestBid, "Your bid is lower than HighestBid");
+        offers[offer] = offer_amount;
 
-            highestBid = bid_amount;
-            highestBidder = bidder;
-        }
-
-        // 즉시 구매
-        else if(saleType == true) {
-            if(bid_amount < startPrice && highestBid < bid_amount){
-                highestBid = bid_amount;
-                highestBidder = bidder;
-            } else {
-                purchase(bid_amount);
-            }
-            
-        }
+        emit OfferMade(address(this), tokenId, offer, offer_amount);
 
         return true;
     }
 
-    // 즉시 구매
-    function purchase(uint bid_amount) public payable onlySeller onlyAfterStart onlyBeforeEnd returns (bool){
+    // 즉시 구매(fixedPrice를 전달하면 됨)
+    function buyNow() public onlySeller returns (bool) {
+        address _buyer = msg.sender; // 구매자(함수 호출자)
 
-        // require(erc20Contract.approve(bidder, bid_amount), "Not approved for ERC20");
-        buyer = msg.sender;
-
-        // 소유권 이전 : Sale -> 구매자(purchaser)
-        readMeContract.transferFrom(address(this), buyer, tokenId);
+        // 소유권 이전 : Sale -> 구매자(buyer)
+        erc721Contract.transferFrom(address(this), _buyer, tokenId);
+        readmeContract = ReadmeToken(nowAddress);
+        readmeContract.removeTokenFromList(_buyer, seller, tokenId);
 
         // 송금 : 구매자 -> Sale
-        erc20Contract.approve(address(this), bid_amount); // 권한 부여
-        // Sale -> 판매자
-        payable(seller).transfer(bid_amount);
+        erc20Contract.approve(_buyer, fixedPrice); // 권한 부여
+
+        erc20Contract.transferFrom(_buyer, seller, fixedPrice);
+
+        // 남은 오퍼 금액을 반환시켜줘야함
+        refund(_buyer);
 
         _end();
 
-        return true;
-    }
-
-
-    // 판매 시간 이후 구매(경매/즉시 구매)
-    function confirmItem(uint bid_amount) public payable onlySeller isSaleOver returns(bool){
-        
-        address confirmer = msg.sender;
-
-        require(confirmer != address(0), "address(0) is not allowed");
-        require(confirmer == highestBidder, "Your not a Highest Bidder");
-
-        // 소유권 이전 : Sale -> 구매자(purchaser)
-        readMeContract.transferFrom(address(this), confirmer, tokenId);
-
-        // 송금 : 구매자 -> Sale
-        erc20Contract.approve(address(this), bid_amount); // 권한 부여
-        // Sale -> 판매자
-        payable(confirmer).transfer(bid_amount);
-
-        _end();
+        emit BuyNow(address(this), tokenId, _buyer, fixedPrice);
 
         return true;
     }
+
+    // 가격 제안 수락 
+    function acceptOffer(uint offer_amount, address _offer) public payable onlySeller onlyAfterStart onlyBeforeEnd returns (bool){
     
-    // 판매 철회
-    function cancelSales() public returns (bool) {
-        address requestor = msg.sender;
+        address _seller = msg.sender; // 이 함수를 호출하는 사람은 판매자
+        
+        // 소유권 이전 : Sale -> 구매자(offer)
+        erc721Contract.transferFrom(address(this), _offer, tokenId);
+        readmeContract = ReadmeToken(nowAddress);
+        readmeContract.removeTokenFromList(_offer, seller, tokenId);
 
-        require(requestor == admin || requestor == seller, "You do not have permission");
+        // 송금
+        erc20Contract.transferFrom(_offer, _seller, offer_amount);
 
-        // 소유권 이전 : Sale -> 구매자(purchaser)
-        readMeContract.transferFrom(address(this), requestor, tokenId);
+        // 기존에 있던 오퍼 금액들을 주인에게 돌려줘야함
+        refund(_offer);
 
         _end();
 
+        emit AcceptOffer(address(this), tokenId, _offer, fixedPrice);
+
         return true;
+    }
+
+    // 판매 종료
+    function close() public isSaleOver returns(bool) {
+
+        // 소유권 이전 : Sale -> seller
+        erc721Contract.transferFrom(address(this), seller, tokenId);
+        // address 
+        refund(address(0));
+        
+        _end();
+
+        return true;
+    }
+
+    // 환불
+    function refund(address _buyer) public {
+
+        uint256 arrLength = offersAddress.length;
+
+        for (uint i=0; i<arrLength; i++) {
+            if (_buyer == offersAddress[i]) {
+                continue;
+            } else {
+                address add = offersAddress[i];
+                uint256 refundCost = offers[add];
+                erc20Contract.transferFrom(address(this), add, refundCost);
+            }
+        }
     }
 
     // 남은 시간 계산
@@ -154,8 +170,6 @@ contract NowBuy {
             uint256,
             uint256,
             uint256,
-            uint256,
-            address,
             address,
             address
         )
@@ -163,18 +177,11 @@ contract NowBuy {
         return (
             saleStartTime,
             saleEndTime,
-            startPrice,
+            fixedPrice,
             tokenId,
-            highestBid,
-            highestBidder,
             currencyAddress,
             nftAddress
         );
-    }
-
-    // 최고 입찰가
-    function getHighestBid() public view returns(uint256){
-        return highestBid;
     }
 
     // internal 혹은 private 함수 선언시 아래와 같이 _로 시작하도록 네이밍합니다.
@@ -182,25 +189,30 @@ contract NowBuy {
         ended = true;
     }
 
-
     // 잔액 반환
     function _getCurrencyAmount() private view returns (uint256) {
         return erc20Contract.balanceOf(msg.sender);
     }
 
+    // 오퍼한 사람별 가격 조회
+    function _getOffers() private view returns (address[] memory) {
+        address[] memory arr = new address[](offersIndex);
+
+        return arr;
+    }
  
     modifier onlySeller() {
         require(msg.sender != seller, "Sale: You are not seller.");
         _;
     }
 
-    modifier onlyAfterStart() {
-        require(block.timestamp >= saleStartTime, "Time yet");
+    modifier onlyAfterStart() { 
+        require(block.timestamp >= saleStartTime, "Time yet"); // 블록의 시작 시간이 판매 시작 시간보다 이후여야 함
         _;
     }
 
     modifier onlyBeforeEnd() {
-        require(block.timestamp <= saleEndTime, "Time over");
+        require(block.timestamp <= saleEndTime, "Time over"); // 판매 종료 시간이 블록의 시작 시간보다 이전이어야 함
         _;
     }
 
