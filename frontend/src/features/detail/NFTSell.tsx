@@ -1,6 +1,10 @@
 import styles from "./NFTDetail.module.css";
 import BackgroundFlower from "../../components/BackgroundFlower";
 
+interface SaleAnimalProps {
+  account: String;
+}
+
 const Sell = () => {
   return (
     <div className={styles.sell_background}>
@@ -9,7 +13,7 @@ const Sell = () => {
         <div className={styles.detail_container}>
           <div className={styles.cards}>
             <div className={styles.card_contents_front}>
-              <img className={styles.card_img} src={require("../../assets/nft-img/dog.png")} alt="dog" />
+              <img className={styles.card_img} src={require("../../assets/nft-img/1.png")} alt="dog" />
               <div className={styles.card_img_info}>
                 <p>NFT Name</p>
                 <p>Price</p>

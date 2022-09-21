@@ -1,4 +1,5 @@
 // components
+import MyAnimalCard from "./components/MyAnimalCard";
 import MyInfo from "./components/MyInfo";
 import MyNFTList from "./components/MyNFTList";
 // css
