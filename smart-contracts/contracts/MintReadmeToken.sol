@@ -6,12 +6,12 @@ import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721En
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract ReadmeToken is ERC721Enumerable, Ownable{
+contract MintReadmeToken is ERC721Enumerable, Ownable{
 
-    // 내 주소 -> 소유 nft metadata
-    mapping(address => string[]) private ownedTokens;
+    // 내 주소 -> 소유 nft tokenId
+    mapping(address => uint256[]) private ownedTokens;
 
-    // 내 주소 -> 내가 그린 nft metadata
+    // 내 주소 -> 내가 그린 nft tokenId
     mapping(address => uint256[]) private drawTokens;
 
     // tokenId -> metadata
@@ -37,15 +37,14 @@ contract ReadmeToken is ERC721Enumerable, Ownable{
         return string(abi.encodePacked(metadataURIs[_tokenId]));
     }
 
-    // get: 내 주소 -> 내가 그린 nft metadata
-    function getOwnedTokens(address _owner) public view returns (string[] memory) {
-        require (_owner != address(0), "Not your nft");
+    // get: 내 주소 -> 소유 nft metadata
+    function getOwnedTokens(address _owner) public view validAddress(_owner) returns (uint256[] memory) {
+        require(_owner != msg.sender, "Not your nft");
         return ownedTokens[_owner];
     }
 
-    // get: 내 주소 -> 소유 nft metadata
-    function getDrawTokens(address _owner) public view returns (uint256[] memory) {
-        require (_owner != address(0), "Not your draw");
+    // get: 내 주소 -> 내가 그린 nft metadata
+    function getDrawTokens(address _owner) public view validAddress(_owner) returns (uint256[] memory) {
         return drawTokens[_owner];
     }
 
@@ -57,7 +56,7 @@ contract ReadmeToken is ERC721Enumerable, Ownable{
 
         _mint(msg.sender, newTokenId); // 민팅
 
-        ownedTokens[msg.sender].push(_metadataURI); // 소유 목록 추가 
+        ownedTokens[msg.sender].push(newTokenId); // 소유 목록 추가 
 
         drawTokens[msg.sender].push(newTokenId); // 그린 목록 추가(그린 사람 = 민팅)
         
@@ -68,25 +67,28 @@ contract ReadmeToken is ERC721Enumerable, Ownable{
 
 
     // nft 판매 시, 소유한 토큰 목록 변경
-    function removeTokenFromList(address to, address from, uint256 tokenId) public {
-        uint256 tokenList = ownedTokens[from].length; // 현재 소유토큰 개수 확인
+    function removeTokenFromList(address _to, address _from, uint256 _tokenId) public {
+        uint256 tokenList = ownedTokens[_from].length; // 현재 소유토큰 개수 확인
 
         uint256 lasTokenIdx = tokenList - 1; // 마지막 인덱스 값
-        
-        string memory meta = metadataURIs[tokenId]; // 판매한 nft의 metadata 확인
 
-        ownedTokens[to].push(meta); // 구매자의 nft 목록 추가
+        ownedTokens[_to].push(_tokenId); // 구매자의 nft 목록 추가
         
         for(uint256 i = 0; i < tokenList; i ++){
 
-            if(keccak256(bytes(meta)) == keccak256(bytes(ownedTokens[from][i]))){
+            if(ownedTokens[_from][i] == _tokenId){
                 
-                ownedTokens[from][i] = ownedTokens[from][lasTokenIdx]; // 마지막 인덱스 nft를 중간으로 이동
+                ownedTokens[_from][i] = ownedTokens[_from][lasTokenIdx]; // 마지막 인덱스 nft를 중간으로 이동
                 
-                ownedTokens[from].pop(); // 제거
+                ownedTokens[_from].pop(); // 제거
                 
                 break;
             }
         }
+    }
+
+    modifier validAddress(address _address) {
+        require(_address != address(0), "Invalid Address");
+        _;
     }
 }
