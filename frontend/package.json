@@ -8,9 +8,6 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
-    "@types/node": "^18.7.18",
-    "@types/react": "^18.0.20",
-    "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
     "dotenv": "^16.0.2",
     "ipfs-api": "^26.1.2",
@@ -30,6 +27,9 @@
     "web3-utils": "^1.8.0"
   },
   "devDependencies": {
+    "@types/node": "^18.7.18",
+    "@types/react": "^18.0.20",
+    "@types/react-dom": "^18.0.6",
     "@types/react-slick": "^0.23.10",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
