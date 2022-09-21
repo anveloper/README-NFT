@@ -7,5 +7,5 @@ const GetReadme = artifacts.require("GetReadmeToken");
 module.exports = async function (deployer) {
   let MintReadmeToken = await deployer.deploy(MintReadme);
   let SaleReadmeToken = await deployer.deploy(SaleReadme, MintReadme.address);
-  let GetReadmeToken = await deployer.deploy(GetReadme, MintReadme.address, GetReadme.address);
+  let GetReadmeToken = await deployer.deploy(GetReadme, MintReadme.address, SaleReadme.address);
 };
