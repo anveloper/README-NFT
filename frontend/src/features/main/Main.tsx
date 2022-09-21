@@ -39,7 +39,8 @@ const Main = () => {
     } else {
       console.log("연결된 소켓 정보", socket);
     }
-  }, [dispatch, socket]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   useEffect(() => {
     if (pathname === "/")

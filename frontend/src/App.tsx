@@ -18,9 +18,14 @@ import MyPage from "./features/mypage/MyPage";
 import styles from "./App.module.css";
 import { useAppSelector } from "./app/hooks";
 import { selectUserAddress } from "./features/auth/authSlice";
+//testPage
+
+import TestPage from "./testWeb3/TestPage";
+
 import NFTLists from "./features/detail/NFTLists/NFTLists";
 import MyPageTest from "./features/mypage/MyPageTest";
 import NFTSaleTest from "./features/detail/SaleAnimal";
+
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -72,6 +77,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
               <Route path="/mypage" element={<MyPage />} />
+              <Route path="/test" element={<TestPage />} />
             </Routes>
           </div>
         </div>

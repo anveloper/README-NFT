@@ -79,8 +79,15 @@
   gap: 8px;
   font-size: 3rem;
 }
+.answerBox > div:hover {
+  cursor: url("../../assets/logo_text.svg") 0 0, pointer;
+}
+.answerBox > div:active {
+  transform: scale(0.9);
+}
+
 .answerBox > div > p {
-  width: 48px;
+  min-width: 48px;
   height: 48px;
   padding: 4px;
   border-radius: 8px;
@@ -110,7 +117,7 @@
   background: white;
 }
 .submitModal section {
-  position:relative
+  position: relative;
 }
 .canvas:hover {
   cursor: url("../../assets/live-item/brush.svg") 0 70, auto;
