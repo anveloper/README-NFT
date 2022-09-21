@@ -1,4 +1,3 @@
-# FROM node:16.15.0 as builder
 FROM node:16.15.0 AS build
 
 WORKDIR /jenkins_home/workspace/deployment/frontend
@@ -11,11 +10,10 @@ COPY . .
 
 RUN ["npm", "run", "build"]
 
-# FROM nginx:stable-alpine as production-stage
 FROM nginx:alpine
 
 RUN rm /etc/nginx/conf.d/default.conf
-## 추가 ##
+
 RUN mkdir /app
 
 WORKDIR /app
