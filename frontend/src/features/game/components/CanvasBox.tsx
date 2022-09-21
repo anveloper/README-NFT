@@ -4,6 +4,7 @@ import {
   selectColor,
   selectHostUserName,
   selectSocket,
+  selectStarted,
   selectTimeover,
   setTimeover,
 } from "../gameSlice";
@@ -21,6 +22,7 @@ const CanvasBox = () => {
   const hostUserName = useAppSelector(selectHostUserName);
   const color = useAppSelector(selectColor);
   const timeover = useAppSelector(selectTimeover);
+  const started = useAppSelector(selectStarted);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -33,6 +35,9 @@ const CanvasBox = () => {
     if (boxRef.current) {
       setCanvasWidth(boxRef.current.offsetWidth);
       setCanvasHeight(boxRef.current.offsetHeight);
+    }
+    if (socket) {
+      socket.emit("get_data", hostUserName);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boxRef, window.innerWidth, window.innerHeight]);
@@ -90,7 +95,7 @@ const CanvasBox = () => {
     (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      if (isPaint) {
+      if (isPaint && !started) {
         const newMousePos = getCoordinate(event);
         if (mousePos && newMousePos) {
           drawLine(mousePos, newMousePos, color);
@@ -116,6 +121,7 @@ const CanvasBox = () => {
   }, []);
   useEffect(() => {
     if (!canvasRef.current) return;
+    if (started) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
     canvas.addEventListener("mousedown", startPaint);
     canvas.addEventListener("mousemove", paint);
@@ -140,7 +146,24 @@ const CanvasBox = () => {
         if (!canvasRef.current) return;
         const canvas: HTMLCanvasElement = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        ctx?.clearRect(0, 0, canvas.width, canvas.height);
+        if (ctx) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        }
+      });
+      socket.on("set_data", (data: string) => {
+        if (!canvasRef.current) return;
+        const canvas: HTMLCanvasElement = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.fillStyle = "white";
+          ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        }
+        const init = JSON.parse(data);
+        for (let i = 0; i < init.length; i++) {
+          const { x0, y0, x1, y1, color } = init[i];
+          drawLine({ x: x0, y: y0 }, { x: x1, y: y1 }, color);
+        }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -176,7 +199,7 @@ const CanvasBox = () => {
       <Modal
         open={timeover}
         close={() => {
-          dispatch(setTimeover());
+          dispatch(setTimeover(false));
           window.URL.revokeObjectURL(fileUrl);
         }}
         fn={handleMint}
@@ -186,14 +209,17 @@ const CanvasBox = () => {
         <img
           src={fileUrl}
           alt={fileName}
-          width={800}
-          height={600}
+          width={400}
+          height={300}
           style={{ transform: "scale(0.8)" }}
         />
-        test:{" "}
-        <a href={fileUrl} download>
-          다운로드
-        </a>
+        <h6>
+          {"test: "}
+          <a href={fileUrl} download>
+            다운로드
+          </a>
+        </h6>
+        <br />
         게임을 종료하시겠습니까?
         <br />
         취소를 누르면 추가시간을 부여할 수 있습니다.

@@ -10,6 +10,7 @@ import {
   selectHostUserName,
   setAnswerLength,
   setSolvers,
+  setStarted,
 } from "../gameSlice";
 
 import styles from "../Game.module.css";
@@ -49,6 +50,9 @@ const ChatBox = () => {
       });
       socket.on("solve_cnt", (solver, solversCnt, roomCnt) => {
         dispatch(setSolvers({ solver, solversCnt, roomCnt }));
+      });
+      socket.on("game_start", () => {
+        dispatch(setStarted(true));
       });
     }
   }, [dispatch, hostUserName, socket]);

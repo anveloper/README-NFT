@@ -40,17 +40,18 @@ const AnswerBox = () => {
         setNewAnswer("");
         console.log(ans);
       });
+      socket.emit("game_start", hostUserName);
     }
   };
   const renderAnswer = () => {
-    if (!answer) return <p>정답을 입력해주세요.</p>;
+    if (!answer) return <p>제시어를 입력해주세요.</p>;
     const result = [];
     for (let i = 0; i < answer.length; i++)
       result.push(<p key={i}>{answer[i]}</p>);
     return result;
   };
   const renderAnswerLength = (num: number) => {
-    if (!num) return <p>정답이 입력되지 않았습니다.</p>;
+    if (!num) return <p>제시어가 입력되지 않았습니다.</p>;
     const result = [];
     for (let i = 0; i < num; i++) result.push(<p key={i}>?</p>);
     return result;
@@ -63,11 +64,17 @@ const AnswerBox = () => {
           open={answerModal}
           close={() => setAnswerModal(false)}
           fn={handleAnswer}
-          header={"🖋 정답을 입력해주세요."}
+          header={"🖋 제시어를 입력해주세요."}
         >
+          <h6 className={styles.answerNoti}>
+            정답을 입력하면 호스트만 그림을 그릴 수 있습니다.
+            <br />
+            제시어를 누르면 언제든 수정할 수 있습니다.
+          </h6>
           <input
             value={newAnswer}
             ref={answerRef}
+            className={styles.answerInput}
             onKeyUp={(e) => {
               if (e.key === "Enter") handleAnswer();
             }}

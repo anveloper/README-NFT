@@ -80,7 +80,7 @@
   font-size: 3rem;
 }
 .answerBox > div:hover {
-  cursor: url("../../assets/logo_text.svg") 0 0, pointer;
+  cursor: url("../../assets/live-item/answer_cursor.svg") 20 20, pointer;
 }
 .answerBox > div:active {
   transform: scale(0.9);
@@ -94,6 +94,12 @@
   font-size: 2rem;
   border: 2px dotted #9a9a9a;
   background-color: #fcf5e9;
+}
+.answerNoti {
+  font-size: 1rem;
+}
+.answerInput {
+  margin-top: 8px;
 }
 .what {
   width: 120px;
@@ -118,6 +124,12 @@
 }
 .submitModal section {
   position: relative;
+}
+.submitModal main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .canvas:hover {
   cursor: url("../../assets/live-item/brush.svg") 0 70, auto;

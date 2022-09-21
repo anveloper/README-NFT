@@ -69,6 +69,7 @@ const Main = () => {
               roomName: room,
               roomCnt: cnt,
               hostUserName: host,
+              answerLength: 0,
             })
           );
           navigator(`/game/${host}`);

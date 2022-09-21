@@ -63,6 +63,7 @@ export const gameSlice = createSlice({
       state.roomName = payload.roomName;
       state.hostUserName = payload.hostUserName;
       state.roomCnt = payload.roomCnt;
+      state.answerLength = payload.answerLength;
     },
     setColor: (state, { payload }) => {
       state.color = payload;
@@ -86,11 +87,11 @@ export const gameSlice = createSlice({
     setAnswerLength: (state, { payload }) => {
       state.answerLength = payload;
     },
-    setTimeover: (state) => {
-      state.timeover = !state.timeover;
+    setTimeover: (state, { payload }) => {
+      state.timeover = payload;
     },
-    setStarted: (state) => {
-      state.started = !state.started;
+    setStarted: (state, { payload }) => {
+      state.started = payload;
     },
     setSolvers: (state, { payload: { solver, solversCnt, roomCnt } }) => {
       state.solver = solver;
