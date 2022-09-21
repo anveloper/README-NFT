@@ -9,6 +9,7 @@ import {
   selectRoomCnt,
   selectRoomName,
   selectSocket,
+  selectStarted,
   setColor,
 } from "./gameSlice";
 import { selectUserAddress } from "../auth/authSlice";
@@ -27,6 +28,7 @@ const Game = () => {
   const roomName = useAppSelector(selectRoomName);
   const hostUserName = useAppSelector(selectHostUserName);
   const roomCnt = useAppSelector(selectRoomCnt);
+  const started = useAppSelector(selectStarted);
 
   const [tabFlag, setTabFlag] = useState(true);
   const dispatch = useAppDispatch();
@@ -35,6 +37,7 @@ const Game = () => {
     if (!hostUserName) navigate("/live");
     return () => {
       dispatch(resetRoomInfo());
+      if (socket) socket.emit("leave_room", hostUserName);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -43,7 +46,7 @@ const Game = () => {
     if (socket) {
       socket.emit("leave_room", hostUserName);
       if (hostUserName === userAddress) {
-        socket.emit("host_leave", hostUserName);
+        socket.emit("game_end", hostUserName);
       }
     }
     dispatch(resetRoomInfo());
@@ -56,7 +59,9 @@ const Game = () => {
   };
   const handleCanvasReset = () => {
     if (socket) {
+      if (userAddress !== hostUserName) return;
       socket.emit("reset_canvas", hostUserName);
+      console.log(userAddress, hostUserName);
     }
   };
   return (
