@@ -3,12 +3,14 @@ import { getDefaultMiddleware } from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice";
 import authReducer from "../features/auth/authSlice";
 import gameReducer from "../features/game/gameSlice";
+import mintReducer from "../features/mint/mintSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     auth: authReducer,
     game: gameReducer,
+    mint: mintReducer,
   },
   // redux에는 직렬화 가는 한 정보만 갖지만,
   // socket을 오브젝트로 저장하기 위해 직렬화를 해제함
