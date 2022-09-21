@@ -6,6 +6,7 @@ import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC721.sol";
 import "./MintReadmeToken.sol";
 
+
 contract SaleReadmeToken{
     MintReadmeToken public mintReadmeTokenAddress;
 
@@ -15,10 +16,11 @@ contract SaleReadmeToken{
 
     // 토큰 Id -> 가격
     mapping (uint256 => uint256) public readmeTokenPrices;
-    // 판매 등록 된 토큰 
+    // 판매 등록 된 토큰 : tokenId
     uint256[] public onSaleReadmeToken;
     // 토큰 Id -> 시간
     mapping (uint256 => uint256) public readmeTokenEndTime;
+
 
     // 판매 등록
     function setForSaleReadmeToken(
@@ -60,10 +62,42 @@ contract SaleReadmeToken{
         // 구매자의 구매 능력 확인
         require(price <= msg.value, "No money");
         // 판매자 != 구매자 
-        require(readmeTokenOwner != buyer);
+        require(readmeTokenOwner != buyer, "Seller is not Buyer");
+        // 시간 확인
+        require(block.timestamp <= readmeTokenEndTime[_readmeTokenId], "Time out!");
         
-        // 돈: 구매자 -> 판매자
+        // 돈: 구매자(buyer: 함수 호출자) -> 판매자
         payable(readmeTokenOwner).transfer(msg.value);
+        // nft 전송: 판매자 -> 구매자
+        mintReadmeTokenAddress.safeTransferFrom(readmeTokenOwner, msg.sender, _readmeTokenId);
         
+        // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
+
+        readmeTokenPrices[_readmeTokenId] = 0;
+        // 판매 중 목록 수정
+        for(uint256 i = 0; i < onSaleReadmeToken.length; i++) {
+            if(readmeTokenPrices[onSaleReadmeToken[i]] == 0){
+                onSaleReadmeToken[i] = onSaleReadmeToken[onSaleReadmeToken.length-1];
+                onSaleReadmeToken.pop();
+            }
+        }
+
+        // 소유 토큰 목록 수정
+        mintReadmeTokenAddress.removeTokenFromList(buyer, readmeTokenOwner, _readmeTokenId);
+    }
+
+    // get: 판매 중인 토큰 개수 조회
+    function getOnSaleReadmeTokenArrayLength() public view returns (uint256) {
+        return onSaleReadmeToken.length;
+    }
+
+    // get: 판매 중인 토큰 전체 목록 조회
+    function getOnSaleReadmeToken() public view returns (uint256[] memory) {
+        return onSaleReadmeToken;
+    }
+
+    // get: 개별 토큰 가격 조회
+    function getReadmeTokenPrice(uint256 _readmeTokenId) public view returns (uint256) {
+        return readmeTokenPrices[_readmeTokenId];
     }
 }

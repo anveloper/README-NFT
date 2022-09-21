@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC721.sol";
-import "./ReadmeToken.sol";
+import "./MintReadmeToken.sol";
 
 // 판매 등록
 contract Sale is Ownable {
@@ -158,7 +158,7 @@ contract BidBuy {
 
     IERC20 public erc20Contract; 
     IERC721 public erc721Contract;
-    ReadmeToken public readmeContract;
+    MintReadmeToken public readmeContract;
 
     // 현재 입찰 현황
     event BidMade(
@@ -261,7 +261,7 @@ contract BidBuy {
 
         emit BuyEnded(address(this), tokenId, purchaser, purchasePrice);
 
-        readmeContract = ReadmeToken(nowAddress);
+        readmeContract = MintReadmeToken(nowAddress);
 
         readmeContract.removeTokenFromList(purchaser, seller, tokenId);
 
@@ -393,7 +393,7 @@ contract NowBuy {
 
     IERC20 public erc20Contract; 
     IERC721 public erc721Contract;
-    ReadmeToken public readmeContract;
+    MintReadmeToken public readmeContract;
 
     event OfferMade(address _nowBuyContract, uint256 _tokenId, address _offer, uint256 _amount);
     event BuyNow(address _nowBuyContract, uint256 _tokenId, address _buyer, uint256 _amount);
@@ -454,7 +454,7 @@ contract NowBuy {
 
         // 소유권 이전 : Sale -> 구매자(buyer)
         erc721Contract.transferFrom(address(this), _buyer, tokenId);
-        readmeContract = ReadmeToken(nowAddress);
+        readmeContract = MintReadmeToken(nowAddress);
         readmeContract.removeTokenFromList(_buyer, seller, tokenId);
 
         // 송금 : 구매자 -> Sale
@@ -479,7 +479,7 @@ contract NowBuy {
         
         // 소유권 이전 : Sale -> 구매자(offer)
         erc721Contract.transferFrom(address(this), _offer, tokenId);
-        readmeContract = ReadmeToken(nowAddress);
+        readmeContract = MintReadmeToken(nowAddress);
         readmeContract.removeTokenFromList(_offer, seller, tokenId);
 
         // 송금

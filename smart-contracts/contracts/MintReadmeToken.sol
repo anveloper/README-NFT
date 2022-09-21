@@ -5,7 +5,6 @@ import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 
-
 contract MintReadmeToken is ERC721Enumerable, Ownable{
 
     // 내 주소 -> 소유 nft tokenId
@@ -16,7 +15,6 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
     // tokenId -> metadata
     mapping(uint256 => string) metadataURIs;
-
 
     // 생성된 토큰 확인
     event Mint(
@@ -37,15 +35,25 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
         return string(abi.encodePacked(metadataURIs[_tokenId]));
     }
 
-    // get: 내 주소 -> 소유 nft metadata
+    // get: 내 주소 -> 소유 nft tokenId
     function getOwnedTokens(address _owner) public view validAddress(_owner) returns (uint256[] memory) {
         require(_owner != msg.sender, "Not your nft");
         return ownedTokens[_owner];
     }
 
-    // get: 내 주소 -> 내가 그린 nft metadata
+    // get: 내 주소 -> 내가 그린 nft tokenId
     function getDrawTokens(address _owner) public view validAddress(_owner) returns (uint256[] memory) {
         return drawTokens[_owner];
+    }
+
+    // get: 내 소유 nft 개수 조회
+    function getMyReadmeTokenArrayLength(address _owner) public view returns (uint256) {
+        return ownedTokens[_owner].length;
+    }
+
+    // get: 내가 그린 nft 개수 조회
+    function getDrawReadmeTokenArrayLength(address _owner) public view returns (uint256) {
+        return drawTokens[_owner].length;
     }
 
     // NFT 발행
@@ -87,6 +95,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
         }
     }
 
+    // 입력한 주소 유효성 검사
     modifier validAddress(address _address) {
         require(_address != address(0), "Invalid Address");
         _;
