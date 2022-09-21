@@ -56,8 +56,8 @@ io.on("connection", (socket) => {
 
   // room
   socket.on("enter_room", (userAddress, nickname, roomTitle, done) => {
-    socket["nickname"] = nickname;
     socket["address"] = userAddress;
+    socket["nickname"] = nickname;
     const session = userAddress;
     socket.join(session);
     rooms.get(session)["title"] = roomTitle;
@@ -70,14 +70,23 @@ io.on("connection", (socket) => {
     io.sockets.emit("room_change", publicRooms());
   });
   socket.on("join_room", (userAddress, nickname, hostAddress, done) => {
-    socket["nickname"] = nickname;
     socket["address"] = userAddress;
+    socket["nickname"] = nickname;
     socket["solved"] = false;
     const session = hostAddress;
     socket.join(session);
-    done(rooms.get(session)["title"], countRoom(session) - 1, session);
+    done(
+      rooms.get(session)["title"],
+      countRoom(session) - 1,
+      session,
+      rooms.get(session)["answer"].length
+    );
     socket.to(session).emit("welcome", socket.nickname, countRoom(session) - 1);
     io.sockets.emit("room_change", publicRooms());
+    // if (rooms.get(session)["started"]) {
+    //   socket.emit("game_start");
+    //   socket.emit("set_data", JSON.stringify(rooms.get(session)["data"]));
+    // }
   });
   socket.on("leave_room", (session) => {
     socket.leave(session);
@@ -168,6 +177,8 @@ io.on("connection", (socket) => {
   });
   socket.on("game_start", (session) => {
     rooms.get(session)["started"] = true;
+    socket.emit("reset_draw");
+    socket.to(session).emit("reset_draw");
     socket.to(session).emit("game_start");
   });
   socket.on("draw_data", (session, data) => {
@@ -176,10 +187,17 @@ io.on("connection", (socket) => {
     if (rooms.get(session)["started"]) dataList.push(data);
     socket.to(session).emit("draw_data", data);
   });
+  socket.on("get_data", (session) => {
+    socket.emit("set_data", JSON.stringify(rooms.get(session)["data"]));
+    if (rooms.get(session)["started"]) socket.emit("game_start");
+  });
   socket.on("reset_canvas", (session) => {
     rooms.get(session)["data"] = [];
     socket.emit("reset_draw");
     socket.to(session).emit("reset_draw");
+  });
+  socket.on("timer_start", (session, time) => {
+    socket.to(session).emit("timer_start", time);
   });
 });
 
