@@ -3,22 +3,18 @@ pragma solidity ^0.8.4;
 
 import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-// import "./token/ERC721/ERC721.sol";
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract ReadmeToken is ERC721, Ownable{
+contract ReadmeToken is ERC721Enumerable, Ownable{
 
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
+    // 내 주소 -> 소유 nft metadata
+    mapping(address => string[]) private ownedTokens;
 
-    // 내 소유 nft
-    mapping(address => string[]) private _ownedTokens;
+    // 내 주소 -> 내가 그린 nft metadata
+    mapping(address => uint256[]) private drawTokens;
 
-    // 내가 그린 nft
-    mapping(address => uint256[]) private _drawTokens;
-
-    // metadataURI
+    // tokenId -> metadata
     mapping(uint256 => string) metadataURIs;
 
 
@@ -31,58 +27,64 @@ contract ReadmeToken is ERC721, Ownable{
 
     constructor() ERC721("ReadmeNFT", "RMN") {}
 
-    function current() public view returns (uint256) {
-        return Counters.current(_tokenIds);
+    // get: 현재 발행된 nft 개수
+    function getCurrentNft() public view returns (uint256) {
+        return totalSupply();
     }
 
-    // metadataURI 출력
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        return string(abi.encodePacked(metadataURIs[tokenId]));
+    // get: tokenId -> metadata
+    function tokenURI(uint256 _tokenId) public view override returns (string memory) {
+        return string(abi.encodePacked(metadataURIs[_tokenId]));
     }
 
-    // 소유한 NFT 조회
-    function getOwnedTokens(address owner) public view returns (string[] memory) {
-        require (owner != address(0), "Not your nft");
-        return _ownedTokens[owner];
+    // get: 내 주소 -> 내가 그린 nft metadata
+    function getOwnedTokens(address _owner) public view returns (string[] memory) {
+        require (_owner != address(0), "Not your nft");
+        return ownedTokens[_owner];
     }
 
-    // 내가 그린 NFT 조회
-    function getDrawTokens(address owner) public view returns (uint256[] memory) {
-        require (owner != address(0), "Not your draw");
-        return _drawTokens[owner];
+    // get: 내 주소 -> 소유 nft metadata
+    function getDrawTokens(address _owner) public view returns (uint256[] memory) {
+        require (_owner != address(0), "Not your draw");
+        return drawTokens[_owner];
     }
 
     // NFT 발행
     function create(string memory _metadataURI) public returns (uint256) {
-        _tokenIds.increment();
+        uint256 newTokenId = totalSupply() + 1; // 새로운 tokenId 생성
 
-        metadataURIs[_tokenIds.current()] = _metadataURI;
+        metadataURIs[newTokenId] = _metadataURI; // 메타 데이터 추가
 
-        uint256 newTokenId = _tokenIds.current();
+        _mint(msg.sender, newTokenId); // 민팅
 
-        _mint(msg.sender, newTokenId);
+        ownedTokens[msg.sender].push(_metadataURI); // 소유 목록 추가 
 
-        _ownedTokens[msg.sender].push(_metadataURI);
-
-        _drawTokens[msg.sender].push(newTokenId);
+        drawTokens[msg.sender].push(newTokenId); // 그린 목록 추가(그린 사람 = 민팅)
         
-        emit Mint(newTokenId, msg.sender, _metadataURI);
+        emit Mint(newTokenId, msg.sender, _metadataURI); // 생성 확인 로그(새로운 tokenId, 생성자, 메타데이터)
 
         return newTokenId;
     }
 
 
-    // 소유한 토큰 목록 변경 함수
+    // nft 판매 시, 소유한 토큰 목록 변경
     function removeTokenFromList(address to, address from, uint256 tokenId) public {
+        uint256 tokenList = ownedTokens[from].length; // 현재 소유토큰 개수 확인
+
+        uint256 lasTokenIdx = tokenList - 1; // 마지막 인덱스 값
         
-        uint256 tokenList = _ownedTokens[from].length;
-        uint256 lasTokenIdx = tokenList - 1;
-        string memory meta = metadataURIs[tokenId];        
-        _ownedTokens[to].push(meta);
+        string memory meta = metadataURIs[tokenId]; // 판매한 nft의 metadata 확인
+
+        ownedTokens[to].push(meta); // 구매자의 nft 목록 추가
+        
         for(uint256 i = 0; i < tokenList; i ++){
-            if(keccak256(bytes(meta)) == keccak256(bytes(_ownedTokens[from][i]))){
-                _ownedTokens[from][i] = _ownedTokens[from][lasTokenIdx];
-                _ownedTokens[from].pop();
+
+            if(keccak256(bytes(meta)) == keccak256(bytes(ownedTokens[from][i]))){
+                
+                ownedTokens[from][i] = ownedTokens[from][lasTokenIdx]; // 마지막 인덱스 nft를 중간으로 이동
+                
+                ownedTokens[from].pop(); // 제거
+                
                 break;
             }
         }
