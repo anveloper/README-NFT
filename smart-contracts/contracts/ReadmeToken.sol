@@ -2,8 +2,9 @@
 pragma solidity ^0.8.4;
 
 import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
-import "./token/ERC721/ERC721.sol";
-import "./access/Ownable.sol";
+import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+// import "./token/ERC721/ERC721.sol";
+import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 
 
 contract ReadmeToken is ERC721, Ownable{
