@@ -10,8 +10,8 @@ import "./MintReadmeToken.sol";
 contract SaleReadmeToken{
     MintReadmeToken public mintReadmeTokenAddress;
 
-    constructor (address _mintAnimalTokenAddress) {
-        mintReadmeTokenAddress = MintReadmeToken(_mintAnimalTokenAddress);
+    constructor (address _mintReadmeTokenAddress) {
+        mintReadmeTokenAddress = MintReadmeToken(_mintReadmeTokenAddress);
     }
 
     // 토큰 Id -> 가격
@@ -84,6 +84,36 @@ contract SaleReadmeToken{
 
         // 소유 토큰 목록 수정
         mintReadmeTokenAddress.removeTokenFromList(buyer, readmeTokenOwner, _readmeTokenId);
+    }
+
+    // 판매 취소
+    function cancelReadmeToken(uint256 _readmeTokenId) public payable {
+        // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
+        uint256 price = readmeTokenPrices[_readmeTokenId];
+        address cancel = msg.sender;
+
+        // 판매자 확인
+        address seller = mintReadmeTokenAddress.ownerOf(_readmeTokenId);
+        
+        // 취소자 == 판매자 
+        require(cancel == seller, "No Owner");
+
+        // 판매중 확인
+        require(price > 0, "Not On Sale");
+        
+        // 시간 확인
+        require(block.timestamp <= readmeTokenEndTime[_readmeTokenId], "Time out!");
+        
+        // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
+        readmeTokenPrices[_readmeTokenId] = 0;
+        
+        // 판매 중 목록 수정
+        for(uint256 i = 0; i < onSaleReadmeToken.length; i++) {
+            if(readmeTokenPrices[onSaleReadmeToken[i]] == 0){
+                onSaleReadmeToken[i] = onSaleReadmeToken[onSaleReadmeToken.length-1];
+                onSaleReadmeToken.pop();
+            }
+        }
     }
 
     // get: 판매 중인 토큰 개수 조회
