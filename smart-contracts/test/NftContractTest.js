@@ -1,18 +1,19 @@
 /**
  * PJT Ⅰ - 과제 3 테스트 코드 작성
- * @dev NFT mint, transfer, and compare URI 
+ * @dev NFT mint, transfer, and compare URI
  */
 const NftCreator = artifacts.require("ReadmeToken");
 
 contract("NftCreator", (accounts) => {
   it("NFT mint, transfer, and compare URI", async () => {
-
     const ReadmeToken = await NftCreator.deployed();
-    
+
     // 민팅 테스트
-    let newTokenId = (await ReadmeToken.create(accounts[0], "URI 1")).receipt.logs[0].args.tokenId.toNumber();
+    let newTokenId = (
+      await ReadmeToken.create(accounts[0], "URI 1")
+    ).receipt.logs[0].args.tokenId.toNumber();
     let owner = await ReadmeToken.ownerOf(newTokenId);
-    
+
     assert.equal(accounts[0], owner, "NFT Mint Failed");
 
     // 전송 테스트
