@@ -26,7 +26,7 @@ const MemberBox = ({ visible }: any) => {
             );
           else if (hostUserName !== p.address)
             return (
-              <div key={index} className={styles.chatItem}>
+              <div key={index} className={styles.memberItem}>
                 {`${p.nickname}`}
                 <br />
                 {`${p.address}`}

@@ -20,6 +20,8 @@ contract SaleReadmeToken{
     uint256[] public onSaleReadmeToken;
     // 토큰 Id -> 시간
     mapping (uint256 => uint256) public readmeTokenEndTime;
+    // 판매/경매에 등록된 토큰
+    mapping(uint256 => bool) onActiveTokens;
 
 
     // 판매 등록
@@ -41,12 +43,17 @@ contract SaleReadmeToken{
         require(readmeTokenPrices[_readmeTokenId] == 0, "Already On Sale");
         // 컨트랙트의 권한 확인
         require(mintReadmeTokenAddress.isApprovedForAll(readmeTokenOwner, address(this)), "Not Approve");
+        // 경매에 등록되어 있는지 확인
+        require(onActiveTokens[_readmeTokenId] != true, "Already on Market");
+        
         // 가격 등록
         readmeTokenPrices[_readmeTokenId] = _price;
         // 시간 등록
         readmeTokenEndTime[_readmeTokenId] = _endTime;
         // 판매 등록 목록 수정
         onSaleReadmeToken.push(_readmeTokenId);
+        // 판매/경매 등록으로 변경
+        onActiveTokens[_readmeTokenId] = true;
     }
 
     // 판매
@@ -79,6 +86,7 @@ contract SaleReadmeToken{
             if(readmeTokenPrices[onSaleReadmeToken[i]] == 0){
                 onSaleReadmeToken[i] = onSaleReadmeToken[onSaleReadmeToken.length-1];
                 onSaleReadmeToken.pop();
+                break;
             }
         }
 
@@ -130,4 +138,15 @@ contract SaleReadmeToken{
     function getReadmeTokenPrice(uint256 _readmeTokenId) public view returns (uint256) {
         return readmeTokenPrices[_readmeTokenId];
     }
+
+    // 판매/경매 중인지 확인
+    function getIsActive(uint256 _tokenId) public view returns (bool) {
+        return onActiveTokens[_tokenId];
+    }
+
+    // 판매/경매를 변경
+    function setIsActive(uint _tokenId, bool check) public {
+        onActiveTokens[_tokenId] = check;
+    }
+
 }
