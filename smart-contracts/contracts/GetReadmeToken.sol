@@ -11,8 +11,8 @@ contract GetReadmeToken{
     MintReadmeToken public mintReadmeTokenAddress;
     SaleReadmeToken public saleReadmeToken;
 
-    constructor (address _mintAnimalTokenAddress, address _saleReadmeToken) {
-        mintReadmeTokenAddress = MintReadmeToken(_mintAnimalTokenAddress);
+    constructor (address _mintReadmeTokenAddress, address _saleReadmeToken) {
+        mintReadmeTokenAddress = MintReadmeToken(_mintReadmeTokenAddress);
         saleReadmeToken = SaleReadmeToken(_saleReadmeToken);
     }
 
@@ -48,7 +48,7 @@ contract GetReadmeToken{
         return onSalereadmeTokendata;
     }
 
-    // get: 내 소유 토큰 정보 조회
+    // get: 내 소유 전체 토큰 정보 조회
     function getMyReadmeTokend(address _readmeTokenOwner) view public returns (ReadmeTokenData[] memory) {
         // 내 소유 토큰 가져오기
         uint256[] memory myReadmeToken = mintReadmeTokenAddress.getOwnedTokens(_readmeTokenOwner);
