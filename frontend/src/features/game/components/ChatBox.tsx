@@ -12,6 +12,7 @@ import {
   setAnswerLength,
   setSolvers,
   setStarted,
+  setParticipants,
 } from "../gameSlice";
 
 import styles from "../Game.module.css";
@@ -30,14 +31,16 @@ const ChatBox = () => {
       //   console.log(`SocketIO Event: ${event}`, event);
       // }); // 모든 이벤트 리스너
 
-      socket.on("bye", (user: string, cnt: number) => {
+      socket.on("bye", (user: string, cnt: number, data: string) => {
         dispatch(setRoomCnt(cnt));
+        dispatch(setParticipants(JSON.parse(data)));
         dispatch(
           setMessages(MSG("system", user, `[${user}]님이 퇴장하셨습니다.`))
         );
       });
-      socket.on("welcome", (user: string, cnt: number) => {
+      socket.on("welcome", (user: string, cnt: number, data: string) => {
         dispatch(setRoomCnt(cnt));
+        dispatch(setParticipants(JSON.parse(data)));
         dispatch(
           setMessages(MSG("system", user, `[${user}]님이 입장하셨습니다.`))
         );
@@ -87,17 +90,31 @@ const ChatBox = () => {
     <>
       <div className={styles.chatBox}>
         <div className={styles.chatList}>
-          {messages.map((msg, index) => {
-            if (index !== messages.length - 1)
-              return (
-                <div key={index} className={styles.chatItem}>
-                  {`${msg.name} : (${msg.type}) ${msg.msg}`}
-                </div>
-              );
-            else
+          {messages.map((m, index) => {
+            const { name, type, msg } = m;
+            if (index !== messages.length - 1) {
+              if (type === "mine")
+                return (
+                  <div key={index} className={styles.mine}>
+                    {`${msg}`}
+                  </div>
+                );
+              else if (type === "system")
+                return (
+                  <div key={index} className={styles.system}>
+                    {`${msg}`}
+                  </div>
+                );
+              else if (type === "other")
+                return (
+                  <div key={index} className={styles.other}>
+                    {`${name} : ${msg}`}
+                  </div>
+                );
+            } else
               return (
                 <div ref={lastRef} key={index} className={styles.chatItem}>
-                  {`${msg.name} : (${msg.type}) ${msg.msg}`}
+                  {`${name} : (${type}) ${msg}`}
                 </div>
               );
           })}
