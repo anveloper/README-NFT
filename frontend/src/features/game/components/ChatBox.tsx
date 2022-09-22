@@ -18,6 +18,7 @@ import {
 import styles from "../Game.module.css";
 const ChatBox = () => {
   const [newMessage, setNewMessage] = useState("");
+  const boxRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const lastRef = useRef<HTMLDivElement | null>(null);
   const messages = useAppSelector(selectMessages);
@@ -72,7 +73,7 @@ const ChatBox = () => {
       block: "start",
       behavior: "smooth",
     });
-  }, [messages]);
+  }, [messages, boxRef.current?.clientHeight]);
   const handleNewMessage = () => {
     if (newMessage.length === 0) {
       inputRef.current?.focus();
@@ -88,7 +89,7 @@ const ChatBox = () => {
   };
   return (
     <>
-      <div className={styles.chatBox}>
+      <div ref={boxRef} className={styles.chatBox}>
         <div className={styles.chatList}>
           {messages.map((m, index) => {
             const { name, type, msg } = m;
@@ -96,27 +97,43 @@ const ChatBox = () => {
               if (type === "mine")
                 return (
                   <div key={index} className={styles.mine}>
-                    {`${msg}`}
+                    <p>{msg}</p>
                   </div>
                 );
               else if (type === "system")
                 return (
                   <div key={index} className={styles.system}>
-                    {`${msg}`}
+                    <p>{msg}</p>
                   </div>
                 );
               else if (type === "other")
                 return (
                   <div key={index} className={styles.other}>
-                    {`${name} : ${msg}`}
+                    <h6>{name}</h6>
+                    <p>{msg}</p>
                   </div>
                 );
-            } else
-              return (
-                <div ref={lastRef} key={index} className={styles.chatItem}>
-                  {`${name} : (${type}) ${msg}`}
-                </div>
-              );
+            } else {
+              if (type === "mine")
+                return (
+                  <div ref={lastRef} key={index} className={styles.mine}>
+                    <p>{msg}</p>
+                  </div>
+                );
+              else if (type === "system")
+                return (
+                  <div ref={lastRef} key={index} className={styles.system}>
+                    <p>{msg}</p>
+                  </div>
+                );
+              else if (type === "other")
+                return (
+                  <div ref={lastRef} key={index} className={styles.other}>
+                    <h6>{name}</h6>
+                    <p>{msg}</p>
+                  </div>
+                );
+            }
           })}
         </div>
       </div>
