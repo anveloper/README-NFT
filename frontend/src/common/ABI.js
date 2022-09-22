@@ -1,5 +1,8 @@
+import { MintReadmeToken } from "./MintReadmeToken";
+import { SaleReadmeToken } from "./SaleReadmeToken";
 import { ReadmeABI } from "./ReadmeABI";
 import { SSFABI } from "./SSFABI";
+import { GetReadmeToken } from "./GetReadmeToken";
 
 /* 
 [컨트랙트 ABI]
@@ -10,9 +13,9 @@ import { SSFABI } from "./SSFABI";
 */
 const ABI = {
   CONTRACT_ABI: {
-    NFT_ABI: ReadmeABI,
-    SALE_FACTORY_ABI: [],
-    SALE_ABI: [],
+    MINTREADMETOKEN_ABI: MintReadmeToken,
+    SALEREADMETOKEN_ABI: SaleReadmeToken,
+    GETREADMETOKEN_ABI: GetReadmeToken,
     ERC_ABI: SSFABI,
   },
 };

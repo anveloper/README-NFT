@@ -1,4 +1,4 @@
-export const ReadmeABI = [
+export let MintReadmeToken = [
   {
     inputs: [],
     stateMutability: "nonpayable",
@@ -367,6 +367,65 @@ export const ReadmeABI = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+    ],
+    name: "tokenByIndex",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+    ],
+    name: "tokenOfOwnerByIndex",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [],
+    name: "totalSupply",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "from",
         type: "address",
@@ -402,7 +461,7 @@ export const ReadmeABI = [
   },
   {
     inputs: [],
-    name: "current",
+    name: "getCurrentNft",
     outputs: [
       {
         internalType: "uint256",
@@ -418,7 +477,7 @@ export const ReadmeABI = [
     inputs: [
       {
         internalType: "uint256",
-        name: "tokenId",
+        name: "_tokenId",
         type: "uint256",
       },
     ],
@@ -438,7 +497,7 @@ export const ReadmeABI = [
     inputs: [
       {
         internalType: "address",
-        name: "owner",
+        name: "_owner",
         type: "address",
       },
     ],
@@ -458,7 +517,7 @@ export const ReadmeABI = [
     inputs: [
       {
         internalType: "address",
-        name: "owner",
+        name: "_owner",
         type: "address",
       },
     ],
@@ -478,9 +537,44 @@ export const ReadmeABI = [
     inputs: [
       {
         internalType: "address",
-        name: "to",
+        name: "_owner",
         type: "address",
       },
+    ],
+    name: "getMyReadmeTokenArrayLength",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_owner",
+        type: "address",
+      },
+    ],
+    name: "getDrawReadmeTokenArrayLength",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
       {
         internalType: "string",
         name: "_metadataURI",
@@ -502,21 +596,21 @@ export const ReadmeABI = [
     inputs: [
       {
         internalType: "address",
-        name: "to",
+        name: "_to",
         type: "address",
       },
       {
         internalType: "address",
-        name: "from",
+        name: "_from",
         type: "address",
       },
       {
         internalType: "uint256",
-        name: "tokenId",
+        name: "_tokenId",
         type: "uint256",
       },
     ],
-    name: "_removeTokenFromList",
+    name: "removeTokenFromList",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
