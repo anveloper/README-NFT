@@ -51,15 +51,22 @@ const LiveList = () => {
         userAddress,
         userName,
         registrtHostAddress,
-        (title: string, cnt: number, host: any) => {
+        (
+          title: string,
+          cnt: number,
+          host: any,
+          answerLength: number,
+          data: string
+        ) => {
           setModalOpen(false);
-          console.log(host);
           setRegisterRoomName("");
           dispatch(
             setRoomInfo({
               roomName: title,
               roomCnt: cnt,
               hostUserName: host,
+              answerLength: answerLength,
+              participants: JSON.parse(data),
             })
           );
           navigator(`/game/${host}`);

@@ -79,22 +79,31 @@
 }
 
 .WalletAddressRegister button {
-  border: none;
-  width: 10vw;
+  border: 3px solid #79c4f2;
+  width: 60vw;
   height: 8vh;
   left: 1330px;
   top: 712px;
 
-  background: #79c4f2;
+  background: #ffffff;
   border-radius: 50px;
 
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 3em;
+  color: #3b82bf;
+  font-weight: 400;
+  font-size: 2.5em;
+  font-family: "IM_Hyemin-Bold";
 
+  display: flex;
   justify-content: center;
   text-align: center;
   align-items: center;
+}
+
+.metamaskImg {
+  width: 3vw;
+  height: 3vw;
+
+  margin-right: 1rem;
 }
 
 /* NFTDescription */

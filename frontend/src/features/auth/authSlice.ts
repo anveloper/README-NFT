@@ -11,7 +11,7 @@ export interface AuthState {
 
 const initialState: AuthState = {
   userAddress: `testAddress-${Math.floor(Math.random() * 123456)}`,
-  userName: `testName-${Math.floor(Math.random() * 100)}`,
+  userName: `익명의 ${Math.floor(Math.random() * 100)}번째 개발자`,
   userAvatar: "",
   status: "idle",
 };

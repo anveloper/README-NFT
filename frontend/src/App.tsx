@@ -1,5 +1,5 @@
 // core
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 // components
 import Navbar from "./components/Navbar";
@@ -19,11 +19,42 @@ import styles from "./App.module.css";
 import { useAppSelector } from "./app/hooks";
 import { selectUserAddress } from "./features/auth/authSlice";
 //testPage
+
 import TestPage from "./testWeb3/TestPage";
+
+import NFTLists from "./features/detail/NFTLists/NFTLists";
+import MyPageTest from "./features/mypage/MyPageTest";
+import NFTSaleTest from "./features/detail/SaleAnimal";
+import Mint from "./features/mint/Mint";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
   const { pathname } = useLocation();
+
+  // (정현) 임의로 메타마스크 로그인 유저 계정 정보 가져오는 함수. 차후 삭제 예정
+  const [account, setAccount] = useState<string>("");
+
+  const getAccount = async () => {
+    try {
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        // console.log(accounts[0]);
+        setAccount(accounts[0]);
+      } else {
+        alert("install metamask.");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getAccount();
+  }, [account]);
+  // (정현) 여기까지
+
   return (
     <div className={styles.container}>
       {userAddress ? (
@@ -37,8 +68,18 @@ function App() {
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>
+              <Route path="/mint" element={<Mint />} />
               <Route path="/detail" element={<Detail />} />
               <Route path="/sell" element={<Sell />} />
+              <Route
+                path="/temp-list"
+                element={<MyPageTest account={account} />}
+              />
+              <Route
+                path="/temp-sell"
+                element={<NFTSaleTest account={account} />}
+              />
+
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />

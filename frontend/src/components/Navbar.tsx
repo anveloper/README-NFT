@@ -17,6 +17,12 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.navButtonBox}>
+        <Link to="/temp-list">
+          <button>NFT리스트(테스트용)</button>
+        </Link>
+        <Link to="/temp-sell">
+          <button>NFT 판매(테스트용)</button>
+        </Link>
         <Link to="/detail">
           <button>NFT상세</button>
         </Link>
@@ -25,6 +31,9 @@ const Navbar = () => {
         </Link>
         <Link to="/mypage">
           <button>마이페이지</button>
+        </Link>
+        <Link to="/test">
+          <button>테스트페이지</button>
         </Link>
       </div>
       <div className={styles.profileTag}>

@@ -39,7 +39,8 @@ const Main = () => {
     } else {
       console.log("연결된 소켓 정보", socket);
     }
-  }, [dispatch, socket]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   useEffect(() => {
     if (pathname === "/")
@@ -60,7 +61,7 @@ const Main = () => {
         userAddress,
         userName,
         registerRoomName,
-        (room: string, cnt: number, host: any) => {
+        (room: string, cnt: number, host: any, data: string) => {
           setModalOpen(false);
           setRegisterRoomName("");
           dispatch(
@@ -68,6 +69,8 @@ const Main = () => {
               roomName: room,
               roomCnt: cnt,
               hostUserName: host,
+              answerLength: 0,
+              participants: JSON.parse(data),
             })
           );
           navigator(`/game/${host}`);
