@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Web3 from "web3";
 import COMMON_ABI from "../common/ABI";
 import getAddressFrom from "../utils/AddressExtractor";
@@ -21,9 +21,30 @@ const TestPage = () => {
   const [to, setTo] = useState("");
   const [what, setWhat] = useState("");
   // Web3
-  const web3 = new Web3(
-    new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
-  );
+  // const web3 = new Web3(
+  //   new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
+  // );
+  const [account, setAccount] = useState("");
+
+  const getAccount = async () => {
+    try {
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+
+        setAccount(accounts[0]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getAccount();
+  }, [account]);
+
+  const web3 = new Web3(window.ethereum);
   const MintReadmeContract = new web3.eth.Contract(
     COMMON_ABI.CONTRACT_ABI.MINTREADMETOKEN_ABI,
     process.env.REACT_APP_MINTREADMETOKEN_CA
@@ -53,8 +74,8 @@ const TestPage = () => {
   };
 
   const addItem = async () => {
-    let address = getAddressFrom(privKey);
-    if (address) {
+    // let address = getAddressFrom(privKey);
+    if (account) {
       const fr = new FileReader();
       var ipfs = IpfsAPI(process.env.REACT_APP_IPFS_IP);
       fr.readAsArrayBuffer(item);
@@ -76,13 +97,19 @@ const TestPage = () => {
           ipfs.files.add(Buffer.from(JSON.stringify(metadata)), (err, res) => {
             let tokenURI = "https://ipfs.io/ipfs/" + res[0].hash;
             console.log(tokenURI);
-            web3.eth.getBalance(address).then(console.log);
-            sendTransaction(
-              address,
-              privKey,
-              process.env.REACT_APP_MINTREADMETOKEN_CA,
-              MintReadmeContract.methods.create(tokenURI).encodeABI()
-            );
+            // sendTransaction(
+            //   address,
+            //   privKey,
+            //   process.env.REACT_APP_MINTREADMETOKEN_CA,
+            //   MintReadmeContract.methods.create(tokenURI).encodeABI()
+            // );
+            console.log(account);
+            MintReadmeContract.methods
+              .create(tokenURI)
+              .send({ from: account })
+              .then((receipt) => {
+                console.log(receipt);
+              });
           });
         });
       };
