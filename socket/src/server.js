@@ -97,7 +97,7 @@ io.on("connection", (socket) => {
       rooms.get(session)["title"],
       countRoom(session) - 1,
       session,
-      rooms.get(session)["answer"].length,
+      rooms.get(session)["answer"]?.length,
       getParticipants(session)
     );
     socket
@@ -217,7 +217,7 @@ io.on("connection", (socket) => {
   socket.on("draw_data", (session, data) => {
     // rooms.get(session)["data"].push(data);
     const dataList = rooms.get(session)["data"];
-    if (rooms.get(session)["started"]) dataList.push(data);
+    if (rooms.get(session)?.["started"]) dataList.push(data);
     socket.to(session).emit("draw_data", data);
   });
   socket.on("get_data", (session) => {
