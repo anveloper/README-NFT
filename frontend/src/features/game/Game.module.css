@@ -238,13 +238,47 @@
   width: 100%;
   border-radius: 20px;
 }
+/* noti */
 .notiBox {
   height: 40px;
   padding: 8px 12px;
-  background-color: #ff713e;
   color: white;
   box-shadow: 5px 5px 5px #00000030;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  -webkit-animation: flip-in-hor-top 8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: flip-in-hor-top 8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
+.track1,
+.track2 {
+  width: 100%;
+  position: absolute;
+  white-space: nowrap;
+  will-change: transform;
+  animation: marquee 15s linear infinite;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.track1 {
+  left: 0%;
+}
+.track2 {
+  left: 200%;
+}
+.content {
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: white;
+  font-size: 1.2rem;
+}
+/* tab */
 .tab {
   height: 40px;
   gap: 8px;
@@ -440,6 +474,14 @@
 .send:active {
   transform: scale(0.9);
 }
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-300%);
+  }
+}
 
 @-webkit-keyframes scale-in-top {
   0% {
@@ -529,5 +571,50 @@
     transform: scale(1);
     -webkit-transform-origin: 0% 0%;
     transform-origin: 0% 0%;
+  }
+}
+
+@-webkit-keyframes flip-in-hor-top {
+  0% {
+    -webkit-transform: rotateX(-80deg);
+    transform: rotateX(-80deg);
+    opacity: 0;
+  }
+  5% {
+    -webkit-transform: rotateX(0);
+    transform: rotateX(0);
+    opacity: 1;
+  }
+  95% {
+    -webkit-transform: rotateX(0);
+    transform: rotateX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: rotateX(-70deg);
+    transform: rotateX(-70deg);
+    opacity: 0;
+  }
+}
+@keyframes flip-in-hor-top {
+  0% {
+    -webkit-transform: rotateX(-80deg);
+    transform: rotateX(-80deg);
+    opacity: 0;
+  }
+  5% {
+    -webkit-transform: rotateX(0);
+    transform: rotateX(0);
+    opacity: 1;
+  }
+  95% {
+    -webkit-transform: rotateX(0);
+    transform: rotateX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: rotateX(-70deg);
+    transform: rotateX(-70deg);
+    opacity: 0;
   }
 }

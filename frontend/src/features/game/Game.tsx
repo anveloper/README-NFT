@@ -16,12 +16,13 @@ import NewHelmet from "../../components/NewHelmet";
 import AnswerBox from "./components/AnswerBox";
 import CanvasBox from "./components/CanvasBox";
 import TimerBox from "./components/TimerBox";
+import ToolBox from "./components/ToolBox";
+import NotiBox from "./components/NotiBox";
+import MemberBox from "./components/MemberBox";
 import ChatBox from "./components/ChatBox";
 import CanvasSpring from "../../assets/live-item/canvas_spring.svg";
 // css
 import styles from "./Game.module.css";
-import ToolBox from "./components/ToolBox";
-import MemberBox from "./components/MemberBox";
 const Game = () => {
   const userAddress = useAppSelector(selectUserAddress);
   const socket = useAppSelector(selectSocket);
@@ -82,7 +83,7 @@ const Game = () => {
         <TimerBox />
       </div>
       <div className={styles.social}>
-        <div className={styles.notiBox}>알림창이 위치할 자리입니다.</div>
+        <NotiBox />
         <div className={styles.tab}>
           <button
             className={tabFlag ? `${styles.active}` : ""}
@@ -98,7 +99,7 @@ const Game = () => {
           </button>
         </div>
         <MemberBox visible={!tabFlag} />
-        <ChatBox/>
+        <ChatBox />
       </div>
     </div>
   );
