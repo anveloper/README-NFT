@@ -43,7 +43,15 @@ const countRoom = (session) => {
 const countSolvers = (session) => {
   return io.sockets.adapter.rooms.get("solvers::" + session)?.size;
 };
-
+const getParticipants = (session) => {
+  const se = io.sockets.adapter.rooms.get(session);
+  const result = [];
+  se?.forEach((s) => {
+    const { id, nickname, address } = io.sockets.sockets.get(s);
+    result.push({ socketId: id, nickname, address });
+  });
+  return JSON.stringify(result);
+};
 io.on("connection", (socket) => {
   // common
   const { rooms } = io.sockets.adapter;
@@ -65,8 +73,18 @@ io.on("connection", (socket) => {
     rooms.get(session)["answer"] = "";
     rooms.get(session)["solver"] = "";
     rooms.get(session)["data"] = [];
-    done(rooms.get(session)["title"], countRoom(session) - 1, session);
-    socket.to(session).emit("welcome", socket.nickname, countRoom(session) - 1);
+    done(
+      rooms.get(session)["title"],
+      countRoom(session) - 1,
+      session,
+      getParticipants(session)
+    );
+    socket.emit(
+      "welcome",
+      socket.nickname,
+      countRoom(session) - 1,
+      getParticipants(session)
+    );
     io.sockets.emit("room_change", publicRooms());
   });
   socket.on("join_room", (userAddress, nickname, hostAddress, done) => {
@@ -79,9 +97,17 @@ io.on("connection", (socket) => {
       rooms.get(session)["title"],
       countRoom(session) - 1,
       session,
-      rooms.get(session)["answer"].length
+      rooms.get(session)["answer"]?.length,
+      getParticipants(session)
     );
-    socket.to(session).emit("welcome", socket.nickname, countRoom(session) - 1);
+    socket
+      .to(session)
+      .emit(
+        "welcome",
+        socket.nickname,
+        countRoom(session) - 1,
+        getParticipants(session)
+      );
     io.sockets.emit("room_change", publicRooms());
     // if (rooms.get(session)["started"]) {
     //   socket.emit("game_start");
@@ -96,7 +122,14 @@ io.on("connection", (socket) => {
   socket.on("disconnecting", () => {
     socket.rooms.forEach((session) => {
       socket.leave(session);
-      socket.to(session).emit("bye", socket.nickname, countRoom(session) - 1);
+      socket
+        .to(session)
+        .emit(
+          "bye",
+          socket.nickname,
+          countRoom(session) - 1,
+          getParticipants(session)
+        );
     });
   });
   socket.on("disconnect", () => {
@@ -172,7 +205,7 @@ io.on("connection", (socket) => {
   socket.on("get_solver", (session) => {
     socket.emit(
       "send_solver",
-      rooms.get(session)["solver"] ?? "아직 정답자가 없습니다."
+      rooms.get(session)?.["solver"] ?? "아직 정답자가 없습니다."
     );
   });
   socket.on("game_start", (session) => {
@@ -184,12 +217,12 @@ io.on("connection", (socket) => {
   socket.on("draw_data", (session, data) => {
     // rooms.get(session)["data"].push(data);
     const dataList = rooms.get(session)["data"];
-    if (rooms.get(session)["started"]) dataList.push(data);
+    if (rooms.get(session)?.["started"]) dataList.push(data);
     socket.to(session).emit("draw_data", data);
   });
   socket.on("get_data", (session) => {
-    socket.emit("set_data", JSON.stringify(rooms.get(session)["data"]));
-    if (rooms.get(session)["started"]) socket.emit("game_start");
+    socket.emit("set_data", JSON.stringify(rooms.get(session)?.["data"]));
+    if (rooms.get(session)?.["started"]) socket.emit("game_start");
   });
   socket.on("reset_canvas", (session) => {
     rooms.get(session)["data"] = [];
@@ -207,6 +240,6 @@ io.on("connection", (socket) => {
 
 const handleListen = (err) =>
   err
-    ? console.log(err)
+    ? console.log(`Soket Error`, err)
     : console.log(`Listening on.. http://localhost:${PORT}`);
 server.listen(PORT, handleListen);
