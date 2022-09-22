@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
+import { useNavigate } from "react-router-dom";
 // state
 import {
   selectMessages,
@@ -22,6 +23,7 @@ const ChatBox = () => {
   const hostUserName = useAppSelector(selectHostUserName);
   const socket = useAppSelector(selectSocket);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     if (socket) {
       // socket.onAny((event) => {
@@ -54,8 +56,13 @@ const ChatBox = () => {
       socket.on("game_start", () => {
         dispatch(setStarted(true));
       });
+      socket.on("host_leave", () => {
+        socket.emit("leave_room", hostUserName);
+        navigate("/live");
+      });
     }
-  }, [dispatch, hostUserName, socket]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   useEffect(() => {
     lastRef.current?.scrollIntoView({
