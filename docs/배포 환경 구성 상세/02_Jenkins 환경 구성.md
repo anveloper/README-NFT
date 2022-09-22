@@ -470,13 +470,17 @@ Nginx에 관한 설정은 각 프로젝트의 nginx나 nginx와 ssl 적용 항�
 
 <br>
 
-### 추가 MM과 연동해보기
+### (추가) MM과 연동해보기
+
+#### 방법1. 직접 작성
 
 완벽하지는 않지만 MM에 빌드가 성공했을 경우 메세지를 보낼 수도 있습니다.
 
 빌드 구성 단계에서 도커 이미지 빌드 작업이 다 끝난 이후에 해당 액션이 발생할 수 있도록
 
 새롭게 빌드 단계를 추가하여 아래와 같이 입력해줍니다.
+
+추가) 찾아보니 https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project#Buildingasoftwareproject-JenkinsSetEnvironmentVariables에 접속하여 빌드 관련 변수명을 확인할 수 있고 해당 변수명을 적절하게 바인딩하여 사용한다면 원하는 메세지를 출력 가능할 것 같다.
 
 ![image](https://user-images.githubusercontent.com/93081720/191686341-33506d84-00e9-44e0-bd19-e68e226b8a9e.png)
 
@@ -523,7 +527,81 @@ eval $REQUETE
 
 여기서 제일 마지막에서 두번째에 있는 url을 MM에서 발급받은 Incoming Webhook의 주소를 써주시면 됩니다.
 
+<br>
 
+#### 방법2. 플러그인 이용 - pipeline 스크립트 작성
+
+pipeline 스크립트로 jenkins 빌드 과정을 구성했다면 MatterMost Notification Application을 설치하고 다음과 같이 사용할 수 있다.
+
+```java
+mattermostSend(color: "#2A42EE",
+               message: "Simple test message",
+              channel: "채널이름",
+              endpoint: "MM incoming webhook")
+```
+
+```
+pipeline {
+    agent {
+        docker {
+            image 'maven:3-alpine'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
+    stages {
+        stage('Build') {
+           steps {  
+                script {
+                    try {
+                        mattermostSend (
+                            color: "#2A42EE", 
+                            message: "Build STARTED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                        )                   
+                        sh 'mvn -B -DskipTests clean package'
+                    } catch(e) {
+                        currentBuild.result = "FAILURE"
+                    } finally {
+                        if(currentBuild.result != "FAILURE") {
+                            mattermostSend (
+                                color: "danger", 
+                                message: "Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                            )
+                        } else {
+                            mattermostSend (
+                                color: "good", 
+                                message: "Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                            )
+                        }                            
+                    }           
+                }
+            }      
+        }
+    }
+}
+```
+
+<br>
+
+#### 방법3. 플러그인 이용 - 빌드 구성에서 설정하기
+
+빌드 구성에서 MM notification 플러그인을 사용하여 간단하게 적용시킬 수도 있다. 이 방법은 간단하지만 메세지를 변경할 수 없다는 단점이 존재한다.
+
+빌드 후 조치 항목에서 `빌드 후 조치 추가`를 선택하여 `Mattermost Notifications`를 선택한다.
+
+![image](https://user-images.githubusercontent.com/93081720/191717737-7ee88cdd-9ee0-4fc0-b8fc-b50475e39d4c.png)
+
+<br>
+
+단, 여기서 주의할 점
+
+- Endpoint에는 MM incoming Hook url을 기입해주면 됨
+- Project_Channel에는 해당 MM 채널의 명을 입력해줘야함 => 만약 MM 채널의 이름과 다를 경우, 하단의 `Test Connection`을 눌렀을 때 failed가 나온다.
+
+![image](https://user-images.githubusercontent.com/93081720/191718681-e28cc64d-5ac9-4e90-862d-b5a3786b16e8.png)
+
+하단의 `Test Connection`에서 Success가 나오면 성공!!
+
+<br>
 
 이것으로 Jenkins 빌드 자동화 과정을 끝마칩니다.
 
