@@ -27,7 +27,7 @@ contract SaleReadmeToken{
         uint256 _readmeTokenId, 
         uint256 _price,
         uint256 _endTime
-        ) public{
+        ) public {
         
         // 판매등록하려는 주인 확인
         address readmeTokenOwner = mintReadmeTokenAddress.ownerOf(_readmeTokenId);
@@ -53,7 +53,7 @@ contract SaleReadmeToken{
     function purchaseReadmeToken(uint256 _readmeTokenId) public payable {
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrices[_readmeTokenId];
-        address buyer = msg.sender;
+        address buyer = payable(msg.sender);
 
         // 판매자 확인
         address readmeTokenOwner = mintReadmeTokenAddress.ownerOf(_readmeTokenId);
@@ -87,7 +87,7 @@ contract SaleReadmeToken{
     }
 
     // 판매 취소
-    function cancelReadmeToken(uint256 _readmeTokenId) public payable {
+    function cancelReadmeToken(uint256 _readmeTokenId) public {
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrices[_readmeTokenId];
         address cancel = msg.sender;

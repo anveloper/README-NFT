@@ -37,7 +37,6 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
     // get: 내 주소 -> 소유 nft tokenId
     function getOwnedTokens(address _owner) public view validAddress(_owner) returns (uint256[] memory) {
-        require(_owner != msg.sender, "Not your nft");
         return ownedTokens[_owner];
     }
 
