@@ -55,13 +55,13 @@
 
 ### 1. MySQL
 
-[자세히 보기]([docs/배포 환경 구성 상세/01_MySQL 환경 구성.md · feature/back-issue50 · s07-blockchain-nft-sub2 / S07P22B108 · GitLab (ssafy.com)](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/01_MySQL 환경 구성.md))
+[자세히 보기](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/01_MySQL 환경 구성.md)
 
 <br>
 
 ### 2. Jenkins
 
-[자세히 보기]([docs/배포 환경 구성 상세/02_Jenkins 환경 구성.md · feature/back-issue50 · s07-blockchain-nft-sub2 / S07P22B108 · GitLab (ssafy.com)](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/02_Jenkins 환경 구성.md))
+[자세히 보기](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/02_Jenkins 환경 구성.md)
 
 #### 빌드 단계
 
@@ -113,7 +113,7 @@ echo "Run socket"
 
 ### 3. Backend
 
-[자세히 보기]([docs/배포 환경 구성 상세/03_Backend 환경 구성.md · feature/back-issue50 · s07-blockchain-nft-sub2 / S07P22B108 · GitLab (ssafy.com)](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/03_Backend 환경 구성.md))
+[자세히 보기](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/03_Backend 환경 구성.md)
 
 #### Dockerfile
 
@@ -147,7 +147,7 @@ ENTRYPOINT ["java", "-jar", "/app.jar"]
 
 ### 4. Frontend
 
-[자세히 보기]([docs/배포 환경 구성 상세/04_Frontend 환경 구성.md · feature/back-issue50 · s07-blockchain-nft-sub2 / S07P22B108 · GitLab (ssafy.com)](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/04_Frontend 환경 구성.md))
+[자세히 보기](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/04_Frontend 환경 구성.md)
 
 #### Dockerfile
 
@@ -202,7 +202,7 @@ server {
 
 ### 5. Nginx, SSL
 
-[자세히 보기]([docs/배포 환경 구성 상세/05_Nginx, SSL 설정.md · feature/back-issue50 · s07-blockchain-nft-sub2 / S07P22B108 · GitLab (ssafy.com)](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/05_Nginx%2C SSL 설정.md))
+[자세히 보기](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/05_Nginx%2C SSL 설정.md)
 
 #### nginx.conf
 
@@ -348,7 +348,7 @@ server {
 
 ### 6. Web Socket
 
-[자세히 보기]([docs/배포 환경 구성 상세/06_Socket 환경 구성.md · feature/back-issue50 · s07-blockchain-nft-sub2 / S07P22B108 · GitLab (ssafy.com)](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/06_Socket 환경 구성.md))
+[자세히 보기](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/back-issue50/docs/배포 환경 구성 상세/06_Socket 환경 구성.md)
 
 #### Dockerfile
 
