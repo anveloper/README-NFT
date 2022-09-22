@@ -4,7 +4,9 @@
 
 > Jenkins
 
-![image](https://user-images.githubusercontent.com/93081720/191645439-6e86c92c-3fb9-490c-a23c-fa7fb70bf746.png)
+|                           Jenkins                            |
+| :----------------------------------------------------------: |
+| ![image](https://user-images.githubusercontent.com/93081720/191645439-6e86c92c-3fb9-490c-a23c-fa7fb70bf746.png) |
 
 Docker-Compose를 이용하여 젠킨스 이미지를 설치하고 빌드 환경을 구성하여, 작업 결과를 push했을 때, webhook을 통해 자동으로 빌드를 시작하게끔 설정까지 진행하고자함
 

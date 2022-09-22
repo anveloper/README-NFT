@@ -4,7 +4,11 @@
 
 > MySQL
 
-<img src="https://user-images.githubusercontent.com/93081720/191645601-4e8f6ea0-ec6b-43fb-b2bc-5c974d859380.png" referrerpolicy="no-referrer" alt="image" width="500px" height="300px">
+|                            MySQL                             |
+| :----------------------------------------------------------: |
+| <img src="https://user-images.githubusercontent.com/93081720/191645601-4e8f6ea0-ec6b-43fb-b2bc-5c974d859380.png" referrerpolicy="no-referrer" alt="image" width="500px" height="300px"> |
+
+<br>
 
 ## 환경 구성 과정
 
