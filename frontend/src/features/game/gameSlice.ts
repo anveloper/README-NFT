@@ -80,6 +80,9 @@ export const gameSlice = createSlice({
       state.messages = [
         { type: "system", name: "관리자", msg: "대화를 시작합니다." },
       ];
+      state.timeover = false;
+      state.started = false;
+      state.solver = "";
     },
     setAnswer: (state, { payload }) => {
       state.answer = payload;
@@ -98,6 +101,9 @@ export const gameSlice = createSlice({
       state.solversCnt = solversCnt;
       state.roomCnt = roomCnt;
     },
+    setSolver: (state, { payload }) => {
+      state.solver = payload;
+    },
   },
   extraReducers: {},
 });
@@ -115,6 +121,7 @@ export const {
   setTimeover,
   setStarted,
   setSolvers,
+  setSolver,
 } = gameSlice.actions;
 // selector
 export const selectSocket = (state: RootState) => state.game.socket;

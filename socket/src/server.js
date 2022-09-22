@@ -171,7 +171,7 @@ io.on("connection", (socket) => {
   );
   socket.on("get_solver", (session) => {
     socket.emit(
-      "send_answer",
+      "send_solver",
       rooms.get(session)["solver"] ?? "아직 정답자가 없습니다."
     );
   });
@@ -198,6 +198,10 @@ io.on("connection", (socket) => {
   });
   socket.on("timer_start", (session, time) => {
     socket.to(session).emit("timer_start", time);
+  });
+  socket.on("game_end", (session, done) => {
+    socket.to(session).emit("host_leave");
+    done(rooms.get(session)["answer"], rooms.get(session)["solver"]);
   });
 });
 
