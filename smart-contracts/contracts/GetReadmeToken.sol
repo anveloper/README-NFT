@@ -24,28 +24,6 @@ contract GetReadmeToken{
         string metaDataURI;
     }
 
-
-    // get: 전체 토큰 정보 조회
-    function getReadmeTokend(address _readmeTokenOwner) view public returns (ReadmeTokenData[] memory) {
-        // 잔여 nft
-        uint256 readmeLength = mintReadmeTokenAddress.balanceOf(_readmeTokenOwner);
-        // 남은 토큰이 있는지 확인
-        require(readmeLength != 0, "Not have Token");
-
-        ReadmeTokenData[] memory readmeTokendata = new ReadmeTokenData[](readmeLength);
-
-        for(uint256 i = 0; i < readmeLength; i++){
-            uint256 readmeTokenId = mintReadmeTokenAddress.tokenOfOwnerByIndex(_readmeTokenOwner, i); // tokenId
-            uint256 readmeTokenPrice = saleReadmeToken.getReadmeTokenPrice(readmeTokenId); //price
-            address readmeTokenOwner = mintReadmeTokenAddress.ownerOf(readmeTokenId); // 소유주
-            string memory metaDataURI = mintReadmeTokenAddress.tokenURI(readmeTokenId); // 메타데이터
-
-            readmeTokendata[i] = ReadmeTokenData(readmeTokenId, readmeTokenPrice, readmeTokenOwner, metaDataURI);
-        }
-
-        return readmeTokendata;
-    }
-
     // get: 전체 판매 중인 토큰 정보 조회
     function getSaleReadmeTokend() view public returns (ReadmeTokenData[] memory) {
         // 판매 중인 토큰 목록 가져오기

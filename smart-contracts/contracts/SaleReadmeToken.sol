@@ -72,8 +72,8 @@ contract SaleReadmeToken{
         mintReadmeTokenAddress.safeTransferFrom(readmeTokenOwner, msg.sender, _readmeTokenId);
         
         // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
-
         readmeTokenPrices[_readmeTokenId] = 0;
+        
         // 판매 중 목록 수정
         for(uint256 i = 0; i < onSaleReadmeToken.length; i++) {
             if(readmeTokenPrices[onSaleReadmeToken[i]] == 0){

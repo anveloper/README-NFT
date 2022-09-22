@@ -47,12 +47,12 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     }
 
     // get: 내 소유 nft 개수 조회
-    function getMyReadmeTokenArrayLength(address _owner) public view returns (uint256) {
+    function getMyReadmeTokenArrayLength(address _owner) public view validAddress(_owner) returns (uint256) {
         return ownedTokens[_owner].length;
     }
 
     // get: 내가 그린 nft 개수 조회
-    function getDrawReadmeTokenArrayLength(address _owner) public view returns (uint256) {
+    function getDrawReadmeTokenArrayLength(address _owner) public view validAddress(_owner) returns (uint256) {
         return drawTokens[_owner].length;
     }
 
@@ -75,7 +75,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
 
     // nft 판매 시, 소유한 토큰 목록 변경
-    function removeTokenFromList(address _to, address _from, uint256 _tokenId) public {
+    function removeTokenFromList(address _to, address _from, uint256 _tokenId) validAddress(_to) public {
         uint256 tokenList = ownedTokens[_from].length; // 현재 소유토큰 개수 확인
 
         uint256 lasTokenIdx = tokenList - 1; // 마지막 인덱스 값
