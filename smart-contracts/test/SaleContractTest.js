@@ -1,4 +1,3 @@
-// 상호작용할 계약을 truffle에게 알리는 역할
 const SsafyToken = artifacts.require("SsafyToken");
 const ReadmeToken = artifacts.require("ReadmeToken");
 const Sale = artifacts.require("Sale");
@@ -93,32 +92,16 @@ contract("Sale Contract Testing", (accounts) => {
     const finalowner = await ReadmeTokenContract.ownerOf(itemId);
 
     assert.equal(finalowner, BidContract, "Fail to TransferFrom");
-
-    // TODO
-    // 다음을 테스트를 통과해야합니다.
-    // assert.equal(bidder2, await getNftOwner(), "Confirm Failed");
-    // assert.equal(1000, await getBalance(bidder1), "Refund Failed");
   });
 
   it("Bid and Purchase", async () => {
     const seller = accounts[0];
     const bidder = accounts[1];
     const purchaser = accounts[2];
-
-    // TODO
-    // 다음을 테스트를 통과해야합니다.
-    // assert.equal(purchaser, await getNftOwner(), "Not Owned By Purchaser");
-    // assert.equal(1000, await getBalance(bidder), "Refund Failed");
-    // assert.equal(900, await getBalance(purchaser), "Transfer Failed");
   });
 
   it("Bid and Cancel", async () => {
     const seller = accounts[0];
     const bidder = accounts[1];
-
-    // TODO
-    // 다음을 테스트를 통과해야합니다.
-    // assert.equal(seller, await getNftOwner(), "Cancellation Failed");
-    // assert.equal(1000, await getBalance(bidder), "Refund Failed");
   });
 });
