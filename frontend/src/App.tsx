@@ -26,6 +26,7 @@ import NFTLists from "./features/detail/NFTLists/NFTLists";
 import MyPageTest from "./features/mypage/MyPageTest";
 import NFTSaleTest from "./features/detail/SaleAnimal";
 import Mint from "./features/mint/Mint";
+import MyMintList from "./features/mint/MyMintList";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -68,17 +69,11 @@ function App() {
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>
-              <Route path="/mint" element={<Mint />} />
+              <Route path="/mint" element={<Mint account={account} />} />
               <Route path="/detail" element={<Detail />} />
               <Route path="/sell" element={<Sell />} />
-              <Route
-                path="/temp-list"
-                element={<MyPageTest account={account} />}
-              />
-              <Route
-                path="/temp-sell"
-                element={<NFTSaleTest account={account} />}
-              />
+              <Route path="/temp-list" element={<MyMintList account={account} />} />
+              <Route path="/temp-sell" element={<NFTSaleTest account={account} />} />
 
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />

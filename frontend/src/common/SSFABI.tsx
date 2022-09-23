@@ -1,4 +1,6 @@
-export let SSFABI = [
+import { AbiItem } from "web3-utils";
+
+export let SSFABI: AbiItem[] = [
   {
     inputs: [
       {

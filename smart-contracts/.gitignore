@@ -183,3 +183,7 @@ package-lock.json
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,solidity,soliditytruffle
 
 .secret
+
+# artifacts 
+/contracts/access/artifacts
+*/artifacts

@@ -20,6 +20,7 @@ const MyPageTest: FC<MyPageTestProps> = ({ account }) => {
       if (!account) return; // 계정이 없는 경우.
       const response = await mintAnimalContract.methods.mintAnimalToken().send({ from: account });
       console.log(response);
+
       if (response.status) {
         const balanceLength = await mintAnimalContract.methods.balanceOf(account).call();
         const animalTokenId = await mintAnimalContract.methods.tokenOfOwnerByIndex(account, parseInt(balanceLength.length, 10) - 1).call();
