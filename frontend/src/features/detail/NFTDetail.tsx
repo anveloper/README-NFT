@@ -10,7 +10,7 @@ const Detail = () => {
       <div className={styles.detail_container}>
         <div className={styles.cards}>
           <div className={styles.card_contents_front}>
-            <img className={styles.card_img} src={require("../../assets/nft-img/dog.png")} alt="dog" />
+            <img className={styles.card_img} src={require("../../assets/nft-img/1.png")} alt="dog" />
             <div className={styles.card_img_info}>
               <p>NFT Name</p>
               <p>Price</p>

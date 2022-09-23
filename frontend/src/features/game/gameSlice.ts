@@ -8,9 +8,14 @@ export interface RoomConfig {
   cnt: number;
 }
 export interface ChatConfig {
-  type: "other" | "mine" | "system";
+  type: "other" | "mine" | "system" | "noti";
   name: string;
   msg: string;
+}
+export interface participantConfig {
+  socketId: string;
+  nickname: string;
+  address: string;
 }
 export interface GameState {
   roomList: RoomConfig[];
@@ -19,10 +24,14 @@ export interface GameState {
   roomName: string;
   roomCnt: number;
   answer: string;
+  answerLength: number;
   color: string;
   messages: ChatConfig[];
   timeover: boolean;
   started: boolean;
+  solver: string;
+  solversCnt: number;
+  participants: participantConfig[];
   status: "idle" | "loading" | "failed";
 }
 
@@ -33,10 +42,14 @@ const initialState: GameState = {
   roomName: "",
   roomCnt: 0,
   answer: "",
+  answerLength: 0,
   color: "#000000",
   messages: [{ type: "system", name: "관리자", msg: "대화를 시작합니다." }],
   timeover: false,
-  started: true,
+  started: false,
+  solver: "",
+  solversCnt: 0,
+  participants: [],
   status: "idle",
 };
 
@@ -57,6 +70,8 @@ export const gameSlice = createSlice({
       state.roomName = payload.roomName;
       state.hostUserName = payload.hostUserName;
       state.roomCnt = payload.roomCnt;
+      state.answerLength = payload.answerLength;
+      state.participants = payload.participants;
     },
     setColor: (state, { payload }) => {
       state.color = payload;
@@ -73,12 +88,32 @@ export const gameSlice = createSlice({
       state.messages = [
         { type: "system", name: "관리자", msg: "대화를 시작합니다." },
       ];
+      state.timeover = false;
+      state.started = false;
+      state.solver = "";
     },
-    setTimeover: (state) => {
-      state.timeover = !state.timeover;
+    setAnswer: (state, { payload }) => {
+      state.answer = payload;
     },
-    setStarted: (state) => {
-      state.started = !state.started;
+    setAnswerLength: (state, { payload }) => {
+      state.answerLength = payload;
+    },
+    setTimeover: (state, { payload }) => {
+      state.timeover = payload;
+    },
+    setStarted: (state, { payload }) => {
+      state.started = payload;
+    },
+    setSolvers: (state, { payload: { solver, solversCnt, roomCnt } }) => {
+      state.solver = solver;
+      state.solversCnt = solversCnt;
+      state.roomCnt = roomCnt;
+    },
+    setSolver: (state, { payload }) => {
+      state.solver = payload;
+    },
+    setParticipants: (state, { payload }) => {
+      state.participants = payload;
     },
   },
   extraReducers: {},
@@ -92,8 +127,13 @@ export const {
   setColor,
   setMessages,
   resetRoomInfo,
+  setAnswer,
+  setAnswerLength,
   setTimeover,
   setStarted,
+  setSolvers,
+  setSolver,
+  setParticipants,
 } = gameSlice.actions;
 // selector
 export const selectSocket = (state: RootState) => state.game.socket;
@@ -103,8 +143,13 @@ export const selectRoomCnt = (state: RootState) => state.game.roomCnt;
 export const selectRoomList = (state: RootState) => state.game.roomList;
 export const selectMessages = (state: RootState) => state.game.messages;
 export const selectColor = (state: RootState) => state.game.color;
+export const selectAnswer = (state: RootState) => state.game.answer;
+export const selectAnswerLength = (state: RootState) => state.game.answerLength;
 export const selectTimeover = (state: RootState) => state.game.timeover;
 export const selectStarted = (state: RootState) => state.game.started;
+export const selectSolver = (state: RootState) => state.game.solver;
+export const selectSolversCnt = (state: RootState) => state.game.solversCnt;
+export const selectParticipants = (state: RootState) => state.game.participants;
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };

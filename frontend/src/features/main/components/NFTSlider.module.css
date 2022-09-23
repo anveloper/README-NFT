@@ -49,11 +49,11 @@
 
 .next > svg,
 .prev > svg {
-  color: #68edff;
+  color: #21658f;
   transform: scale(4);
 }
 
 .next > svg:hover,
 .prev > svg:hover {
-  color: #21658f;
+  color: #68edff;
 }
