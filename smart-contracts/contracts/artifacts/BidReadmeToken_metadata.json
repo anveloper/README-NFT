@@ -9,7 +9,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_mintReadmeTokenAddress",
+						"name": "_mintReadmeToken",
 						"type": "address"
 					},
 					{
@@ -22,13 +22,150 @@
 				"type": "constructor"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "bidder",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "biddingPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "BidList",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_biddingPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "bid",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "buy",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "cancelAuction",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_endTime",
+						"type": "uint256"
+					}
+				],
+				"name": "enrollAuction",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
-				"name": "mintReadmeTokenAddress",
+				"name": "getTokenOnAuction",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "mintReadmeToken",
 				"outputs": [
 					{
 						"internalType": "contract MintReadmeToken",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "readmeTokenEndTime",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "readmeTokenPrice",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -42,6 +179,30 @@
 						"internalType": "contract SaleReadmeToken",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "tokenBiddingList",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -63,7 +224,7 @@
 		"compilationTarget": {
 			"contracts/BidReadmeToken.sol": "BidReadmeToken"
 		},
-		"evmVersion": "petersburg",
+		"evmVersion": "byzantium",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -76,27 +237,27 @@
 	},
 	"sources": {
 		"contracts/BidReadmeToken.sol": {
-			"keccak256": "0xc6b7fe353773b3c231a24c9af310ff460fdb8db70e98e50776e55a6448af0ec5",
+			"keccak256": "0x6ad2e5d9deb27574bb5f1365d026bbcf9634d5e2ec48980040829873864100b4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c9ab80906ef36ededaa1572bb5c535880a941c14552fa5a9b021018ba132b001",
-				"dweb:/ipfs/QmXaLS7pjLiAZpz6jvTvY62sAoJeLw9iZeytZ8QYWCs7be"
+				"bzz-raw://58146ec500809bb763b4f69f0acf414bf049662235ffd35f3d766f31debfa9bd",
+				"dweb:/ipfs/QmYc83u6rVjAcKQASepXXcukTs7vaN4mgJTD2okwwigeec"
 			]
 		},
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0x3e05ab3d557c74347dc8cc3317097896501f5e7197c459af087d80b0485b76bc",
+			"keccak256": "0xbbcb490bae19c416198575947adb365b1d4e6cc65b68f8560e4d806533cfd852",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fe2eb7fbffa1f18a3811734a1b2617497b6de8111e604213a988be0a170c3481",
-				"dweb:/ipfs/QmQsJVnPp55whABdxWGuEUNV2yd4TmnsuMZsdy2vt5NkkP"
+				"bzz-raw://7711cace8724b3848de1c4233fa1adb4a1dd153c259e264e3177585da74198d2",
+				"dweb:/ipfs/QmZ9DuNttnXVPJdSXF2rXVazsGynTwLrxJzZck2uSjPmZT"
 			]
 		},
 		"contracts/SaleReadmeToken.sol": {
-			"keccak256": "0xf3082c0fade2bc4c3214543dec0ae2e4141f31cc05b37727b1065f4d02ed691e",
+			"keccak256": "0xfefdd60c943e06e054dd81a11c20f57878d938179576cb7f235643e1024ff961",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://aa160746fbd65b0c454c96feb8575d3503b150776dfb55356c4b6ade40402741",
-				"dweb:/ipfs/QmdTVMm5sAeUKDqBTouJZBRUY22oXLubLNJgNWpkych12Z"
+				"bzz-raw://94eb162a2a9b864669e5fe6989af2da22768ca461c5dff611578896990e06348",
+				"dweb:/ipfs/QmRM962Cr6mkLtHVqfKa2abkdcx1Vn1NsMpEdcB43umQoA"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {

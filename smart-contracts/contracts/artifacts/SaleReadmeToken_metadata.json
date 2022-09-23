@@ -9,7 +9,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_mintReadmeTokenAddress",
+						"name": "_mintReadmeToken",
 						"type": "address"
 					}
 				],
@@ -26,7 +26,26 @@
 				],
 				"name": "cancelReadmeToken",
 				"outputs": [],
-				"stateMutability": "payable",
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "getIsActive",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -76,7 +95,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "mintReadmeTokenAddress",
+				"name": "mintReadmeToken",
 				"outputs": [
 					{
 						"internalType": "contract MintReadmeToken",
@@ -112,6 +131,11 @@
 						"internalType": "uint256",
 						"name": "_readmeTokenId",
 						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_walletContract",
+						"type": "address"
 					}
 				],
 				"name": "purchaseReadmeToken",
@@ -146,7 +170,7 @@
 						"type": "uint256"
 					}
 				],
-				"name": "readmeTokenPrices",
+				"name": "readmeTokenPrice",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -155,6 +179,19 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "refundsReadmeToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -178,6 +215,37 @@
 				"name": "setForSaleReadmeToken",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "check",
+						"type": "bool"
+					}
+				],
+				"name": "setIsActive",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "walletContract",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			}
 		],
@@ -209,19 +277,19 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0x3e05ab3d557c74347dc8cc3317097896501f5e7197c459af087d80b0485b76bc",
+			"keccak256": "0x1b2ee6a12f1cc4acef207b173c9a09f5b84847284e2a50e036d60039d2dd4421",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fe2eb7fbffa1f18a3811734a1b2617497b6de8111e604213a988be0a170c3481",
-				"dweb:/ipfs/QmQsJVnPp55whABdxWGuEUNV2yd4TmnsuMZsdy2vt5NkkP"
+				"bzz-raw://66224e9e4f4e1f65118f565c53e662835cc3889363ce58f6637aefc389a97f97",
+				"dweb:/ipfs/QmabUbkuioRc2CC8pPjpdUesQt2DhzoHW5cXGVskhwMmMo"
 			]
 		},
 		"contracts/SaleReadmeToken.sol": {
-			"keccak256": "0xf3082c0fade2bc4c3214543dec0ae2e4141f31cc05b37727b1065f4d02ed691e",
+			"keccak256": "0xda1cb59a52caed78aba03c1bb4c69b4112f9ab6b279f5c0fb7c7b7a98f9aa1a1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://aa160746fbd65b0c454c96feb8575d3503b150776dfb55356c4b6ade40402741",
-				"dweb:/ipfs/QmdTVMm5sAeUKDqBTouJZBRUY22oXLubLNJgNWpkych12Z"
+				"bzz-raw://766e76ef5991fb6b115bd2e809841e3fe21f22ad8c853caab15e73bc0cad3740",
+				"dweb:/ipfs/QmZP6kmWNpp27A3sFJY5p8axZrHxMjx4izYiL6VE7vgUFR"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {

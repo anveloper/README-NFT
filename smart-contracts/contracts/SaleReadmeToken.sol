@@ -8,10 +8,11 @@ import "./MintReadmeToken.sol";
 
 
 contract SaleReadmeToken{
-    MintReadmeToken public mintReadmeTokenAddress;
+    MintReadmeToken public mintReadmeToken;
+    IERC20 public walletContract;
 
-    constructor (address _mintReadmeTokenAddress) {
-        mintReadmeTokenAddress = MintReadmeToken(_mintReadmeTokenAddress);
+    constructor (address _mintReadmeToken) {
+        mintReadmeToken = MintReadmeToken(_mintReadmeToken);
     }
 
     // 판매 등록 된 토큰 : tokenId
@@ -32,7 +33,7 @@ contract SaleReadmeToken{
         ) public {
         
         // 판매등록하려는 주인 확인
-        address readmeTokenOwner = mintReadmeTokenAddress.ownerOf(_readmeTokenId);
+        address readmeTokenOwner = mintReadmeToken.ownerOf(_readmeTokenId);
         address seller = msg.sender;
 
         // 판매등록 = 주인
@@ -43,13 +44,12 @@ contract SaleReadmeToken{
         require(onActiveTokens[_readmeTokenId] != true, "Already on Sale");
         // 판매 등록 확인
         require(readmeTokenPrice[_readmeTokenId] == 0, "Already On Sale");
-        // 컨트랙트의 권한 확인
-        require(mintReadmeTokenAddress.isApprovedForAll(readmeTokenOwner, address(this)), "Not Approve");
         
         // 가격 등록
         readmeTokenPrice[_readmeTokenId] = _price;
         // 시간 등록
-        readmeTokenEndTime[_readmeTokenId] = _endTime;
+        uint256 endTime = _endTime + block.timestamp;
+        readmeTokenEndTime[_readmeTokenId] = endTime;
         // 판매 등록 목록 수정
         onSaleReadmeToken.push(_readmeTokenId);
         // 판매/경매 등록으로 변경
@@ -57,12 +57,16 @@ contract SaleReadmeToken{
     }
 
     // 구매: buyer
-    function purchaseReadmeToken(uint256 _readmeTokenId) public payable {
+    function purchaseReadmeToken(uint256 _readmeTokenId, address _walletContract) public payable {
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address buyer = payable(msg.sender);
+
+        walletContract = IERC20(_walletContract);
+        uint256 balance = walletContract.balanceOf(buyer);
+
         // 판매자 확인
-        address readmeTokenOwner = mintReadmeTokenAddress.ownerOf(_readmeTokenId);
+        address readmeTokenOwner = mintReadmeToken.ownerOf(_readmeTokenId);
         
         // 시간 확인
         require(block.timestamp < readmeTokenEndTime[_readmeTokenId], "Time out!");
@@ -71,14 +75,14 @@ contract SaleReadmeToken{
         // 판매/경매 등록 여부 확인
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 구매자의 구매 능력 확인
-        require(price <= msg.value, "No money");
+        require(price <= balance, "No money");
         // 판매자 != 구매자 
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
         // 돈: 구매자(buyer: 함수 호출자) -> 판매자
-        payable(readmeTokenOwner).transfer(msg.value);
+        payable(readmeTokenOwner).transfer(price);
         // nft 전송: 판매자 -> 구매자
-        mintReadmeTokenAddress.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
+        mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
         
         // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
         readmeTokenPrice[_readmeTokenId] = 0;
@@ -95,7 +99,7 @@ contract SaleReadmeToken{
         }
 
         // 소유 토큰 목록 수정
-        mintReadmeTokenAddress.removeTokenFromList(buyer, readmeTokenOwner, _readmeTokenId);
+        mintReadmeToken.removeTokenFromList(buyer, readmeTokenOwner, _readmeTokenId);
     }
 
     // 판매 취소
@@ -104,7 +108,7 @@ contract SaleReadmeToken{
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address cancel = msg.sender;
         // 판매자 확인
-        address seller = mintReadmeTokenAddress.ownerOf(_readmeTokenId);
+        address seller = mintReadmeToken.ownerOf(_readmeTokenId);
         
         // 취소자 == 판매자 
         require(cancel == seller, "No Owner");
@@ -114,6 +118,37 @@ contract SaleReadmeToken{
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 시간 확인
         require(block.timestamp < readmeTokenEndTime[_readmeTokenId], "Time out!");
+        
+        // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
+        readmeTokenPrice[_readmeTokenId] = 0;
+        // 판매 중 목록에서 제거
+        setIsActive(_readmeTokenId, false);
+        
+        // 판매 중 목록 수정
+        for(uint256 i = 0; i < onSaleReadmeToken.length; i++) {
+            if(readmeTokenPrice[onSaleReadmeToken[i]] == 0){
+                onSaleReadmeToken[i] = onSaleReadmeToken[onSaleReadmeToken.length-1];
+                onSaleReadmeToken.pop();
+            }
+        }
+    }
+
+    // 미판분
+    function refundsReadmeToken(uint256 _readmeTokenId) public {
+        // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
+        uint256 price = readmeTokenPrice[_readmeTokenId];
+        address refund = msg.sender;
+        // 판매자 확인
+        address seller = mintReadmeToken.ownerOf(_readmeTokenId);
+        
+        // 취소자 == 판매자 
+        require(refund == seller, "No Owner");
+        // 판매중 확인
+        require(price > 0, "Not On Sale");
+        // 판매/경매 등록 여부 확인
+        require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
+        // 시간 확인
+        require(block.timestamp > readmeTokenEndTime[_readmeTokenId], "Time out!");
         
         // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
         readmeTokenPrice[_readmeTokenId] = 0;

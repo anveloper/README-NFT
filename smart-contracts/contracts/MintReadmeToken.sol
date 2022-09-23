@@ -4,8 +4,10 @@ pragma solidity ^0.8.4;
 import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 
 contract MintReadmeToken is ERC721Enumerable, Ownable{
+    IERC20 public walletContract;
 
     // 내 주소 -> 소유 nft tokenId
     mapping(address => uint256[]) private ownedTokens;
@@ -16,11 +18,19 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     // tokenId -> metadata
     mapping(uint256 => string) metadataURIs;
 
+    // 전체 토큰 id 목록
+    uint256[] totalReadmeToken;
+
     // 생성된 토큰 확인
     event Mint(
         uint256 indexed tokenId,
         address indexed owner,
         string indexed metadataURI
+    );
+
+    event Value(
+        uint256 indexed money,
+        address indexed sender
     );
 
     constructor() ERC721("ReadmeNFT", "RMN") {}
@@ -67,6 +77,8 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
         drawTokens[msg.sender].push(newTokenId); // 그린 목록 추가(그린 사람 = 민팅)
         
+        totalReadmeToken.push(newTokenId); // 전체 토큰 목록에 추가
+
         emit Mint(newTokenId, msg.sender, _metadataURI); // 생성 확인 로그(새로운 tokenId, 생성자, 메타데이터)
 
         return newTokenId;
@@ -92,6 +104,10 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
                 break;
             }
         }
+    }
+
+    function getTotalReadmeToken() view public returns(uint256[] memory){
+        return totalReadmeToken;
     }
 
     // 입력한 주소 유효성 검사
