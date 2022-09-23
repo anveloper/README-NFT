@@ -9,11 +9,9 @@ import "./MintReadmeToken.sol";
 
 contract SaleReadmeToken{
     MintReadmeToken public mintReadmeToken;
-    IERC20 public walletContract;
 
-    constructor (address _mintReadmeToken, address _currencyAddress) {
+    constructor (address _mintReadmeToken) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
-        walletContract = IERC20(_currencyAddress);
     }
 
     // 판매 등록 된 토큰 : tokenId
@@ -24,11 +22,6 @@ contract SaleReadmeToken{
     mapping (uint256 => uint256) public readmeTokenEndTime;
     // 판매/경매에 등록된 토큰
     mapping(uint256 => bool) onActiveTokens;
-
-    event Testlog (
-        address buyer,
-        address seller
-    );
 
 
     // 판매 등록: seller
@@ -83,7 +76,7 @@ contract SaleReadmeToken{
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
         // 돈: 구매자(buyer: 함수 호출자) -> 판매자
-        payable(readmeTokenOwner).transfer(price);
+        payable(readmeTokenOwner).transfer(msg.value);
         // nft 전송: 판매자 -> 구매자
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
         
@@ -100,8 +93,6 @@ contract SaleReadmeToken{
                 break;
             }
         }
-
-        emit Testlog(buyer, readmeTokenOwner);
 
         // 소유 토큰 목록 수정
         mintReadmeToken.removeTokenFromList(buyer, readmeTokenOwner, _readmeTokenId);

@@ -1,11 +1,16 @@
 import { AbiItem } from "web3-utils";
 
-export const SaleReadmeToken: AbiItem[] = [
+export const BidReadmeToken: AbiItem[] = [
   {
     inputs: [
       {
         internalType: "address",
         name: "_mintReadmeToken",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_saleReadmeToken",
         type: "address",
       },
     ],
@@ -18,17 +23,17 @@ export const SaleReadmeToken: AbiItem[] = [
       {
         indexed: false,
         internalType: "address",
-        name: "buyer",
+        name: "bidder",
         type: "address",
       },
       {
         indexed: false,
-        internalType: "address",
-        name: "seller",
-        type: "address",
+        internalType: "uint256",
+        name: "biddingPrice",
+        type: "uint256",
       },
     ],
-    name: "Testlog",
+    name: "BidList",
     type: "event",
   },
   {
@@ -39,26 +44,6 @@ export const SaleReadmeToken: AbiItem[] = [
         internalType: "contract MintReadmeToken",
         name: "",
         type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "onSaleReadmeToken",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -107,6 +92,45 @@ export const SaleReadmeToken: AbiItem[] = [
   },
   {
     inputs: [],
+    name: "saleReadmeToken",
+    outputs: [
+      {
+        internalType: "contract SaleReadmeToken",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "tokenBiddingList",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [],
     name: "walletContract",
     outputs: [
       {
@@ -137,10 +161,34 @@ export const SaleReadmeToken: AbiItem[] = [
         type: "uint256",
       },
     ],
-    name: "setForSaleReadmeToken",
+    name: "enrollAuction",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_readmeTokenId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_biddingPrice",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_currencyAddress",
+        type: "address",
+      },
+    ],
+    name: "bid",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+    payable: true,
   },
   {
     inputs: [
@@ -155,7 +203,7 @@ export const SaleReadmeToken: AbiItem[] = [
         type: "address",
       },
     ],
-    name: "purchaseReadmeToken",
+    name: "buy",
     outputs: [],
     stateMutability: "payable",
     type: "function",
@@ -169,7 +217,7 @@ export const SaleReadmeToken: AbiItem[] = [
         type: "uint256",
       },
     ],
-    name: "cancelReadmeToken",
+    name: "cancelAuction",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -182,28 +230,14 @@ export const SaleReadmeToken: AbiItem[] = [
         type: "uint256",
       },
     ],
-    name: "refundsReadmeToken",
+    name: "refuncAuction",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
-    name: "getOnSaleReadmeTokenArrayLength",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [],
-    name: "getOnSaleReadmeToken",
+    name: "getTokenOnAuction",
     outputs: [
       {
         internalType: "uint256[]",
@@ -214,63 +248,5 @@ export const SaleReadmeToken: AbiItem[] = [
     stateMutability: "view",
     type: "function",
     constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_readmeTokenId",
-        type: "uint256",
-      },
-    ],
-    name: "getReadmeTokenPrice",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "getIsActive",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_tokenId",
-        type: "uint256",
-      },
-      {
-        internalType: "bool",
-        name: "check",
-        type: "bool",
-      },
-    ],
-    name: "setIsActive",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
 ];

@@ -1,13 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { getDefaultMiddleware } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counterSlice";
 import authReducer from "../features/auth/authSlice";
 import gameReducer from "../features/game/gameSlice";
 import mintReducer from "../features/mint/mintSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     auth: authReducer,
     game: gameReducer,
     mint: mintReducer,
