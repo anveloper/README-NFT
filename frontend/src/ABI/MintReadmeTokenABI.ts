@@ -1,10 +1,6 @@
-<<<<<<< HEAD:frontend/src/common/ReadmeABI.tsx
 import { AbiItem } from "web3-utils";
 
-export const ReadmeABI: AbiItem[] = [
-=======
-export let MintReadmeToken = [
->>>>>>> 56d84c77d1d40b3ce34d320bdc2f9c3ac660524b:frontend/src/common/MintReadmeToken.js
+export const MintReadmeToken: AbiItem[] = [
   {
     inputs: [],
     stateMutability: "nonpayable",

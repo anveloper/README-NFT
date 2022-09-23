@@ -78,7 +78,7 @@ function App() {
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
-              <Route path="/mypage" element={<MyPage />} />
+              <Route path="/mypage" element={<MyPage account={account} />} />
               <Route path="/test" element={<TestPage />} />
             </Routes>
           </div>

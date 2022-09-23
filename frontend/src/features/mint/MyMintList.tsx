@@ -1,5 +1,4 @@
 import axios from "axios";
-import { read } from "fs";
 import React, { FC, useEffect, useState } from "react";
 import Web3 from "web3";
 import COMMON_ABI from "../../common/ABI";
@@ -37,9 +36,25 @@ const MyMintList: FC<MyMintListProps> = ({ account }) => {
 
       const response = await NFTContract.methods.getDrawTokens(account).call();
       console.log(response);
+      // console.log(response.length);
 
       for (let i = 0; i < response.length; i++) {
-        getToken(response[i]);
+        console.log(response[i]);
+        const res = await NFTContract.methods.tokenURI(response[i]).call();
+        axios({ url: res })
+          .then((data: any) => {
+            // console.log(data.data.imageURL);
+            tempReadmeCardArray.push({
+              fileName: data.data.fileName,
+              name: data.data.name,
+              author: data.data.author,
+              description: data.data.description,
+              imageURL: data.data.imageURL,
+            });
+          })
+          .catch((error: any) => {
+            console.error(error);
+          });
       }
 
       setReadmeArray(tempReadmeCardArray);
@@ -54,20 +69,20 @@ const MyMintList: FC<MyMintListProps> = ({ account }) => {
     // console.log(tokenId);
     // console.log(response);
 
-    axios({ url: response })
-      .then((data: any) => {
-        // console.log(data.data.imageURL);
-        tempReadmeCardArray.push({
-          fileName: data.data.fileName,
-          name: data.data.name,
-          author: data.data.author,
-          description: data.data.description,
-          imageURL: data.data.imageURL,
-        });
-      })
-      .catch((error: any) => {
-        console.error(error);
-      });
+    // axios({ url: response })
+    //   .then((data: any) => {
+    //     // console.log(data.data.imageURL);
+    //     tempReadmeCardArray.push({
+    //       fileName: data.data.fileName,
+    //       name: data.data.name,
+    //       author: data.data.author,
+    //       description: data.data.description,
+    //       imageURL: data.data.imageURL,
+    //     });
+    //   })
+    //   .catch((error: any) => {
+    //     console.error(error);
+    //   });
   };
 
   useEffect(() => {
@@ -78,12 +93,14 @@ const MyMintList: FC<MyMintListProps> = ({ account }) => {
   return (
     <div>
       <div>Account: {account}</div>
+      <div>{readmeArray.length}</div>
       <div>
-        {readmeArray.map((v: any) => {
+        {readmeArray.map((v: any, i: number) => {
           console.log(v);
           return (
-            <div>
-              <img src={v.imageURL} alt="NFT이미지" />
+            <div key={i}>
+              {/* <img src={v.fileName} alt="NFT이미지" /> */}
+              <div>{v.fileName}</div>
             </div>
           );
         })}
