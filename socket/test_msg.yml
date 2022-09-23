@@ -1,0 +1,27 @@
+config:
+  target: "http://localhost:5000"
+  socketio:
+    query: "id=srbF5QCIU9wgpUuQABp7"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+scenarios:
+  - name: "Create room event"
+    engine: socketio
+    flow:
+      - emit:
+          chennel: "enter_room"
+          data:
+            userAddress: "host-address"
+            nickname: "{{$randomString()}}"
+            roomTitle: "{{$randomString()}}"
+            done: "{{console.log}}"
+      - think: 3
+      - loop:
+          - emit:
+            chennel: "new_message"
+            data:
+              session: "host-address"
+              msg: "{{$randomString()}}"
+              done: "{{console.log}}"
+          - think: 1
