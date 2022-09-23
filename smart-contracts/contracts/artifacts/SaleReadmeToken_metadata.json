@@ -131,11 +131,6 @@
 						"internalType": "uint256",
 						"name": "_readmeTokenId",
 						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_walletContract",
-						"type": "address"
 					}
 				],
 				"name": "purchaseReadmeToken",
@@ -237,7 +232,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "walletContract",
+				"name": "walletAddress",
 				"outputs": [
 					{
 						"internalType": "contract IERC20",
@@ -277,19 +272,19 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0x1b2ee6a12f1cc4acef207b173c9a09f5b84847284e2a50e036d60039d2dd4421",
+			"keccak256": "0xa9b9bc6d3b5af6a426492222b5ca5622d22d1b9e8f444951a4f376f8c4bf25d0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://66224e9e4f4e1f65118f565c53e662835cc3889363ce58f6637aefc389a97f97",
-				"dweb:/ipfs/QmabUbkuioRc2CC8pPjpdUesQt2DhzoHW5cXGVskhwMmMo"
+				"bzz-raw://483555e8eeb8b761404cf161f93c74e12ce492d820eb90e1f6aa9dbe9ee9c248",
+				"dweb:/ipfs/QmRoeDcsE6Co6RenzeNKoeCiKigcH6gHDJ7pbzU6qBLV65"
 			]
 		},
 		"contracts/SaleReadmeToken.sol": {
-			"keccak256": "0xda1cb59a52caed78aba03c1bb4c69b4112f9ab6b279f5c0fb7c7b7a98f9aa1a1",
+			"keccak256": "0x6f112408595f773b632a3fdd995c8877d1b10db704db834b65fcfb08230db048",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://766e76ef5991fb6b115bd2e809841e3fe21f22ad8c853caab15e73bc0cad3740",
-				"dweb:/ipfs/QmZP6kmWNpp27A3sFJY5p8axZrHxMjx4izYiL6VE7vgUFR"
+				"bzz-raw://2c938c5fea9aedc56e329f771502063b4ac2263cda637f11b7980443d2b37330",
+				"dweb:/ipfs/QmbEvyV22tdnBmvi9LVPtQActZj8vBkS3xdXXbRtnDU3xZ"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {
