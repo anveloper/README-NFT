@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "nodemon",
     "server": "babel-node src/server.js",
-    "build": "babel src -d dist"
+    "build": "babel src -d dist",
+    "test": "artillery run -o test-report.json test_rooms.yml",
+    "test-view": "artillery report test-report.json"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
@@ -18,6 +20,7 @@
     "@babel/preset-env": "^7.19.0",
     "@babel/preset-modules": "^0.1.4",
     "@babel/runtime": "^7.12.5",
+    "artillery": "^2.0.0-23",
     "nodemon": "^2.0.19"
   },
   "dependencies": {

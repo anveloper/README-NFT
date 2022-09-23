@@ -14,7 +14,7 @@ import {
 // css
 import styles from "../Game.module.css";
 import { Modal } from "../../../components/modal/Modal";
-import { setRawData, setTmpInfo } from "../../mint/mintSlice";
+import { setImgBlob, setRawData, setTmpInfo } from "../../mint/mintSlice";
 import { useNavigate } from "react-router-dom";
 
 export interface Coordinate {
@@ -199,6 +199,7 @@ const CanvasBox = () => {
       const file = new Blob([new Uint8Array(array)], {
         type: "image/png",
       });
+      dispatch(setImgBlob(file)); // 여기
       const fileName =
         `${hostUserName}` + new Date().getMilliseconds() + ".png";
       setFileName(fileName);

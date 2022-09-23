@@ -52,22 +52,26 @@ const getParticipants = (session) => {
   });
   return JSON.stringify(result);
 };
+let i = 0;
 io.on("connection", (socket) => {
+  if (process.env.NODE_ENV !== "production") console.log(i++, socket.id);
   // common
   const { rooms } = io.sockets.adapter;
   socket["nickname"] = "none";
   socket.emit("init_room", publicRooms());
 
-  // socket.onAny((event) => {
-  //   console.log(`SocketIO Event: ${event}`);
-  // }); // 모든 이벤트 리스너
-  // noti
+  if (process.env.NODE_ENV !== "production")
+    socket.onAny((event) => {
+      console.log(`SocketIO Event: ${event}`);
+    }); // 모든 이벤트 리스너
+  // noti;
   const notiSend = (session, msg, color) => {
     socket.to(session).emit("noti_send", msg, color);
     socket.emit("noti_send", msg, color);
   };
   // room
   socket.on("enter_room", (userAddress, nickname, roomTitle, done) => {
+    console.log(userAddress);
     socket["address"] = userAddress;
     socket["nickname"] = nickname;
     const session = userAddress;
@@ -246,6 +250,20 @@ io.on("connection", (socket) => {
   socket.on("game_end", (session, done) => {
     socket.to(session).emit("host_leave");
     done(rooms.get(session)?.["answer"], rooms.get(session)?.["solver"]);
+  });
+  socket.on("test_join", (text1, text2, text3, fn) => {
+    console.log(text1);
+    socket["address"] = text1;
+    socket["nickname"] = text2;
+    const session = text1;
+    socket.join(session);
+    rooms.get(session)["title"] = text3;
+    rooms.get(session)["started"] = false;
+    rooms.get(session)["answer"] = "";
+    rooms.get(session)["solver"] = "";
+    rooms.get(session)["data"] = [];
+    console.log(fn);
+    io.sockets.emit("room_change", publicRooms());
   });
 });
 

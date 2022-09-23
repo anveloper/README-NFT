@@ -1,7 +1,3 @@
-/**
- * PJT Ⅰ - 과제 3 테스트 코드 작성
- * @dev NFT mint, transfer, and compare URI
- */
 const MintReadme = artifacts.require("MintReadmeToken");
 
 contract("MintReadme", (accounts) => {
