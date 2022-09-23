@@ -12,10 +12,9 @@ contract BidReadmeToken{
     SaleReadmeToken public saleReadmeToken;
     IERC20 public walletContract;
 
-    constructor (address _mintReadmeToken, address _saleReadmeToken, address _currencyAddress) {
+    constructor (address _mintReadmeToken, address _saleReadmeToken) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
         saleReadmeToken = SaleReadmeToken(_saleReadmeToken);
-        walletContract = IERC20(_currencyAddress);
     }
 
     // 경매에 판매 등록된 토큰 저장 리스트(조회용)
@@ -72,11 +71,13 @@ contract BidReadmeToken{
     // 입찰: bidder
     function bid(
         uint256 _readmeTokenId,
-        uint256 _biddingPrice
+        uint256 _biddingPrice,
+        address _currencyAddress
     ) public payable {
 
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address bidder = payable(msg.sender);
+        walletContract = IERC20(_currencyAddress);
         
         // 시간 확인
         require(block.timestamp < readmeTokenEndTime[_readmeTokenId]);
@@ -106,13 +107,13 @@ contract BidReadmeToken{
     // 낙찰: buyer
     function buy(
         uint256 _readmeTokenId,
-        address _walletContract
+        address _currencyAddress
     ) public payable {
         address readmeTokenOwner = mintReadmeToken.ownerOf(_readmeTokenId);
         address buyer = payable(msg.sender);
         uint256 price = readmeTokenPrice[_readmeTokenId];
 
-        walletContract = IERC20(_walletContract);
+        walletContract = IERC20(_currencyAddress);
         uint256 balance = walletContract.balanceOf(buyer);
 
 
