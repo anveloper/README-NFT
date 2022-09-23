@@ -1,5 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import Web3 from "web3";
+import {
+  web3,
+  MintReadmeContract,
+  SaleReadmeContract,
+  GetReadmeContract,
+  BidReadmeContract,
+  SSFContract,
+} from "../web3Config";
+
 import COMMON_ABI from "../common/ABI";
 import getAddressFrom from "../utils/AddressExtractor";
 import sendTransaction from "../utils/TxSender";
@@ -20,6 +28,11 @@ const TestPage = () => {
   const [privKey, setPrivKey] = useState("");
   const [to, setTo] = useState("");
   const [what, setWhat] = useState("");
+  const [sale, setSale] = useState("");
+  const [price, setPrice] = useState("");
+  const [during, setDuring] = useState("");
+  const [toBuy, setToBuy] = useState("");
+  const [toBuyPrice, setToBuyPrice] = useState(null);
   // Web3
   // const web3 = new Web3(
   //   new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
@@ -44,23 +57,6 @@ const TestPage = () => {
     getAccount();
   }, [account]);
 
-  const web3 = new Web3(window.ethereum);
-  const MintReadmeContract = new web3.eth.Contract(
-    COMMON_ABI.CONTRACT_ABI.MINTREADMETOKEN_ABI,
-    process.env.REACT_APP_MINTREADMETOKEN_CA
-  );
-  const GetReadmeContract = new web3.eth.Contract(
-    COMMON_ABI.CONTRACT_ABI.GETREADMETOKEN_ABI,
-    process.env.REACT_APP_GETREADMETOKEN_CA
-  );
-  const SaleReadmeContract = new web3.eth.Contract(
-    COMMON_ABI.CONTRACT_ABI.SALEREADMETOKEN_ABI,
-    process.env.REACT_APP_SALEREADMETOKEN_CA
-  );
-  const SSFContract = new web3.eth.Contract(
-    COMMON_ABI.CONTRACT_ABI.ERC_ABI,
-    process.env.REACT_APP_ERC20_CA
-  );
   // 아이템 업로드 핸들링
   const handleItem = (value) => {
     setItem(value);
@@ -116,26 +112,22 @@ const TestPage = () => {
     }
   };
   const ssfGetBalance = () => {
-    SSFContract.methods.balanceOf(getAddressFrom(privKey)).call((err, res) => {
+    SSFContract.methods.balanceOf(account).call((err, res) => {
       console.log(res);
     });
   };
   const nftGetBalance = () => {
+    MintReadmeContract.methods.getOwnedTokens(account).call((err, res) => {
+      console.log(res);
+    });
     MintReadmeContract.methods
-      .getOwnedTokens(getAddressFrom(privKey))
+      .getMyReadmeTokenArrayLength(account)
       .call((err, res) => {
         console.log(res);
       });
-    MintReadmeContract.methods
-      .getMyReadmeTokenArrayLength(getAddressFrom(privKey))
-      .call((err, res) => {
-        console.log(res);
-      });
-    GetReadmeContract.methods
-      .getMyReadmeTokend(getAddressFrom(privKey))
-      .call((err, res) => {
-        console.log(res);
-      });
+    GetReadmeContract.methods.getMyReadmeToken(account).call((err, res) => {
+      console.log(res);
+    });
   };
   const getToken = () => {
     MintReadmeContract.methods.tokenURI(tokenId).call((err, res) => {
@@ -143,31 +135,53 @@ const TestPage = () => {
     });
   };
   const drawToken = () => {
+    MintReadmeContract.methods.getDrawTokens(account).call((err, res) => {
+      console.log(res);
+    });
     MintReadmeContract.methods
-      .getDrawTokens(getAddressFrom(privKey))
+      .getDrawReadmeTokenArrayLength(account)
       .call((err, res) => {
         console.log(res);
       });
-    MintReadmeContract.methods
-      .getDrawReadmeTokenArrayLength(getAddressFrom(privKey))
-      .call((err, res) => {
-        console.log(res);
-      });
-    GetReadmeContract.methods
-      .getDrawReadmeTokend(getAddressFrom(privKey))
-      .call((err, res) => {
-        console.log(res);
-      });
+    GetReadmeContract.methods.getDrawReadmeToken(account).call((err, res) => {
+      console.log(res);
+    });
   };
   const transferNFT = () => {
-    sendTransaction(
-      getAddressFrom(privKey),
-      privKey,
-      process.env.REACT_APP_MINTREADMETOKEN_CA,
-      MintReadmeContract.methods
-        .removeTokenFromList(to, getAddressFrom(privKey), what)
-        .encodeABI()
-    );
+    // sendTransaction(
+    //   getAddressFrom(privKey),
+    //   privKey,
+    //   process.env.REACT_APP_MINTREADMETOKEN_CA,
+    //   MintReadmeContract.methods
+    //     .removeTokenFromList(to, account, what)
+    //     .encodeABI()
+    // );
+  };
+  const saleNft = () => {
+    SaleReadmeContract.methods
+      .setForSaleReadmeToken(sale, price, during)
+      .send({ from: account })
+      .then((receipt) => {
+        console.log(receipt);
+      });
+  };
+  const getOnSale = () => {
+    SaleReadmeContract.methods
+      .getOnSaleReadmeTokenArrayLength()
+      .call((err, res) => {
+        console.log(res);
+      });
+    SaleReadmeContract.methods.getOnSaleReadmeToken().call((err, res) => {
+      console.log(res);
+    });
+  };
+  const buyNFT = () => {
+    SaleReadmeContract.methods
+      .purchaseReadmeToken(toBuy, process.env.REACT_APP_ERC20_CA)
+      .send({ from: account, value: toBuyPrice })
+      .then((receipt) => {
+        console.log(receipt);
+      });
   };
   return (
     <div style={{ paddingTop: "30px" }}>
@@ -257,6 +271,61 @@ const TestPage = () => {
         }}
       ></input>
       <button onClick={transferNFT}>전송하기</button>
+      <h2>판매하기</h2>
+      <label htmlFor="forSale">이거를</label>
+      <input
+        type="text"
+        id="forSale"
+        onChange={(e) => {
+          setSale(e.target.value);
+        }}
+      />
+      <label htmlFor="price">얼마에</label>
+      <input
+        type="text"
+        id="price"
+        onChange={(e) => {
+          setPrice(e.target.value);
+        }}
+      />
+      <br />
+      <label htmlFor="during">얼마동안</label>
+      <input
+        type="text"
+        id="during"
+        onChange={(e) => {
+          setDuring(e.target.value);
+        }}
+      />
+      <button onClick={saleNft}>판매하기</button>
+      <h2>판매중인 토큰 목록</h2>
+      <button onClick={getOnSale}>조회하기</button>
+      <h2>구매하기</h2>
+      <label htmlFor="toBuy">이거 살래</label>
+      <input
+        type="text"
+        id="toBuy"
+        onChange={(e) => {
+          setToBuy(e.target.value);
+        }}
+      />
+      <button
+        onClick={() => {
+          SaleReadmeContract.methods
+            .getReadmeTokenPrice(toBuy)
+            .call((err, res) => {
+              setToBuyPrice(res);
+            });
+        }}
+      >
+        구매하기
+      </button>
+      {toBuyPrice && (
+        <div>
+          {toBuyPrice}SSF임 진짜 살거임?{" "}
+          <button onClick={buyNFT}>진짜 사기</button>
+        </div>
+      )}
     </div>
   );
 };
