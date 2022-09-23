@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { FC, useEffect, useState } from "react";
 import Web3 from "web3";
-import COMMON_ABI from "../../common/ABI";
+import { MintReadmeContract } from "../../web3Config";
 
 interface MyMintListProps {
   account: string;
@@ -17,33 +17,24 @@ interface IMyMintList {
 
 const MyMintList: FC<MyMintListProps> = ({ account }) => {
   // Web3
-  const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-  const NFTContract = new web3.eth.Contract(COMMON_ABI.CONTRACT_ABI.NFT_ABI, process.env.REACT_APP_NFT_CA);
-  // const SSFContract = new web3.eth.Contract(COMMON_ABI.CONTRACT_ABI.ERC_ABI, process.env.REACT_APP_ERC20_CA);
 
   const [readmeArray, setReadmeArray] = useState<IMyMintList[]>([]);
-  const [msg, setMsg] = useState("");
-  const [imgFile, setImgFile] = useState("");
 
-  const tempReadmeCardArray: IMyMintList[] = [];
   const getReadmeTokens = async () => {
     try {
-      const balanceLength = await NFTContract.methods.balanceOf(account).call();
+      const balanceLength = await MintReadmeContract.methods.balanceOf(account).call();
       if (balanceLength === "0") {
-        setMsg("생성된 토큰이 없습니다.");
         return;
       }
 
-      const response = await NFTContract.methods.getDrawTokens(account).call();
-      console.log(response);
-      // console.log(response.length);
+      const tempReadmeCardArray: IMyMintList[] = [];
+      const response = await MintReadmeContract.methods.getDrawTokens(account).call();
 
       for (let i = 0; i < response.length; i++) {
         console.log(response[i]);
-        const res = await NFTContract.methods.tokenURI(response[i]).call();
-        axios({ url: res })
+        const res = await MintReadmeContract.methods.tokenURI(response[i]).call();
+        await axios({ url: res })
           .then((data: any) => {
-            // console.log(data.data.imageURL);
             tempReadmeCardArray.push({
               fileName: data.data.fileName,
               name: data.data.name,
@@ -58,31 +49,9 @@ const MyMintList: FC<MyMintListProps> = ({ account }) => {
       }
 
       setReadmeArray(tempReadmeCardArray);
-      console.log(readmeArray);
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const getToken = async (tokenId: any) => {
-    const response = await NFTContract.methods.tokenURI(tokenId).call();
-    // console.log(tokenId);
-    // console.log(response);
-
-    // axios({ url: response })
-    //   .then((data: any) => {
-    //     // console.log(data.data.imageURL);
-    //     tempReadmeCardArray.push({
-    //       fileName: data.data.fileName,
-    //       name: data.data.name,
-    //       author: data.data.author,
-    //       description: data.data.description,
-    //       imageURL: data.data.imageURL,
-    //     });
-    //   })
-    //   .catch((error: any) => {
-    //     console.error(error);
-    //   });
   };
 
   useEffect(() => {
@@ -93,13 +62,12 @@ const MyMintList: FC<MyMintListProps> = ({ account }) => {
   return (
     <div>
       <div>Account: {account}</div>
-      <div>{readmeArray.length}</div>
       <div>
         {readmeArray.map((v: any, i: number) => {
           console.log(v);
           return (
             <div key={i}>
-              {/* <img src={v.fileName} alt="NFT이미지" /> */}
+              <img src={v.imageURL} alt="NFT이미지" />
               <div>{v.fileName}</div>
             </div>
           );
