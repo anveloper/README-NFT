@@ -18,6 +18,7 @@
     "@babel/preset-env": "^7.19.0",
     "@babel/preset-modules": "^0.1.4",
     "@babel/runtime": "^7.12.5",
+    "artillery": "^2.0.0-23",
     "nodemon": "^2.0.19"
   },
   "dependencies": {
