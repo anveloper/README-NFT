@@ -54,15 +54,16 @@ const getParticipants = (session) => {
 };
 let i = 0;
 io.on("connection", (socket) => {
-  console.log(i++, socket.id);
+  if (process.env.NODE_ENV !== "production") console.log(i++, socket.id);
   // common
   const { rooms } = io.sockets.adapter;
   socket["nickname"] = "none";
   socket.emit("init_room", publicRooms());
 
-  socket.onAny((event) => {
-    console.log(`SocketIO Event: ${event}`);
-  }); // 모든 이벤트 리스너
+  if (process.env.NODE_ENV !== "production")
+    socket.onAny((event) => {
+      console.log(`SocketIO Event: ${event}`);
+    }); // 모든 이벤트 리스너
   // noti;
   const notiSend = (session, msg, color) => {
     socket.to(session).emit("noti_send", msg, color);
