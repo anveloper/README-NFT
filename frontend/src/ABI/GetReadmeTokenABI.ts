@@ -5,12 +5,17 @@ export const GetReadmeToken: AbiItem[] = [
     inputs: [
       {
         internalType: "address",
-        name: "_mintReadmeTokenAddress",
+        name: "_mintReadmeToken",
         type: "address",
       },
       {
         internalType: "address",
         name: "_saleReadmeToken",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_bidReadmeToken",
         type: "address",
       },
     ],
@@ -19,7 +24,21 @@ export const GetReadmeToken: AbiItem[] = [
   },
   {
     inputs: [],
-    name: "mintReadmeTokenAddress",
+    name: "bidReadmeToken",
+    outputs: [
+      {
+        internalType: "contract BidReadmeToken",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [],
+    name: "mintReadmeToken",
     outputs: [
       {
         internalType: "contract MintReadmeToken",
@@ -47,7 +66,43 @@ export const GetReadmeToken: AbiItem[] = [
   },
   {
     inputs: [],
-    name: "getSaleReadmeTokend",
+    name: "getTotalToken",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "readmeTokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "readmeTokenPrice",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "readmeTokenOwner",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metaDataURI",
+            type: "string",
+          },
+        ],
+        internalType: "struct GetReadmeToken.ReadmeTokenData[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [],
+    name: "getSaleReadmeToken",
     outputs: [
       {
         components: [
@@ -89,7 +144,7 @@ export const GetReadmeToken: AbiItem[] = [
         type: "address",
       },
     ],
-    name: "getMyReadmeTokend",
+    name: "getMyReadmeToken",
     outputs: [
       {
         components: [
@@ -131,7 +186,43 @@ export const GetReadmeToken: AbiItem[] = [
         type: "address",
       },
     ],
-    name: "getDrawReadmeTokend",
+    name: "getDrawReadmeToken",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "readmeTokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "readmeTokenPrice",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "readmeTokenOwner",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metaDataURI",
+            type: "string",
+          },
+        ],
+        internalType: "struct GetReadmeToken.ReadmeTokenData[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [],
+    name: "getAuctionToken",
     outputs: [
       {
         components: [
