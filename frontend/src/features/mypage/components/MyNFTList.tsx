@@ -1,9 +1,33 @@
+import { FC } from "react";
 // components
 import MyNFTCard from "./MyNFTCard";
 // css
 import styles from "../MyPage.module.css";
+import { MintReadmeContract } from "../../../web3Config";
 
-const MyNFTList = () => {
+interface MyNFTListProps {
+  NFTListValue: any;
+}
+
+const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
+  const myNFTList = async () => {
+    // MintReadmeContract.methods.getOwnedTokens();
+  };
+
+  const loveNFTList = async () => {};
+
+  const createNFTList = async () => {};
+
+  if (NFTListValue === "myNFT") {
+    console.log("mynft");
+    myNFTList();
+  } else if (NFTListValue === "loveNFT") {
+    console.log("loveNFT");
+    loveNFTList();
+  } else {
+    console.log("createNFT");
+    createNFTList();
+  }
   return (
     <div className={styles.MyNFTList}>
       <select name="" id="">
