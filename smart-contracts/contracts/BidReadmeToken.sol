@@ -12,9 +12,10 @@ contract BidReadmeToken{
     SaleReadmeToken public saleReadmeToken;
     IERC20 public walletContract;
 
-    constructor (address _mintReadmeToken, address _saleReadmeToken) {
+    constructor (address _mintReadmeToken, address _saleReadmeToken, address _currencyAddress) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
         saleReadmeToken = SaleReadmeToken(_saleReadmeToken);
+        walletContract = IERC20(_currencyAddress);
     }
 
     // 경매에 판매 등록된 토큰 저장 리스트(조회용)

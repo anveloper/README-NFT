@@ -11,8 +11,9 @@ contract SaleReadmeToken{
     MintReadmeToken public mintReadmeToken;
     IERC20 public walletContract;
 
-    constructor (address _mintReadmeToken) {
+    constructor (address _mintReadmeToken, address _currencyAddress) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
+        walletContract = IERC20(_currencyAddress);
     }
 
     // 판매 등록 된 토큰 : tokenId
@@ -23,6 +24,11 @@ contract SaleReadmeToken{
     mapping (uint256 => uint256) public readmeTokenEndTime;
     // 판매/경매에 등록된 토큰
     mapping(uint256 => bool) onActiveTokens;
+
+    event Testlog (
+        address buyer,
+        address seller
+    );
 
 
     // 판매 등록: seller
@@ -57,13 +63,10 @@ contract SaleReadmeToken{
     }
 
     // 구매: buyer
-    function purchaseReadmeToken(uint256 _readmeTokenId, address _walletContract) public payable {
+    function purchaseReadmeToken(uint256 _readmeTokenId) public payable {
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address buyer = payable(msg.sender);
-
-        walletContract = IERC20(_walletContract);
-        uint256 balance = walletContract.balanceOf(buyer);
 
         // 판매자 확인
         address readmeTokenOwner = mintReadmeToken.ownerOf(_readmeTokenId);
@@ -75,7 +78,7 @@ contract SaleReadmeToken{
         // 판매/경매 등록 여부 확인
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 구매자의 구매 능력 확인
-        require(price <= balance, "No money");
+        require(price <= msg.value, "No money");
         // 판매자 != 구매자 
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
@@ -97,6 +100,8 @@ contract SaleReadmeToken{
                 break;
             }
         }
+
+        emit Testlog(buyer, readmeTokenOwner);
 
         // 소유 토큰 목록 수정
         mintReadmeToken.removeTokenFromList(buyer, readmeTokenOwner, _readmeTokenId);
