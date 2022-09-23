@@ -35,7 +35,7 @@ export const SSFContract = new web3.eth.Contract(
   process.env.REACT_APP_ERC20_CA
 );
 
-export const BidReadmeToken = new web3.eth.Contract(
+export const BidReadmeContract = new web3.eth.Contract(
   ABI.BidReadmeToken,
   process.env.REACT_APP_BIDREADMETOKEN
 );
