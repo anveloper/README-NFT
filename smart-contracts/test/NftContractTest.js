@@ -2,29 +2,37 @@
  * PJT Ⅰ - 과제 3 테스트 코드 작성
  * @dev NFT mint, transfer, and compare URI
  */
-const NftCreator = artifacts.require("ReadmeToken");
+const MintReadme = artifacts.require("MintReadmeToken");
 
-contract("NftCreator", (accounts) => {
+contract("MintReadme", (accounts) => {
   it("NFT mint, transfer, and compare URI", async () => {
-    const ReadmeToken = await NftCreator.deployed();
+    const ReadmeToken = await MintReadme.deployed();
 
     // 민팅 테스트
-    let newTokenId = (
-      await ReadmeToken.create(accounts[0], "URI 1")
+    let TokenId = (
+      await ReadmeToken.create("HI", { from: accounts[7] })
     ).receipt.logs[0].args.tokenId.toNumber();
-    let owner = await ReadmeToken.ownerOf(newTokenId);
+    console.log(TokenId);
 
-    assert.equal(accounts[0], owner, "NFT Mint Failed");
+    let owner = await ReadmeToken.ownerOf(TokenId);
+    console.log(owner);
 
-    // 전송 테스트
-    await ReadmeToken.transferFrom(accounts[0], accounts[1], newTokenId);
-    await ReadmeToken.ownerOf(newTokenId).then((result) => {
+    assert.equal(accounts[7], owner, "NFT Mint Failed");
+
+    await ReadmeToken.tokenURI("1").then((result) => {
+      meta = result;
+    });
+    console.log(meta);
+
+    assert.equal("HI", meta, "Wrong Token Id or URI");
+
+    await ReadmeToken.transferFrom(accounts[0], accounts[7], TokenId);
+
+    await ReadmeToken.ownerOf(TokenId).then((result) => {
       owner = result;
     });
-    assert.equal(accounts[1], owner, "NFT Transfer Failed");
+    console.log(owner);
 
-    // 메타데이터 출력 테스트
-    let tokenURI = await ReadmeToken.tokenURI(newTokenId);
-    assert.equal("URI 1", tokenURI, "Wrong Token Id or URI");
+    assert.equal(accounts[1], owner, "NFT Transfer Failed");
   });
 });

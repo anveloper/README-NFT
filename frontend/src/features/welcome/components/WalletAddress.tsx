@@ -6,37 +6,22 @@ import { useAppDispatch } from "../../../app/hooks";
 import palette from "../../../assets/palette.svg";
 import { loginUser } from "../../auth/authSlice";
 import metamask from "../../../assets/metamask.svg";
-// web3
-import Web3 from "web3";
 import { useNavigate } from "react-router-dom";
 declare let window: any;
 
 const WalletAddress = () => {
-  const [loginUserAddress, setLoginUserAddress] = useState("");
-
+  // const [loginUserAddress, setLoginUserAddress] = useState("");
   const dispatch = useAppDispatch();
-  // const handleSubmit = () => {
-  //   if (loginUserAddress.length > 0) {
-  //     dispatch(loginUser(loginUserAddress));
-  //   }
-  // };
 
-  // const { account, library, active, activate, deactivate } = useWeb3React();
-  const [account, setAccount] = useState<String>("");
+  const [account, setAccount] = useState<string>("");
   const navigate = useNavigate();
-  // const web3 = new Web3(window.ethereum);
-  // const web3 = new Web3(
-  //   new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
-  // );
 
   const connectWallet = async () => {
     try {
-      // await activate(injected);
       if (window.ethereum) {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-
         setAccount(accounts[0]);
 
         if (accounts[0].length > 0) {
