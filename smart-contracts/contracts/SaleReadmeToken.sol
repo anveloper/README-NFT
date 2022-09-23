@@ -11,9 +11,8 @@ contract SaleReadmeToken{
     MintReadmeToken public mintReadmeToken;
     IERC20 public walletContract;
 
-    constructor (address _mintReadmeToken, address _currencyAddress) {
+    constructor (address _mintReadmeToken) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
-        walletContract = IERC20(_currencyAddress);
     }
 
     // 판매 등록 된 토큰 : tokenId
@@ -63,10 +62,11 @@ contract SaleReadmeToken{
     }
 
     // 구매: buyer
-    function purchaseReadmeToken(uint256 _readmeTokenId) public payable {
+    function purchaseReadmeToken(uint256 _readmeTokenId, address _currencyAddress) public payable {
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address buyer = payable(msg.sender);
+        walletContract = IERC20(_currencyAddress);
 
         // 판매자 확인
         address readmeTokenOwner = mintReadmeToken.ownerOf(_readmeTokenId);
