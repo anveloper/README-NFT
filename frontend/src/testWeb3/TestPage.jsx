@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Web3 from "web3";
 import COMMON_ABI from "../common/ABI";
 import getAddressFrom from "../utils/AddressExtractor";
@@ -18,14 +18,44 @@ const TestPage = () => {
   const [description, setDescription] = useState("");
   const [tokenId, setTokenId] = useState("");
   const [privKey, setPrivKey] = useState("");
-
+  const [to, setTo] = useState("");
+  const [what, setWhat] = useState("");
   // Web3
-  const web3 = new Web3(
-    new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
+  // const web3 = new Web3(
+  //   new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
+  // );
+  const [account, setAccount] = useState("");
+
+  const getAccount = async () => {
+    try {
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+
+        setAccount(accounts[0]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getAccount();
+  }, [account]);
+
+  const web3 = new Web3(window.ethereum);
+  const MintReadmeContract = new web3.eth.Contract(
+    COMMON_ABI.CONTRACT_ABI.MINTREADMETOKEN_ABI,
+    process.env.REACT_APP_MINTREADMETOKEN_CA
   );
-  const NFTContract = new web3.eth.Contract(
-    COMMON_ABI.CONTRACT_ABI.NFT_ABI,
-    process.env.REACT_APP_NFT_CA
+  const GetReadmeContract = new web3.eth.Contract(
+    COMMON_ABI.CONTRACT_ABI.GETREADMETOKEN_ABI,
+    process.env.REACT_APP_GETREADMETOKEN_CA
+  );
+  const SaleReadmeContract = new web3.eth.Contract(
+    COMMON_ABI.CONTRACT_ABI.SALEREADMETOKEN_ABI,
+    process.env.REACT_APP_SALEREADMETOKEN_CA
   );
   const SSFContract = new web3.eth.Contract(
     COMMON_ABI.CONTRACT_ABI.ERC_ABI,
@@ -44,8 +74,8 @@ const TestPage = () => {
   };
 
   const addItem = async () => {
-    let address = getAddressFrom(privKey);
-    if (address) {
+    // let address = getAddressFrom(privKey);
+    if (account) {
       const fr = new FileReader();
       var ipfs = IpfsAPI(process.env.REACT_APP_IPFS_IP);
       fr.readAsArrayBuffer(item);
@@ -67,13 +97,19 @@ const TestPage = () => {
           ipfs.files.add(Buffer.from(JSON.stringify(metadata)), (err, res) => {
             let tokenURI = "https://ipfs.io/ipfs/" + res[0].hash;
             console.log(tokenURI);
-            web3.eth.getBalance(address).then(console.log);
-            sendTransaction(
-              address,
-              privKey,
-              process.env.REACT_APP_NFT_CA,
-              NFTContract.methods.create(address, tokenURI).encodeABI()
-            );
+            // sendTransaction(
+            //   address,
+            //   privKey,
+            //   process.env.REACT_APP_MINTREADMETOKEN_CA,
+            //   MintReadmeContract.methods.create(tokenURI).encodeABI()
+            // );
+            console.log(account);
+            MintReadmeContract.methods
+              .create(tokenURI)
+              .send({ from: account })
+              .then((receipt) => {
+                console.log(receipt);
+              });
           });
         });
       };
@@ -85,19 +121,56 @@ const TestPage = () => {
     });
   };
   const nftGetBalance = () => {
-    NFTContract.methods
+    MintReadmeContract.methods
       .getOwnedTokens(getAddressFrom(privKey))
+      .call((err, res) => {
+        console.log(res);
+      });
+    MintReadmeContract.methods
+      .getMyReadmeTokenArrayLength(getAddressFrom(privKey))
+      .call((err, res) => {
+        console.log(res);
+      });
+    GetReadmeContract.methods
+      .getMyReadmeTokend(getAddressFrom(privKey))
       .call((err, res) => {
         console.log(res);
       });
   };
   const getToken = () => {
-    NFTContract.methods.tokenURI(tokenId).call((err, res) => {
+    MintReadmeContract.methods.tokenURI(tokenId).call((err, res) => {
       console.log(res);
     });
   };
+  const drawToken = () => {
+    MintReadmeContract.methods
+      .getDrawTokens(getAddressFrom(privKey))
+      .call((err, res) => {
+        console.log(res);
+      });
+    MintReadmeContract.methods
+      .getDrawReadmeTokenArrayLength(getAddressFrom(privKey))
+      .call((err, res) => {
+        console.log(res);
+      });
+    GetReadmeContract.methods
+      .getDrawReadmeTokend(getAddressFrom(privKey))
+      .call((err, res) => {
+        console.log(res);
+      });
+  };
+  const transferNFT = () => {
+    sendTransaction(
+      getAddressFrom(privKey),
+      privKey,
+      process.env.REACT_APP_MINTREADMETOKEN_CA,
+      MintReadmeContract.methods
+        .removeTokenFromList(to, getAddressFrom(privKey), what)
+        .encodeABI()
+    );
+  };
   return (
-    <div>
+    <div style={{ paddingTop: "30px" }}>
       <h2>프라이빗 키 입력</h2>
       <input type="text" onChange={handlePrivKey}></input>
       <h2>NFT 민팅하기</h2>
@@ -163,6 +236,27 @@ const TestPage = () => {
         }}
       ></input>
       <button onClick={getToken}>조회하기</button>
+      <h2>내가 그린 nft 조회</h2>
+      <button onClick={drawToken}>조회하기</button>
+      <h2>NFT 소유권 변경하기</h2>
+      <label htmlFor="to">얘한테</label>
+      <input
+        type="text"
+        id="to"
+        onChange={(e) => {
+          setTo(e.target.value);
+        }}
+      ></input>
+      <br></br>
+      <label htmlFor="what">이거를</label>
+      <input
+        type="number"
+        id="what"
+        onChange={(e) => {
+          setWhat(e.target.value);
+        }}
+      ></input>
+      <button onClick={transferNFT}>전송하기</button>
     </div>
   );
 };

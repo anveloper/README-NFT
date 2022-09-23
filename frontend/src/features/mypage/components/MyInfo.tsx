@@ -1,10 +1,15 @@
+import { FC } from "react";
 import styles from "../MyPage.module.css";
 import MyProfile from "./MyProfile";
 
-const MyInfo = () => {
+interface MyInfoProps {
+  account: string;
+}
+
+const MyInfo: FC<MyInfoProps> = ({ account }) => {
   return (
     <div className={styles.MyInfo}>
-      <MyProfile />
+      <MyProfile account={account} />
 
       <div className={styles.MyNFTInfo}>
         <p className={styles.MyNFTInfoButton}>보유한 NFT</p>
