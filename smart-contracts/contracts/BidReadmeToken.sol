@@ -70,7 +70,7 @@ contract BidReadmeToken{
     // 입찰: bidder
     function bid(
         uint256 _readmeTokenId,
-        uint256 _biddingPrice,
+        uint256 _biddingPrice
     ) public payable {
 
         uint256 price = readmeTokenPrice[_readmeTokenId];
@@ -103,7 +103,7 @@ contract BidReadmeToken{
 
     // 낙찰: buyer
     function buy(
-        uint256 _readmeTokenId,
+        uint256 _readmeTokenId
     ) public payable {
         address readmeTokenOwner = mintReadmeToken.ownerOf(_readmeTokenId);
         address buyer = payable(msg.sender);
