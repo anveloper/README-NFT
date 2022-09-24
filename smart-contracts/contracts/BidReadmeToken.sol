@@ -185,6 +185,8 @@ contract BidReadmeToken{
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address cancel = msg.sender;
 
+        // 입찰 여부 확인
+        require(highestBidder == address(0), "Here is Bidder");
         // 호출자가 판매자인지 확인
         require(cancel == mintReadmeToken.ownerOf(_readmeTokenId), "You are Not Seller");
         // 판매/경매 등록 여부 확인
