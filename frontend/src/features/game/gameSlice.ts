@@ -36,7 +36,23 @@ export interface GameState {
 }
 
 const initialState: GameState = {
-  roomList: [{ title: "asdf", host: "asdf", cnt: 3 }],
+  roomList: [
+    { title: "소켓", host: "asdf", cnt: 999 },
+    { title: "연결이", host: "asdf", cnt: 999 },
+    { title: "안되면", host: "asdf", cnt: 999 },
+    { title: "뜨는", host: "asdf", cnt: 999 },
+    { title: "더미들", host: "asdf", cnt: 999 },
+    { title: "방이름", host: "asdf", cnt: 999 },
+    { title: "뭘로", host: "asdf", cnt: 999 },
+    { title: "더보기", host: "asdf", cnt: 999 },
+    { title: "누르면", host: "asdf", cnt: 999 },
+    { title: "4개 더", host: "asdf", cnt: 999 },
+    { title: "생김", host: "asdf", cnt: 999 },
+    { title: "또 누르면", host: "asdf", cnt: 999 },
+    { title: "또 생기고", host: "asdf", cnt: 999 },
+    { title: "더 없으면", host: "asdf", cnt: 999 },
+    { title: "버튼 사라짐", host: "asdf", cnt: 999 },
+  ],
   socket: undefined,
   hostUserName: "",
   roomName: "",
@@ -154,3 +170,4 @@ export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };
 export default gameSlice.reducer;
+

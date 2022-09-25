@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 
 contract MintReadmeToken is ERC721Enumerable, Ownable{
@@ -25,11 +26,6 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
         uint256 indexed tokenId,
         address indexed owner,
         string indexed metadataURI
-    );
-
-    event Value(
-        uint256 indexed money,
-        address indexed sender
     );
 
     constructor() ERC721("ReadmeNFT", "RMN") {}
