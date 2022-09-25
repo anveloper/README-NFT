@@ -22,7 +22,15 @@ contract SaleReadmeToken{
     mapping (uint256 => uint256) public readmeTokenEndTime;
     // 판매/경매에 등록된 토큰
     mapping(uint256 => bool) onActiveTokens;
+    // 판매 등록한 사람
+    mapping(uint256 => address) public sellerTest;
 
+    event Logs(
+        address msgsender,
+        address toowner,
+        address addressthis
+    );
+    
 
     // 판매 등록: seller
     function setForSaleReadmeToken(
@@ -54,8 +62,6 @@ contract SaleReadmeToken{
         // 판매/경매 등록으로 변경
         onActiveTokens[_readmeTokenId] = true;
 
-        // 전송 권한 부여
-        mintReadmeToken.approve(address(this), _readmeTokenId);
     }
 
     // 구매: buyer
@@ -74,14 +80,15 @@ contract SaleReadmeToken{
         // 판매/경매 등록 여부 확인
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 구매자의 구매 능력 확인
-        require(price <= msg.value, "No money");
+        // require(price <= msg.value, "No money");
         // 판매자 != 구매자 
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
-        
-        // 돈: 구매자(buyer: 함수 호출자) -> 판매자
+
+        // 토큰(돈) 전송
         payable(readmeTokenOwner).transfer(msg.value);
-        // nft 전송: 판매자 -> 구매자
+        // nft 전송
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
+
         
         // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
         readmeTokenPrice[_readmeTokenId] = 0;
