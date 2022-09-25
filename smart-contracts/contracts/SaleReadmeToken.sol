@@ -71,12 +71,12 @@ contract SaleReadmeToken{
         // 판매/경매 등록 여부 확인
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 구매자의 구매 능력 확인
-        require(price <= msg.value, "No money");
+        // require(price <= msg.value, "No money");
         // 판매자 != 구매자 
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
         // 돈: 구매자(buyer: 함수 호출자) -> 판매자
-        payable(readmeTokenOwner).transfer(msg.value);
+        // payable(readmeTokenOwner).transfer(msg.value);
         // nft 전송: 판매자 -> 구매자
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
         
