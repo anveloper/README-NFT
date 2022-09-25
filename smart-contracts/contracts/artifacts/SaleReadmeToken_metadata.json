@@ -229,19 +229,6 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "walletAddress",
-				"outputs": [
-					{
-						"internalType": "contract IERC20",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -259,7 +246,7 @@
 		"compilationTarget": {
 			"contracts/SaleReadmeToken.sol": "SaleReadmeToken"
 		},
-		"evmVersion": "petersburg",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -272,19 +259,19 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0xa9b9bc6d3b5af6a426492222b5ca5622d22d1b9e8f444951a4f376f8c4bf25d0",
+			"keccak256": "0x64666c46f15a1b4cd103daa1b3e0f565ecd5b023da6e390f4ec749dfb532098d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://483555e8eeb8b761404cf161f93c74e12ce492d820eb90e1f6aa9dbe9ee9c248",
-				"dweb:/ipfs/QmRoeDcsE6Co6RenzeNKoeCiKigcH6gHDJ7pbzU6qBLV65"
+				"bzz-raw://224a57dbff7935eebcabd1c8afd4a14c71cfb135ebae12467492cd81840f48d6",
+				"dweb:/ipfs/QmdMoEVFFEBjyviJEXUP39b7EcS1qif6RFTsMGdkesKcfd"
 			]
 		},
 		"contracts/SaleReadmeToken.sol": {
-			"keccak256": "0x6f112408595f773b632a3fdd995c8877d1b10db704db834b65fcfb08230db048",
+			"keccak256": "0x5f17560aa4813b9d4ca8152efdd4a6f3522a0483de3c8d94e494196e8c8c76a7",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://2c938c5fea9aedc56e329f771502063b4ac2263cda637f11b7980443d2b37330",
-				"dweb:/ipfs/QmbEvyV22tdnBmvi9LVPtQActZj8vBkS3xdXXbRtnDU3xZ"
+				"bzz-raw://4336041179f91d3dec28d823b07209887f2fdf977451c0a543cb0b8eb209c69a",
+				"dweb:/ipfs/QmUT358keiw1CkQJpWvDbiMaRf7GDyp5LQYL2L7ZnnY2Wo"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {

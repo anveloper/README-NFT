@@ -1,16 +1,24 @@
 import React from "react";
 
+import { ReactComponent as GuideImg } from "../../assets/logo_img.svg";
 import { ReactComponent as Cloud1 } from "../../assets/carousel/carousel_cloud01.svg";
 import { ReactComponent as Cloud2 } from "../../assets/carousel/carousel_cloud02.svg";
 import { ReactComponent as Plane1 } from "../../assets/carousel/plane01.svg";
 import { ReactComponent as Plane2 } from "../../assets/carousel/plane02.svg";
-import CarouselSwiper from "./components/CarouselSwiper";
 
 import styles from "./Main.module.css";
-const Carousel = () => {
+const Guide = () => {
   return (
-    <div className={styles.carouselContainer}>
-      <CarouselSwiper />
+    <div className={styles.guideContainer}>
+      <div className={styles.guide}>
+        <div>
+          <p className={styles.guideTitle}>Read Me</p>
+          <p className={styles.guideInfo}>
+            대충 리드미가 뭐 하는 건지 <br /> 여기다 적을까요?
+          </p>
+        </div>
+        <GuideImg className={styles.guideImg} />
+      </div>
       <Cloud1 className={styles.leftCloud} />
       <Cloud2 className={styles.rightCloud} />
       <Plane1 className={styles.leftPlane} />
@@ -19,4 +27,4 @@ const Carousel = () => {
   );
 };
 
-export default Carousel;
+export default Guide;

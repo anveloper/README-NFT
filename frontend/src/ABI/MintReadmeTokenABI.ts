@@ -126,6 +126,25 @@ export const MintReadmeToken: AbiItem[] = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "money",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+    ],
+    name: "Value",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -616,5 +635,19 @@ export const MintReadmeToken: AbiItem[] = [
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTotalReadmeToken",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
   },
 ];

@@ -1,0 +1,99 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+/* Carousel CSS */
+.carouselContainer {
+  min-height: 100vh;
+  position: relative;
+  z-index: 2;
+  background-color: white;
+}
+.carouselInfo {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.carouselTitle {
+  width: 30vw;
+  max-width: 400px;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  background-color: #3b82bf;
+  color: white;
+  font-size: 2rem;
+  border-radius: 2rem;
+  padding: 1rem;
+  text-align: center;
+}
+.carouselDescription {
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  font-size: 1.6rem;
+  margin: 3rem 0;
+}
+.carouselWapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Slider */
+
+.slide {
+  /* transform: scale(0.8); */
+  /* opacity: 0.8; */
+  /* transition: transform 300ms; */
+  z-index: 9;
+  overflow: visible;
+  margin-left: 5%;
+}
+
+.activeSlide {
+  /* transform: scale(1.2); */
+  /* opacity: 1; */
+  position: relative;
+  z-index: 10;
+}
+
+.arrow {
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.arrow svg {
+  transition: color 300ms;
+}
+
+.arrow svg:hover {
+  color: #68edff;
+}
+
+.next {
+  right: 2%;
+  top: 50%;
+}
+
+.prev {
+  left: 2%;
+  top: 50%;
+}
+
+.next > svg,
+.prev > svg {
+  color: #21658f;
+  transform: scale(4);
+}
+
+.next > svg:hover,
+.prev > svg:hover {
+  color: #68edff;
+}

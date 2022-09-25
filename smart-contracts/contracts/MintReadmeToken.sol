@@ -7,7 +7,6 @@ import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 
 contract MintReadmeToken is ERC721Enumerable, Ownable{
-    IERC20 public walletContract;
 
     // 내 주소 -> 소유 nft tokenId
     mapping(address => uint256[]) private ownedTokens;
