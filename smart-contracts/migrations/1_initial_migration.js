@@ -4,6 +4,7 @@ const SaleReadme = artifacts.require("SaleReadmeToken");
 const GetReadme = artifacts.require("GetReadmeToken");
 const BidReadme = artifacts.require("BidReadmeToken");
 const Saleme = artifacts.require("Sale");
+// const SaleApp = artifacts.require("SaleApprove");
 const Ssafy = artifacts.require("SsafyToken");
 
 
@@ -21,6 +22,7 @@ module.exports = async function (deployer) {
     SaleReadme.address,
     BidReadme.address
   );
+  // let SaleAppToken = await deployer.deploy(SaleApp, Ssafy.address, MintReadme.address);
   let SsafyToken = await deployer.deploy(Ssafy, "Readme", "RMT");
   let SaleToken = await deployer.deploy(Saleme, Ssafy.address, MintReadme.address);
 };
