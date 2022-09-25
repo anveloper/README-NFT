@@ -8,9 +8,6 @@ import {
   SSFContract,
 } from "../web3Config";
 
-import COMMON_ABI from "../common/ABI";
-import getAddressFrom from "../utils/AddressExtractor";
-import sendTransaction from "../utils/TxSender";
 import IpfsAPI from "ipfs-api";
 import { Buffer } from "buffer";
 /**
@@ -158,6 +155,7 @@ const TestPage = () => {
     // );
   };
   const saleNft = () => {
+    console.log(account);
     SaleReadmeContract.methods
       .setForSaleReadmeToken(sale, price, during)
       .send({ from: account })
@@ -177,7 +175,7 @@ const TestPage = () => {
   };
   const buyNFT = () => {
     SaleReadmeContract.methods
-      .purchaseReadmeToken(toBuy, process.env.REACT_APP_ERC20_CA)
+      .purchaseReadmeToken(toBuy)
       .send({ from: account, value: toBuyPrice })
       .then((receipt) => {
         console.log(receipt);
