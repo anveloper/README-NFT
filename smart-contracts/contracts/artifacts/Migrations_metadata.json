@@ -60,7 +60,7 @@
 		"compilationTarget": {
 			"contracts/Migrations.sol": "Migrations"
 		},
-		"evmVersion": "petersburg",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
