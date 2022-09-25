@@ -1,6 +1,6 @@
 .container {
-  width: 320px;
-  height: 290px;
+  width: 23%;
+  aspect-ratio: 12/11;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -10,6 +10,7 @@
   border-radius: 1rem;
   box-shadow: 5px 5px 5px #00000030;
   position: relative;
+  margin-bottom: 2%;
 }
 
 .img {
@@ -20,7 +21,8 @@
 
 .badge {
   position: absolute;
-  top: 200px;
+  width: 4vw;
+  top: 65%;
   right: 1rem;
 }
 
@@ -69,7 +71,7 @@
   align-items: center;
 }
 .cnt {
-  width: 24px;
+  width: 1.5vw;
 }
 .n {
   width: 24px;
