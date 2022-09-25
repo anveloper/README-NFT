@@ -1,5 +1,5 @@
 // core
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 //state
@@ -22,6 +22,8 @@ const LiveList = () => {
   const roomList = useAppSelector(selectRoomList);
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
+  const moreRef = useRef<HTMLDivElement | null>(null);
+  const [itemCnt, setItemCnt] = useState(8);
   const [modalOpen, setModalOpen] = useState(false);
   const [registerRoomName, setRegisterRoomName] = useState("");
   const [registrtHostAddress, setRegisterHostAddress] = useState("");
@@ -74,8 +76,47 @@ const LiveList = () => {
       );
     }
   };
+  const handleScroll = () => {
+    moreRef.current?.scrollIntoView({
+      block: "end",
+      behavior: "smooth",
+    });
+  };
   return (
-    <div className={styles.liveContainer}>
+    <>
+      <div className={styles.container}>
+        <div className={styles.liveContainer} ref={moreRef}>
+          {roomList.map((room, index) => {
+            if (index >= itemCnt) return null;
+            return (
+              <LiveItem
+                key={index}
+                value={room.host}
+                title={room.title}
+                cnt={room.cnt}
+                host={room.host}
+                handleJoinRoom={() => {
+                  setModalOpen(true);
+                  setRegisterRoomName(room.title);
+                  setRegisterHostAddress(room.host);
+                }}
+              />
+            );
+          })}
+          {roomList && roomList.length > itemCnt && (
+            <div className={styles.moreBtn}>
+              <button
+                onClick={() => {
+                  setItemCnt(itemCnt + 4);
+                  handleScroll();
+                }}
+              >
+                더 보기
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
       <Modal
         open={modalOpen}
         close={closeModal}
@@ -87,23 +128,7 @@ const LiveList = () => {
           <p>{registerRoomName}</p>
         </div>
       </Modal>
-      {roomList.map((room, index) => {
-        return (
-          <LiveItem
-            key={index}
-            value={room.host}
-            title={room.title}
-            cnt={room.cnt}
-            host={room.host}
-            handleJoinRoom={() => {
-              setModalOpen(true);
-              setRegisterRoomName(room.title);
-              setRegisterHostAddress(room.host);
-            }}
-          />
-        );
-      })}
-    </div>
+    </>
   );
 };
 

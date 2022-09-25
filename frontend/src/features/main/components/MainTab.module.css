@@ -1,0 +1,93 @@
+/* Content */
+.tabContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 4;
+}
+.tabInfo {
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tabTitle {
+  width: 30vw;
+  max-width: 400px;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  background-color: #3b82bf;
+  color: white;
+  font-size: 2rem;
+  border-radius: 2rem;
+  padding: 1rem;
+  text-align: center;
+}
+.tabDescription {
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  font-size: 1.6rem;
+  margin: 3rem 0 1rem 0;
+}
+.tab {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    0.8s both;
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
+}
+
+.btnBox {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10vw;
+}
+.btnContainer {
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
+  margin-bottom: 8px;
+}
+.btnContainer:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.btn {
+  width: 120px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  background: whitesmoke;
+  box-shadow: 5px 5px 5px #00000030;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.btn:active {
+  transform: scale(0.9);
+}
+.btn img {
+  width: 78px;
+}
+.btnText {
+  margin-top: 4px;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  width: 160px;
+  color: #3b82bf;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+}

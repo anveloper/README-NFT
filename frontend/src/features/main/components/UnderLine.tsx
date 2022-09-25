@@ -8,14 +8,14 @@ const UnderLine = ({ under }: Under) => {
     <div className={styles.underBox}>
       <p
         style={{
-          width: under === "left" ? "0px" : "200px",
+          width: under === "left" ? "0px" : "40vw",
           transition: "all 0.3s",
         }}
       />
       <p className={styles.underLine} />
       <p
         style={{
-          width: under === "right" ? "0px" : "200px",
+          width: under === "right" ? "0px" : "40vw",
           transition: "all 0.3s",
         }}
       />
