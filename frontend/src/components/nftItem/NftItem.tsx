@@ -1,7 +1,11 @@
 import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 
+import styles from "./NftItem.module.css";
+
 const NftItem = (props: any) => {
+  const { nft } = props;
+  const [flip, setFlip] = useState(false);
   const [fileName, setFileName] = useState("");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
@@ -29,18 +33,36 @@ const NftItem = (props: any) => {
   }, [props]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <Suspense fallback={<p>이미지 로딩중</p>}>
-        <img src={imageURL} alt="" width={240} />
-      </Suspense>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div>fileName: {fileName}</div>
-        <div>name: {name}</div>
-        <div>author: {author}</div>
-        <div>description: {description}</div>
+    <button className={styles.container} onClick={() => setFlip(!flip)}>
+      <div className={styles.card}>
+        <div className={styles.front}>
+          <Suspense fallback={<p>이미지 로딩중</p>}>
+            <img className={styles.img} src={imageURL} alt="" />
+          </Suspense>
+        </div>
+        <div className={styles.back}>
+          <p>리드미: {name}</p>
+          <p>작성자: {author}</p>
+          <p>설명: {description}</p>
+          <p>맞춘이: ??????</p>
+          <small>파일이름: {fileName}</small>
+        </div>
       </div>
-    </div>
+      <div className={styles.nftInfo}>
+        <p>리드미ID: {nft.readmeTokenId}번째</p>
+        <p>PRICE: {nft.readmeTokenPrice}</p>
+      </div>
+    </button>
   );
 };
 
 export default NftItem;
+
+/* {nft && (
+  <div>
+    
+    
+    <div>OWNER: {nft.readmeTokenOwner}</div>
+    <div>URI: {nft.metaDataURI}</div>
+  </div>
+)} */
