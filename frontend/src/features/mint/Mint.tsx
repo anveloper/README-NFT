@@ -1,7 +1,7 @@
 import React, { useEffect, FC, useState, useRef } from "react";
 import { useAppSelector } from "../../app/hooks";
 // state
-import { selectTmpInfo } from "./mintSlice";
+import { selectImgBlob, selectTmpInfo } from "./mintSlice";
 // components
 import NewHelmet from "../../components/NewHelmet";
 import { MintReadmeContract } from "../../web3Config";
@@ -13,39 +13,35 @@ interface MintProps {
 
 const Mint: FC<MintProps> = ({ account }) => {
   const { answer, creator, solver, tmpUrl } = useAppSelector(selectTmpInfo);
-  // setItem(tmpUrl);
-
-  const convertURLtoFile = async (url: string) => {
-    const response = await fetch(url);
-    const data = await response.blob();
-    const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-    const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-    const metadata = { type: `image/${ext}` };
-    return new File([data], filename!, metadata);
-  };
+  const imgBlob: Blob = useAppSelector(selectImgBlob);
 
   const addItem = async () => {
-    const client = create({ url: "https://" + process.env.REACT_APP_IPFS_IP });
-    console.log(client);
-    // const imageURL = "https://ipfs.io/ipfs/" + tmpUrl;
-    // console.log(convertURLtoFile(tmpUrl));
-    console.log("왜 뜨냐고 ");
-    let metaData = {
-      answer: answer,
-      creator: creator,
-      solver: solver,
-      tmpUrl: tmpUrl,
-    };
-    console.log(JSON.stringify(metaData));
-    // const response = await client.add(Buffer.from(JSON.stringify(metaData)), (err, res) => {
-    //   let tokenURI = "https://ipfs.io/ipfs/" + res[0].hash;
-    //   console.log(tokenURI);
-    // });
-    // client.add("Hello World").then((res) => {
-    //   console.log(res);
-    // });
-    const response = await client.add(JSON.stringify(metaData));
-    console.log(response);
+    const fr = new FileReader();
+    if (account) {
+      const client = create({ url: "http://127.0.0.1:5001/api/v0" });
+      fr.readAsArrayBuffer(imgBlob);
+      fr.onload = async () => {
+        if (typeof fr.result !== "string") {
+          const cid = await client.add(Buffer.from(fr.result));
+          const imageURL = "https://ipfs.io/ipfs/" + cid.path;
+          let metadata = {
+            fileName: answer,
+            name: answer,
+            author: creator,
+            description: solver,
+            imageURL: imageURL,
+          };
+          const result = await client.add(JSON.stringify(metadata));
+          const tokenURI = "https://ipfs.io/ipfs/" + result.path;
+          MintReadmeContract.methods
+            .create(tokenURI)
+            .send({ from: account })
+            .then((receipt: any) => {
+              console.log(receipt);
+            });
+        }
+      };
+    }
   };
 
   useEffect(() => {

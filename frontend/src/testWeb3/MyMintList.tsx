@@ -1,8 +1,8 @@
 import axios from "axios";
 import { read } from "fs";
-import React, { FC, useEffect, useState , Suspense, lazy} from "react";
+import React, { FC, useEffect, useState, Suspense, lazy } from "react";
 import Web3 from "web3";
-import COMMON_ABI from "../common/ABI";
+import { MintReadmeContract } from "../web3Config";
 
 interface MyMintListProps {
   account: string;
@@ -19,32 +19,25 @@ interface IMyMintList {
 
 const MyMintList: FC<MyMintListProps> = ({ account }) => {
   // Web3
-  const web3 = new Web3(
-    new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
-  );
-  const NFTContract = new web3.eth.Contract(
-    COMMON_ABI.CONTRACT_ABI.NFT_ABI,
-    process.env.REACT_APP_NFT_CA
-  );
-  // const SSFContract = new web3.eth.Contract(COMMON_ABI.CONTRACT_ABI.ERC_ABI, process.env.REACT_APP_ERC20_CA);
+  const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
 
   const [readmeArray, setReadmeArray] = useState<IMyMintList[]>([]);
   const [msg, setMsg] = useState("");
 
   const getReadmeTokens = async () => {
     try {
-      const balanceLength = await NFTContract.methods.balanceOf(account).call();
+      const balanceLength = await MintReadmeContract.methods.balanceOf(account).call();
       if (balanceLength === "0") {
         setMsg("생성된 토큰이 없습니다.");
         return;
       }
-      
-      const response = await NFTContract.methods.getDrawTokens(account).call();
+
+      const response = await MintReadmeContract.methods.getDrawTokens(account).call();
       console.log(response);
-      
+
       const result: IMyMintList[] = [];
       for (let i = 0; i < response.length; i++) {
-        const tokenUrl = await NFTContract.methods.tokenURI(response[i]).call();
+        const tokenUrl = await MintReadmeContract.methods.tokenURI(response[i]).call();
         const data: IMyMintList = {
           tokenId: response[i],
           fileName: "",
