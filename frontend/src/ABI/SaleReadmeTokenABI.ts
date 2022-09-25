@@ -13,25 +13,6 @@ export const SaleReadmeToken: AbiItem[] = [
     type: "constructor",
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "buyer",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "seller",
-        type: "address",
-      },
-    ],
-    name: "Testlog",
-    type: "event",
-  },
-  {
     inputs: [],
     name: "mintReadmeToken",
     outputs: [
@@ -106,20 +87,6 @@ export const SaleReadmeToken: AbiItem[] = [
     constant: true,
   },
   {
-    inputs: [],
-    name: "walletContract",
-    outputs: [
-      {
-        internalType: "contract IERC20",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
     inputs: [
       {
         internalType: "uint256",
@@ -148,11 +115,6 @@ export const SaleReadmeToken: AbiItem[] = [
         internalType: "uint256",
         name: "_readmeTokenId",
         type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "_currencyAddress",
-        type: "address",
       },
     ],
     name: "purchaseReadmeToken",

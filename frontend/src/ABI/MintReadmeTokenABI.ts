@@ -482,20 +482,6 @@ export const MintReadmeToken: AbiItem[] = [
   },
   {
     inputs: [],
-    name: "walletContract",
-    outputs: [
-      {
-        internalType: "contract IERC20",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [],
     name: "getCurrentNft",
     outputs: [
       {
