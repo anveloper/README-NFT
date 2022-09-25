@@ -1,9 +1,17 @@
 // image
+import { FC } from "react";
 import lion from "../../../assets/characters/lion.svg";
 // css
 import styles from "../MyPage.module.css";
 
-const MyNFTCard = () => {
+export interface IMyNFTCard {
+  tokenId: string;
+  price: string;
+  owner: string;
+  metadataURI: string;
+}
+
+const MyNFTCard: FC<IMyNFTCard> = ({ tokenId, price, owner, metadataURI }) => {
   return (
     <div className={styles.MyNFTCard}>
       <img className={styles.MyNFTCardImg} src={lion} alt="" />

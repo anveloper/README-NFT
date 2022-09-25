@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import styles from "../MyPage.module.css";
 import MyProfile from "./MyProfile";
 
@@ -9,10 +9,14 @@ interface MyInfoProps {
 
 const MyInfo: FC<MyInfoProps> = ({ account, setNFTListValue }) => {
   const myNFT = () => {
+    // const myNFTbutton = document.getElementById("myNFT") as HTMLElement | null;
+    // if (myNFTbutton != null) {
+    //   myNFTbutton.style.backgroundColor = "#F7F2E0";
+    // }
     setNFTListValue("myNFT");
   };
 
-  const loveNFT = () => {
+  const likeNFT = () => {
     setNFTListValue("loveNFT");
   };
 
@@ -25,11 +29,11 @@ const MyInfo: FC<MyInfoProps> = ({ account, setNFTListValue }) => {
       <MyProfile account={account} />
 
       <div className={styles.MyNFTInfo}>
-        <p className={styles.MyNFTInfoButton} onClick={myNFT}>
+        <p id="myNFT" className={styles.MyNFTInfoButton} onClick={myNFT}>
           보유한 NFT
         </p>
         <hr />
-        <p className={styles.MyNFTInfoButton} onClick={loveNFT}>
+        <p className={styles.MyNFTInfoButton} onClick={likeNFT}>
           찜한 NFT
         </p>
         <hr />

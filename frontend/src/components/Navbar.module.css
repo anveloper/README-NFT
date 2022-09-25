@@ -52,6 +52,7 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  cursor: pointer;
 }
 .avatar {
   width: 30px;
@@ -67,7 +68,7 @@
 /* ProfileModal */
 .ProfileModal {
   width: 25vw;
-  height: 85vh;
+  height: 88vh;
 
   /* z-index: 0; */
   position: absolute;
@@ -80,6 +81,35 @@
     0px 0.500862px 3.00517px rgba(0, 0, 0, 0.07),
     0px 0.181152px 1.08691px rgba(0, 0, 0, 0.0487776);
   border-radius: 20px;
+
+  -webkit-animation: slide-in-right 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: slide-in-right 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@-webkit-keyframes slide-in-right {
+  0% {
+    -webkit-transform: translateX(1000px);
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-right {
+  0% {
+    -webkit-transform: translateX(1000px);
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .ProfileModalBackground {
@@ -93,20 +123,30 @@
 }
 
 .ProfileModalMyInfo {
-  height: 30vh;
+  height: 37vh;
   background-color: #ffffff;
   border-radius: 20px 20px 0px 0px;
   text-align: center;
   align-items: center;
-  /* position: relative; */
-
   margin-bottom: 0.5vh;
+  position: relative;
 }
 
 .ProfileModalCloseButton {
-  /* position: absolute; */
-  /* left: 90%; */
-  /* text-align: right; */
+  position: absolute;
+  top: 5%;
+  left: 95%;
+  transform: translate(-95%);
+  border: none;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.ProfileModalTextBox {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -65%);
 }
 
 .ProfileModalImgBox {
@@ -127,7 +167,7 @@
 }
 
 .ProfileModalNotification {
-  height: 50vh;
+  height: 45vh;
   margin-top: 0.5vh;
   background-color: #ffffff;
   border-radius: 0px 0px 20px 20px;
