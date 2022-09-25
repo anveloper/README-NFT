@@ -3,9 +3,8 @@ import axios from "axios";
 
 import styles from "./NftItem.module.css";
 
-const NftItem = (props: any) => {
+const CarouselItem = (props: any) => {
   const { nft } = props;
-  const [flip, setFlip] = useState(false);
   const [fileName, setFileName] = useState("");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
@@ -33,7 +32,7 @@ const NftItem = (props: any) => {
   }, [props]);
 
   return (
-    <button className={styles.container} onClick={() => setFlip(!flip)}>
+    <button className={styles.carouselContainer}>
       <div className={styles.card}>
         <div className={styles.front}>
           <Suspense fallback={<p>이미지 로딩중</p>}>
@@ -56,13 +55,4 @@ const NftItem = (props: any) => {
   );
 };
 
-export default NftItem;
-
-/* {nft && (
-  <div>
-    
-    
-    <div>OWNER: {nft.readmeTokenOwner}</div>
-    <div>URI: {nft.metaDataURI}</div>
-  </div>
-)} */
+export default CarouselItem;
