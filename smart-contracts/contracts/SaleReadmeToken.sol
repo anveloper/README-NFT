@@ -56,10 +56,10 @@ contract SaleReadmeToken{
     }
 
     // 구매: buyer
-    function purchaseReadmeToken(uint256 _readmeTokenId) public payable {
+    function purchaseReadmeToken(uint256 _readmeTokenId) public {
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
-        address buyer = payable(msg.sender);
+        address buyer = msg.sender;
 
         // 판매자 확인
         address readmeTokenOwner = mintReadmeToken.ownerOf(_readmeTokenId);
