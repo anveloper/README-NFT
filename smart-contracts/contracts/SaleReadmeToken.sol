@@ -55,7 +55,7 @@ contract SaleReadmeToken{
         onActiveTokens[_readmeTokenId] = true;
 
         // 전송 권한 부여
-        mintReadmeToken.approve(address(this), _readmeTokenId);
+        // mintReadmeToken.approve(address(this), _readmeTokenId);
     }
 
     // 구매: buyer
