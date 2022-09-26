@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from "react";
+import { useAppSelector } from "../../../app/hooks";
 // image
 import cat from "../../../assets/characters/cat.svg";
 import { SSFContract } from "../../../web3Config";
+import { selectUserName } from "../../auth/authSlice";
 // css
 import styles from "../MyPage.module.css";
 
@@ -10,6 +12,7 @@ interface MyProfileProps {
 }
 
 const MyProfile: FC<MyProfileProps> = ({ account }) => {
+  const nickname = useAppSelector(selectUserName);
   const [balance, setBalance] = useState(0);
 
   const getBalance = async () => {
@@ -24,10 +27,10 @@ const MyProfile: FC<MyProfileProps> = ({ account }) => {
 
   useEffect(() => {
     getBalance();
-  }, []);
+  });
 
   useEffect(() => {
-    console.log(balance);
+    setBalance(balance);
   }, [balance]);
 
   return (
@@ -37,7 +40,7 @@ const MyProfile: FC<MyProfileProps> = ({ account }) => {
       </div>
 
       <div className={styles.MyProfileTextBox}>
-        <h2 className={styles.MyProfileText}>Nickname</h2>
+        <h2 className={styles.MyProfileText}>{nickname}</h2>
         <h4 className={styles.MyProfileTex}>{account}</h4>
         <h3 className={styles.MyProfileText}>{balance} SSF</h3>
       </div>

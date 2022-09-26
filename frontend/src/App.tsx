@@ -16,8 +16,8 @@ import Game from "./features/game/Game";
 import MyPage from "./features/mypage/MyPage";
 // css
 import styles from "./App.module.css";
-import { useAppSelector } from "./app/hooks";
-import { selectUserAddress } from "./features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { loginUser, selectUserAddress } from "./features/auth/authSlice";
 //testPage
 
 import TestPage from "./testWeb3/TestPage";
@@ -31,6 +31,7 @@ import MyMintList from "./features/mint/MyMintList";
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
 
   // (정현) 임의로 메타마스크 로그인 유저 계정 정보 가져오는 함수. 차후 삭제 예정
   const [account, setAccount] = useState<string>("");
@@ -43,6 +44,10 @@ function App() {
         });
         // console.log(accounts[0]);
         setAccount(accounts[0]);
+
+        if (accounts[0].length > 0) {
+          dispatch(loginUser(accounts[0]));
+        }
       } else {
         alert("install metamask.");
       }

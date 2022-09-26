@@ -3,10 +3,17 @@ import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import LogoImg from "../assets/logo_img.svg";
 import LogoText from "../assets/logo_text.svg";
+// components
+import ProfileModal from "./ProfileModal";
 
 const Navbar = () => {
   const [profileImg, setProfileImg] = useState(LogoImg);
   const [nameTag, setNameTag] = useState("피자먹는 라이언");
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const showProfileModal = () => {
+    setModalOpen(true);
+  };
 
   return (
     <div className={styles.navBar}>
@@ -36,7 +43,8 @@ const Navbar = () => {
           <button>테스트페이지</button>
         </Link>
       </div>
-      <div className={styles.profileTag}>
+      <div className={styles.profileTag} onClick={showProfileModal}>
+        {modalOpen && <ProfileModal setModalOpen={setModalOpen} />}
         <img src={profileImg} alt="" className={styles.avatar} />
         <p className={styles.nameTag}>{nameTag}</p>
       </div>

@@ -41,7 +41,7 @@ const MyPageTest: FC<MyPageTestProps> = ({ account }) => {
   };
   return (
     <div className={styles.MyPage}>
-      <div className={styles.MyProfileInfo}>
+      {/* <div className={styles.MyProfileInfo}>
         <MyInfo account={account} />
       </div>
 
@@ -58,7 +58,7 @@ const MyPageTest: FC<MyPageTestProps> = ({ account }) => {
 
       <div className={styles.MyNFTView}>
         <MyAnimal account={account} />
-      </div>
+      </div> */}
     </div>
   );
 };
