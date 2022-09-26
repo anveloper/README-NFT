@@ -62,3 +62,9 @@ export const { logoutUser } = authSlice.actions;
 export const selectUserAddress = (state: RootState) => state.auth.userAddress;
 export const selectUserName = (state: RootState) => state.auth.userName;
 export default authSlice.reducer;
+
+// util
+
+export const truncatedAddress = (longAddress: String) => {
+  return `${longAddress.slice(0, 4) + "...." + longAddress.slice(-4)}`;
+};
