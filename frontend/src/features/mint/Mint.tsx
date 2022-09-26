@@ -11,6 +11,11 @@ interface MintProps {
   account: string;
 }
 
+const ipfsURL =
+  process.env.NODE_ENV !== "production"
+    ? "http://j7b108.p.ssafy.io:5001"
+    : "https://j7b108.p.ssafy.io:5001";
+
 const Mint: FC<MintProps> = ({ account }) => {
   const { answer, creator, solver, tmpUrl } = useAppSelector(selectTmpInfo);
   const imgBlob: Blob = useAppSelector(selectImgBlob);
@@ -18,7 +23,8 @@ const Mint: FC<MintProps> = ({ account }) => {
   const addItem = async () => {
     const fr = new FileReader();
     if (account) {
-      const client = create({ url: "http://127.0.0.1:5001/api/v0" });
+      console.log(account);
+      const client = create({ url: ipfsURL });
       fr.readAsArrayBuffer(imgBlob);
       fr.onload = async () => {
         if (typeof fr.result !== "string") {
@@ -52,7 +58,10 @@ const Mint: FC<MintProps> = ({ account }) => {
   }, []);
   return (
     <div>
-      <NewHelmet title={`${answer} - 민팅하기`} description={`출제자 ${creator}에 의한 리드미-${answer} 문제와 최초 정답자 ${solver}`} />
+      <NewHelmet
+        title={`${answer} - 민팅하기`}
+        description={`출제자 ${creator}에 의한 리드미-${answer} 문제와 최초 정답자 ${solver}`}
+      />
       <img src={tmpUrl} alt="" />
       <div>정답: {answer}</div>
       <div>만든이: {creator}</div>
