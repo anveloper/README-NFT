@@ -64,6 +64,31 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "msgsender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "toowner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "addressthis",
+						"type": "address"
+					}
+				],
+				"name": "Logs",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "uint256",
 						"name": "tokenId",
@@ -130,25 +155,6 @@
 				"type": "event"
 			},
 			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "uint256",
-						"name": "money",
-						"type": "uint256"
-					},
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "sender",
-						"type": "address"
-					}
-				],
-				"name": "Value",
-				"type": "event"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -191,6 +197,11 @@
 						"internalType": "string",
 						"name": "_metadataURI",
 						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "_saleReadmeTokenAddress",
+						"type": "address"
 					}
 				],
 				"name": "create",
@@ -323,19 +334,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_walletContract",
-						"type": "address"
-					}
-				],
-				"name": "getValue",
-				"outputs": [],
-				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -648,19 +646,6 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "walletContract",
-				"outputs": [
-					{
-						"internalType": "contract IERC20",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -733,7 +718,7 @@
 		"compilationTarget": {
 			"contracts/MintReadmeToken.sol": "MintReadmeToken"
 		},
-		"evmVersion": "petersburg",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -746,11 +731,19 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0x99760c04b61a7b5e2cf7ed2d8288cb26bc781908ed7420e62232694c38335186",
+<<<<<<< HEAD
+			"keccak256": "0x02fde9605057da487f1d0b88c959e179328360b823ac378952f2e6c48f23813f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://afde547f16937943715b933e01e4331c81a48e9718097bede848bbf02a9679e7",
-				"dweb:/ipfs/QmaDCFmwEgG79fb4ojWBWbnnLZ8C5AjvDpUkzdFgCN1tEs"
+				"bzz-raw://ff9c30a2570c3ed3c759ac10f9f9f096df858008ae22bf954a36ec0ac28db897",
+				"dweb:/ipfs/QmVef6Tbo11CrCkgSvkiC4QULKZwLeCUwEdoNj4y6Zpf9K"
+=======
+			"keccak256": "0xa488f8fd1a90a9ec0b62c2e873501ded45aa9c94d5702244e1cc396b3ce7c0cb",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9d988e8eb042abc6cba6b4c930824d462a135d47e8fc86cbf385930dfc6bccc7",
+				"dweb:/ipfs/QmVLM6tbJp6NubbrN77YnTJFLPLnxpNWdsdKLJGSx5rrPz"
+>>>>>>> 97efc7d7af9a300b5a28472a992b2e7cd2422112
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {
@@ -778,11 +771,11 @@
 			]
 		},
 		"node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
-			"keccak256": "0x0b606994df12f0ce35f6d2f6dcdde7e55e6899cdef7e00f180980caa81e3844e",
+			"keccak256": "0xc56375fb835be72c7525139f9bc85532eda5ebbd69dfe09df82701d34f3b98a0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4c827c981a552d1c76c96060e92f56b52bc20c6f9b4dbf911fe99ddbfb41f2ea",
-				"dweb:/ipfs/QmW8xvJdzHrr8Ry34C7viBsgG2b8T1mL4BQWJ5CdfD9JLB"
+				"bzz-raw://fd95de598929027f6ec49ba7f0479e66e26bc8c66cb77136fb544773c8f63034",
+				"dweb:/ipfs/QmdD7nckpgeEgczgthTznmseQojqH6ZpwuFjuNbPd6toEY"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {

@@ -8,7 +8,22 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_endTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "contract MintReadmeToken",
 						"name": "_mintReadmeToken",
 						"type": "address"
 					}
@@ -17,109 +32,8 @@
 				"type": "constructor"
 			},
 			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "msgsender",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-<<<<<<< HEAD
-						"internalType": "uint256",
-						"name": "msgvalue",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "msgsenderbalance",
-						"type": "uint256"
-=======
-						"internalType": "address",
-						"name": "toowner",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "addressthis",
-						"type": "address"
->>>>>>> 97efc7d7af9a300b5a28472a992b2e7cd2422112
-					}
-				],
-				"name": "Logs",
-				"type": "event"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_readmeTokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "cancelReadmeToken",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_tokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "getIsActive",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [],
-				"name": "getOnSaleReadmeToken",
-				"outputs": [
-					{
-						"internalType": "uint256[]",
-						"name": "",
-						"type": "uint256[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "getOnSaleReadmeTokenArrayLength",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_readmeTokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "getReadmeTokenPrice",
+				"name": "endTime",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -144,14 +58,8 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "onSaleReadmeToken",
+				"inputs": [],
+				"name": "price",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -176,14 +84,8 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "readmeTokenEndTime",
+				"inputs": [],
+				"name": "readmeTokenId",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -192,98 +94,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "readmeTokenPrice",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_readmeTokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "refundsReadmeToken",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "sellerTest",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_readmeTokenId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_price",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_endTime",
-						"type": "uint256"
-					}
-				],
-				"name": "setForSaleReadmeToken",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_tokenId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "check",
-						"type": "bool"
-					}
-				],
-				"name": "setIsActive",
-				"outputs": [],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -300,7 +110,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/SaleReadmeToken.sol": "SaleReadmeToken"
+			"contracts/Sale.sol": "Buy"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -315,35 +125,19 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
-<<<<<<< HEAD
-			"keccak256": "0x02fde9605057da487f1d0b88c959e179328360b823ac378952f2e6c48f23813f",
+			"keccak256": "0x03acf6e751c0037d7716e4bc6e555798f62c5268398f69efa4d55401980693d5",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ff9c30a2570c3ed3c759ac10f9f9f096df858008ae22bf954a36ec0ac28db897",
-				"dweb:/ipfs/QmVef6Tbo11CrCkgSvkiC4QULKZwLeCUwEdoNj4y6Zpf9K"
+				"bzz-raw://b7678c0d7164f1ceeb14b21e841160c055ad122526f5514949da6d9608775296",
+				"dweb:/ipfs/QmbfvtbHYnx7WsWSEsv4YSS8Gau2zRL3d2aLqV8LTZHhYi"
 			]
 		},
-		"contracts/SaleReadmeToken.sol": {
-			"keccak256": "0x1b65aa8a8971edc70a902c7c324eafcd12c3ee96b2e591a0caf8bfa258fb8dba",
+		"contracts/Sale.sol": {
+			"keccak256": "0xffbd9803f5a42fe72df4cccab1538c336589cf0a60f55584f6ee646086c0b088",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1dad95ea347f003cb996de0f419bf64fb8fe3ba58d4d6b8c9e749ab908ed8749",
-				"dweb:/ipfs/QmT4ccYjnUsKmqAfE2MrKUXQfgVvTaYLQJCH2CvW7dXsnp"
-=======
-			"keccak256": "0xa488f8fd1a90a9ec0b62c2e873501ded45aa9c94d5702244e1cc396b3ce7c0cb",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://9d988e8eb042abc6cba6b4c930824d462a135d47e8fc86cbf385930dfc6bccc7",
-				"dweb:/ipfs/QmVLM6tbJp6NubbrN77YnTJFLPLnxpNWdsdKLJGSx5rrPz"
-			]
-		},
-		"contracts/SaleReadmeToken.sol": {
-			"keccak256": "0x250dc3ad800f4067a1732863ec6ffa1a71772c681d0d619224be8104052338d8",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://043b7b2b4ea8636efd2a0724d9c82739966e1d82c0307d957166a7c336da9dc4",
-				"dweb:/ipfs/QmS5vtP2dmpf5DG4oGkmKj22T2qMoF872uBkTZfLnkzEFA"
->>>>>>> 97efc7d7af9a300b5a28472a992b2e7cd2422112
+				"bzz-raw://d7533642b70c6ad83a3853d58c627140ba4a147ac2b4ead1e051e7c93a30b836",
+				"dweb:/ipfs/QmXZzhGtgPNeZ7eB1FRf8ukhqcLxa3T2bZfHPczM8FS6c4"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {
