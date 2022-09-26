@@ -9,11 +9,11 @@ import { selectNftDetail, setNftDetail } from "./NftDetailSlice";
 
 const Detail = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const { tokenId } = useParams();
   const nftDetail = useAppSelector(selectNftDetail);
-  const dispatch = useAppDispatch();
   const userAddress = useAppSelector(selectUserAddress);
-
   const [nftPrice, setNftPrice] = useState(0);
   const [nftOwner, setNftOwner] = useState("");
 
@@ -22,7 +22,6 @@ const Detail = () => {
       const response = await MintReadmeContract.methods.tokenURI(tokenId).call();
       await axios({url: response})
       .then((data: any) => {
-        console.log(data);
         dispatch(setNftDetail(data.data));
       }).catch((error: any) => {
           console.error(error);
@@ -37,8 +36,6 @@ const Detail = () => {
       const nftOwner = await MintReadmeContract.methods.ownerOf(tokenId).call();
       setNftPrice(nftPrice)
       setNftOwner(nftOwner);
-      console.log(nftPrice);
-      console.log(nftOwner)
     } catch (error) {
       console.error(error);
     }
