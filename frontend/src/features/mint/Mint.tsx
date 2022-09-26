@@ -16,7 +16,6 @@ const ipfsURL =
     ? "http://j7b108.p.ssafy.io"
     : "https://j7b108.p.ssafy.io";
 
-
 const Mint: FC<MintProps> = ({ account }) => {
   const { answer, creator, solver, tmpUrl } = useAppSelector(selectTmpInfo);
   const imgBlob: Blob = useAppSelector(selectImgBlob);
@@ -59,7 +58,10 @@ const Mint: FC<MintProps> = ({ account }) => {
   }, []);
   return (
     <div>
-      <NewHelmet title={`${answer} - 민팅하기`} description={`출제자 ${creator}에 의한 리드미-${answer} 문제와 최초 정답자 ${solver}`} />
+      <NewHelmet
+        title={`${answer} - 민팅하기`}
+        description={`출제자 ${creator}에 의한 리드미-${answer} 문제와 최초 정답자 ${solver}`}
+      />
       <img src={tmpUrl} alt="" />
       <div>정답: {answer}</div>
       <div>만든이: {creator}</div>
