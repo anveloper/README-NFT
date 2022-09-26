@@ -6,6 +6,7 @@ import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC721.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./MintReadmeToken.sol";
+import "./SsafyToken.sol";
 
 
 contract SaleReadmeToken{
@@ -13,8 +14,9 @@ contract SaleReadmeToken{
     MintReadmeToken public mintReadmeToken;
     //IERC20 public ssafyWallet;
 
-    constructor (address _mintReadmeToken) {
+    constructor (address _mintReadmeToken, address addressOfSSF) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
+        _addressOfSSFToken = addressOfSSF;
         //ssafyWallet = IERC20(_ssafyWallet); // 싸피 지갑 추가
     }
 
@@ -28,7 +30,8 @@ contract SaleReadmeToken{
     mapping(uint256 => bool) onActiveTokens;
     // 판매 등록한 사람
     mapping(uint256 => address) public sellerTest;
-
+    //SSF Token Address
+    address private _addressOfSSFToken;
     event Logs(
         address msgsender,
         uint256 msgvalue,
@@ -72,6 +75,8 @@ contract SaleReadmeToken{
 
     // 구매: buyer
     function purchaseReadmeToken(uint256 _readmeTokenId) public payable{
+        SsafyToken ssfToken = SsafyToken(_addressOfSSFToken);
+        
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address buyer = msg.sender;
@@ -86,14 +91,15 @@ contract SaleReadmeToken{
         // 판매/경매 등록 여부 확인
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 구매자의 구매 능력 확인(=> 지갑 돈으로 바꿔야할 것같음)
-        require(price <= (msg.sender).balance, "No money");
+        // require(price <= (msg.sender).balance, "No money");
+        require(price <= ssfToken.balanceOf(msg.sender), "No Money");
         // 판매자 != 구매자 
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
         // 송금
-        //ssafyWallet.transfer(readmeTokenOwner, price);
+        ssfToken.transfer(readmeTokenOwner, price);
         // // 돈: 구매자(buyer: 함수 호출자) -> 판매자
-        payable(readmeTokenOwner).transfer(price);
+        // payable(readmeTokenOwner).transfer(msg.value);
 
         // nft 전송: 판매자 -> 구매자
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);

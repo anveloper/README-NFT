@@ -98,7 +98,7 @@ const TestPage = () => {
             // );
             console.log(account);
             MintReadmeContract.methods
-              .create(tokenURI)
+              .create(tokenURI, process.env.REACT_APP_SALEREADMETOKEN_CA)
               .send({ from: account })
               .then((receipt) => {
                 console.log(receipt);
@@ -195,7 +195,7 @@ const TestPage = () => {
     // }
     SaleReadmeContract.methods
       .purchaseReadmeToken(toBuy)
-      .send({ from: account, value: toBuyPrice })
+      .send({ from: account })
       .then((receipt) => {
         console.log(receipt);
       });
