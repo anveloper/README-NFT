@@ -11,11 +11,11 @@ import "./MintReadmeToken.sol";
 contract SaleReadmeToken{
     
     MintReadmeToken public mintReadmeToken;
-    IERC20 public ssafyWallet;
+    //IERC20 public ssafyWallet;
 
-    constructor (address _mintReadmeToken, address _ssafyWallet) {
+    constructor (address _mintReadmeToken) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
-        ssafyWallet = IERC20(_ssafyWallet); // 싸피 지갑 추가
+        //ssafyWallet = IERC20(_ssafyWallet); // 싸피 지갑 추가
     }
 
     // 판매 등록 된 토큰 : tokenId
@@ -66,7 +66,7 @@ contract SaleReadmeToken{
         onActiveTokens[_readmeTokenId] = true;
 
         // 컨트랙트에게 지갑의 돈을 사용할 권한을 줌
-        ssafyWallet.approve(address(this), _price);
+        //ssafyWallet.approve(address(this), _price);
     }
 
 
@@ -91,9 +91,9 @@ contract SaleReadmeToken{
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
         // 송금
-        ssafyWallet.transfer(readmeTokenOwner, price);
+        //ssafyWallet.transfer(readmeTokenOwner, price);
         // // 돈: 구매자(buyer: 함수 호출자) -> 판매자
-        // payable(readmeTokenOwner).transfer(price);
+        payable(readmeTokenOwner).transfer(price);
 
         // nft 전송: 판매자 -> 구매자
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
