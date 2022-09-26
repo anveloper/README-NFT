@@ -55,7 +55,13 @@ const NFTList = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.listContainer}>
+      <div
+        className={
+          true
+            ? `${styles.listContainer} ${styles.open}`
+            : `${styles.listContainer} ${styles.close}`
+        }
+      >
         <div className={styles.nftSearch}>
           <input type="text" placeholder="검색어를 입력해주세요." />
         </div>

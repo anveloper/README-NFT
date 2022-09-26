@@ -1,6 +1,6 @@
 import { MintReadmeToken } from "./MintReadmeToken";
 import { SaleReadmeToken } from "./SaleReadmeToken";
-import { SSF } from "../ABI/SSFABI";
+import { SSF } from "../abi/SSFABI";
 import { GetReadmeToken } from "./GetReadmeToken";
 
 /* 

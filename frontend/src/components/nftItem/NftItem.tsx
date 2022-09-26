@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 
 import styles from "./NftItem.module.css";
+import { truncatedAddress } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const NftItem = (props: any) => {
@@ -28,6 +29,7 @@ const NftItem = (props: any) => {
     }
   };
 
+
   const moveToDetail = (tokenId: string) => {
     navigate('/detail/'+ tokenId);
   }
@@ -47,9 +49,8 @@ const NftItem = (props: any) => {
         </div>
         <div className={styles.back}>
           <p>리드미: {name}</p>
-          <p>작성자: {author}</p>
-          <p>설명: {description}</p>
-          <p>맞춘이: ??????</p>
+          <p>작성자: {truncatedAddress(author)}</p>
+          <p>맞춘이: {truncatedAddress(description)}</p>
           <small>파일이름: {fileName}</small>
         </div>
       </div>
@@ -62,12 +63,3 @@ const NftItem = (props: any) => {
 };
 
 export default NftItem;
-
-/* {nft && (
-  <div>
-    
-    
-    <div>OWNER: {nft.readmeTokenOwner}</div>
-    <div>URI: {nft.metaDataURI}</div>
-  </div>
-)} */

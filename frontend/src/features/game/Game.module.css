@@ -1,8 +1,10 @@
 .container {
-  width: 100%;
-  height: 100%;
-  padding: 0 40px;
-  padding-bottom: 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 10px 20px 20px 20px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -42,6 +44,10 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+}
+.btnBox > p {
+  margin-left: 20px;
+  font-size: 2rem;
 }
 .exit {
   width: 80px;
@@ -452,6 +458,7 @@
 }
 .input {
   flex-grow: 1;
+  min-width: 60%;
   height: 90%;
   margin-left: 20px;
   border: none;
@@ -464,6 +471,7 @@
   border-bottom: 2px solid #feca60;
 }
 .send {
+  min-width: 60px;
   width: 80px;
   height: 100%;
   border: none;

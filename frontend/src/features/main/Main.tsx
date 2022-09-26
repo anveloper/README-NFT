@@ -33,7 +33,7 @@ const Main = () => {
   const navigator = useNavigate();
 
   useEffect(() => {
-    if (!socket) {
+    if (socket === undefined) {
       console.log(socketURL);
       dispatch(setSocket(io(socketURL)));
     } else {
