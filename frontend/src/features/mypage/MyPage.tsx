@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 // components
 import MyAnimalCard from "./components/MyAnimalCard";
 import MyInfo from "./components/MyInfo";
@@ -11,15 +11,17 @@ interface MyPageProps {
 }
 
 const MyPage: FC<MyPageProps> = ({ account }) => {
+  const [NFTListValue, setNFTListValue] = useState("");
+
   console.log(account);
   return (
     <div className={styles.MyPage}>
       <div className={styles.MyProfileInfo}>
-        <MyInfo account={account} />
+        <MyInfo account={account} setNFTListValue={setNFTListValue} />
       </div>
 
       <div className={styles.MyNFTView}>
-        <MyNFTList />
+        <MyNFTList NFTListValue={NFTListValue} />
       </div>
     </div>
   );
