@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 
 import styles from "./NftItem.module.css";
+import { truncatedAddress } from "../../features/auth/authSlice";
 
 const NftItem = (props: any) => {
   const { nft } = props;
@@ -26,7 +27,6 @@ const NftItem = (props: any) => {
       console.log(err);
     }
   };
-
   useEffect(() => {
     const { metaDataURI } = props;
     getMetadata(metaDataURI);
@@ -42,9 +42,8 @@ const NftItem = (props: any) => {
         </div>
         <div className={styles.back}>
           <p>리드미: {name}</p>
-          <p>작성자: {author}</p>
-          <p>설명: {description}</p>
-          <p>맞춘이: ??????</p>
+          <p>작성자: {truncatedAddress(author)}</p>
+          <p>맞춘이: {truncatedAddress(description)}</p>
           <small>파일이름: {fileName}</small>
         </div>
       </div>
