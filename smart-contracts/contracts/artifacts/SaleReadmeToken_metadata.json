@@ -17,6 +17,31 @@
 				"type": "constructor"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "msgsender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "msgvalue",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "msgsenderbalance",
+						"type": "uint256"
+					}
+				],
+				"name": "Logs",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -259,19 +284,19 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0x64666c46f15a1b4cd103daa1b3e0f565ecd5b023da6e390f4ec749dfb532098d",
+			"keccak256": "0x02fde9605057da487f1d0b88c959e179328360b823ac378952f2e6c48f23813f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://224a57dbff7935eebcabd1c8afd4a14c71cfb135ebae12467492cd81840f48d6",
-				"dweb:/ipfs/QmdMoEVFFEBjyviJEXUP39b7EcS1qif6RFTsMGdkesKcfd"
+				"bzz-raw://ff9c30a2570c3ed3c759ac10f9f9f096df858008ae22bf954a36ec0ac28db897",
+				"dweb:/ipfs/QmVef6Tbo11CrCkgSvkiC4QULKZwLeCUwEdoNj4y6Zpf9K"
 			]
 		},
 		"contracts/SaleReadmeToken.sol": {
-			"keccak256": "0x5f17560aa4813b9d4ca8152efdd4a6f3522a0483de3c8d94e494196e8c8c76a7",
+			"keccak256": "0x1b65aa8a8971edc70a902c7c324eafcd12c3ee96b2e591a0caf8bfa258fb8dba",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4336041179f91d3dec28d823b07209887f2fdf977451c0a543cb0b8eb209c69a",
-				"dweb:/ipfs/QmUT358keiw1CkQJpWvDbiMaRf7GDyp5LQYL2L7ZnnY2Wo"
+				"bzz-raw://1dad95ea347f003cb996de0f419bf64fb8fe3ba58d4d6b8c9e749ab908ed8749",
+				"dweb:/ipfs/QmT4ccYjnUsKmqAfE2MrKUXQfgVvTaYLQJCH2CvW7dXsnp"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {

@@ -130,25 +130,6 @@
 				"type": "event"
 			},
 			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "uint256",
-						"name": "money",
-						"type": "uint256"
-					},
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "sender",
-						"type": "address"
-					}
-				],
-				"name": "Value",
-				"type": "event"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -191,6 +172,11 @@
 						"internalType": "string",
 						"name": "_metadataURI",
 						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "_saleReadmeTokenAddress",
+						"type": "address"
 					}
 				],
 				"name": "create",
@@ -323,19 +309,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_walletContract",
-						"type": "address"
-					}
-				],
-				"name": "getValue",
-				"outputs": [],
-				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -648,19 +621,6 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "walletContract",
-				"outputs": [
-					{
-						"internalType": "contract IERC20",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -733,7 +693,7 @@
 		"compilationTarget": {
 			"contracts/MintReadmeToken.sol": "MintReadmeToken"
 		},
-		"evmVersion": "petersburg",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -746,11 +706,11 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0x99760c04b61a7b5e2cf7ed2d8288cb26bc781908ed7420e62232694c38335186",
+			"keccak256": "0x02fde9605057da487f1d0b88c959e179328360b823ac378952f2e6c48f23813f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://afde547f16937943715b933e01e4331c81a48e9718097bede848bbf02a9679e7",
-				"dweb:/ipfs/QmaDCFmwEgG79fb4ojWBWbnnLZ8C5AjvDpUkzdFgCN1tEs"
+				"bzz-raw://ff9c30a2570c3ed3c759ac10f9f9f096df858008ae22bf954a36ec0ac28db897",
+				"dweb:/ipfs/QmVef6Tbo11CrCkgSvkiC4QULKZwLeCUwEdoNj4y6Zpf9K"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {
