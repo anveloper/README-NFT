@@ -16,8 +16,8 @@ import Game from "./features/game/Game";
 import MyPage from "./features/mypage/MyPage";
 // css
 import styles from "./App.module.css";
-import { useAppSelector } from "./app/hooks";
-import { selectUserAddress } from "./features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { loginUser, selectUserAddress } from "./features/auth/authSlice";
 //testPage
 
 import TestPage from "./testWeb3/TestPage";
@@ -26,10 +26,12 @@ import NFTLists from "./features/detail/NFTLists/NFTLists";
 import MyPageTest from "./features/mypage/MyPageTest";
 import NFTSaleTest from "./features/detail/SaleAnimal";
 import Mint from "./features/mint/Mint";
+import MyMintList from "./features/mint/MyMintList";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
 
   // (정현) 임의로 메타마스크 로그인 유저 계정 정보 가져오는 함수. 차후 삭제 예정
   const [account, setAccount] = useState<string>("");
@@ -42,6 +44,10 @@ function App() {
         });
         // console.log(accounts[0]);
         setAccount(accounts[0]);
+
+        if (accounts[0].length > 0) {
+          dispatch(loginUser(accounts[0]));
+        }
       } else {
         alert("install metamask.");
       }
@@ -68,17 +74,11 @@ function App() {
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>
-              <Route path="/mint" element={<Mint />} />
+              <Route path="/mint" element={<Mint account={account} />} />
               <Route path="/detail" element={<Detail />} />
               <Route path="/sell" element={<Sell />} />
-              <Route
-                path="/temp-list"
-                element={<MyPageTest account={account} />}
-              />
-              <Route
-                path="/temp-sell"
-                element={<NFTSaleTest account={account} />}
-              />
+              <Route path="/temp-list" element={<MyMintList account={account} />} />
+              <Route path="/temp-sell" element={<NFTSaleTest account={account} />} />
 
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />

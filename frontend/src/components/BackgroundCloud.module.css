@@ -7,7 +7,7 @@
   top: -8%;
   left: 6%;
   position: absolute;
-  z-index: 0;
+  z-index: -1;
 }
 .cloudOne {
   background: url("../assets/bg-cloud/bg_cloud01.svg");
