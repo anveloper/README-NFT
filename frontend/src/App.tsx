@@ -1,6 +1,9 @@
 // core
 import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
+// state
+import { loginUser, selectUserAddress } from "./features/auth/authSlice";
 // components
 import Navbar from "./components/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
@@ -16,8 +19,6 @@ import Game from "./features/game/Game";
 import MyPage from "./features/mypage/MyPage";
 // css
 import styles from "./App.module.css";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { loginUser, selectUserAddress } from "./features/auth/authSlice";
 //testPage
 
 import TestPage from "./testWeb3/TestPage";
@@ -48,7 +49,9 @@ function App() {
           dispatch(loginUser(accounts[0]));
         }
       } else {
-        alert("install metamask.");
+        dispatch(
+          loginUser(`비회원 개발자 ${Math.floor(Math.random() * 19920722)}`)
+        );
       }
     } catch (error) {
       console.error(error);
@@ -57,8 +60,8 @@ function App() {
 
   useEffect(() => {
     getAccount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
-  // (정현) 여기까지
 
   return (
     <div className={styles.container}>
@@ -76,8 +79,14 @@ function App() {
               <Route path="/mint" element={<Mint account={account} />} />
               <Route path="/detail/:tokenId" element={<Detail />} />
               <Route path="/sell" element={<Sell />} />
-              <Route path="/temp-list" element={<MyMintList account={account} />} />
-              <Route path="/temp-sell" element={<NFTSaleTest account={account} />} />
+              <Route
+                path="/temp-list"
+                element={<MyMintList account={account} />}
+              />
+              <Route
+                path="/temp-sell"
+                element={<NFTSaleTest account={account} />}
+              />
 
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
