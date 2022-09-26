@@ -1,21 +1,67 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./NFTDetail.module.css";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
+import { selectUserAddress } from "../auth/authSlice";
+import styles from "./NftDetail.module.css";
+import { selectNftDetail, setNftDetail } from "./NftDetailSlice";
 
 const Detail = () => {
   const navigate = useNavigate();
+  const { tokenId } = useParams();
+  const nftDetail = useAppSelector(selectNftDetail);
+  const dispatch = useAppDispatch();
+  const userAddress = useAppSelector(selectUserAddress);
+
+  const [nftPrice, setNftPrice] = useState(0);
+  const [nftOwner, setNftOwner] = useState("");
+
+  const getMetadata = async() => {
+    try {
+      const response = await MintReadmeContract.methods.tokenURI(tokenId).call();
+      await axios({url: response})
+      .then((data: any) => {
+        console.log(data);
+        dispatch(setNftDetail(data.data));
+      }).catch((error: any) => {
+          console.error(error);
+      });
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  const getNftInfo = async () => {
+    try {
+      const nftPrice = await SaleReadmeContract.methods.getReadmeTokenPrice(tokenId).call();
+      const nftOwner = await MintReadmeContract.methods.ownerOf(tokenId).call();
+      setNftPrice(nftPrice)
+      setNftOwner(nftOwner);
+      console.log(nftPrice);
+      console.log(nftOwner)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // mount
+  useEffect(() => {
+    getMetadata();
+    getNftInfo();
+  }, [])
+  
 
   return (
     <div className={styles.detail}>
       <div className={styles.detail_container}>
         <div className={styles.cards}>
           <div className={styles.card_contents_front}>
-            <img className={styles.card_img} src={require("../../assets/nft-img/1.png")} alt="dog" />
+            <img className={styles.card_img} src={nftDetail.imageURL} alt="dog" />
             <div className={styles.card_img_info}>
-              <p>NFT Name</p>
-              <p>Price</p>
-              <p>Creator</p>
-              <p>Seller</p>
+              <p>TokenID: {tokenId}</p>
+              <p>FileName: {nftDetail.fileName}</p>
+              <p>Creator: {nftDetail.author}</p>
+              <p>Owner: {nftOwner}</p>
             </div>
           </div>
         </div>
@@ -24,12 +70,19 @@ const Detail = () => {
             <div className={styles.card_contents_back_price}>
               <div>
                 <p>현재 가격</p>
-                <p>12 SSF</p>
+                <p>{nftPrice} SSF</p>
               </div>
               <div>
-                <button className={styles.card_button} onClick={() => navigate("/sell")}>
+                { nftOwner.toLowerCase() === userAddress ? <>
+                  <button className={styles.card_button} onClick={() => navigate("/sell")}>
                   판매
                 </button>
+                </> : <>
+                <button className={styles.card_button} onClick={() => navigate("/sell")}>
+                  구매
+                </button></>
+                  
+                }
               </div>
             </div>
             <div className={styles.card_contents_back_history}></div>

@@ -8,8 +8,8 @@ import BackgroundCloud from "./components/BackgroundCloud";
 import Main from "./features/main/Main";
 import LiveList from "./features/main/LiveList";
 import NFTList from "./features/main/NFTList";
-import Detail from "./features/detail/NFTDetail";
-import Sell from "./features/detail/NFTSell";
+import Detail from "./features/detail/NftDetail";
+import Sell from "./features/detail/NftSell";
 import Welcome from "./features/welcome/Welcome";
 import Login from "./features/auth/Login";
 import Game from "./features/game/Game";
@@ -22,7 +22,6 @@ import { loginUser, selectUserAddress } from "./features/auth/authSlice";
 
 import TestPage from "./testWeb3/TestPage";
 
-import NFTLists from "./features/detail/NFTLists/NFTLists";
 import MyPageTest from "./features/mypage/MyPageTest";
 import NFTSaleTest from "./features/detail/SaleAnimal";
 import Mint from "./features/mint/Mint";
@@ -75,7 +74,7 @@ function App() {
                 <Route path="/list" element={<NFTList />} />
               </Route>
               <Route path="/mint" element={<Mint account={account} />} />
-              <Route path="/detail" element={<Detail />} />
+              <Route path="/detail/:tokenId" element={<Detail />} />
               <Route path="/sell" element={<Sell />} />
               <Route path="/temp-list" element={<MyMintList account={account} />} />
               <Route path="/temp-sell" element={<NFTSaleTest account={account} />} />
