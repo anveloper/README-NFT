@@ -124,7 +124,14 @@ io.on("connection", (socket) => {
   });
   socket.on("leave_room", (session) => {
     socket.leave(session);
-    socket.to(session).emit("bye", socket.nickname, countRoom(session) - 1);
+    socket
+      .to(session)
+      .emit(
+        "bye",
+        socket.nickname,
+        countRoom(session) - 1,
+        getParticipants(session)
+      );
     io.sockets.emit("room_change", publicRooms());
   });
   socket.on("disconnecting", () => {

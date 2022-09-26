@@ -3,12 +3,11 @@ import { useAppSelector } from "../../../app/hooks";
 import { selectHostUserName, selectParticipants } from "../gameSlice";
 
 import styles from "../Game.module.css";
-import { selectUserAddress } from "../../auth/authSlice";
+import { selectUserAddress, truncatedAddress } from "../../auth/authSlice";
 const MemberBox = ({ visible }: any) => {
   const participants = useAppSelector(selectParticipants);
   const hostUserName = useAppSelector(selectHostUserName);
   const userAddress = useAppSelector(selectUserAddress);
-  console.log(participants);
   return (
     <div
       className={styles.memberBox}
@@ -16,12 +15,13 @@ const MemberBox = ({ visible }: any) => {
     >
       <div className={styles.memberList}>
         {participants.map((p, index) => {
+          const shortName = truncatedAddress(p.address);
           if (userAddress === p.address)
             return (
               <div key={index} className={styles.memberItemMine}>
                 {`${p.nickname} (나)`}
                 <br />
-                {`${p.address}`}
+                {`${shortName}`}
               </div>
             );
           else if (hostUserName !== p.address)
@@ -29,7 +29,7 @@ const MemberBox = ({ visible }: any) => {
               <div key={index} className={styles.memberItem}>
                 {`${p.nickname}`}
                 <br />
-                {`${p.address}`}
+                {`${shortName}`}
               </div>
             );
           else
@@ -37,7 +37,7 @@ const MemberBox = ({ visible }: any) => {
               <div key={index} className={styles.memberItemHost}>
                 {`${p.nickname} (HOST)`}
                 <br />
-                {`${p.address}`}
+                {`${shortName}`}
               </div>
             );
         })}

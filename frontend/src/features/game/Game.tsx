@@ -10,7 +10,7 @@ import {
   selectRoomName,
   selectSocket,
 } from "./gameSlice";
-import { selectUserAddress } from "../auth/authSlice";
+import { selectUserAddress, truncatedAddress } from "../auth/authSlice";
 // component
 import NewHelmet from "../../components/NewHelmet";
 import AnswerBox from "./components/AnswerBox";
@@ -28,8 +28,8 @@ const Game = () => {
   const socket = useAppSelector(selectSocket);
   const roomName = useAppSelector(selectRoomName);
   const hostUserName = useAppSelector(selectHostUserName);
+  const shortHostAddress = truncatedAddress(hostUserName);
   const roomCnt = useAppSelector(selectRoomCnt);
-
   const [tabFlag, setTabFlag] = useState(true);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -40,8 +40,7 @@ const Game = () => {
       if (socket) socket.emit("leave_room", hostUserName);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  }, [hostUserName]);
   const handleExit = () => {
     if (socket) {
       if (hostUserName === userAddress) {
@@ -70,6 +69,9 @@ const Game = () => {
           <button className={styles.exit} onClick={handleExit}>
             종료
           </button>
+          <p>
+            {roomName} 🖌️ {shortHostAddress}님의 리드미
+          </p>
         </div>
         <div className={styles.contentBox}>
           <AnswerBox />

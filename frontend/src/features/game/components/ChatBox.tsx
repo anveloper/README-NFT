@@ -16,6 +16,7 @@ import {
 } from "../gameSlice";
 
 import styles from "../Game.module.css";
+
 const ChatBox = () => {
   const [newMessage, setNewMessage] = useState("");
   const boxRef = useRef<HTMLDivElement | null>(null);
@@ -28,10 +29,6 @@ const ChatBox = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (socket) {
-      // socket.onAny((event) => {
-      //   console.log(`SocketIO Event: ${event}`, event);
-      // }); // 모든 이벤트 리스너
-
       socket.on("bye", (user: string, cnt: number, data: string) => {
         dispatch(setRoomCnt(cnt));
         dispatch(setParticipants(JSON.parse(data)));
