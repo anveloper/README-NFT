@@ -2,15 +2,16 @@ import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 
 import styles from "./NftItem.module.css";
+import { useNavigate } from "react-router-dom";
 
 const NftItem = (props: any) => {
   const { nft } = props;
-  const [flip, setFlip] = useState(false);
   const [fileName, setFileName] = useState("");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const navigate = useNavigate();
 
   const getMetadata = async (metaDataURI: string) => {
     try {
@@ -27,13 +28,17 @@ const NftItem = (props: any) => {
     }
   };
 
+  const moveToDetail = (tokenId: string) => {
+    navigate('/detail/'+ tokenId);
+  }
+
   useEffect(() => {
     const { metaDataURI } = props;
     getMetadata(metaDataURI);
   }, [props]);
 
   return (
-    <button className={styles.container} onClick={() => setFlip(!flip)}>
+    <button className={styles.container} onClick={()=>moveToDetail(nft.readmeTokenId)}>
       <div className={styles.card}>
         <div className={styles.front}>
           <Suspense fallback={<p>이미지 로딩중</p>}>
