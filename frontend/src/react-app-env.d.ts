@@ -9,6 +9,8 @@ declare namespace NodeJS {
   interface ProcessEnv {
     NODE_ENV: "development" | "production";
     REACT_APP_API_BASE_URL: string;
+    REACT_APP_ETHEREUM_RPC_URL: string;
+    REACT_APP_IPFS_IP: string;
     // REACT_APP_..._KEY: string;
   }
 }

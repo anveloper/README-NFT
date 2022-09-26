@@ -22,6 +22,7 @@ const MyPageTest: FC<MyPageTestProps> = ({ account }) => {
         .mintAnimalToken()
         .send({ from: account });
       console.log(response);
+
       if (response.status) {
         const balanceLength = await mintAnimalContract.methods
           .balanceOf(account)
