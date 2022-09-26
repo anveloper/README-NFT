@@ -5,7 +5,7 @@ interface SaleAnimalProps {
   account: String;
 }
 
-const Sell = () => {
+const NftSell = () => {
   return (
     <div className={styles.sell_background}>
       <BackgroundFlower />
@@ -43,4 +43,4 @@ const Sell = () => {
   );
 };
 
-export default Sell;
+export default NftSell;

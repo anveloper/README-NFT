@@ -7,7 +7,7 @@ import { selectUserAddress } from "../auth/authSlice";
 import styles from "./NftDetail.module.css";
 import { selectNftDetail, setNftDetail } from "./NftDetailSlice";
 
-const Detail = () => {
+const NftDetail = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -94,4 +94,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default NftDetail;
