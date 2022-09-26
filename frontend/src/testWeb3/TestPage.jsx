@@ -193,8 +193,11 @@ const TestPage = () => {
     //     .purchaseReadmeToken(account, toBuy)
     //     .send({ from: account });
     // }
+    await SSFContract.methods
+      .approve(process.env.REACT_APP_SALEREADMETOKEN_CA, toBuyPrice)
+      .send({ from: account });
     SaleReadmeContract.methods
-      .purchaseReadmeToken(toBuy)
+      .purchaseReadmeToken(process.env.REACT_APP_ERC20_CA, toBuy)
       .send({ from: account })
       .then((receipt) => {
         console.log(receipt);

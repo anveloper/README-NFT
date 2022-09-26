@@ -162,6 +162,11 @@ export const SaleReadmeToken: AbiItem[] = [
   {
     inputs: [
       {
+        internalType: "contract IERC20",
+        name: "token",
+        type: "address",
+      },
+      {
         internalType: "uint256",
         name: "_readmeTokenId",
         type: "uint256",
@@ -169,9 +174,8 @@ export const SaleReadmeToken: AbiItem[] = [
     ],
     name: "purchaseReadmeToken",
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     type: "function",
-    payable: true,
   },
   {
     inputs: [

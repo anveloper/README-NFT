@@ -31,7 +31,7 @@ contract SaleReadmeToken{
     // 판매 등록한 사람
     mapping(uint256 => address) public sellerTest;
     //SSF Token Address
-    address private _addressOfSSFToken;
+    address _addressOfSSFToken;
     event Logs(
         address msgsender,
         uint256 msgvalue,
@@ -74,9 +74,7 @@ contract SaleReadmeToken{
 
 
     // 구매: buyer
-    function purchaseReadmeToken(uint256 _readmeTokenId) public payable{
-        SsafyToken ssfToken = SsafyToken(_addressOfSSFToken);
-        
+    function purchaseReadmeToken(IERC20 token,uint256 _readmeTokenId) public {        
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address buyer = msg.sender;
@@ -92,12 +90,12 @@ contract SaleReadmeToken{
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 구매자의 구매 능력 확인(=> 지갑 돈으로 바꿔야할 것같음)
         // require(price <= (msg.sender).balance, "No money");
-        require(price <= ssfToken.balanceOf(msg.sender), "No Money");
+        require(price <= token.balanceOf(msg.sender), "No Money");
         // 판매자 != 구매자 
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
         // 송금
-        ssfToken.transfer(readmeTokenOwner, price);
+        token.transferFrom(msg.sender, readmeTokenOwner, price);
         // // 돈: 구매자(buyer: 함수 호출자) -> 판매자
         // payable(readmeTokenOwner).transfer(msg.value);
 
