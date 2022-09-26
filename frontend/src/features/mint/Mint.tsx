@@ -16,7 +16,7 @@ interface MintProps {
 const ipfsUrl =
   process.env.NODE_ENV !== "production"
     ? "http://j7b108.p.ssafy.io:5001"
-    : "https://j7b108.p.ssafy.io:5001";
+    : "https://j7b108.p.ssafy.io";
 
 const Mint: FC<MintProps> = ({ account }) => {
   const { answer, creator, solver, tmpUrl } = useAppSelector(selectTmpInfo);
