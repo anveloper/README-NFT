@@ -173,7 +173,26 @@ const TestPage = () => {
       console.log(res);
     });
   };
-  const buyNFT = () => {
+  const buyNFT = async () => {
+    // SaleReadmeContract.methods
+    //   .purchaseReadmeToken(toBuy)
+    //   .send({ from: account, value: toBuyPrice })
+    //   .then((receipt) => {
+    //     console.log(receipt);
+    //   });
+    let owner = await MintReadmeContract.methods.ownerOf(toBuy).call();
+    console.log(owner);
+    // let SSFBalance = await SSFContract.methods.balanceOf(account).call();
+    // if (SSFBalance > toBuyPrice) {
+    //   await SSFContract.methods
+    //     .transfer(owner, toBuyPrice)
+    //     .send({ from: account }, (err, res) => {
+    //       console.log(res);
+    //     });
+    //   await SaleReadmeContract.methods
+    //     .purchaseReadmeToken(account, toBuy)
+    //     .send({ from: account });
+    // }
     SaleReadmeContract.methods
       .purchaseReadmeToken(toBuy)
       .send({ from: account, value: toBuyPrice })
@@ -295,6 +314,15 @@ const TestPage = () => {
           setDuring(e.target.value);
         }}
       />
+      <button
+        onClick={() => {
+          MintReadmeContract.methods
+            .setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true)
+            .send({ from: account });
+        }}
+      >
+        판매 권한 주기
+      </button>
       <button onClick={saleNft}>판매하기</button>
       <h2>판매중인 토큰 목록</h2>
       <button onClick={getOnSale}>조회하기</button>

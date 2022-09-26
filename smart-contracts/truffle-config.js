@@ -53,6 +53,15 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(mnemonic, `http://20.196.209.2:8545`),
     },
+    ropsten: {
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          "https://ropsten.infura.io/v3/587fbda02f5d42558e26ec1e6dcfb753"
+        ),
+      network_id: 3,
+      gas: 30000000,
+    },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
