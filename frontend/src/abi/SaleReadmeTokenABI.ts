@@ -8,9 +8,39 @@ export const SaleReadmeToken: AbiItem[] = [
         name: "_mintReadmeToken",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "addressOfSSF",
+        type: "address",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "msgsender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "msgvalue",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "msgsenderbalance",
+        type: "uint256",
+      },
+    ],
+    name: "Logs",
+    type: "event",
   },
   {
     inputs: [],
@@ -90,6 +120,26 @@ export const SaleReadmeToken: AbiItem[] = [
     inputs: [
       {
         internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "sellerTest",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "_readmeTokenId",
         type: "uint256",
       },
@@ -112,6 +162,11 @@ export const SaleReadmeToken: AbiItem[] = [
   {
     inputs: [
       {
+        internalType: "contract IERC20",
+        name: "token",
+        type: "address",
+      },
+      {
         internalType: "uint256",
         name: "_readmeTokenId",
         type: "uint256",
@@ -119,9 +174,8 @@ export const SaleReadmeToken: AbiItem[] = [
     ],
     name: "purchaseReadmeToken",
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     type: "function",
-    payable: true,
   },
   {
     inputs: [

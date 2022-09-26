@@ -9,72 +9,12 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_currencyAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "_nftAddress",
+						"name": "_mintReadmeToken",
 						"type": "address"
 					}
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "saleContractAddress",
-						"type": "address"
-					},
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "currencyAddress",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "nftAddress",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "price",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "saleStartTime",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "saleEndTime",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "tokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "NewSale",
-				"type": "event"
 			},
 			{
 				"anonymous": false,
@@ -96,99 +36,11 @@
 				"type": "event"
 			},
 			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "tokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "print",
-				"type": "event"
-			},
-			{
 				"inputs": [],
-				"name": "admin",
+				"name": "mintReadmeToken",
 				"outputs": [
 					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "seller",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "tokenId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "startPrice",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "startTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "endTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "currencyAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "nftAddress",
-						"type": "address"
-					}
-				],
-				"name": "bid",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "erc20Contract",
-				"outputs": [
-					{
-						"internalType": "contract IERC20",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "erc721Contract",
-				"outputs": [
-					{
-						"internalType": "contract IERC721",
+						"internalType": "contract MintReadmeToken",
 						"name": "",
 						"type": "address"
 					}
@@ -200,68 +52,19 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "tokenId",
+						"name": "",
 						"type": "uint256"
 					}
 				],
-				"name": "getSaleAddress",
+				"name": "onSaleReadmeToken",
 				"outputs": [
 					{
-						"internalType": "address",
+						"internalType": "uint256",
 						"name": "",
-						"type": "address"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "seller",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "tokenId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "startPrice",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "startTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "endTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "currencyAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "nftAddress",
-						"type": "address"
-					}
-				],
-				"name": "nowbuy",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -272,6 +75,44 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "readmeTokenEndTime",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "readmeTokenPrice",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -292,7 +133,7 @@
 						"type": "uint256"
 					}
 				],
-				"name": "sales",
+				"name": "sellerTest",
 				"outputs": [
 					{
 						"internalType": "address",
@@ -301,6 +142,34 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_endTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "contract MintReadmeToken",
+						"name": "_mintReadmeToken",
+						"type": "address"
+					}
+				],
+				"name": "setForSaleReadmeToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -342,7 +211,7 @@
 		"compilationTarget": {
 			"contracts/Sale.sol": "Sale"
 		},
-		"evmVersion": "petersburg",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -355,19 +224,19 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0x3e05ab3d557c74347dc8cc3317097896501f5e7197c459af087d80b0485b76bc",
+			"keccak256": "0x03acf6e751c0037d7716e4bc6e555798f62c5268398f69efa4d55401980693d5",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fe2eb7fbffa1f18a3811734a1b2617497b6de8111e604213a988be0a170c3481",
-				"dweb:/ipfs/QmQsJVnPp55whABdxWGuEUNV2yd4TmnsuMZsdy2vt5NkkP"
+				"bzz-raw://b7678c0d7164f1ceeb14b21e841160c055ad122526f5514949da6d9608775296",
+				"dweb:/ipfs/QmbfvtbHYnx7WsWSEsv4YSS8Gau2zRL3d2aLqV8LTZHhYi"
 			]
 		},
 		"contracts/Sale.sol": {
-			"keccak256": "0x64b71733194e4e2a71788f7f863f9b2b438a48180df701385752be03e958820b",
+			"keccak256": "0xffbd9803f5a42fe72df4cccab1538c336589cf0a60f55584f6ee646086c0b088",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://22a95c91b29c8c8b34d9dbcaeca1706932275aaeff473a3c6d558eba852e15a7",
-				"dweb:/ipfs/QmeMGUDitHeNqv5m271vjW1FqmYWD656cNXj2EGzPt699n"
+				"bzz-raw://d7533642b70c6ad83a3853d58c627140ba4a147ac2b4ead1e051e7c93a30b836",
+				"dweb:/ipfs/QmXZzhGtgPNeZ7eB1FRf8ukhqcLxa3T2bZfHPczM8FS6c4"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {
@@ -403,11 +272,11 @@
 			]
 		},
 		"node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
-			"keccak256": "0x0b606994df12f0ce35f6d2f6dcdde7e55e6899cdef7e00f180980caa81e3844e",
+			"keccak256": "0xc56375fb835be72c7525139f9bc85532eda5ebbd69dfe09df82701d34f3b98a0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4c827c981a552d1c76c96060e92f56b52bc20c6f9b4dbf911fe99ddbfb41f2ea",
-				"dweb:/ipfs/QmW8xvJdzHrr8Ry34C7viBsgG2b8T1mL4BQWJ5CdfD9JLB"
+				"bzz-raw://fd95de598929027f6ec49ba7f0479e66e26bc8c66cb77136fb544773c8f63034",
+				"dweb:/ipfs/QmdD7nckpgeEgczgthTznmseQojqH6ZpwuFjuNbPd6toEY"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {

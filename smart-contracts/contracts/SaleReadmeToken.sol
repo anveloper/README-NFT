@@ -4,14 +4,20 @@ pragma solidity ^0.8.4;
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC721.sol";
+import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./MintReadmeToken.sol";
+import "./SsafyToken.sol";
 
 
 contract SaleReadmeToken{
+    
     MintReadmeToken public mintReadmeToken;
+    //IERC20 public ssafyWallet;
 
-    constructor (address _mintReadmeToken) {
+    constructor (address _mintReadmeToken, address addressOfSSF) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
+        _addressOfSSFToken = addressOfSSF;
+        //ssafyWallet = IERC20(_ssafyWallet); // 싸피 지갑 추가
     }
 
     // 판매 등록 된 토큰 : tokenId
@@ -22,7 +28,15 @@ contract SaleReadmeToken{
     mapping (uint256 => uint256) public readmeTokenEndTime;
     // 판매/경매에 등록된 토큰
     mapping(uint256 => bool) onActiveTokens;
-
+    // 판매 등록한 사람
+    mapping(uint256 => address) public sellerTest;
+    //SSF Token Address
+    address _addressOfSSFToken;
+    event Logs(
+        address msgsender,
+        uint256 msgvalue,
+        uint256 msgsenderbalance
+    );
 
     // 판매 등록: seller
     function setForSaleReadmeToken(
@@ -53,13 +67,17 @@ contract SaleReadmeToken{
         onSaleReadmeToken.push(_readmeTokenId);
         // 판매/경매 등록으로 변경
         onActiveTokens[_readmeTokenId] = true;
+
+        // 컨트랙트에게 지갑의 돈을 사용할 권한을 줌
+        //ssafyWallet.approve(address(this), _price);
     }
 
+
     // 구매: buyer
-    function purchaseReadmeToken(uint256 _readmeTokenId) public payable {
+    function purchaseReadmeToken(IERC20 token,uint256 _readmeTokenId) public {        
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
-        address buyer = payable(msg.sender);
+        address buyer = msg.sender;
 
         // 판매자 확인
         address readmeTokenOwner = mintReadmeToken.ownerOf(_readmeTokenId);
@@ -70,15 +88,20 @@ contract SaleReadmeToken{
         require(price > 0, "Not On Sale");
         // 판매/경매 등록 여부 확인
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
-        // 구매자의 구매 능력 확인
-        require(price <= msg.value, "No money");
+        // 구매자의 구매 능력 확인(=> 지갑 돈으로 바꿔야할 것같음)
+        // require(price <= (msg.sender).balance, "No money");
+        require(price <= token.balanceOf(msg.sender), "No Money");
         // 판매자 != 구매자 
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
-        // 돈: 구매자(buyer: 함수 호출자) -> 판매자
-        payable(readmeTokenOwner).transfer(msg.value);
+        // 송금
+        token.transferFrom(msg.sender, readmeTokenOwner, price);
+        // // 돈: 구매자(buyer: 함수 호출자) -> 판매자
+        // payable(readmeTokenOwner).transfer(msg.value);
+
         // nft 전송: 판매자 -> 구매자
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
+
         
         // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
         readmeTokenPrice[_readmeTokenId] = 0;
