@@ -19,11 +19,11 @@ const ipfsURL =
 const Mint: FC<MintProps> = ({ account }) => {
   const { answer, creator, solver, tmpUrl } = useAppSelector(selectTmpInfo);
   const imgBlob: Blob = useAppSelector(selectImgBlob);
+  
 
   const addItem = async () => {
     const fr = new FileReader();
     if (account) {
-      console.log(account);
       const client = create({ url: ipfsURL });
       fr.readAsArrayBuffer(imgBlob);
       fr.onload = async () => {
