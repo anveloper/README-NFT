@@ -1,4 +1,4 @@
-import React, { useEffect, FC, useState, useRef } from "react";
+import React, { useEffect, FC } from "react";
 import { useAppSelector } from "../../app/hooks";
 // state
 import { selectImgBlob, selectTmpInfo } from "./mintSlice";
@@ -7,24 +7,25 @@ import NewHelmet from "../../components/NewHelmet";
 import { MintReadmeContract } from "../../web3Config";
 import { create } from "ipfs-http-client";
 
+// css
+import styles from "./Mint.module.css";
+import { useNavigate } from "react-router-dom";
 interface MintProps {
   account: string;
 }
-
-const ipfsURL =
+const ipfsUrl =
   process.env.NODE_ENV !== "production"
-    ? "http://j7b108.p.ssafy.io"
-    : "https://j7b108.p.ssafy.io";
-
+    ? "http://j7b108.p.ssafy.io:5001"
+    : "https://j7b108.p.ssafy.io:5001";
 const Mint: FC<MintProps> = ({ account }) => {
   const { answer, creator, solver, tmpUrl } = useAppSelector(selectTmpInfo);
   const imgBlob: Blob = useAppSelector(selectImgBlob);
-
+  const navigate = useNavigate();
   const addItem = async () => {
     const fr = new FileReader();
     if (account) {
       console.log(account);
-      const client = create({ url: ipfsURL });
+      const client = create({ url: ipfsUrl });
       fr.readAsArrayBuffer(imgBlob);
       fr.onload = async () => {
         if (typeof fr.result !== "string") {
@@ -44,33 +45,42 @@ const Mint: FC<MintProps> = ({ account }) => {
             .send({ from: account })
             .then((receipt: any) => {
               console.log(receipt);
+              navigate("/list");
             });
         }
       };
     }
   };
-
   useEffect(() => {
     return () => {
-      // window.URL.revokeObjectURL(tmpUrl);
+      window.URL.revokeObjectURL(tmpUrl);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div>
+    <>
       <NewHelmet
         title={`${answer} - 민팅하기`}
         description={`출제자 ${creator}에 의한 리드미-${answer} 문제와 최초 정답자 ${solver}`}
       />
-      <img src={tmpUrl} alt="" />
-      <div>정답: {answer}</div>
-      <div>만든이: {creator}</div>
-      <div>맞춘이: {solver}</div>
-      <div>임시 URL: {tmpUrl}</div>
-      {/* <div>계정: {account}</div> */}
-
-      <button onClick={addItem}>민팅하기</button>
-    </div>
+      <div className={styles.container}>
+        <div className={styles.mintCard}>
+          <img src={tmpUrl} alt="" />
+          <div className={styles.content}>
+            <div>정답: {answer}</div>
+            <div>만든이: {creator}</div>
+            <div>맞춘이: {solver}</div>
+            <div>임시 URL: {tmpUrl}</div>
+          </div>
+          <div className={styles.btnBox}>
+            <a href={tmpUrl} download>
+              다운받기
+            </a>
+            <button onClick={addItem}>민팅하기</button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
