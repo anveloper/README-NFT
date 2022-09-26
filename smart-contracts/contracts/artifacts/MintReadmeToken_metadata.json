@@ -197,6 +197,11 @@
 						"internalType": "string",
 						"name": "_metadataURI",
 						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "_saleReadmeTokenAddress",
+						"type": "address"
 					}
 				],
 				"name": "create",
@@ -726,11 +731,19 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
+<<<<<<< HEAD
+			"keccak256": "0x02fde9605057da487f1d0b88c959e179328360b823ac378952f2e6c48f23813f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ff9c30a2570c3ed3c759ac10f9f9f096df858008ae22bf954a36ec0ac28db897",
+				"dweb:/ipfs/QmVef6Tbo11CrCkgSvkiC4QULKZwLeCUwEdoNj4y6Zpf9K"
+=======
 			"keccak256": "0xa488f8fd1a90a9ec0b62c2e873501ded45aa9c94d5702244e1cc396b3ce7c0cb",
 			"license": "MIT",
 			"urls": [
 				"bzz-raw://9d988e8eb042abc6cba6b4c930824d462a135d47e8fc86cbf385930dfc6bccc7",
 				"dweb:/ipfs/QmVLM6tbJp6NubbrN77YnTJFLPLnxpNWdsdKLJGSx5rrPz"
+>>>>>>> 97efc7d7af9a300b5a28472a992b2e7cd2422112
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {

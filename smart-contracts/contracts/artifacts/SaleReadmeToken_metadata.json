@@ -27,6 +27,17 @@
 					},
 					{
 						"indexed": false,
+<<<<<<< HEAD
+						"internalType": "uint256",
+						"name": "msgvalue",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "msgsenderbalance",
+						"type": "uint256"
+=======
 						"internalType": "address",
 						"name": "toowner",
 						"type": "address"
@@ -36,6 +47,7 @@
 						"internalType": "address",
 						"name": "addressthis",
 						"type": "address"
+>>>>>>> 97efc7d7af9a300b5a28472a992b2e7cd2422112
 					}
 				],
 				"name": "Logs",
@@ -303,6 +315,21 @@
 	},
 	"sources": {
 		"contracts/MintReadmeToken.sol": {
+<<<<<<< HEAD
+			"keccak256": "0x02fde9605057da487f1d0b88c959e179328360b823ac378952f2e6c48f23813f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ff9c30a2570c3ed3c759ac10f9f9f096df858008ae22bf954a36ec0ac28db897",
+				"dweb:/ipfs/QmVef6Tbo11CrCkgSvkiC4QULKZwLeCUwEdoNj4y6Zpf9K"
+			]
+		},
+		"contracts/SaleReadmeToken.sol": {
+			"keccak256": "0x1b65aa8a8971edc70a902c7c324eafcd12c3ee96b2e591a0caf8bfa258fb8dba",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1dad95ea347f003cb996de0f419bf64fb8fe3ba58d4d6b8c9e749ab908ed8749",
+				"dweb:/ipfs/QmT4ccYjnUsKmqAfE2MrKUXQfgVvTaYLQJCH2CvW7dXsnp"
+=======
 			"keccak256": "0xa488f8fd1a90a9ec0b62c2e873501ded45aa9c94d5702244e1cc396b3ce7c0cb",
 			"license": "MIT",
 			"urls": [
@@ -316,6 +343,7 @@
 			"urls": [
 				"bzz-raw://043b7b2b4ea8636efd2a0724d9c82739966e1d82c0307d957166a7c336da9dc4",
 				"dweb:/ipfs/QmS5vtP2dmpf5DG4oGkmKj22T2qMoF872uBkTZfLnkzEFA"
+>>>>>>> 97efc7d7af9a300b5a28472a992b2e7cd2422112
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {
