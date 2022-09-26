@@ -25,13 +25,7 @@ const Mint: FC<MintProps> = ({ account }) => {
   const addItem = async () => {
     const fr = new FileReader();
     if (account) {
-      console.log(account);
       const client = create({ url: ipfsUrl });
-
-  const addItem = async () => {
-    const fr = new FileReader();
-    if (account) {
-      const client = create({ url: ipfsURL });
       fr.readAsArrayBuffer(imgBlob);
       fr.onload = async () => {
         if (typeof fr.result !== "string") {
