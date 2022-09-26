@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 // components
 import MyNFTCard, { IMyNFTCard } from "./MyNFTCard";
 // css
@@ -16,14 +16,16 @@ interface MyNFTListProps {
 const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
   const walletAddress = useAppSelector(selectUserAddress);
   const [NFTCardArray, setNFTCardArray] = useState<IMyNFTCard[]>([]);
+  // const [pageNum, setPageNum] = useState(1);
+  // const observerRef = useRef();
+
+  // const observer = new IntersectionObserver(callback, options);
 
   const myNFTList = async () => {
     try {
       const tempNFTCardArray: IMyNFTCard[] = [];
 
-      const response = await GetReadmeContract.methods
-        .getMyReadmeToken(walletAddress)
-        .call();
+      const response = await GetReadmeContract.methods.getMyReadmeToken(walletAddress).call();
       console.log(response);
 
       response.map((v: IMyNFTCard) => {
@@ -57,9 +59,7 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     try {
       const tempNFTCardArray: IMyNFTCard[] = [];
 
-      const response = await GetReadmeContract.methods
-        .getDrawReadmeToken(walletAddress)
-        .call();
+      const response = await GetReadmeContract.methods.getDrawReadmeToken(walletAddress).call();
       console.log(response);
 
       response.map((v: IMyNFTCard) => {
@@ -77,20 +77,18 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     }
   };
 
-  if (NFTListValue === "myNFT") {
-    console.log("mynft");
-    myNFTList();
-  } else if (NFTListValue === "loveNFT") {
-    console.log("loveNFT");
-    likeNFTList();
-  } else if (NFTListValue === "createNFT") {
-    console.log("createNFT");
-    createNFTList();
-  }
-
-  // useEffect(() => {
-  //   console.log(NFTCardArray);
-  // }, [NFTCardArray]);
+  useEffect(() => {
+    if (NFTListValue === "myNFT") {
+      console.log("mynft");
+      myNFTList();
+    } else if (NFTListValue === "likeNFT") {
+      console.log("likeNFT");
+      likeNFTList();
+    } else if (NFTListValue === "createNFT") {
+      console.log("createNFT");
+      createNFTList();
+    }
+  }, [NFTListValue]);
 
   return (
     <div className={styles.MyNFTList}>
@@ -115,6 +113,7 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
               />
             );
           })}
+        {/* <div ref={observer}></div> */}
       </div>
     </div>
   );
