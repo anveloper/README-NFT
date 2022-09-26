@@ -8,9 +8,6 @@ import {
   SSFContract,
 } from "../web3Config";
 
-import COMMON_ABI from "../common/ABI";
-import getAddressFrom from "../utils/AddressExtractor";
-import sendTransaction from "../utils/TxSender";
 import IpfsAPI from "ipfs-api";
 import { Buffer } from "buffer";
 /**
@@ -101,7 +98,7 @@ const TestPage = () => {
             // );
             console.log(account);
             MintReadmeContract.methods
-              .create(tokenURI)
+              .create(tokenURI, process.env.REACT_APP_SALEREADMETOKEN_CA)
               .send({ from: account })
               .then((receipt) => {
                 console.log(receipt);
@@ -158,6 +155,7 @@ const TestPage = () => {
     // );
   };
   const saleNft = () => {
+    console.log(account);
     SaleReadmeContract.methods
       .setForSaleReadmeToken(sale, price, during)
       .send({ from: account })
@@ -175,10 +173,32 @@ const TestPage = () => {
       console.log(res);
     });
   };
-  const buyNFT = () => {
+  const buyNFT = async () => {
+    // SaleReadmeContract.methods
+    //   .purchaseReadmeToken(toBuy)
+    //   .send({ from: account, value: toBuyPrice })
+    //   .then((receipt) => {
+    //     console.log(receipt);
+    //   });
+    let owner = await MintReadmeContract.methods.ownerOf(toBuy).call();
+    console.log(owner);
+    // let SSFBalance = await SSFContract.methods.balanceOf(account).call();
+    // if (SSFBalance > toBuyPrice) {
+    //   await SSFContract.methods
+    //     .transfer(owner, toBuyPrice)
+    //     .send({ from: account }, (err, res) => {
+    //       console.log(res);
+    //     });
+    //   await SaleReadmeContract.methods
+    //     .purchaseReadmeToken(account, toBuy)
+    //     .send({ from: account });
+    // }
+    await SSFContract.methods
+      .approve(process.env.REACT_APP_SALEREADMETOKEN_CA, toBuyPrice)
+      .send({ from: account });
     SaleReadmeContract.methods
-      .purchaseReadmeToken(toBuy, process.env.REACT_APP_ERC20_CA)
-      .send({ from: account, value: toBuyPrice })
+      .purchaseReadmeToken(process.env.REACT_APP_ERC20_CA, toBuy)
+      .send({ from: account })
       .then((receipt) => {
         console.log(receipt);
       });
@@ -297,6 +317,15 @@ const TestPage = () => {
           setDuring(e.target.value);
         }}
       />
+      <button
+        onClick={() => {
+          MintReadmeContract.methods
+            .setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true)
+            .send({ from: account });
+        }}
+      >
+        판매 권한 주기
+      </button>
       <button onClick={saleNft}>판매하기</button>
       <h2>판매중인 토큰 목록</h2>
       <button onClick={getOnSale}>조회하기</button>

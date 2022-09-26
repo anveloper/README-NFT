@@ -126,25 +126,6 @@ export const MintReadmeToken: AbiItem[] = [
     type: "event",
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "money",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "sender",
-        type: "address",
-      },
-    ],
-    name: "Value",
-    type: "event",
-  },
-  {
     inputs: [
       {
         internalType: "address",
@@ -482,20 +463,6 @@ export const MintReadmeToken: AbiItem[] = [
   },
   {
     inputs: [],
-    name: "walletContract",
-    outputs: [
-      {
-        internalType: "contract IERC20",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [],
     name: "getCurrentNft",
     outputs: [
       {
@@ -614,6 +581,11 @@ export const MintReadmeToken: AbiItem[] = [
         internalType: "string",
         name: "_metadataURI",
         type: "string",
+      },
+      {
+        internalType: "address",
+        name: "_saleReadmeTokenAddress",
+        type: "address",
       },
     ],
     name: "create",

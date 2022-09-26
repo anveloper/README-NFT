@@ -1,9 +1,9 @@
 import Web3 from "web3";
-import { MintReadmeToken } from "./ABI/MintReadmeTokenABI";
-import { SaleReadmeToken } from "./ABI/SaleReadmeTokenABI";
-import { GetReadmeToken } from "./ABI/GetReadmeTokenABI";
-import { BidReadmeToken } from "./ABI/BidReadmeTokenABI";
-import { SSF } from "./ABI/SSFABI";
+import { MintReadmeToken } from "./abi/MintReadmeTokenABI";
+import { SaleReadmeToken } from "./abi/SaleReadmeTokenABI";
+import { GetReadmeToken } from "./abi/GetReadmeTokenABI";
+import { BidReadmeToken } from "./abi/BidReadmeTokenABI";
+import { SSF } from "./abi/SSFABI";
 
 export const web3 = new Web3(window.ethereum);
 

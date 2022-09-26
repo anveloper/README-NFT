@@ -17,10 +17,12 @@ export interface NftConfig {
 }
 
 interface NftListConfig {
+  rawList: any[];
   nftList: NftConfig[];
 }
 
 const initialState: NftListConfig = {
+  rawList: [],
   nftList: [],
 };
 
@@ -28,6 +30,9 @@ const nftSlice = createSlice({
   name: "nft",
   initialState,
   reducers: {
+    setRawList: (state, { payload }) => {
+      state.rawList = payload;
+    },
     setNftList: (state, { payload }) => {
       state.nftList = payload;
     },
@@ -35,8 +40,9 @@ const nftSlice = createSlice({
   extraReducers: {},
 });
 
-export const { setNftList } = nftSlice.actions;
+export const { setRawList, setNftList } = nftSlice.actions;
 
 export default nftSlice.reducer;
 
+export const selectRawList = (state: RootState) => state.nft.rawList;
 export const selectNftList = (state: RootState) => state.nft.nftList;

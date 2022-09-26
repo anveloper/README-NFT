@@ -1,6 +1,9 @@
 // core
 import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
+// state
+import { loginUser, selectUserAddress } from "./features/auth/authSlice";
 // components
 import Navbar from "./components/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
@@ -8,28 +11,27 @@ import BackgroundCloud from "./components/BackgroundCloud";
 import Main from "./features/main/Main";
 import LiveList from "./features/main/LiveList";
 import NFTList from "./features/main/NFTList";
-import Detail from "./features/detail/NFTDetail";
-import Sell from "./features/detail/NFTSell";
+import Detail from "./features/detail/NftDetail";
+import Sell from "./features/detail/NftSell";
 import Welcome from "./features/welcome/Welcome";
 import Login from "./features/auth/Login";
 import Game from "./features/game/Game";
 import MyPage from "./features/mypage/MyPage";
 // css
 import styles from "./App.module.css";
-import { useAppSelector } from "./app/hooks";
-import { selectUserAddress } from "./features/auth/authSlice";
 //testPage
 
 import TestPage from "./testWeb3/TestPage";
 
-import NFTLists from "./features/detail/NFTLists/NFTLists";
 import MyPageTest from "./features/mypage/MyPageTest";
 import NFTSaleTest from "./features/detail/SaleAnimal";
 import Mint from "./features/mint/Mint";
+import MyMintList from "./features/mint/MyMintList";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
 
   // (정현) 임의로 메타마스크 로그인 유저 계정 정보 가져오는 함수. 차후 삭제 예정
   const [account, setAccount] = useState<string>("");
@@ -42,8 +44,14 @@ function App() {
         });
         // console.log(accounts[0]);
         setAccount(accounts[0]);
+
+        if (accounts[0].length > 0) {
+          dispatch(loginUser(accounts[0]));
+        }
       } else {
-        alert("install metamask.");
+        dispatch(
+          loginUser(`비회원 개발자 ${Math.floor(Math.random() * 19920722)}`)
+        );
       }
     } catch (error) {
       console.error(error);
@@ -52,8 +60,8 @@ function App() {
 
   useEffect(() => {
     getAccount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
-  // (정현) 여기까지
 
   return (
     <div className={styles.container}>
@@ -68,12 +76,12 @@ function App() {
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>
-              <Route path="/mint" element={<Mint />} />
-              <Route path="/detail" element={<Detail />} />
+              <Route path="/mint" element={<Mint account={account} />} />
+              <Route path="/detail/:tokenId" element={<Detail />} />
               <Route path="/sell" element={<Sell />} />
               <Route
                 path="/temp-list"
-                element={<MyPageTest account={account} />}
+                element={<MyMintList account={account} />}
               />
               <Route
                 path="/temp-sell"

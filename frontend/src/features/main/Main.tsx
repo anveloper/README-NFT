@@ -6,14 +6,15 @@ import { io } from "socket.io-client";
 // state
 import { selectSocket, setRoomInfo, setSocket } from "../game/gameSlice";
 import { selectUserAddress, selectUserName } from "../auth/authSlice";
+import RoomButton from "./components/RoomButton";
 // component
 import NewHelmet from "../../components/NewHelmet";
-import Carousel from "./Carousel";
+import Carousel from "./components/Carousel";
 import MainTab from "./components/MainTab";
 import { Modal } from "../../components/modal/Modal";
-import RoomButton from "./components/RoomButton";
 // css
 import styles from "./Main.module.css";
+import Guide from "./Guide";
 
 const socketURL =
   process.env.NODE_ENV !== "production"
@@ -24,16 +25,15 @@ const Main = () => {
   const socket = useAppSelector(selectSocket);
   const userAddress = useAppSelector(selectUserAddress);
   const userName = useAppSelector(selectUserName);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [registerRoomName, setRegisterRoomName] = useState("");
+
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
-  const { pathname } = useLocation();
-
-  const mainRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!socket) {
+    if (socket === undefined) {
       console.log(socketURL);
       dispatch(setSocket(io(socketURL)));
     } else {
@@ -41,14 +41,6 @@ const Main = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
-
-  useEffect(() => {
-    if (pathname === "/")
-      mainRef.current?.scrollIntoView({
-        block: "center",
-        behavior: "smooth",
-      });
-  }, [pathname]);
 
   const closeModal = () => {
     setModalOpen(false);
@@ -79,16 +71,15 @@ const Main = () => {
     }
   };
   return (
-    <div className={styles.mainContainer} ref={mainRef}>
+    <div>
       <NewHelmet
         title="리드미 & NFT"
-        description="README 게임 라이브 목록 및 NFT 목록이 나타납니다."
+        description="README 게임 라이브 목록 및 NFT 목록을 보여줍니다."
       />
+      <Guide />
       <Carousel />
       <MainTab />
-      <div className={styles.container}>
-        <Outlet />
-      </div>
+      <Outlet />
       <Modal
         open={modalOpen}
         close={closeModal}

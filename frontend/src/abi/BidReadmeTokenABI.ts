@@ -130,20 +130,6 @@ export const BidReadmeToken: AbiItem[] = [
     constant: true,
   },
   {
-    inputs: [],
-    name: "walletContract",
-    outputs: [
-      {
-        internalType: "contract IERC20",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
     inputs: [
       {
         internalType: "uint256",
@@ -178,11 +164,6 @@ export const BidReadmeToken: AbiItem[] = [
         name: "_biddingPrice",
         type: "uint256",
       },
-      {
-        internalType: "address",
-        name: "_currencyAddress",
-        type: "address",
-      },
     ],
     name: "bid",
     outputs: [],
@@ -196,11 +177,6 @@ export const BidReadmeToken: AbiItem[] = [
         internalType: "uint256",
         name: "_readmeTokenId",
         type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "_currencyAddress",
-        type: "address",
       },
     ],
     name: "buy",

@@ -1,11 +1,11 @@
-import styles from "./NFTDetail.module.css";
+import styles from "./NftDetail.module.css";
 import BackgroundFlower from "../../components/BackgroundFlower";
 
 interface SaleAnimalProps {
   account: String;
 }
 
-const Sell = () => {
+const NftSell = () => {
   return (
     <div className={styles.sell_background}>
       <BackgroundFlower />
@@ -43,4 +43,4 @@ const Sell = () => {
   );
 };
 
-export default Sell;
+export default NftSell;

@@ -4,10 +4,12 @@ import { useAppSelector } from "../../../app/hooks";
 import { selectHostUserName, selectSocket } from "../gameSlice";
 // css
 import styles from "../Game.module.css";
+import { truncatedAddress } from "../../auth/authSlice";
 const NotiBox = () => {
   const socket = useAppSelector(selectSocket);
   const hostUserName = useAppSelector(selectHostUserName);
-  const dtext = `${hostUserName}님의 게임룸 입니다.`;
+  const shortHostAddress = truncatedAddress(hostUserName);
+  const dtext = `${shortHostAddress}님의 게임룸 입니다.`;
   const [noti, setNoti] = useState(dtext);
   const [bgColor, setBgColor] = useState("#ff713e");
   useEffect(() => {

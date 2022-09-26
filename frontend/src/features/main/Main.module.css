@@ -13,48 +13,43 @@
   max-height: 5rem;
   border-radius: 1rem;
 }
-/* Carousel CSS */
-.carouselContainer {
-  margin: 12px;
-  min-height: 70vh;
+/* Guide */
+.guideContainer {
+  min-height: 95vh;
   position: relative;
   z-index: 2;
 }
-.carouselWapper {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.carouselContent {
-  background: #dddddd30;
-  width: 100vw;
-  height: 100%;
-  max-width: 60vw;
-  border-radius: 40px;
-  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    0.8s both;
-  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
-}
-.carouselContent > div {
-  height: 100%;
+.guide {
+  position: relative;
+  z-index: 4;
+  min-height: 90vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-.carouselContent > div > div {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    0.8s both;
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
+  gap: 5vw;
+}
+.guideTitle,
+.guideInfo {
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #0b0051;
+  -webkit-animation: text-focus-in 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) 1s
+    both;
+  animation: text-focus-in 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) 1s both;
+}
+.guideTitle {
+  font-size: 5rem;
+}
+.guideInfo {
+  font-size: 3rem;
+}
+.guideImg {
+  width: 30vw;
+  -webkit-animation: wobble-hor-bottom 15s infinite both;
+  animation: wobble-hor-bottom 15s infinite both;
 }
 /* background */
 .leftCloud {
@@ -62,7 +57,7 @@
   width: 60vw;
   position: absolute;
   left: -3vw;
-  bottom: -17vh;
+  bottom: -12vh;
   -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s
     both;
   animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
@@ -73,11 +68,10 @@
   aspect-ratio: 2/1;
   position: absolute;
   right: 0;
-  bottom: -17vh;
+  bottom: -12vh;
   -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
-
 .leftPlane {
   z-index: 2;
   position: absolute;
@@ -87,7 +81,6 @@
     both;
   animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s both;
 }
-
 .rightPlane {
   z-index: 2;
   position: absolute;
@@ -100,109 +93,77 @@
 
 /* Live component */
 .container {
+  position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 60vh;
+  background-color: white;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
 }
-.liveContainer {
-  background: #79c4f250;
-  border-radius: 3rem;
-  padding: 2rem;
-  width: 72vw;
-  max-width: 1368px;
-  height: 100%;
-  min-height: 60vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  overflow-y: auto;
-  gap: 8px;
-}
-/* NFT list component */
+.liveContainer,
 .listContainer {
-  background: rgba(255, 192, 203, 0.4);
-  border-radius: 3rem;
-  padding: 2rem;
-  width: 72vw;
-  max-width: 1368px;
-  height: 100%;
-  min-height: 60vh;
+  width: 100%;
+  max-width: 75vw;
+  min-height: 30vh;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
   align-content: flex-start;
   overflow-y: auto;
-  gap: 8px;
+  gap: 2%;
+}
+.liveContainer {
+  padding-top: 3rem;
+  -webkit-animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+.listContainer {
+  -webkit-animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-/*  */
-
-/* Content */
-.tab {
-  position: relative;
-  z-index: 3;
+.nftSearch {
+  margin: 1rem;
   width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
-  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    0.8s both;
-  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
 }
-.btnBox {
+.nftSearch input {
+  width: 25vw;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  font-size: 1.6rem;
+  margin: 4px;
+  border-radius: 1rem;
+  padding: 4px 1rem;
+}
+.moreBtn {
+  margin: 40px;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 40px;
 }
-.btnContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: transparent;
+.moreBtn button {
+  font-size: 1.6rem;
+  aspect-ratio: 2/1;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  border-radius: 2rem;
   border: none;
-  margin-bottom: 8px;
-}
-.btnContainer:hover {
-  transform: scale(1.1);
-  cursor: pointer;
-}
-.btn {
-  width: 120px;
-  aspect-ratio: 1/1;
-  border-radius: 100%;
-  background: whitesmoke;
+  background-color: #fddf61;
+  padding: 1rem 1.6rem;
   box-shadow: 5px 5px 5px #00000030;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 4px;
 }
-.btn:active {
+.moreBtn button:active {
   transform: scale(0.9);
 }
-.btn img {
-  width: 78px;
-}
-.btnText {
-  margin-top: 4px;
-  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
-  width: 160px;
-  color: #3b82bf;
-  border-radius: 1rem;
-  font-size: 1.5rem;
-}
-
 /* modal */
 .modalBox {
   display: flex;
@@ -233,10 +194,117 @@
   align-items: center;
 }
 .underLine {
-  width: 160px;
+  width: 30vw;
   height: 10px;
   background: #3b82bf;
   border-radius: 1rem;
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2022-9-25 14:56:26
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation wobble-hor-bottom
+ * ----------------------------------------
+ */
+@-webkit-keyframes wobble-hor-bottom {
+  0%,
+  100% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+  }
+  15% {
+    -webkit-transform: translateX(-30px) rotate(-6deg);
+    transform: translateX(-30px) rotate(-6deg);
+  }
+  30% {
+    -webkit-transform: translateX(15px) rotate(6deg);
+    transform: translateX(15px) rotate(6deg);
+  }
+  45% {
+    -webkit-transform: translateX(-15px) rotate(-3.6deg);
+    transform: translateX(-15px) rotate(-3.6deg);
+  }
+  60% {
+    -webkit-transform: translateX(9px) rotate(2.4deg);
+    transform: translateX(9px) rotate(2.4deg);
+  }
+  75% {
+    -webkit-transform: translateX(-6px) rotate(-1.2deg);
+    transform: translateX(-6px) rotate(-1.2deg);
+  }
+}
+@keyframes wobble-hor-bottom {
+  0%,
+  100% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+  }
+  15% {
+    -webkit-transform: translateX(-30px) rotate(-6deg);
+    transform: translateX(-30px) rotate(-6deg);
+  }
+  30% {
+    -webkit-transform: translateX(15px) rotate(6deg);
+    transform: translateX(15px) rotate(6deg);
+  }
+  45% {
+    -webkit-transform: translateX(-15px) rotate(-3.6deg);
+    transform: translateX(-15px) rotate(-3.6deg);
+  }
+  60% {
+    -webkit-transform: translateX(9px) rotate(2.4deg);
+    transform: translateX(9px) rotate(2.4deg);
+  }
+  75% {
+    -webkit-transform: translateX(-6px) rotate(-1.2deg);
+    transform: translateX(-6px) rotate(-1.2deg);
+  }
+}
+/* ----------------------------------------------
+ * Generated by Animista on 2022-9-25 15:1:11
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation text-focus-in
+ * ----------------------------------------
+ */
+@-webkit-keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+@keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
 }
 
 /* 애니메이션 */
@@ -302,6 +370,79 @@
   100% {
     -webkit-transform: scale(1);
     transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2022-9-25 15:12:56
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation slide-in-left
+ * ----------------------------------------
+ */
+@-webkit-keyframes slide-in-left {
+  0% {
+    -webkit-transform: translateX(-1000px);
+    transform: translateX(-1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-left {
+  0% {
+    -webkit-transform: translateX(-1000px);
+    transform: translateX(-1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+/* ----------------------------------------------
+ * Generated by Animista on 2022-9-25 15:13:42
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation slide-in-right
+ * ----------------------------------------
+ */
+@-webkit-keyframes slide-in-right {
+  0% {
+    -webkit-transform: translateX(1000px);
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-right {
+  0% {
+    -webkit-transform: translateX(1000px);
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
     opacity: 1;
   }
 }

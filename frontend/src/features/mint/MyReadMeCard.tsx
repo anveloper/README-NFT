@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 
-const NFTLists: FC = () => {
+const MyReadMeCard: FC = () => {
   return <div></div>;
 };
 
-export default NFTLists;

@@ -1,6 +1,6 @@
 import { MintReadmeToken } from "./MintReadmeToken";
 import { SaleReadmeToken } from "./SaleReadmeToken";
-import { SSFABI } from "./SSFABI";
+import { SSF } from "../abi/SSFABI";
 import { GetReadmeToken } from "./GetReadmeToken";
 
 /* 
@@ -15,7 +15,7 @@ const ABI = {
     MINTREADMETOKEN_ABI: MintReadmeToken,
     SALEREADMETOKEN_ABI: SaleReadmeToken,
     GETREADMETOKEN_ABI: GetReadmeToken,
-    ERC_ABI: SSFABI,
+    ERC_ABI: SSF,
   },
 };
 
