@@ -1,5 +1,6 @@
 import React, { useEffect, FC } from "react";
 import { useAppSelector } from "../../app/hooks";
+import { useNavigate } from "react-router-dom";
 // state
 import { selectImgBlob, selectTmpInfo } from "./mintSlice";
 // components
@@ -9,7 +10,6 @@ import { create } from "ipfs-http-client";
 
 // css
 import styles from "./Mint.module.css";
-import { useNavigate } from "react-router-dom";
 interface MintProps {
   account: string;
 }
@@ -17,6 +17,7 @@ const ipfsUrl =
   process.env.NODE_ENV !== "production"
     ? "http://j7b108.p.ssafy.io:5001"
     : "https://j7b108.p.ssafy.io:5001";
+
 const Mint: FC<MintProps> = ({ account }) => {
   const { answer, creator, solver, tmpUrl } = useAppSelector(selectTmpInfo);
   const imgBlob: Blob = useAppSelector(selectImgBlob);
@@ -26,6 +27,11 @@ const Mint: FC<MintProps> = ({ account }) => {
     if (account) {
       console.log(account);
       const client = create({ url: ipfsUrl });
+
+  const addItem = async () => {
+    const fr = new FileReader();
+    if (account) {
+      const client = create({ url: ipfsURL });
       fr.readAsArrayBuffer(imgBlob);
       fr.onload = async () => {
         if (typeof fr.result !== "string") {
