@@ -9,15 +9,11 @@ interface MyInfoProps {
 
 const MyInfo: FC<MyInfoProps> = ({ account, setNFTListValue }) => {
   const myNFT = () => {
-    // const myNFTbutton = document.getElementById("myNFT") as HTMLElement | null;
-    // if (myNFTbutton != null) {
-    //   myNFTbutton.style.backgroundColor = "#F7F2E0";
-    // }
     setNFTListValue("myNFT");
   };
 
   const likeNFT = () => {
-    setNFTListValue("loveNFT");
+    setNFTListValue("likeNFT");
   };
 
   const createNFT = () => {
