@@ -61,7 +61,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     }
 
     // NFT 발행
-    function create(string memory _metadataURI, address _saleReadmeTokenAddress) public returns (uint256) {
+    function create(string memory _metadataURI, address saleReadmeToken) public returns (uint256) {
         uint256 newTokenId = totalSupply() + 1; // 새로운 tokenId 생성
 
         metadataURIs[newTokenId] = _metadataURI; // 메타 데이터 추가
@@ -74,7 +74,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
         
         totalReadmeToken.push(newTokenId); // 전체 토큰 목록에 추가
 
-        _approve(_saleReadmeTokenAddress, newTokenId); // 판매 컨트랙트에 권한 부여 
+        _approve(saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
 
         emit Mint(newTokenId, msg.sender, _metadataURI); // 생성 확인 로그(새로운 tokenId, 생성자, 메타데이터)
 

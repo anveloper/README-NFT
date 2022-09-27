@@ -53,8 +53,7 @@ contract BidReadmeToken{
         require(saleReadmeToken.getIsActive(_readmeTokenId) != true, "Already on Market");
         // 경매 등록이 되었는지 확인
         require(readmeTokenPrice[_readmeTokenId] == 0, "Not On Auction");
-        // 권한 확인
-        //require(mintReadmeToken.isApprovedForAll(seller, address(this)), "Not Approve");
+
         
         // 가격 등록
         readmeTokenPrice[_readmeTokenId] = _price;
@@ -69,9 +68,10 @@ contract BidReadmeToken{
 
     // 입찰: bidder
     function bid(
+        IERC20 token,
         uint256 _readmeTokenId,
         uint256 _biddingPrice
-    ) public payable {
+    ) public {
 
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address bidder = payable(msg.sender);
@@ -83,7 +83,7 @@ contract BidReadmeToken{
         // 경매 중 확인
         require(price > 0, "Not On Auction");
         // 입찰 능력 확인
-        require(msg.value > highestPrice, "Not Enough Money");
+        require(highestPrice <= token.balanceOf(msg.sender), "No Money");
         // 입찰가가 현재 최고가 보다 큰 지 확인
         require(_biddingPrice > highestPrice, "Lower Than HighestPrice");
         // 입찰자가 판매자인지 확인
@@ -103,10 +103,11 @@ contract BidReadmeToken{
 
     // 낙찰: buyer
     function buy(
+        IERC20 token,
         uint256 _readmeTokenId
-    ) public payable {
+    ) public {
         address readmeTokenOwner = mintReadmeToken.ownerOf(_readmeTokenId);
-        address buyer = payable(msg.sender);
+        address buyer = msg.sender;
         uint256 price = readmeTokenPrice[_readmeTokenId];
 
         // 종료 시간 확인
@@ -118,12 +119,16 @@ contract BidReadmeToken{
         // 경매 증 확인
         require(price > 0, "Not On Auction");
         // 구매자의 구매 능력 확인
-        require(highestPrice <= msg.value, "No money");
+        require(highestPrice <= token.balanceOf(msg.sender), "No Money");
         // 낙찰자가 판매자이지 확인
         require( buyer != readmeTokenOwner, "You are Seller");
 
+        // 송금
+        token.transferFrom(msg.sender, readmeTokenOwner, price);
+
         // 토큰(돈) 전송
-        payable(readmeTokenOwner).transfer(msg.value);
+        //payable(readmeTokenOwner).transfer(msg.value);
+        
         // nft 전송
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
 
