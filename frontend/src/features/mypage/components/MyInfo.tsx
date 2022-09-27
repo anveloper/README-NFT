@@ -34,7 +34,7 @@ const MyInfo: FC<MyInfoProps> = ({ account, setNFTListValue }) => {
         </p>
         <hr />
         <p className={styles.MyNFTInfoButton} onClick={createNFT}>
-          경매 참여중인 NFT
+          내가 그린 NFT
         </p>
       </div>
     </div>
