@@ -10,6 +10,7 @@
   border-radius: 1rem;
   box-shadow: 5px 5px 5px #00000030;
   margin-bottom: 2%;
+  cursor: pointer;
 }
 
 .img {
@@ -38,12 +39,12 @@
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: flex-start;
 }
 
 .nftInfo {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
