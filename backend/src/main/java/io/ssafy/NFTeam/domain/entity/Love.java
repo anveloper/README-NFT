@@ -23,6 +23,6 @@ public class Love {
     private String walletAddress;
 
     @NotNull
-    @Column(name = "nft_address")
-    private String nftAddress;
+    @Column(name = "token_id")
+    private Integer tokenId;
 }

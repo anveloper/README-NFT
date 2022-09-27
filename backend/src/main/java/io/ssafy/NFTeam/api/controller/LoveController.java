@@ -64,7 +64,7 @@ public class LoveController {
     public ResponseEntity<Map<String, Object>> LoveList(@PathVariable String walletAddress){
         result = new HashMap<>();
 
-        List<LoveGetRes> nfts = loveService.getUserNft(walletAddress);
+        List<Integer> nfts = loveService.getUserNft(walletAddress);
         long count = nfts.stream().count();
 
         try{
