@@ -19,7 +19,7 @@ public class LoveServiceImpl implements LoveService{
 
     public long addLove(LovePostReq requestDto) {
 
-        Love love = loveRepository.findByWalletAddressAndNftAddress(requestDto.getWalletAddress(), requestDto.getNftAddress()).orElse(null);
+        Love love = loveRepository.findByWalletAddressAndTokenId(requestDto.getWalletAddress(), requestDto.getTokenId()).orElse(null);
 
         // 현재 목록에 없는 경우, 추가
         if(love == null){
@@ -31,15 +31,15 @@ public class LoveServiceImpl implements LoveService{
         }
 
         // 해당 nft의 좋아요 개수
-        long count = loveRepository.countByNftAddress(requestDto.getNftAddress());
+        long count = loveRepository.countByTokenId(requestDto.getTokenId());
 
         return count;
     }
 
 
-    public List<LoveGetRes> getUserNft(String walletAddress) {
+    public List<Integer> getUserNft(String walletAddress) {
 
-        List<LoveGetRes> nfts = loveRepository.findByWalletAddress(walletAddress).stream().map(LoveGetRes::new).collect(Collectors.toList());
+        List<Integer> nfts = loveRepository.findByWalletAddress(walletAddress).stream().map(love -> love.getTokenId()).collect(Collectors.toList());
 
         return nfts;
     }

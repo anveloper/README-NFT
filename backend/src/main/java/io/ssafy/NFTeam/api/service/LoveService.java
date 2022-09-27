@@ -9,6 +9,6 @@ import java.util.List;
 public interface LoveService {
     // 등록
     public long addLove(LovePostReq requestDto);
-    public List<LoveGetRes> getUserNft(String walletAddress);
+    public List<Integer> getUserNft(String walletAddress);
 
 }

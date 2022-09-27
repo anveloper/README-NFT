@@ -10,18 +10,18 @@ import lombok.NoArgsConstructor;
 public class SolverPostReq {
 
     private String walletAddress;
-    private String nftAddress;
+    private Integer tokenId;
 
     @Builder
-    public SolverPostReq(String walletAddress, String nftAddress){
+    public SolverPostReq(String walletAddress, Integer tokenId){
         this.walletAddress = walletAddress;
-        this.nftAddress = nftAddress;
+        this.tokenId = tokenId;
     }
 
     public Solver toEntity(){
         return Solver.builder()
                 .walletAddress(walletAddress)
-                .nftAddress(nftAddress)
+                .tokenId(tokenId)
                 .build();
     }
 }
