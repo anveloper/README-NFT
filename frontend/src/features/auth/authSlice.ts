@@ -66,5 +66,7 @@ export default authSlice.reducer;
 // util
 
 export const truncatedAddress = (longAddress: String) => {
+  if (!longAddress) return "정답자가 없습니다.";
+  if (longAddress.length < 8) return longAddress;
   return `${longAddress.slice(0, 4) + "...." + longAddress.slice(-4)}`;
 };
