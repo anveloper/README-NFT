@@ -76,7 +76,7 @@ function App() {
               </Route>
               <Route path="/mint" element={<Mint account={account} />} />
               <Route path="/detail/:tokenId" element={<Detail />} />
-              <Route path="/sell" element={<Sell />} />
+              <Route path="/sell/:tokenId" element={<Sell />} />
               <Route path="/temp-list" element={<MyMintList account={account} />} />
               <Route path="/sale" element={<NFTSale />} />
 
