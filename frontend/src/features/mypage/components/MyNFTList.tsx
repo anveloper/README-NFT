@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 // components
 import MyNFTCard, { IMyNFTCard } from "./MyNFTCard";
 // css
@@ -25,15 +25,17 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     try {
       const tempNFTCardArray: IMyNFTCard[] = [];
 
-      const response = await GetReadmeContract.methods.getMyReadmeToken(walletAddress).call();
+      const response = await GetReadmeContract.methods
+        .getMyReadmeToken(walletAddress)
+        .call();
       console.log(response);
 
       response.map((v: IMyNFTCard) => {
         tempNFTCardArray.push({
-          tokenId: v.tokenId,
-          price: v.price,
-          owner: v.owner,
-          metadataURI: v.metadataURI,
+          readmeTokenId: v.readmeTokenId,
+          readmeTokenPrice: v.readmeTokenPrice,
+          readmeTokenOwner: v.readmeTokenOwner,
+          metaDataURI: v.metaDataURI,
         });
       });
       console.log("card : ", tempNFTCardArray);
@@ -59,15 +61,17 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     try {
       const tempNFTCardArray: IMyNFTCard[] = [];
 
-      const response = await GetReadmeContract.methods.getDrawReadmeToken(walletAddress).call();
+      const response = await GetReadmeContract.methods
+        .getDrawReadmeToken(walletAddress)
+        .call();
       console.log(response);
 
       response.map((v: IMyNFTCard) => {
         tempNFTCardArray.push({
-          tokenId: v.tokenId,
-          price: v.price,
-          owner: v.owner,
-          metadataURI: v.metadataURI,
+          readmeTokenId: v.readmeTokenId,
+          readmeTokenPrice: v.readmeTokenPrice,
+          readmeTokenOwner: v.readmeTokenOwner,
+          metaDataURI: v.metaDataURI,
         });
       });
       console.log("card : ", tempNFTCardArray);
@@ -79,13 +83,10 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
 
   useEffect(() => {
     if (NFTListValue === "myNFT") {
-      console.log("mynft");
       myNFTList();
     } else if (NFTListValue === "likeNFT") {
-      console.log("likeNFT");
       likeNFTList();
     } else if (NFTListValue === "createNFT") {
-      console.log("createNFT");
       createNFTList();
     }
   }, [NFTListValue]);
@@ -99,17 +100,15 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
       </select>
 
       <div className={styles.MyNFTCardList}>
-        {/* <MyNFTCard />
-        <MyNFTCard /> */}
         {NFTCardArray &&
           NFTCardArray.map((v, i) => {
             return (
               <MyNFTCard
                 key={i}
-                tokenId={v.tokenId}
-                price={v.price}
-                owner={v.owner}
-                metadataURI={v.metadataURI}
+                readmeTokenId={v.readmeTokenId}
+                readmeTokenPrice={v.readmeTokenPrice}
+                readmeTokenOwner={v.readmeTokenOwner}
+                metaDataURI={v.metaDataURI}
               />
             );
           })}
@@ -120,26 +119,3 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
 };
 
 export default MyNFTList;
-
-/*
-{<AnimalCard animalType={newAnimalType} />}
-
-return (
-    <div className={styles.MyNFTList}>
-      <select name="" id="">
-        <option value="sort">Sort</option>
-        <option value="">이름순</option>
-        <option value="">가격순</option>
-      </select>
-
-      <div className={styles.MyNFTCardList}>
-        <MyNFTCard />
-        <MyNFTCard />
-      </div>
-      <div className={styles.MyNFTCardList}>
-        <MyNFTCard />
-        <MyNFTCard />
-      </div>
-    </div>
-  );
-*/
