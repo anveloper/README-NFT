@@ -40,15 +40,19 @@
 }
 
 .cards_left {
+  display: flex;
+  align-items: center;
+
   width: 500px;
   height: 500px;
 }
 
 .cards_right {
-  width: 350px;
-  height: 500px;
   display: grid;
   grid-template-rows: 1fr 2fr 1fr;
+
+  width: 350px;
+  height: 500px;
 }
 
 .card_img {
