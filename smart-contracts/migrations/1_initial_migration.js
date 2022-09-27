@@ -3,7 +3,6 @@ const MintReadme = artifacts.require("MintReadmeToken");
 const SaleReadme = artifacts.require("SaleReadmeToken");
 const GetReadme = artifacts.require("GetReadmeToken");
 const BidReadme = artifacts.require("BidReadmeToken");
-const Ssafy = artifacts.require("SsafyToken");
 
 module.exports = async function (deployer) {
   await deployer.deploy(MintReadme);
@@ -15,6 +14,4 @@ module.exports = async function (deployer) {
     SaleReadme.address,
     BidReadme.address
   );
-
-  await deployer.deploy(Ssafy, "Readme", "RMT");
 };

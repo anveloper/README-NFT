@@ -6,8 +6,6 @@ import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC721.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./MintReadmeToken.sol";
-import "./SsafyToken.sol";
-
 
 contract SaleReadmeToken{
     
