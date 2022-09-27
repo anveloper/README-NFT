@@ -12,12 +12,9 @@ import "./SsafyToken.sol";
 contract SaleReadmeToken{
     
     MintReadmeToken public mintReadmeToken;
-    //IERC20 public ssafyWallet;
 
-    constructor (address _mintReadmeToken, address addressOfSSF) {
+    constructor (address _mintReadmeToken) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
-        _addressOfSSFToken = addressOfSSF;
-        //ssafyWallet = IERC20(_ssafyWallet); // 싸피 지갑 추가
     }
 
     // 판매 등록 된 토큰 : tokenId
@@ -30,13 +27,6 @@ contract SaleReadmeToken{
     mapping(uint256 => bool) onActiveTokens;
     // 판매 등록한 사람
     mapping(uint256 => address) public sellerTest;
-    //SSF Token Address
-    address _addressOfSSFToken;
-    event Logs(
-        address msgsender,
-        uint256 msgvalue,
-        uint256 msgsenderbalance
-    );
 
     // 판매 등록: seller
     function setForSaleReadmeToken(
@@ -67,14 +57,11 @@ contract SaleReadmeToken{
         onSaleReadmeToken.push(_readmeTokenId);
         // 판매/경매 등록으로 변경
         onActiveTokens[_readmeTokenId] = true;
-
-        // 컨트랙트에게 지갑의 돈을 사용할 권한을 줌
-        //ssafyWallet.approve(address(this), _price);
     }
 
 
     // 구매: buyer
-    function purchaseReadmeToken(IERC20 token,uint256 _readmeTokenId) public {        
+    function purchaseReadmeToken(IERC20 token, uint256 _readmeTokenId) public {        
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address buyer = msg.sender;
