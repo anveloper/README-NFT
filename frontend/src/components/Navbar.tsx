@@ -27,8 +27,8 @@ const Navbar = () => {
         <Link to="/temp-list">
           <button>NFT리스트(테스트용)</button>
         </Link>
-        <Link to="/temp-sell">
-          <button>NFT 판매(테스트용)</button>
+        <Link to="/sale">
+          <button>NFT 판매</button>
         </Link>
         <Link to="/detail">
           <button>NFT상세</button>
