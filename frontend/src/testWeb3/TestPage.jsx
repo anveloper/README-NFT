@@ -6,6 +6,7 @@ import {
   GetReadmeContract,
   BidReadmeContract,
   SSFContract,
+  DrawTokenContract,
 } from "../web3Config";
 
 import IpfsAPI from "ipfs-api";
@@ -35,7 +36,7 @@ const TestPage = () => {
   //   new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
   // );
   const [account, setAccount] = useState("");
-
+  const [eventLeft, setEventLeft] = useState(0);
   const getAccount = async () => {
     try {
       if (window.ethereum) {
@@ -54,6 +55,12 @@ const TestPage = () => {
     getAccount();
   }, [account]);
 
+  useEffect(() => {
+    DrawTokenContract.methods.getWinnerCount().call((err, res) => {
+      setEventLeft(res);
+      console.log(res);
+    });
+  }, []);
   // 아이템 업로드 핸들링
   const handleItem = (value) => {
     setItem(value);
@@ -202,6 +209,17 @@ const TestPage = () => {
       .then((receipt) => {
         console.log(receipt);
       });
+  };
+  const getEventMoney = async () => {
+    await DrawTokenContract.methods
+      .shareToken()
+      .send({ from: account }, (receipt, error) => {
+        console.log(receipt);
+        console.log(error);
+      });
+    DrawTokenContract.methods.getWinnerCount().call((err, res) => {
+      setEventLeft(res);
+    });
   };
   return (
     <div style={{ paddingTop: "30px" }}>
@@ -355,6 +373,8 @@ const TestPage = () => {
           <button onClick={buyNFT}>진짜 사기</button>
         </div>
       )}
+      <h2>{eventLeft}/50</h2>
+      <button onClick={getEventMoney}>이벤트 참여하기</button>
     </div>
   );
 };
