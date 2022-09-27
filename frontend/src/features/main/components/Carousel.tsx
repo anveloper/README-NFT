@@ -16,7 +16,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./Carousel.module.css";
 
-const Carousel = () => {
+const Carousel = ({ carouselRef }: any) => {
   const rawList = useAppSelector(selectRawList);
   const nftList = useAppSelector(selectNftList);
   const dispatch = useAppDispatch();
@@ -38,13 +38,15 @@ const Carousel = () => {
           readmeTokenOwner,
           readmeTokenPrice,
         } = rawList[i];
-        result.push({
-          metaDataURI,
-          readmeTokenId,
-          readmeTokenOwner,
-          readmeTokenPrice,
-          metaData: undefined,
-        });
+        if (metaDataURI.length < 69)
+          // 임시방편
+          result.push({
+            metaDataURI,
+            readmeTokenId,
+            readmeTokenOwner,
+            readmeTokenPrice,
+            metaData: undefined,
+          });
       }
       dispatch(setNftList(result));
     }
@@ -61,7 +63,7 @@ const Carousel = () => {
     beforeChange: (current: number, next: number) => setImageIndex(next),
   };
   return (
-    <div className={styles.carouselContainer}>
+    <div className={styles.carouselContainer} ref={carouselRef}>
       <div className={styles.carouselInfo}>
         <p className={styles.carouselTitle}>한 번 맞춰볼래?</p>
         <p className={styles.carouselDescription}>

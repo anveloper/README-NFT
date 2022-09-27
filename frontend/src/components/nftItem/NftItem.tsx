@@ -6,7 +6,7 @@ import { truncatedAddress } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const NftItem = (props: any) => {
-  const { nft } = props;
+  const { nft, lastRef } = props;
   const [fileName, setFileName] = useState("");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
@@ -15,24 +15,21 @@ const NftItem = (props: any) => {
   const navigate = useNavigate();
 
   const getMetadata = async (metaDataURI: string) => {
-    try {
-      await axios({ url: metaDataURI }).then((res: any) => {
+    await axios({ url: metaDataURI })
+      .then((res: any) => {
         const { fileName, name, author, description, imageURL } = res.data;
         setFileName(fileName);
         setName(name);
         setAuthor(author);
         setDescription(description);
         setImageURL(imageURL);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+      })
+      .catch((err) => {});
   };
 
-
   const moveToDetail = (tokenId: string) => {
-    navigate('/detail/'+ tokenId);
-  }
+    navigate("/detail/" + tokenId);
+  };
 
   useEffect(() => {
     const { metaDataURI } = props;
@@ -40,7 +37,11 @@ const NftItem = (props: any) => {
   }, [props]);
 
   return (
-    <button className={styles.container} onClick={()=>moveToDetail(nft.readmeTokenId)}>
+    <button
+      ref={lastRef ?? null}
+      className={styles.container}
+      onClick={() => moveToDetail(nft.readmeTokenId)}
+    >
       <div className={styles.card}>
         <div className={styles.front}>
           <Suspense fallback={<p>이미지 로딩중</p>}>
