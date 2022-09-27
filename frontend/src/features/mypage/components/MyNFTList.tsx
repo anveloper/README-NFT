@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 // components
 import MyNFTCard, { IMyNFTCard } from "./MyNFTCard";
 // css
@@ -16,6 +16,19 @@ interface MyNFTListProps {
 const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
   const walletAddress = useAppSelector(selectUserAddress);
   const [NFTCardArray, setNFTCardArray] = useState<IMyNFTCard[]>([]);
+
+  const scrollBox = useRef(null);
+  const [scrollY, setScrollY] = useState(0);
+  const [scrollActive, setScrollActive] = useState(false);
+
+  const logit = () => {
+    setScrollY(scrollBox.current.scrollTop);
+    if (scrollBox.current.scrollTop > 30) {
+      setScrollActive(true);
+    } else {
+      setScrollActive(false);
+    }
+  };
   // const [pageNum, setPageNum] = useState(1);
   // const observerRef = useRef();
 
@@ -91,6 +104,16 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     }
   }, [NFTListValue]);
 
+  useEffect(() => {
+    const watchScroll = () => {
+      scrollBox.current.addEventListener("scroll", logit);
+    };
+    watchScroll();
+    return () => {
+      // scrollBox.current.removeEventListener("scroll", logit);
+    };
+  });
+
   return (
     <div className={styles.MyNFTList}>
       <select name="" id="">
@@ -99,20 +122,22 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
         <option value="">가격순</option>
       </select>
 
-      <div className={styles.MyNFTCardList}>
-        {NFTCardArray &&
-          NFTCardArray.map((v, i) => {
-            return (
-              <MyNFTCard
-                key={i}
-                readmeTokenId={v.readmeTokenId}
-                readmeTokenPrice={v.readmeTokenPrice}
-                readmeTokenOwner={v.readmeTokenOwner}
-                metaDataURI={v.metaDataURI}
-              />
-            );
-          })}
-        {/* <div ref={observer}></div> */}
+      <div className={styles.MyNFTCardListScrollBox}>
+        <div className={styles.MyNFTCardList} ref={scrollBox}>
+          {NFTCardArray &&
+            NFTCardArray.map((v, i) => {
+              return (
+                <MyNFTCard
+                  key={i}
+                  readmeTokenId={v.readmeTokenId}
+                  readmeTokenPrice={v.readmeTokenPrice}
+                  readmeTokenOwner={v.readmeTokenOwner}
+                  metaDataURI={v.metaDataURI}
+                />
+              );
+            })}
+          {/* <div ref={observer}></div> */}
+        </div>
       </div>
     </div>
   );
