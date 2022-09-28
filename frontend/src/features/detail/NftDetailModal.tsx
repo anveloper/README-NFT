@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./NftDetailModal.module.css";
 
@@ -17,9 +17,11 @@ const NftDetailModal = (props: any) => {
     if (inputAnswer === answer) {
       setIsAnswer(true);
       setInfoMsg("정답입니다.");
-    } else {
+    } else if (inputAnswer.length > 1 && inputAnswer !== answer) {
       setIsAnswer(false);
       setInfoMsg("오답입니다! 다시 시도해보세요.");
+    } else if (inputAnswer.length < 1) {
+      setInfoMsg("정답을 입력해주세요.");
     }
   };
 
