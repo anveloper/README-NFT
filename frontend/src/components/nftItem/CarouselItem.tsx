@@ -2,6 +2,8 @@ import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 
 import styles from "./NftItem.module.css";
+import ModalPortal from "../modal/ModalPortal";
+import NftDetailModal from "../../features/detail/NftDetailModal";
 
 const CarouselItem = (props: any) => {
   const { nft } = props;
@@ -10,6 +12,7 @@ const CarouselItem = (props: any) => {
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   const getMetadata = async (metaDataURI: string) => {
     await axios({ url: metaDataURI })
@@ -24,13 +27,22 @@ const CarouselItem = (props: any) => {
       .catch((err) => {});
   };
 
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   useEffect(() => {
     const { metaDataURI } = props;
     getMetadata(metaDataURI);
   }, [props]);
 
   return (
-    <button className={styles.carouselContainer}>
+    <>
+    <button className={styles.carouselContainer} onClick={openModal}>
       <div className={styles.card}>
         <div className={styles.front}>
           <Suspense fallback={<p>이미지 로딩중</p>}>
@@ -50,6 +62,14 @@ const CarouselItem = (props: any) => {
         <p>PRICE: {nft.readmeTokenPrice}</p>
       </div>
     </button>
+    <div>
+    {modalOpen && (
+      <ModalPortal>
+        <NftDetailModal open={modalOpen} close={closeModal} image={imageURL} answer={name} tokenId={nft.readmeTokenId} />
+      </ModalPortal>
+    )}
+  </div>
+  </>
   );
 };
 
