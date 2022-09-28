@@ -3,7 +3,8 @@ import axios from "axios";
 
 import styles from "./NftItem.module.css";
 import { truncatedAddress } from "../../features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import ModalPortal from "../modal/ModalPortal";
+import NftDetailModal from "../../features/detail/NftDetailModal";
 
 const NftItem = (props: any) => {
   const { nft, lastRef } = props;
@@ -12,7 +13,8 @@ const NftItem = (props: any) => {
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [imageURL, setImageURL] = useState("");
-  const navigate = useNavigate();
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   const getMetadata = async (metaDataURI: string) => {
     await axios({ url: metaDataURI })
@@ -27,8 +29,12 @@ const NftItem = (props: any) => {
       .catch((err) => {});
   };
 
-  const moveToDetail = (tokenId: string) => {
-    navigate("/detail/" + tokenId);
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   useEffect(() => {
@@ -37,30 +43,46 @@ const NftItem = (props: any) => {
   }, [props]);
 
   return (
-    <button
-      ref={lastRef ?? null}
-      className={styles.container}
-      onClick={() => moveToDetail(nft.readmeTokenId)}
-    >
-      <div className={styles.card}>
-        <div className={styles.front}>
-          <Suspense fallback={<p>이미지 로딩중</p>}>
-            <img className={styles.img} src={imageURL} alt="" />
-          </Suspense>
+    // {/* <button className={styles.container} onClick={() => moveToDetail(nft.readmeTokenId)}> */}
+      <>
+      <div className={styles.container} onClick={openModal}>
+          <div className={styles.card}>
+            <div className={styles.front}>
+              <Suspense fallback={<p>이미지 로딩중</p>}>
+                <img className={styles.img} src={imageURL} alt="" />
+              </Suspense>
+              <div className={styles.nftInfo}>
+                <p>리드미ID: {nft.readmeTokenId}번째</p>
+                <p>PRICE: {nft.readmeTokenPrice}</p>
+              </div>
+            </div>
+            {/* <div className={styles.back}>
+              <p>리드미: {name}</p>
+              <p>작성자: {truncatedAddress(author)}</p>
+              <p>맞춘이: {truncatedAddress(description)}</p>
+              <small>파일이름: {fileName}</small>
+            </div> */}
+          </div>
         </div>
-        <div className={styles.back}>
-          <p>리드미: {name}</p>
-          <p>작성자: {truncatedAddress(author)}</p>
-          <p>맞춘이: {truncatedAddress(description)}</p>
-          <small>파일이름: {fileName}</small>
-        </div>
+        <div>
+        {modalOpen && (
+          <ModalPortal>
+            <NftDetailModal open={modalOpen} close={closeModal} image={imageURL} answer={name} tokenId={nft.readmeTokenId} />
+          </ModalPortal>
+        )}
       </div>
-      <div className={styles.nftInfo}>
-        <p>리드미ID: {nft.readmeTokenId}번째</p>
-        <p>PRICE: {nft.readmeTokenPrice}</p>
-      </div>
-    </button>
+        </>
   );
 };
 
 export default NftItem;
+
+/*
+<div>
+        {modalOpen && (
+          <ModalPortal>
+            <NftDetailModal open={modalOpen} close={closeModal} image={imageURL} answer={name} tokenId={nft.readmeTokenId} />
+          </ModalPortal>
+        )}
+      </div>
+*/
