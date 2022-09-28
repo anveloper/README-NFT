@@ -45,7 +45,9 @@ const NftItem = (props: any) => {
       <div className={styles.card}>
         <div className={styles.front}>
           <Suspense fallback={<p>이미지 로딩중</p>}>
-            <img className={styles.img} src={imageURL} alt="" />
+            <div className={styles.sq}>
+              <img className={styles.img} src={imageURL} alt="" />
+            </div>
           </Suspense>
         </div>
         <div className={styles.back}>

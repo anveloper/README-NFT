@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAppSelector } from "../../../app/hooks";
 // state
-import { selectHostUserName, selectSocket } from "../gameSlice";
+import { SocketContext } from "../../../socketConfig";
+import { truncatedAddress } from "../../auth/authSlice";
+import { selectHostUserName } from "../gameSlice";
 // css
 import styles from "../Game.module.css";
-import { truncatedAddress } from "../../auth/authSlice";
 const NotiBox = () => {
-  const socket = useAppSelector(selectSocket);
+  const socket = useContext(SocketContext);
   const hostUserName = useAppSelector(selectHostUserName);
   const shortHostAddress = truncatedAddress(hostUserName);
   const dtext = `${shortHostAddress}님의 게임룸 입니다.`;
