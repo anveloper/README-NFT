@@ -24,7 +24,6 @@ import styles from "./App.module.css";
 import TestPage from "./testWeb3/TestPage";
 
 import MyPageTest from "./features/mypage/MyPageTest";
-import NFTSaleTest from "./features/detail/SaleAnimal";
 import Mint from "./features/mint/Mint";
 import MyMintList from "./features/mint/MyMintList";
 
@@ -83,11 +82,6 @@ function App() {
                 path="/temp-list"
                 element={<MyMintList account={account} />}
               />
-              <Route
-                path="/temp-sell"
-                element={<NFTSaleTest account={account} />}
-              />
-
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
