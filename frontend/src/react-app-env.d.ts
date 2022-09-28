@@ -11,6 +11,7 @@ declare namespace NodeJS {
     REACT_APP_API_BASE_URL: string;
     REACT_APP_ETHEREUM_RPC_URL: string;
     REACT_APP_IPFS_IP: string;
-    // REACT_APP_..._KEY: string;
+    REACT_APP_SOCKET_URL: string;
+    REACT_APP_SOCKET_DEVELOP_URL: string;
   }
 }

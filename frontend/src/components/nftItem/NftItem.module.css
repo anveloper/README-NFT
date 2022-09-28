@@ -1,5 +1,6 @@
 .container {
   width: 23%;
+  background-color: white;
   aspect-ratio: 12/11;
   display: flex;
   flex-direction: column;
@@ -11,9 +12,18 @@
   box-shadow: 5px 5px 5px #00000030;
   margin-bottom: 2%;
 }
-
-.img {
+.sq {
   width: 100%;
+  aspect-ratio: 12/10;
+  background-image: url("../../assets/template/template_sq.svg");
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.img {
+  width: 90%;
   aspect-ratio: 12/10;
   border-radius: 1rem;
 }

@@ -1,5 +1,7 @@
 import { RootState } from "./../../app/store";
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import api from "../../api/api";
 export interface Metadata {
   fileName: string;
   name: string;
@@ -19,12 +21,29 @@ export interface NftConfig {
 interface NftListConfig {
   rawList: any[];
   nftList: NftConfig[];
+  solveList: number[];
+  status: "idle" | "loading" | "failed";
 }
 
 const initialState: NftListConfig = {
   rawList: [],
   nftList: [],
+  solveList: [],
+  status: "idle",
 };
+export const postProblem = createAsyncThunk("", () => {});
+
+export const findSolveList = createAsyncThunk(
+  "nft/findSolveList",
+  async ({ userAddress }: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(api.solver.getSolveList(userAddress));
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
 
 const nftSlice = createSlice({
   name: "nft",
@@ -37,7 +56,20 @@ const nftSlice = createSlice({
       state.nftList = payload;
     },
   },
-  extraReducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(findSolveList.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(findSolveList.fulfilled, (state, { payload }) => {
+        state.status = "idle";
+        state.solveList = payload.nftList;
+        console.log(state.solveList);
+      })
+      .addCase(findSolveList.rejected, (state) => {
+        state.status = "failed";
+      });
+  },
 });
 
 export const { setRawList, setNftList } = nftSlice.actions;
@@ -46,3 +78,4 @@ export default nftSlice.reducer;
 
 export const selectRawList = (state: RootState) => state.nft.rawList;
 export const selectNftList = (state: RootState) => state.nft.nftList;
+export const selectSolveList = (state: RootState) => state.nft.solveList;

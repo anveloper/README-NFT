@@ -5,18 +5,13 @@ import React, {
   useRef,
   useCallback,
   useMemo,
+  useContext,
 } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { io } from "socket.io-client";
 // state
-import {
-  selectSocket,
-  setRoomInfo,
-  setSocket,
-  setView,
-  sview,
-} from "../game/gameSlice";
+import { setRoomInfo } from "../game/gameSlice";
 import { selectUserAddress, selectUserName } from "../auth/authSlice";
 import RoomButton from "./components/RoomButton";
 // component
@@ -28,6 +23,7 @@ import { Modal } from "../../components/modal/Modal";
 import styles from "./Main.module.css";
 import Guide from "./Guide";
 import { throttle } from "lodash";
+import { SocketContext } from "../../socketConfig";
 
 const socketURL =
   process.env.NODE_ENV !== "production"
@@ -35,7 +31,8 @@ const socketURL =
     : "https://j7b108.p.ssafy.io";
 
 const Main = () => {
-  const socket = useAppSelector(selectSocket);
+  // const socket = useAppSelector(selectSocket);
+  const socket = useContext(SocketContext);
   const userAddress = useAppSelector(selectUserAddress);
   const userName = useAppSelector(selectUserName);
 
@@ -44,8 +41,8 @@ const Main = () => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const tabRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
-  const view = useAppSelector(sview);
-
+  // const view = useAppSelector(sview);
+  const [view, setView] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [registerRoomName, setRegisterRoomName] = useState("");
 
@@ -55,7 +52,7 @@ const Main = () => {
   useEffect(() => {
     if (socket === undefined) {
       console.log(socketURL);
-      dispatch(setSocket(io(socketURL)));
+      // dispatch(setSocket(io(socketURL)));
     } else {
       console.log("연결된 소켓 정보", socket);
     }
@@ -66,17 +63,17 @@ const Main = () => {
     () =>
       throttle((value: number) => {
         // console.log(value);
-        if (value > 0 && view < 6) dispatch(setView(view + 1));
-        else if (value > 0 && view === 6) dispatch(setView(5));
-        else if (value < 0 && view >= 0) dispatch(setView(view - 1));
+        if (value > 0 && view < 6) setView(view + 1);
+        else if (value > 0 && view === 6) setView(5);
+        else if (value < 0 && view >= 0) setView(view - 1);
       }, 300),
-    [dispatch, view]
+    [view]
   );
 
   const wheelAction = useCallback(
     (e: WheelEvent) => {
       const delY = e.deltaY;
-      if (Math.abs(delY) > 200) e.preventDefault();
+      // if (Math.abs(delY) > 200) e.preventDefault();
       throttleWheel(delY);
     },
     [throttleWheel]

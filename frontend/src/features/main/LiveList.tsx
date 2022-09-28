@@ -1,22 +1,18 @@
 // core
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 //state
-import {
-  selectSocket,
-  selectRoomList,
-  setRoomList,
-  setRoomInfo,
-} from "../game/gameSlice";
+import { selectRoomList, setRoomList, setRoomInfo } from "../game/gameSlice";
 import { selectUserAddress, selectUserName } from "../auth/authSlice";
 // components
 import LiveItem from "../../components/liveItem/LiveItem";
 import { Modal } from "../../components/modal/Modal";
 import styles from "./Main.module.css";
+import { SocketContext } from "../../socketConfig";
 
 const LiveList = () => {
-  const socket = useAppSelector(selectSocket);
+  const socket = useContext(SocketContext);
   const userAddress = useAppSelector(selectUserAddress);
   const userName = useAppSelector(selectUserName);
   const roomList = useAppSelector(selectRoomList);
