@@ -19,7 +19,7 @@ interface apiInterface {
   };
   solver: {
     solveProblem: () => string;
-    getSolveList: (walletAddress: any, nftAddress: any) => string;
+    getSolveList: (walletAddress: string) => string;
   };
 }
 
@@ -36,8 +36,7 @@ const api: apiInterface = {
   },
   solver: {
     solveProblem: () => HOST + SOLVER,
-    getSolveList: (walletAddress, nftAddress) =>
-      HOST + SOLVER + "/" + walletAddress + "/" + nftAddress,
+    getSolveList: (walletAddress) => HOST + SOLVER + "/" + walletAddress,
   },
 };
 

@@ -3,12 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 // state
 import { MintReadmeContract } from "../../web3Config";
-import {
-  addItem,
-  selectImgBlob,
-  selectStatus,
-  selectTmpInfo,
-} from "./mintSlice";
+import { selectImgBlob, selectStatus, selectTmpInfo } from "./mintSlice";
 // components
 import NewHelmet from "../../components/NewHelmet";
 import { create } from "ipfs-http-client";
@@ -19,6 +14,10 @@ import Loading from "../../components/loading/Loading";
 interface MintProps {
   account: string;
 }
+const ipfsUrl =
+  process.env.NODE_ENV !== "production"
+    ? "http://j7b108.p.ssafy.io:5001"
+    : "https://j7b108.p.ssafy.io";
 
 const Mint: FC<MintProps> = ({ account }) => {
   const { answer, creator, solver, tmpUrl } = useAppSelector(selectTmpInfo);
@@ -27,14 +26,35 @@ const Mint: FC<MintProps> = ({ account }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const handleAddItem = () => {
-    dispatch(addItem({ account, answer, creator, solver, tmpUrl, imgBlob }))
-      .then((receipt) => {
-        console.log(receipt);
-        navigate("/list");
-      })
-      .catch((err) => console.log(err));
+  const handleAddItem = async () => {
+    const fr = new FileReader();
+    const client = create({ url: ipfsUrl });
+    fr.readAsArrayBuffer(imgBlob);
+    fr.onload = async () => {
+      if (typeof fr.result !== "string") {
+        const cid = await client.add(Buffer.from(fr.result));
+        const imageURL = "https://ipfs.io/ipfs/" + cid.path;
+        let metadata = {
+          fileName: answer,
+          name: answer,
+          author: creator,
+          description: solver,
+          imageURL: imageURL,
+        };
+        const result = await client.add(JSON.stringify(metadata));
+        const tokenURI = "https://ipfs.io/ipfs/" + result.path;
+        MintReadmeContract.methods
+          .create(tokenURI, process.env.REACT_APP_SALEREADMETOKEN_CA)
+          .send({ from: account })
+          .then((receipt: any) => {
+            console.log(receipt);
+            navigate("/list");
+          })
+          .catch((err: any) => err);
+      }
+    };
   };
+
   useEffect(() => {
     console.log(status);
   }, [status]);
