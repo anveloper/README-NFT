@@ -7,7 +7,7 @@ import ModalPortal from "../modal/ModalPortal";
 import NftDetailModal from "../../features/detail/NftDetailModal";
 
 const NftItem = (props: any) => {
-  const { nft } = props;
+  const { nft, lastRef } = props;
   const [fileName, setFileName] = useState("");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
@@ -17,18 +17,16 @@ const NftItem = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const getMetadata = async (metaDataURI: string) => {
-    try {
-      await axios({ url: metaDataURI }).then((res: any) => {
+    await axios({ url: metaDataURI })
+      .then((res: any) => {
         const { fileName, name, author, description, imageURL } = res.data;
         setFileName(fileName);
         setName(name);
         setAuthor(author);
         setDescription(description);
         setImageURL(imageURL);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+      })
+      .catch((err) => {});
   };
 
   const openModal = () => {

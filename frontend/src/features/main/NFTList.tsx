@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { GetReadmeContract } from "../../web3Config";
 import {
@@ -8,6 +8,7 @@ import {
   setNftList,
   setRawList,
 } from "../nft/nftSlice";
+import { setView } from "../game/gameSlice";
 import NftItem from "../../components/nftItem/NftItem";
 
 import styles from "./Main.module.css";
@@ -15,6 +16,7 @@ import styles from "./Main.module.css";
 const NFTList = () => {
   const rawList = useAppSelector(selectRawList);
   const nftList = useAppSelector(selectNftList);
+  const lastRef = useRef<HTMLButtonElement | null>(null);
   const [itemCnt, setItemCnt] = useState(8);
   const dispatch = useAppDispatch();
   // mount
@@ -39,14 +41,16 @@ const NFTList = () => {
           readmeTokenId,
           readmeTokenOwner,
           readmeTokenPrice,
-        } = rawList[i];
-        result.push({
-          metaDataURI,
-          readmeTokenId,
-          readmeTokenOwner,
-          readmeTokenPrice,
-          metaData: undefined,
-        });
+        } = rawList[rawList.length - 1 - i];
+        if (metaDataURI.length < 69)
+          // 임시방편
+          result.push({
+            metaDataURI,
+            readmeTokenId,
+            readmeTokenOwner,
+            readmeTokenPrice,
+            metaData: undefined,
+          });
       }
       dispatch(setNftList(result));
     }
@@ -55,17 +59,20 @@ const NFTList = () => {
 
   return (
     <div className={styles.container}>
-      <div
-        className={
-          true
-            ? `${styles.listContainer} ${styles.open}`
-            : `${styles.listContainer} ${styles.close}`
-        }
-      >
+      <div className={styles.listContainer}>
         <div className={styles.nftSearch}>
           <input type="text" placeholder="검색어를 입력해주세요." />
         </div>
         {nftList?.map((nft: NftConfig, i: number) => {
+          if (i === nftList.length - 1)
+            return (
+              <NftItem
+                lastRef={lastRef}
+                key={i}
+                nft={nft}
+                metaDataURI={nft.metaDataURI}
+              />
+            );
           return <NftItem key={i} nft={nft} metaDataURI={nft.metaDataURI} />;
         })}
         {rawList && rawList.length > itemCnt && (
