@@ -23,14 +23,12 @@
   border-radius: 40px;
 
   font-family: "NanumSquareRound";
-  /* padding: 10px; */
 }
 
 .cards {
   margin: 5px;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
 }
 
 .cards:nth-child(1) {
@@ -39,11 +37,11 @@
   border-radius: 20px;
 
   align-items: center;
+  justify-content: space-between;
 }
 
 .cards:nth-child(2) {
   grid-column: span 3;
-  position: relative;
 }
 
 .cards:nth-child(3) {
@@ -57,11 +55,7 @@
 
   display: flex;
   flex-direction: column;
-  /* justify-items: center; */
-  /* justify-content: center; */
-  /* align-items: center; */
 
-  /* margin: 10px; */
   width: 100%;
   height: 450px;
 }
@@ -69,6 +63,7 @@
 .cards_left {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .cards_right {
@@ -80,16 +75,12 @@
   width: 90%;
   height: 90%;
 
-  /* background-color: #fcf5e9; */
   color: black;
   border-radius: 40px;
 }
 
 .card_button_close {
   align-items: center;
-  top: 11.5%;
-  left: 72%;
-  position: absolute;
 }
 
 .info_box {
@@ -123,19 +114,26 @@
 }
 
 .input {
-  width: 230px;
+  display: flex;
+  
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+.input_text {
+  width: 80%;
   height: 40px;
   background-color: #b8e5ff;
   border: none;
   border-radius: 30px;
-  margin-left: 10px;
+  font-weight: bold;
+
   margin-right: 5px;
   padding-left: 20px;
-  font-weight: bold;
 }
 
 .input_button {
-  width: 50px;
+  width: 20%;
   height: 40px;
   border: none;
   background-color: #79c4f2;
@@ -168,6 +166,11 @@
   align-items: center;
 }
 
+.card_button_close1 {
+  background-color: rgba(0, 0, 0, 0);
+  color:rgba(0, 0, 0, 0);
+}
+
 .card_button_on,
 .card_button_off,
 .card_button_close {
@@ -175,7 +178,9 @@
   border-radius: 5px;
 
   padding: 10px 20px 10px 20px;
-  margin: 40px 20px 0px 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  /* margin: 40px 20px 0px 20px; */
 
   font-size: 18px;
 
@@ -192,4 +197,8 @@
 
 .card_button_off {
   background-color: lightgray;
+}
+
+#close1 {
+  visibility: hidden;
 }
