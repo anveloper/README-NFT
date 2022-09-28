@@ -1,29 +1,39 @@
 // image
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import lion from "../../../assets/characters/lion.svg";
 // css
 import styles from "../MyPage.module.css";
 
 export interface IMyNFTCard {
-  tokenId: string;
-  price: string;
-  owner: string;
-  metadataURI: string;
+  readmeTokenId: string;
+  readmeTokenPrice: string;
+  readmeTokenOwner: string;
+  metaDataURI: string;
 }
 
-const MyNFTCard: FC<IMyNFTCard> = ({ tokenId, price, owner, metadataURI }) => {
+const MyNFTCard: FC<IMyNFTCard> = ({
+  readmeTokenId,
+  readmeTokenPrice,
+  readmeTokenOwner,
+  metaDataURI,
+}) => {
   const [fileName, setFileName] = useState("");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const navigate = useNavigate();
 
+  console.log(readmeTokenId);
   const getNFTDetail = async (metadataURI: string) => {
     try {
+      console.log(metaDataURI);
       await axios({ url: metadataURI }).then((response) => {
         const { fileName, name, author, description, imageURL } = response.data;
         setFileName(fileName);
+        console.log(response.data);
         setName(name);
         setAuthor(author);
         setDescription(description);
@@ -35,12 +45,21 @@ const MyNFTCard: FC<IMyNFTCard> = ({ tokenId, price, owner, metadataURI }) => {
   };
 
   useEffect(() => {
-    getNFTDetail(metadataURI);
-  }, [metadataURI]);
+    getNFTDetail(metaDataURI);
+  }, [metaDataURI]);
+
+  const moveNFTCardDetail = (tokenId: string) => {
+    navigate("/detail/" + tokenId);
+  };
 
   return (
-    <div className={styles.MyNFTCard}>
-      <img className={styles.MyNFTCardImg} src={lion} alt="" />
+    <div
+      className={styles.MyNFTCard}
+      onClick={() => moveNFTCardDetail(readmeTokenId)}
+    >
+      <div className={styles.MyNFTCardImgBox}>
+        <img className={styles.MyNFTCardImg} src={imageURL} alt="" />
+      </div>
 
       <div>
         <div className={styles.MyNFTCardTextBox}>
@@ -49,8 +68,13 @@ const MyNFTCard: FC<IMyNFTCard> = ({ tokenId, price, owner, metadataURI }) => {
         </div>
 
         <div className={styles.MyNFTCardTextBox}>
-          <h5 className={styles.MyNFTCardLeftText}>{price} SSF</h5>
-          <p className={styles.MyNFTCardRightText}>First Solver</p>
+          {!readmeTokenPrice ? (
+            <button>판매</button>
+          ) : (
+            <h5 className={styles.MyNFTCardLeftText}>{readmeTokenPrice} SSF</h5>
+          )}
+          {/* <h5 className={styles.MyNFTCardLeftText}>{readmeTokenPrice} SSF</h5> */}
+          <p className={styles.MyNFTCardRightText}>{description}</p>
         </div>
       </div>
     </div>

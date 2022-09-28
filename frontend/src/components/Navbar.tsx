@@ -15,6 +15,11 @@ const Navbar = () => {
     setModalOpen(true);
   };
 
+  const closeProfileModal = () => {
+    setModalOpen(false);
+    console.log("closeProfileModal : ", modalOpen);
+  };
+
   return (
     <div className={styles.navBar}>
       <div className={styles.logoBox}>
@@ -44,7 +49,13 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.profileTag} onClick={showProfileModal}>
-        {modalOpen && <ProfileModal setModalOpen={setModalOpen} />}
+        {modalOpen && (
+          <ProfileModal
+            closeProfileModal={closeProfileModal}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+          />
+        )}
         <img src={profileImg} alt="" className={styles.avatar} />
         <p className={styles.nameTag}>{nameTag}</p>
       </div>
