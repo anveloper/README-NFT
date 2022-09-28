@@ -1,6 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../app/hooks";
 // img
 import lion from "../assets/characters/lion.svg";
 import { selectUserAddress, selectUserName } from "../features/auth/authSlice";
@@ -8,10 +15,21 @@ import { SSFContract } from "../web3Config";
 // css
 import styles from "./Navbar.module.css";
 
-const ProfileModal = ({ setModalOpen }: any) => {
+interface ProfileModalProps {
+  closeProfileModal: () => void;
+  modalOpen: boolean;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+const ProfileModal: FC<ProfileModalProps> = ({
+  closeProfileModal,
+  modalOpen,
+  setModalOpen,
+}) => {
   const walletAddress = useAppSelector(selectUserAddress);
   const nickname = useAppSelector(selectUserName);
   const [balance, setBalance] = useState(0);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const getBalance = async () => {
     try {
@@ -25,6 +43,7 @@ const ProfileModal = ({ setModalOpen }: any) => {
   };
 
   useEffect(() => {
+    // console.log("modalOpen : ", modalOpen);
     getBalance();
   });
 
@@ -41,10 +60,12 @@ const ProfileModal = ({ setModalOpen }: any) => {
   const navigate = useNavigate();
   const mypage = () => {
     navigate("/mypage");
-    setModalOpen(false);
-  };
 
-  const modalRef = useRef<HTMLDivElement>(null);
+    // setModalOpen(false);
+    closeProfileModal();
+
+    console.log("myPage ; ", modalOpen);
+  };
 
   useEffect(() => {
     const handler = (event: any) => {
@@ -60,7 +81,14 @@ const ProfileModal = ({ setModalOpen }: any) => {
     };
   });
   return (
-    <div className={styles.ProfileModal} ref={modalRef}>
+    <div
+      className={
+        modalOpen
+          ? `${styles.ProfileModal} ${styles.ProfileModalOpen}`
+          : `${styles.ProfileModal} ${styles.ProfileModalClose}`
+      }
+      ref={modalRef}
+    >
       <div className={styles.ProfileModalBackground}>
         <div className={styles.ProfileModalMyInfo}>
           <button
