@@ -3,6 +3,8 @@ import axios from "axios";
 
 import styles from "./NftItem.module.css";
 import { truncatedAddress } from "../../features/auth/authSlice";
+import ModalPortal from "../modal/ModalPortal";
+import NftDetailModal from "../../features/detail/NftDetailModal";
 import { useNavigate } from "react-router-dom";
 
 const NftItem = (props: any) => {
@@ -12,7 +14,7 @@ const NftItem = (props: any) => {
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [imageURL, setImageURL] = useState("");
-  const navigate = useNavigate();
+  const navigator = useNavigate();
 
   const getMetadata = async (metaDataURI: string) => {
     await axios({ url: metaDataURI })
@@ -27,8 +29,10 @@ const NftItem = (props: any) => {
       .catch((err) => {});
   };
 
+  
   const moveToDetail = (tokenId: string) => {
-    navigate("/detail/" + tokenId);
+    console.log("true");
+    navigator("/detail/" + tokenId);
   };
 
   useEffect(() => {
@@ -37,11 +41,7 @@ const NftItem = (props: any) => {
   }, [props]);
 
   return (
-    <button
-      ref={lastRef ?? null}
-      className={styles.container}
-      onClick={() => moveToDetail(nft.readmeTokenId)}
-    >
+    <button className={styles.container} onClick={()=>moveToDetail(nft.readmeTokenId)}>
       <div className={styles.card}>
         <div className={styles.front}>
           <Suspense fallback={<p>이미지 로딩중</p>}>
@@ -63,6 +63,7 @@ const NftItem = (props: any) => {
       </div>
     </button>
   );
+
 };
 
 export default NftItem;
