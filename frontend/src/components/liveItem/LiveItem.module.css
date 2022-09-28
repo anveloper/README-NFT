@@ -1,6 +1,7 @@
 .container {
   width: 23%;
   aspect-ratio: 12/11;
+  background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

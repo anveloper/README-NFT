@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { useNavigate } from "react-router-dom";
 // state
 import {
   selectMessages,
-  selectSocket,
   setMessages,
   setRoomCnt,
   MSG,
@@ -16,6 +15,7 @@ import {
 } from "../gameSlice";
 
 import styles from "../Game.module.css";
+import { SocketContext } from "../../../socketConfig";
 
 const ChatBox = () => {
   const [newMessage, setNewMessage] = useState("");
@@ -24,7 +24,7 @@ const ChatBox = () => {
   const lastRef = useRef<HTMLDivElement | null>(null);
   const messages = useAppSelector(selectMessages);
   const hostUserName = useAppSelector(selectHostUserName);
-  const socket = useAppSelector(selectSocket);
+  const socket = useContext(SocketContext);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   useEffect(() => {

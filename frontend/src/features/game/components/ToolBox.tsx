@@ -1,16 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 // state
-import {
-  selectHostUserName,
-  selectSocket,
-  setColor,
-} from "../gameSlice";
+import { selectHostUserName, setColor } from "../gameSlice";
 import { selectUserAddress } from "../../auth/authSlice";
 // css
 import styles from "../Game.module.css";
+import { SocketContext } from "../../../socketConfig";
 const ToolBox = () => {
-  const socket = useAppSelector(selectSocket);
+  const socket = useContext(SocketContext);
   const userAddress = useAppSelector(selectUserAddress);
   const hostUserName = useAppSelector(selectHostUserName);
   const dispatch = useAppDispatch();

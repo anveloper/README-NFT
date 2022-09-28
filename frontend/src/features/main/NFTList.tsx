@@ -2,20 +2,24 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { GetReadmeContract } from "../../web3Config";
 import {
+  findSolveList,
   NftConfig,
   selectNftList,
   selectRawList,
+  selectSolveList,
   setNftList,
   setRawList,
 } from "../nft/nftSlice";
-import { setView } from "../game/gameSlice";
 import NftItem from "../../components/nftItem/NftItem";
 
 import styles from "./Main.module.css";
+import { selectUserAddress } from "../auth/authSlice";
 
 const NFTList = () => {
+  const userAddress = useAppSelector(selectUserAddress);
   const rawList = useAppSelector(selectRawList);
   const nftList = useAppSelector(selectNftList);
+  const solveList = useAppSelector(selectSolveList);
   const lastRef = useRef<HTMLButtonElement | null>(null);
   const [itemCnt, setItemCnt] = useState(8);
   const dispatch = useAppDispatch();
@@ -23,6 +27,9 @@ const NFTList = () => {
   useEffect(() => {
     GetReadmeContract.methods.getTotalToken().call((err: any, res: any) => {
       dispatch(setRawList(res));
+    });
+    dispatch(findSolveList(userAddress)).then((res) => {
+      console.log(res);
     });
     return () => {
       setItemCnt(8);

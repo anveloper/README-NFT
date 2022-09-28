@@ -1,14 +1,14 @@
 // core
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 // state
+import { SocketContext } from "../../socketConfig";
 import {
   resetRoomInfo,
   selectHostUserName,
   selectRoomCnt,
   selectRoomName,
-  selectSocket,
 } from "./gameSlice";
 import { selectUserAddress, truncatedAddress } from "../auth/authSlice";
 // component
@@ -25,7 +25,7 @@ import CanvasSpring from "../../assets/live-item/canvas_spring.svg";
 import styles from "./Game.module.css";
 const Game = () => {
   const userAddress = useAppSelector(selectUserAddress);
-  const socket = useAppSelector(selectSocket);
+  const socket = useContext(SocketContext);
   const roomName = useAppSelector(selectRoomName);
   const hostUserName = useAppSelector(selectHostUserName);
   const shortHostAddress = truncatedAddress(hostUserName);

@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 
-import { selectHostUserName, selectSocket, setTimeover } from "../gameSlice";
+import { SocketContext } from "../../../socketConfig";
+import { selectUserAddress } from "../../auth/authSlice";
+import { selectHostUserName, setTimeover } from "../gameSlice";
 // css
 import styles from "../Game.module.css";
-import { selectUserAddress } from "../../auth/authSlice";
 const TimerBox = () => {
-  const socket = useAppSelector(selectSocket);
+  const socket = useContext(SocketContext);
   const userAddress = useAppSelector(selectUserAddress);
   const hostUserName = useAppSelector(selectHostUserName);
   const MAX_TIME = 5;
