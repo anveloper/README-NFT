@@ -33,6 +33,7 @@ export interface GameState {
   solversCnt: number;
   participants: participantConfig[];
   status: "idle" | "loading" | "failed";
+  view: number;
 }
 
 const initialState: GameState = {
@@ -67,6 +68,7 @@ const initialState: GameState = {
   solversCnt: 0,
   participants: [],
   status: "idle",
+  view: 0,
 };
 
 export const gameSlice = createSlice({
@@ -131,6 +133,9 @@ export const gameSlice = createSlice({
     setParticipants: (state, { payload }) => {
       state.participants = payload;
     },
+    setView: (state, { payload }) => {
+      state.view = payload;
+    },
   },
   extraReducers: {},
 });
@@ -150,6 +155,7 @@ export const {
   setSolvers,
   setSolver,
   setParticipants,
+  setView,
 } = gameSlice.actions;
 // selector
 export const selectSocket = (state: RootState) => state.game.socket;
@@ -166,8 +172,10 @@ export const selectStarted = (state: RootState) => state.game.started;
 export const selectSolver = (state: RootState) => state.game.solver;
 export const selectSolversCnt = (state: RootState) => state.game.solversCnt;
 export const selectParticipants = (state: RootState) => state.game.participants;
+
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };
 export default gameSlice.reducer;
 
+export const sview = (state: RootState) => state.game.view;

@@ -12,18 +12,16 @@ const CarouselItem = (props: any) => {
   const [imageURL, setImageURL] = useState("");
 
   const getMetadata = async (metaDataURI: string) => {
-    try {
-      await axios({ url: metaDataURI }).then((res: any) => {
+    await axios({ url: metaDataURI })
+      .then((res: any) => {
         const { fileName, name, author, description, imageURL } = res.data;
         setFileName(fileName);
         setName(name);
         setAuthor(author);
         setDescription(description);
         setImageURL(imageURL);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+      })
+      .catch((err) => {});
   };
 
   useEffect(() => {
