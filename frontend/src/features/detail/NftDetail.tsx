@@ -6,6 +6,7 @@ import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
 import { selectUserAddress } from "../auth/authSlice";
 import styles from "./NftDetail.module.css";
 import { selectNftDetail, setNftDetail } from "./NftDetailSlice";
+import { truncatedAddress } from "../../features/auth/authSlice";
 
 const NftDetail = () => {
   const navigate = useNavigate();
@@ -53,22 +54,45 @@ const NftDetail = () => {
       <div className={styles.detail_container}>
         <div className={styles.cards}>
           <div className={styles.card_contents_front}>
-            <img className={styles.card_img} src={nftDetail.imageURL} alt="dog" />
-            <div className={styles.card_img_info}>
-              <p>TokenID: {tokenId}</p>
-              <p>FileName: {nftDetail.fileName}</p>
-              <p>Creator: {nftDetail.author}</p>
-              <p>Owner: {nftOwner}</p>
+            <img className={styles.card_contents_front_child} src={nftDetail.imageURL} alt="dog" />
+            <div className={styles.card_contents_front_child}>
+              <div className={styles.card_img_info_child}>
+                <div>Token ID</div>
+                <div>{tokenId}</div>
+              </div>
+              <div className={styles.card_img_info_child}>
+                <div>FileName</div>
+                <div>{nftDetail.name}</div>
+              </div>
+              <div className={styles.card_img_info_child}>
+                <div>Creator</div>
+                <div>{truncatedAddress(nftDetail.author)}</div>
+              </div>
+              <div className={styles.card_img_info_child}>
+                <div>Owner</div>
+                <div>{truncatedAddress(nftOwner)}</div>
+              </div>
+            </div>
+            <div className={styles.card_contents_front_child}>
+              <div>현재 가격</div>
+              <div>{nftPrice} SSF</div>
             </div>
           </div>
         </div>
         <div className={styles.cards}>
           <div className={styles.card_contents_back}>
-            <div className={styles.card_contents_back_price}>
-              <div>
-                <p>현재 가격</p>
-                <p>{nftPrice} SSF</p>
+            <div className={styles.card_contents_back_info}>
+              <div className={styles.card_contents_back_info_child}>
+                <div>판매가&nbsp;</div>
+                <div style={{ fontSize: "18px", color: "#21658F" }}>2022년 10월 7일</div>
+                <div>&nbsp;종료됩니다.</div>
               </div>
+              <div className={styles.card_contents_back_info_child}>
+                <div style={{ fontSize: "22px" }}>2일 21시간 12분 2초</div>
+              </div>
+            </div>
+            <div className={styles.card_contents_back_info}>
+              어떻게 구성해야 할지 고민인 창. 구매 버튼 활성화 되긴 함.
               <div>
                 {nftOwner.toLowerCase() === userAddress ? (
                   <>
@@ -85,10 +109,12 @@ const NftDetail = () => {
                 )}
               </div>
             </div>
-            <div className={styles.card_contents_back_history}></div>
-            <div className={styles.card_buttons}>
-              <button className={styles.card_button}>이전</button>
-              <button className={styles.card_button}>경매 참여</button>
+
+            <div className={styles.card_contents_back_info}>
+              <div className={styles.card_buttons}>
+                <button className={styles.card_button}>이전</button>
+                <button className={styles.card_button}>경매 참여</button>
+              </div>
             </div>
           </div>
         </div>

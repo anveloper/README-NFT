@@ -1,18 +1,5 @@
-@charset "utf-8";
-
-@font-face {
-  font-family: "Pretendard_Regular";
-  src: url("../../assets/fonts/Pretendard-Regular.woff");
-}
-
-@font-face {
-  font-family: "NanumSquareRoundB";
-  src: url("../../assets/fonts/NanumSquareRoundB.ttf");
-}
-
 .detail {
   height: 100%;
-  /* margin: 0; */
 
   display: flex;
   justify-content: center;
@@ -35,73 +22,131 @@
 .cards {
   background-color: white;
   color: black;
-  width: 350px;
-  height: 600px;
+  width: 400px;
+  height: 700px;
 
   border-radius: 40px;
 
   display: flex;
-  flex-direction: column;
-  /* justify-items: center; */
   justify-content: center;
-  align-items: center;
 }
 
-/* .card_contents_front {
-  width: 300px;
-  height: 90%;
+.card_contents_front,
+.card_contents_back {
+  width: 90%;
+  padding: 10px;
+  margin: 20px;
+}
 
-  background-color: #fcf5e9;
-  color: black;
-} */
+/* 카드 앞장 8분할 */
+.card_contents_front {
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+}
 
-.card_img {
+/* 이미지 */
+.card_contents_front_child:nth-child(1) {
   width: 100%;
-  height: 300px;
-  margin-bottom: 10px;
+  aspect-ratio: 12/11;
+  grid-row: span 4;
+  border-radius: 1rem;
 
-  /* background-color: #fcf5e9; */
+  background-color: #fcf5e9;
   color: black;
 }
 
-.card_img_info {
-  width: 300px;
-  height: 220px;
+/* 이미지 아래 info grid 4분할 */
+.card_contents_front_child {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+
+  border-radius: 20px;
+}
+
+/* 이미지 아래 info 틀 */
+.card_contents_front_child:nth-child(2) {
+  grid-row: span 3;
+  margin-bottom: 10px;
+
+  background-color: #fcf5e9;
+}
+
+/* 이미지 아래 info 내용 양쪽 정렬 */
+.card_img_info_child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px 10px 20px;
+}
+
+/* 현재 가격 div */
+.card_contents_front_child:nth-child(3) {
+  grid-row: span 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* 상우하좌 */
+  padding: 0 20px 0 20px;
+
+  background-color: #fcf5e9;
+}
+
+/*----------- 카드 뒷장 ----------*/
+
+/* 카드 뒷장 8분할 */
+.card_contents_back {
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+}
+
+.card_contents_back_info {
+  border-radius: 20px;
+}
+
+/* 판매 기간 div */
+.card_contents_back_info:nth-child(1) {
+  grid-row: span 2;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+
+  background-color: #fcf5e9;
+  margin-bottom: 10px;
+}
+
+.card_contents_back_info_child {
+  display: flex;
+  /* justify-content: space-evenly; */
+  padding: 0 20px 10px 20px;
+}
+
+.card_contents_back_info_child:nth-child(1) {
+  align-items: flex-end;
+}
+
+.card_contents_back_info_child:nth-child(2) {
+  align-items: flex-start;
+}
+
+/* 경매 div */
+.card_contents_back_info:nth-child(2) {
+  grid-row: span 5;
   padding: 20px;
-  border-radius: 20px;
 
   background-color: #fcf5e9;
-  color: black;
-}
-
-/* .card_contents_back {
-  width: 300px;
-  height: 90%;
-
-  background-color: #fcf5e9;
-  color: black;
-} */
-
-.card_contents_back_price {
-  width: 300px;
-  height: 150px;
-  margin-bottom: 20px;
-
-  background-color: #fcf5e9;
-  color: black;
-
-  border-radius: 20px;
-}
-
-.card_contents_back_history {
-  width: 300px;
-  height: 300px;
   margin-bottom: 10px;
+}
 
+/* 버튼 div */
+.card_contents_back_info:nth-child(3) {
+  grid-row: span 1;
   background-color: #fcf5e9;
-  color: black;
+  display: flex;
+  justify-content: center;
+}
 
-  border-radius: 20px;
+.card_buttons {
+  display: flex;
+  align-items: center;
 }
 
 .card_button {
@@ -118,12 +163,6 @@
   font-family: "NanumSquareRoundB";
 
   background-color: #fddf61;
-}
-
-.card_buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 /* 판매/등록 배경 */
