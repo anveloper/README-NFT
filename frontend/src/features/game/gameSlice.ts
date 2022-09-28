@@ -19,7 +19,6 @@ export interface participantConfig {
 }
 export interface GameState {
   roomList: RoomConfig[];
-  socket: Socket | undefined;
   hostUserName: string;
   roomName: string;
   roomCnt: number;
@@ -38,11 +37,11 @@ export interface GameState {
 
 const initialState: GameState = {
   roomList: [
-    { title: "소켓", host: "asdf", cnt: 999 },
-    { title: "연결이", host: "asdf", cnt: 999 },
-    { title: "안되면", host: "asdf", cnt: 999 },
-    { title: "뜨는", host: "asdf", cnt: 999 },
-    { title: "더미들", host: "asdf", cnt: 999 },
+    { title: "혹시", host: "asdf", cnt: 999 },
+    { title: "이 방들이", host: "asdf", cnt: 999 },
+    { title: "보인다면", host: "asdf", cnt: 999 },
+    { title: "새로고침", host: "asdf", cnt: 999 },
+    { title: "해주시겠어요?", host: "asdf", cnt: 999 },
     { title: "방이름", host: "asdf", cnt: 999 },
     { title: "뭘로", host: "asdf", cnt: 999 },
     { title: "더보기", host: "asdf", cnt: 999 },
@@ -54,7 +53,6 @@ const initialState: GameState = {
     { title: "더 없으면", host: "asdf", cnt: 999 },
     { title: "버튼 사라짐", host: "asdf", cnt: 999 },
   ],
-  socket: undefined,
   hostUserName: "",
   roomName: "",
   roomCnt: 0,
@@ -75,9 +73,6 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    setSocket: (state, { payload }) => {
-      state.socket = payload;
-    },
     setRoomList: (state, { payload }) => {
       state.roomList = payload;
     },
@@ -141,7 +136,6 @@ export const gameSlice = createSlice({
 });
 // redusers
 export const {
-  setSocket,
   setRoomList,
   setRoomCnt,
   setRoomInfo,
@@ -158,7 +152,6 @@ export const {
   setView,
 } = gameSlice.actions;
 // selector
-export const selectSocket = (state: RootState) => state.game.socket;
 export const selectRoomName = (state: RootState) => state.game.roomName;
 export const selectHostUserName = (state: RootState) => state.game.hostUserName;
 export const selectRoomCnt = (state: RootState) => state.game.roomCnt;
