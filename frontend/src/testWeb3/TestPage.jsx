@@ -78,6 +78,33 @@ const TestPage = () => {
       console.log(error);
     }
   };
+  const addNet = async () => {
+    try {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x79F5" }],
+      });
+    } catch (switchError) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: "0x79F5",
+                chainName: "SSAFY Network",
+                rpcUrls: ["http://20.196.209.2:8545"] /* ... */,
+              },
+            ],
+          });
+        } catch (addError) {
+          console.log("could't add network");
+        }
+      }
+      console.log("could't switch network");
+    }
+  };
 
   useEffect(() => {
     DrawTokenContract.methods.getWinnerCount().call((err, res) => {
@@ -399,6 +426,8 @@ const TestPage = () => {
       )}
       <h2>{eventLeft}/50</h2>
       <button onClick={getEventMoney}>이벤트 참여하기</button>
+      <h2>싸트워크 추가하기</h2>
+      <button onClick={addNet}>싸트워크 추가하기</button>
       <h2>ssf token import 하기</h2>
       <button onClick={isTokenImported}>ssftoken import하기</button>
     </div>
