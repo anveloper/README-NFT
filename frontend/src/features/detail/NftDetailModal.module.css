@@ -18,7 +18,7 @@
   width: 1000px;
   height: 600px;
 
-  background: #B8E5FF;
+  background: #b8e5ff;
   padding: 2rem;
   border-radius: 40px;
 
@@ -43,6 +43,7 @@
 
 .cards:nth-child(2) {
   grid-column: span 3;
+  position: relative;
 }
 
 .cards:nth-child(3) {
@@ -70,11 +71,9 @@
   align-items: center;
 }
 
-
 .cards_right {
   display: grid;
   grid-template-rows: 1fr 2fr 1fr;
-
 }
 
 .card_img {
@@ -88,8 +87,8 @@
 
 .card_button_close {
   align-items: center;
-  top: 180px;
-  right: 500px;
+  top: 11.5%;
+  left: 72%;
   position: absolute;
 }
 
