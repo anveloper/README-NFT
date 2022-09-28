@@ -1,0 +1,167 @@
+.MyModal {
+  background: rgba(0, 0, 0, 0.25);
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+}
+
+.MyModal .content {
+  width: 1000px;
+  height: 600px;
+
+  background: #79c4f2;
+  padding: 1rem;
+  border-radius: 40px;
+
+  font-family: "NanumSquareRound";
+}
+
+.cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cards_left,
+.cards_right {
+  background-color: white;
+  border-radius: 40px;
+
+  display: flex;
+  flex-direction: column;
+  /* justify-items: center; */
+  justify-content: center;
+  /* align-items: center; */
+
+  margin: 20px;
+}
+
+.cards_left {
+  display: flex;
+  align-items: center;
+
+  width: 500px;
+  height: 500px;
+}
+
+.cards_right {
+  display: grid;
+  grid-template-rows: 1fr 2fr 1fr;
+
+  width: 350px;
+  height: 500px;
+}
+
+.card_img {
+  width: 90%;
+  height: 90%;
+
+  /* background-color: #fcf5e9; */
+  color: black;
+}
+
+.info_box {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  width: 100%;
+  height: 40%;
+  /* padding-bottom: 40px; */
+}
+
+.info {
+  width: 90%;
+  height: 80px;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 20px;
+  background-color: #fddf61;
+}
+
+.answer {
+  width: 100%;
+  height: 30%;
+  padding: 20px;
+}
+
+.answer_info {
+  width: 100%;
+  height: 10%;
+
+  background-color: blue;
+}
+
+.input {
+  width: 230px;
+  height: 40px;
+  background-color: #b8e5ff;
+  border: none;
+  border-radius: 30px;
+  margin-left: 10px;
+  margin-right: 5px;
+  padding-left: 20px;
+  font-weight: bold;
+}
+
+.input_button {
+  width: 50px;
+  height: 40px;
+  border: none;
+  background-color: #79c4f2;
+  padding: 10px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.input_msg {
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.result_msg {
+  padding: 10px;
+}
+
+.result_msg_answer {
+  color: #0500ff;
+}
+
+.result_msg_wrong {
+  color: #e56161;
+}
+
+.card_buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card_button_on,
+.card_button_off {
+  border: none;
+  border-radius: 5px;
+
+  padding: 10px 20px 10px 20px;
+  margin: 40px 20px 0px 20px;
+
+  font-size: 18px;
+
+  white-space: nowrap;
+}
+
+.card_button_on {
+  background-color: #fddf61;
+  color: black;
+
+  cursor: pointer;
+}
+
+.card_button_off {
+  background-color: lightgray;
+}
