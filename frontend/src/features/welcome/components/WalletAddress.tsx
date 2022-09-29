@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "../Welcome.module.css";
 import { useAppDispatch } from "../../../app/hooks";
+import MetaMaskOnboarding from "@metamask/onboarding";
 
 // image
 import palette from "../../../assets/palette.svg";
@@ -12,30 +13,32 @@ declare let window: any;
 const WalletAddress = () => {
   // const [loginUserAddress, setLoginUserAddress] = useState("");
   const dispatch = useAppDispatch();
-
   const [account, setAccount] = useState<string>("");
   const navigate = useNavigate();
+  const onboarding = useRef<MetaMaskOnboarding>();
 
-  const connectWallet = async () => {
-    try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        setAccount(accounts[0]);
-
-        if (accounts[0].length > 0) {
-          dispatch(loginUser(accounts[0]));
-        }
-        console.log(accounts);
-        navigate("/");
-      } else {
-        alert("Install Metamask!");
-      }
-    } catch (err) {
-      console.log(err);
+  //메타마스트 onboarding객체 생성
+  useEffect(() => {
+    if (!onboarding.current) {
+      onboarding.current = new MetaMaskOnboarding();
     }
-  };
+  }, []);
+
+  //접속시 깔려 있으면 account state
+  useEffect(() => {
+    function handleNewAccounts(newAccounts: string) {
+      setAccount(newAccounts);
+    }
+    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+      window.ethereum
+        .request({ method: "eth_requestAccounts" })
+        .then(handleNewAccounts);
+      window.ethereum.on("accountsChanged", handleNewAccounts);
+      return () => {
+        window.ethereum.removeListener("accountsChanged", handleNewAccounts);
+      };
+    }
+  }, []);
 
   // useEffect(() => {
   //   connectWallet();
@@ -43,7 +46,25 @@ const WalletAddress = () => {
 
   useEffect(() => {
     console.log(account);
+    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+      if (account.length > 0) {
+        onboarding.current.stopOnboarding();
+      } else {
+      }
+    }
   }, [account]);
+
+  const connectWallet = async () => {
+    //메타마스크가 깔려있으면
+    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+      window.ethereum
+        .request({ method: "eth_requestAccounts" })
+        .then((newAccounts: string) => setAccount(newAccounts));
+    } else {
+      //안깔려 있으면 설치 유도
+      onboarding.current.startOnboarding();
+    }
+  };
 
   return (
     <div className={styles.WalletAddress}>
