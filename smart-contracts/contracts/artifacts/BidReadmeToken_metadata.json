@@ -22,23 +22,33 @@
 				"type": "constructor"
 			},
 			{
-				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "Bids",
+				"outputs": [
+					{
 						"internalType": "address",
 						"name": "bidder",
 						"type": "address"
 					},
 					{
-						"indexed": false,
 						"internalType": "uint256",
-						"name": "biddingPrice",
+						"name": "bidPrice",
 						"type": "uint256"
 					}
 				],
-				"name": "BidList",
-				"type": "event"
+				"stateMutability": "view",
+				"type": "function"
 			},
 			{
 				"inputs": [
@@ -118,6 +128,75 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "getBidList",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "bidder",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "bidPrice",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct BidReadmeToken.Bid[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "getReadmeTokenHigh",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_readmeTokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "getReadmeTokenPrice",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getTokenOnAuction",
 				"outputs": [
@@ -132,12 +211,63 @@
 			},
 			{
 				"inputs": [],
+				"name": "getTokenOnAuctionArrayLength",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "mintReadmeToken",
 				"outputs": [
 					{
 						"internalType": "contract MintReadmeToken",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "nowHighestPrice",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "onAuctionReadmeToken",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -260,11 +390,11 @@
 	},
 	"sources": {
 		"contracts/BidReadmeToken.sol": {
-			"keccak256": "0x2470febd2ca2e0bdcffd258b40506ef3f474b42fef1549f7ee43d2515ed657c0",
+			"keccak256": "0x1ac921d0cf43fb83aabda30eb318fd55d0369187ec000e3e5ae6c959197779cb",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://117cd1623efb1c5a73a1c4c0c0a8f09f12ef46e8d6fb45f07fa4fef1e31daf07",
-				"dweb:/ipfs/QmbK1zkFsAvcHTrxThnnDTsxxUB4uDEpCwQrzJs55Luha7"
+				"bzz-raw://7e1b320fc8a659d9f17dec596025a87e45efb036885a390d290083c6493a1656",
+				"dweb:/ipfs/Qma36yvSYM3py6W2hwmTMazm5N8d9H8QkSPUfBuvLJ1yEG"
 			]
 		},
 		"contracts/MintReadmeToken.sol": {
