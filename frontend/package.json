@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@fullpage/react-fullpage": "^0.1.28",
+    "@metamask/onboarding": "^1.0.1",
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^0.27.2",
     "dotenv": "^16.0.2",
