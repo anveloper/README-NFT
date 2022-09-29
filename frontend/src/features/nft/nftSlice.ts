@@ -21,6 +21,7 @@ export interface NftConfig {
 interface NftListConfig {
   rawList: any[];
   nftList: NftConfig[];
+  carouselList: NftConfig[];
   solveList: number[];
   status: "idle" | "loading" | "failed";
 }
@@ -28,14 +29,28 @@ interface NftListConfig {
 const initialState: NftListConfig = {
   rawList: [],
   nftList: [],
+  carouselList: [],
   solveList: [],
   status: "idle",
 };
-export const postProblem = createAsyncThunk("", () => {});
+export const postProblem = createAsyncThunk(
+  "nft/postProblem",
+  async ({ userAddress, tokenId }: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(api.solver.solveProblem(), {
+        walletAddress: userAddress,
+        tokenId,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
 
 export const findSolveList = createAsyncThunk(
   "nft/findSolveList",
-  async ({ userAddress }: any, { rejectWithValue }) => {
+  async (userAddress: string, { rejectWithValue }) => {
     try {
       const response = await axios.get(api.solver.getSolveList(userAddress));
       return response.data;
@@ -55,6 +70,9 @@ const nftSlice = createSlice({
     setNftList: (state, { payload }) => {
       state.nftList = payload;
     },
+    setCarouselList: (state, { payload }) => {
+      state.carouselList = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -64,7 +82,6 @@ const nftSlice = createSlice({
       .addCase(findSolveList.fulfilled, (state, { payload }) => {
         state.status = "idle";
         state.solveList = payload.nftList;
-        console.log(state.solveList);
       })
       .addCase(findSolveList.rejected, (state) => {
         state.status = "failed";
@@ -72,10 +89,11 @@ const nftSlice = createSlice({
   },
 });
 
-export const { setRawList, setNftList } = nftSlice.actions;
+export const { setRawList, setCarouselList, setNftList } = nftSlice.actions;
 
 export default nftSlice.reducer;
 
 export const selectRawList = (state: RootState) => state.nft.rawList;
 export const selectNftList = (state: RootState) => state.nft.nftList;
+export const selectCarouselList = (state: RootState) => state.nft.carouselList;
 export const selectSolveList = (state: RootState) => state.nft.solveList;
