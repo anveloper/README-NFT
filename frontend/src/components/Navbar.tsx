@@ -29,14 +29,8 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.navButtonBox}>
-        <Link to="/temp-list">
-          <button>NFT리스트(테스트용)</button>
-        </Link>
         <Link to="/sale">
           <button>NFT 판매</button>
-        </Link>
-        <Link to="/detail">
-          <button>NFT상세</button>
         </Link>
         <Link to="/login">
           <button>로그인</button>
@@ -49,13 +43,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.profileTag} onClick={showProfileModal}>
-        {modalOpen && (
-          <ProfileModal
-            closeProfileModal={closeProfileModal}
-            modalOpen={modalOpen}
-            setModalOpen={setModalOpen}
-          />
-        )}
+        {modalOpen && <ProfileModal closeProfileModal={closeProfileModal} modalOpen={modalOpen} setModalOpen={setModalOpen} />}
         <img src={profileImg} alt="" className={styles.avatar} />
         <p className={styles.nameTag}>{nameTag}</p>
       </div>
