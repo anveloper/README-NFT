@@ -19,7 +19,6 @@ export interface participantConfig {
 }
 export interface GameState {
   roomList: RoomConfig[];
-  socket: Socket | undefined;
   hostUserName: string;
   roomName: string;
   roomCnt: number;
@@ -33,15 +32,16 @@ export interface GameState {
   solversCnt: number;
   participants: participantConfig[];
   status: "idle" | "loading" | "failed";
+  view: number;
 }
 
 const initialState: GameState = {
   roomList: [
-    { title: "소켓", host: "asdf", cnt: 999 },
-    { title: "연결이", host: "asdf", cnt: 999 },
-    { title: "안되면", host: "asdf", cnt: 999 },
-    { title: "뜨는", host: "asdf", cnt: 999 },
-    { title: "더미들", host: "asdf", cnt: 999 },
+    { title: "혹시", host: "asdf", cnt: 999 },
+    { title: "이 방들이", host: "asdf", cnt: 999 },
+    { title: "보인다면", host: "asdf", cnt: 999 },
+    { title: "새로고침", host: "asdf", cnt: 999 },
+    { title: "해주시겠어요?", host: "asdf", cnt: 999 },
     { title: "방이름", host: "asdf", cnt: 999 },
     { title: "뭘로", host: "asdf", cnt: 999 },
     { title: "더보기", host: "asdf", cnt: 999 },
@@ -53,7 +53,6 @@ const initialState: GameState = {
     { title: "더 없으면", host: "asdf", cnt: 999 },
     { title: "버튼 사라짐", host: "asdf", cnt: 999 },
   ],
-  socket: undefined,
   hostUserName: "",
   roomName: "",
   roomCnt: 0,
@@ -67,15 +66,13 @@ const initialState: GameState = {
   solversCnt: 0,
   participants: [],
   status: "idle",
+  view: 0,
 };
 
 export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    setSocket: (state, { payload }) => {
-      state.socket = payload;
-    },
     setRoomList: (state, { payload }) => {
       state.roomList = payload;
     },
@@ -131,12 +128,14 @@ export const gameSlice = createSlice({
     setParticipants: (state, { payload }) => {
       state.participants = payload;
     },
+    setView: (state, { payload }) => {
+      state.view = payload;
+    },
   },
   extraReducers: {},
 });
 // redusers
 export const {
-  setSocket,
   setRoomList,
   setRoomCnt,
   setRoomInfo,
@@ -150,9 +149,9 @@ export const {
   setSolvers,
   setSolver,
   setParticipants,
+  setView,
 } = gameSlice.actions;
 // selector
-export const selectSocket = (state: RootState) => state.game.socket;
 export const selectRoomName = (state: RootState) => state.game.roomName;
 export const selectHostUserName = (state: RootState) => state.game.hostUserName;
 export const selectRoomCnt = (state: RootState) => state.game.roomCnt;
@@ -166,8 +165,10 @@ export const selectStarted = (state: RootState) => state.game.started;
 export const selectSolver = (state: RootState) => state.game.solver;
 export const selectSolversCnt = (state: RootState) => state.game.solversCnt;
 export const selectParticipants = (state: RootState) => state.game.participants;
+
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };
 export default gameSlice.reducer;
 
+export const sview = (state: RootState) => state.game.view;

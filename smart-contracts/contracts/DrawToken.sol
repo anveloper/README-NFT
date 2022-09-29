@@ -9,7 +9,6 @@ import "./MintReadmeToken.sol";
 
 contract DrawToken{
 
-  // 돈이 빠져나갈 주소
   IERC20 public wooToken;
 
   constructor (IERC20 _wooToken){
@@ -17,20 +16,16 @@ contract DrawToken{
   }
 
   // 금액
-  uint256 public withdraw;
+  uint256 public winnerCount;
   // 선착순 당첨자
   address[] winnerList;
   // 중복 확인
   bool who;
 
-  event Logs (
-    uint256 withdrawToken
-  );
-
   // 호출자: winner
   function shareToken() public {
     // 해당 컨트랙트에게 50000원을 사용할 권한을 미리 줘야함
-    require(withdraw < 50000, "Over");
+    require(winnerCount < 50, "Over");
 
     // 당첨자 목록 확인
     for(uint256 i = 0; i < winnerList.length; i++){
@@ -47,9 +42,14 @@ contract DrawToken{
     // 당첨자 목록 추가
     winnerList.push(msg.sender);
     // 금액 수정
-    withdraw += 1000;
+    winnerCount += 1;
 
-    emit Logs(withdraw);
   }
 
+  // get: 남은 인원 조회
+  function getWinnerCount() public view returns(uint256){
+    uint256 remainder = 50 - winnerCount;
+
+    return remainder;
+  }
 }

@@ -1,10 +1,15 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
   selectAnswer,
   selectColor,
   selectHostUserName,
-  selectSocket,
   selectSolver,
   selectStarted,
   selectTimeover,
@@ -16,6 +21,7 @@ import styles from "../Game.module.css";
 import { Modal } from "../../../components/modal/Modal";
 import { setImgBlob, setRawData, setTmpInfo } from "../../mint/mintSlice";
 import { useNavigate } from "react-router-dom";
+import { SocketContext } from "../../../socketConfig";
 
 export interface Coordinate {
   x: number;
@@ -23,7 +29,7 @@ export interface Coordinate {
 }
 
 const CanvasBox = () => {
-  const socket = useAppSelector(selectSocket);
+  const socket = useContext(SocketContext);
   const hostUserName = useAppSelector(selectHostUserName);
   const color = useAppSelector(selectColor);
   const answer = useAppSelector(selectAnswer);

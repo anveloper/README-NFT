@@ -17,36 +17,36 @@ const NftDetail = () => {
   const [nftPrice, setNftPrice] = useState(0);
   const [nftOwner, setNftOwner] = useState("");
 
-  const getMetadata = async() => {
+  const getMetadata = async () => {
     try {
       const response = await MintReadmeContract.methods.tokenURI(tokenId).call();
-      await axios({url: response})
-      .then((data: any) => {
-        dispatch(setNftDetail(data.data));
-      }).catch((error: any) => {
+      await axios({ url: response })
+        .then((data: any) => {
+          dispatch(setNftDetail(data.data));
+        })
+        .catch((error: any) => {
           console.error(error);
-      });
+        });
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
   const getNftInfo = async () => {
     try {
       const nftPrice = await SaleReadmeContract.methods.getReadmeTokenPrice(tokenId).call();
       const nftOwner = await MintReadmeContract.methods.ownerOf(tokenId).call();
-      setNftPrice(nftPrice)
+      setNftPrice(nftPrice);
       setNftOwner(nftOwner);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   // mount
   useEffect(() => {
     getMetadata();
     getNftInfo();
-  }, [])
-  
+  }, []);
 
   return (
     <div className={styles.detail}>
@@ -70,16 +70,19 @@ const NftDetail = () => {
                 <p>{nftPrice} SSF</p>
               </div>
               <div>
-                { nftOwner.toLowerCase() === userAddress ? <>
-                  <button className={styles.card_button} onClick={() => navigate("/sell")}>
-                  판매
-                </button>
-                </> : <>
-                <button className={styles.card_button} onClick={() => navigate("/sell")}>
-                  구매
-                </button></>
-                  
-                }
+                {nftOwner.toLowerCase() === userAddress ? (
+                  <>
+                    <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)}>
+                      판매
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)}>
+                      구매
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             <div className={styles.card_contents_back_history}></div>

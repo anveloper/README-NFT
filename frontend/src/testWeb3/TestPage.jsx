@@ -6,6 +6,7 @@ import {
   GetReadmeContract,
   BidReadmeContract,
   SSFContract,
+  DrawTokenContract,
 } from "../web3Config";
 
 import IpfsAPI from "ipfs-api";
@@ -35,7 +36,7 @@ const TestPage = () => {
   //   new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
   // );
   const [account, setAccount] = useState("");
-
+  const [eventLeft, setEventLeft] = useState(0);
   const getAccount = async () => {
     try {
       if (window.ethereum) {
@@ -54,6 +55,63 @@ const TestPage = () => {
     getAccount();
   }, [account]);
 
+  let isTokenImported = async () => {
+    try {
+      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+      const wasAdded = await window.ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20", // Initially only supports ERC20, but eventually more!
+          options: {
+            address: process.env.REACT_APP_ERC20_CA, // The address that the token is at.
+            symbol: "SSF", // A ticker symbol or shorthand, up to 5 chars.
+            decimals: 0,
+          },
+        },
+      });
+      if (wasAdded) {
+        console.log("Thanks for your interest!");
+      } else {
+        console.log("Your loss!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addNet = async () => {
+    try {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x79F5" }],
+      });
+    } catch (switchError) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: "0x79F5",
+                chainName: "SSAFY Network",
+                rpcUrls: ["http://20.196.209.2:8545"] /* ... */,
+              },
+            ],
+          });
+        } catch (addError) {
+          console.log("could't add network");
+        }
+      }
+      console.log("could't switch network");
+    }
+  };
+
+  useEffect(() => {
+    DrawTokenContract.methods.getWinnerCount().call((err, res) => {
+      setEventLeft(res);
+      console.log(res);
+    });
+  }, []);
   // 아이템 업로드 핸들링
   const handleItem = (value) => {
     setItem(value);
@@ -202,6 +260,17 @@ const TestPage = () => {
       .then((receipt) => {
         console.log(receipt);
       });
+  };
+  const getEventMoney = async () => {
+    await DrawTokenContract.methods
+      .shareToken()
+      .send({ from: account }, (receipt, error) => {
+        console.log(receipt);
+        console.log(error);
+      });
+    DrawTokenContract.methods.getWinnerCount().call((err, res) => {
+      setEventLeft(res);
+    });
   };
   return (
     <div style={{ paddingTop: "30px" }}>
@@ -355,6 +424,12 @@ const TestPage = () => {
           <button onClick={buyNFT}>진짜 사기</button>
         </div>
       )}
+      <h2>{eventLeft}/50</h2>
+      <button onClick={getEventMoney}>이벤트 참여하기</button>
+      <h2>싸트워크 추가하기</h2>
+      <button onClick={addNet}>싸트워크 추가하기</button>
+      <h2>ssf token import 하기</h2>
+      <button onClick={isTokenImported}>ssftoken import하기</button>
     </div>
   );
 };

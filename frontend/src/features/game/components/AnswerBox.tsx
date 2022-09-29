@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { Modal } from "../../../components/modal/Modal";
+import { SocketContext } from "../../../socketConfig";
 import { selectUserAddress } from "../../auth/authSlice";
 // css
 import styles from "../Game.module.css";
@@ -9,12 +10,11 @@ import {
   selectAnswerLength,
   selectHostUserName,
   selectRoomCnt,
-  selectSocket,
   selectSolversCnt,
   setAnswer,
 } from "../gameSlice";
 const AnswerBox = () => {
-  const socket = useAppSelector(selectSocket);
+  const socket = useContext(SocketContext);
   const answer = useAppSelector(selectAnswer);
   const answerLength = useAppSelector(selectAnswerLength);
   const hostUserName = useAppSelector(selectHostUserName);

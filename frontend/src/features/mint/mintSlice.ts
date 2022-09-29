@@ -43,11 +43,11 @@ export const mintSlice = createSlice({
       state.imgBlob = payload;
     },
   },
-  extraReducers: {},
+  extraReducers: (builder) => {},
 });
 
 export const { setTmpInfo, setRawData, setImgBlob } = mintSlice.actions;
-
+export const selectStatus = (state: RootState) => state.mint.status;
 export const selectTmpInfo = (state: RootState) => state.mint.tmpInfo;
 export const selectRawData = (state: RootState) => state.mint.rawData;
 export const selectImgBlob = (state: RootState) => state.mint.imgBlob;
