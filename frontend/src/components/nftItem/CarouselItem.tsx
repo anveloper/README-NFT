@@ -1,27 +1,22 @@
 import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 
-import styles from "./NftItem.module.css";
 import ModalPortal from "../modal/ModalPortal";
 import NftDetailModal from "../../features/detail/NftDetailModal";
+import blank from "../../assets/template/template_word.svg";
 
+import styles from "./NftItem.module.css";
 const CarouselItem = (props: any) => {
   const { nft } = props;
-  const [fileName, setFileName] = useState("");
   const [name, setName] = useState("");
-  const [author, setAuthor] = useState("");
-  const [description, setDescription] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
 
   const getMetadata = async (metaDataURI: string) => {
     await axios({ url: metaDataURI })
       .then((res: any) => {
-        const { fileName, name, author, description, imageURL } = res.data;
-        setFileName(fileName);
+        const { name, imageURL } = res.data;
         setName(name);
-        setAuthor(author);
-        setDescription(description);
         setImageURL(imageURL);
       })
       .catch((err) => {});
@@ -39,37 +34,37 @@ const CarouselItem = (props: any) => {
     const { metaDataURI } = props;
     getMetadata(metaDataURI);
   }, [props]);
-
+  const answerWord = () => {
+    const result = [];
+    for (let i = 0; i < name.length; i++) {
+      result.push(<img key={i} className={styles.blank} src={blank} alt="" />);
+    }
+    return result;
+  };
   return (
     <>
-    <button className={styles.carouselContainer} onClick={openModal}>
-      <div className={styles.card}>
-        <div className={styles.front}>
-          <Suspense fallback={<p>이미지 로딩중</p>}>
+      <button className={styles.carouselContainer} onClick={openModal}>
+        <Suspense fallback={<p>이미지 로딩중</p>}>
+          <div className={styles.sq}>
             <img className={styles.img} src={imageURL} alt="" />
-          </Suspense>
-        </div>
-        <div className={styles.back}>
-          <p>리드미: {name}</p>
-          <p>작성자: {author}</p>
-          <p>설명: {description}</p>
-          <p>맞춘이: ??????</p>
-          <small>파일이름: {fileName}</small>
-        </div>
+          </div>
+        </Suspense>
+        <div className={styles.carouselInfo}>{answerWord()}</div>
+      </button>
+      <div>
+        {modalOpen && (
+          <ModalPortal>
+            <NftDetailModal
+              open={modalOpen}
+              close={closeModal}
+              image={imageURL}
+              answer={name}
+              tokenId={nft.readmeTokenId}
+            />
+          </ModalPortal>
+        )}
       </div>
-      <div className={styles.nftInfo}>
-        <p>리드미ID: {nft.readmeTokenId}번째</p>
-        <p>PRICE: {nft.readmeTokenPrice}</p>
-      </div>
-    </button>
-    <div>
-    {modalOpen && (
-      <ModalPortal>
-        <NftDetailModal open={modalOpen} close={closeModal} image={imageURL} answer={name} tokenId={nft.readmeTokenId} />
-      </ModalPortal>
-    )}
-  </div>
-  </>
+    </>
   );
 };
 
