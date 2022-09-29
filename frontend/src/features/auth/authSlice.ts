@@ -10,7 +10,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  userAddress: `testAddress-${Math.floor(Math.random() * 123456)}`,
+  userAddress: ``,
   userName: `익명의 ${Math.floor(Math.random() * 100)}번째 개발자`,
   userAvatar: "",
   status: "idle",
@@ -39,6 +39,10 @@ export const authSlice = createSlice({
       state.userAddress = "";
       state.status = "idle";
     },
+    login: (state, { payload }) => {
+      console.log(payload);
+      state.userAddress = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -56,7 +60,7 @@ export const authSlice = createSlice({
 });
 
 // actions
-export const { logoutUser } = authSlice.actions;
+export const { logoutUser, login } = authSlice.actions;
 
 // selector
 export const selectUserAddress = (state: RootState) => state.auth.userAddress;
