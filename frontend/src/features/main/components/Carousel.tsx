@@ -1,33 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { GetReadmeContract } from "../../../web3Config";
-import { NftConfig, selectNftList, selectRawList, setNftList, setRawList } from "../../nft/nftSlice";
+
+// state
+import { NftConfig, selectCarouselList, selectRawList, selectSolveList, setCarouselList } from "../../nft/nftSlice";
+
+// components
 import CarouselItem from "../../../components/nftItem/CarouselItem";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import Slider from "react-slick";
 
+// css
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./Carousel.module.css";
 
 const Carousel = ({ carouselRef }: any) => {
   const rawList = useAppSelector(selectRawList);
-  const nftList = useAppSelector(selectNftList);
+  const carouselList = useAppSelector(selectCarouselList);
+  const solveList = useAppSelector(selectSolveList);
   const dispatch = useAppDispatch();
-  // mount
-  useEffect(() => {
-    GetReadmeContract.methods.getTotalToken().call((err: any, res: any) => {
-      dispatch(setRawList(res));
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
   useEffect(() => {
     if (rawList && rawList.length > 0) {
       const result: NftConfig[] = [];
-      const cnt = Math.min(rawList.length, 10);
+      let cnt = Math.min(rawList.length, 10);
       for (let i = 0; i < cnt; i++) {
-        const { metaDataURI, readmeTokenId, readmeTokenOwner, readmeTokenPrice } = rawList[i];
-        if (metaDataURI.length < 69)
+        const {
+          metaDataURI,
+          readmeTokenId,
+          readmeTokenOwner,
+          readmeTokenPrice,
+        } = rawList[i];
+        if (!solveList.includes(Number(readmeTokenId)))
           // 임시방편
           result.push({
             metaDataURI,
@@ -37,8 +41,9 @@ const Carousel = ({ carouselRef }: any) => {
             metaData: undefined,
             saleDate: undefined, // (정현) NftConfig 수정해서 넣었어욧
           });
+        else if (cnt < rawList.length - 1) cnt++;
       }
-      dispatch(setNftList(result));
+      dispatch(setCarouselList(result));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawList]);
@@ -64,7 +69,7 @@ const Carousel = ({ carouselRef }: any) => {
       </div>
       <div>
         <Slider {...settings}>
-          {nftList.map((nft: NftConfig, i: number) => {
+          {carouselList.map((nft: NftConfig, i: number) => {
             return (
               <div key={i} className={i === imageIndex ? `${styles.slide} ${styles.activeSlide}` : styles.slide}>
                 <CarouselItem nft={nft} metaDataURI={nft.metaDataURI} />

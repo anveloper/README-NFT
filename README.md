@@ -58,64 +58,21 @@ NFT에 관심을 갖고 있으면서 게임을 좋아하는 젊은 세대 및 �
 <br>
 
 ## 🔍프로젝트 정보
-(설계 단계 산출물은 향후에 산출물.md 파일에 옮겨서 링크)
+- [설계 산출물](/docs/설계%20산출물/설계%20산출물.md)
+  - [기능명세서](/docs/설계%20산출물/기능명세서.pdf)
+  - [ERD](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/981982d4-ddfe-41fd-a45c-6941d20af78b/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220929%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220929T043406Z&X-Amz-Expires=86400&X-Amz-Signature=0723c4bb4d1bafde91e4f219a34ad31995386ac1341f0e0119470e3ed957d389&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+  - [API](/docs/설계%20산출물/API_DOC.pdf)
+  - 와이어 프레임
 
-- 기능명세서
-- ERD
-- API
-- 와이어 프레임
-- 배포 메뉴얼(기술스택 및 버전 포함)
+- [배포 메뉴얼](/docs/배포%20메뉴얼.md)
 - 실행 메뉴얼
 
-
+<br>
 
 ### 🛠기술 스택
 - 기술 스택(리스트만)
 - 시스템 아키텍처
   ![image](https://user-images.githubusercontent.com/93081720/192417991-296ae920-1ff6-42f0-978e-83e117af769e.png)
-
-| 구분       | 기술스택        | 상세               | 버전                 |
-| ---------- | --------------- | ------------------ | -------------------- |
-| 공통       | 형상관리        | GitLab             |                      |
-|            | 이슈관리        | Jira               |                      |
-|            | 커뮤니케이션    | Notion, MatterMost |                      |
-| 프론트엔드 | HTML5           |                    |                      |
-|            | CSS3            |                    |                      |
-|            | JavaScript(ES6) |                    |                      |
-|            | React           | React              | 18.2.0               |
-|            |                 | Redux              | 8.0.2                |
-|            |                 | Router             | 6.4.0                |
-|            | WebSocket       | socket.io-client   | 4.5.2                |
-|            | IDE             | Visual Studio Code | 1.17.2               |
-| 백엔드     | Java            | OpenJDK            | 1.8                  |
-|            | Spring          | SpringBoot         | 2.5.1                |
-|            | API Docs        | Swagger            | 3.0.0                |
-|            | DB              | MySQL              | 8.0.30               |
-|            |                 | JPA                | 2.5.1                |
-|            | IDE             | IntellJ            | 17.0.3               |
-| 소켓 서버  | NodeJs          | Express            | 4.18.1               |
-|            |                 | Socket.io          | 4.5.2                |
-| 인프라     | Sever           | AWS EC2            | GNU/Linux 5.4.0-1018 |
-|            | CI/CD           | Docker             | 20.10.18             |
-|            |                 | Jenkins            | 2.361.1              |
-|            | Web/SSL         | Nginx              | 1.18.0               |
-
-<br>
-
-### 📑기능명세서
-유저 스토리를 토대로 기능 명세서를 작성함()
-
-### 🗺와이어프레임
-
-### 💾ERD
-
-백엔드 서버 최소화 및 탈중앙화를 위한 DB 테이블을 설계함
-
-![image](https://user-images.githubusercontent.com/93081720/192464139-1bd70517-9de6-408f-8637-29c72b8eeff3.png)
-
-### 📡API
-좋아요, 방 CRUD, 문제 풀이 API 구현
-
 
 <br>
 

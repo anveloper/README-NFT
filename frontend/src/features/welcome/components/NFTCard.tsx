@@ -1,38 +1,41 @@
-// img
-import lion from "../../../assets/characters/lion_palette.svg";
+import { FC } from "react";
 // CSS
 import styles from "../Welcome.module.css";
 
-const NFTCard = () => {
+interface NFTCardProps {
+  img: string;
+  name: string;
+  answer: string;
+  creater: string;
+  solver: string;
+}
+
+const NFTCard: FC<NFTCardProps> = ({ img, name, answer, creater, solver }) => {
   return (
     <div className={styles.NFTCard}>
-      <div className={styles.NFTtape1}></div>
-
-      <div>
-        <img className={styles.NFTCardImg} src={lion} alt="" />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <img className={styles.NFTCardImg} src={img} alt="" />
       </div>
 
       <div className={styles.NFTCardText}>
         <p className={styles.NFTTextTitle}>NFT Name</p>
-        <p className={styles.NFTTextMain}>Lion</p>
+        <p className={styles.NFTTextMain}>{name}</p>
       </div>
 
       <div className={styles.NFTCardText}>
         <p className={styles.NFTTextTitle}>Answer</p>
-        <p className={styles.NFTTextMain}>Lion</p>
+        <p className={styles.NFTTextMain}>{answer}</p>
       </div>
 
       <div className={styles.NFTCardText}>
         <p className={styles.NFTTextTitle}>Creater</p>
-        <p className={styles.NFTTextMain}>피자먹는 라이언</p>
+        <p className={styles.NFTTextMain}>{creater}</p>
       </div>
 
       <div className={styles.NFTCardText}>
         <p className={styles.NFTTextTitle}>Solver</p>
-        <p className={styles.NFTTextMain}>치킨먹는 라이언</p>
+        <p className={styles.NFTTextMain}>{solver}</p>
       </div>
-
-      <div className={styles.NFTtape2}></div>
     </div>
   );
 };

@@ -62,6 +62,24 @@ module.exports = {
       network_id: 3,
       gas: 30000000,
     },
+    rinkeby: {
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          "https://rinkeby.infura.io/v3/587fbda02f5d42558e26ec1e6dcfb753"
+        ),
+      network_id: 4,
+      gas: 4500000,
+    },
+    goerli: {
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          "https://goerli.infura.io/v3/587fbda02f5d42558e26ec1e6dcfb753"
+        ),
+      network_id: 5,
+      gas: 4465030,
+    },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port

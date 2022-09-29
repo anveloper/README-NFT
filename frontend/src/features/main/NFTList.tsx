@@ -5,10 +5,8 @@ import { findSolveList, NftConfig, selectNftList, selectRawList, selectSolveList
 import NftItem from "../../components/nftItem/NftItem";
 
 import styles from "./Main.module.css";
-import { selectUserAddress } from "../auth/authSlice";
 
 const NFTList = () => {
-  const userAddress = useAppSelector(selectUserAddress);
   const rawList = useAppSelector(selectRawList);
   const nftList = useAppSelector(selectNftList);
   const solveList = useAppSelector(selectSolveList);
@@ -17,12 +15,6 @@ const NFTList = () => {
   const dispatch = useAppDispatch();
   // mount
   useEffect(() => {
-    GetReadmeContract.methods.getTotalToken().call((err: any, res: any) => {
-      dispatch(setRawList(res));
-    });
-    dispatch(findSolveList(userAddress)).then((res) => {
-      console.log(res);
-    });
     return () => {
       setItemCnt(8);
     };
@@ -55,9 +47,7 @@ const NFTList = () => {
   return (
     <div className={styles.container}>
       <div className={styles.listContainer}>
-        <div className={styles.nftSearch}>
-          <input type="text" placeholder="검색어를 입력해주세요." />
-        </div>
+        <div className={styles.nftSearch}>{/* <input type="text" placeholder="검색어를 입력해주세요." /> */}</div>
         {nftList?.map((nft: NftConfig, i: number) => {
           if (i === nftList.length - 1) return <NftItem lastRef={lastRef} key={i} nft={nft} metaDataURI={nft.metaDataURI} />;
           return <NftItem key={i} nft={nft} metaDataURI={nft.metaDataURI} />;
