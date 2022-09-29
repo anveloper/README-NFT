@@ -1,10 +1,352 @@
+/* NEW */
+/* WelcomePageStart */
+.MotionArea {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* background-color: #ffffff; */
+}
+
+.MotionArea .WelcomeBackground {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.MotionArea .WelcomeBackground.one {
+  background: linear-gradient(180deg, #ffbaa4 0%, #f2f2f2 100%);
+}
+
+.MotionArea .WelcomeBackground.two {
+  background: linear-gradient(180deg, #fb9e80 0%, #ffbaa4 100%);
+}
+
+.MotionArea .WelcomeBackground.three {
+  background: linear-gradient(180deg, #66529d 0%, #fb9e80 100%);
+}
+
+.MotionArea .WelcomeBackground.four {
+  background: linear-gradient(180deg, #0a0523 0%, #66529d 100%);
+}
+
+.MotionArea .WelcomeBackground.five {
+  background: linear-gradient(180deg, #5db3e9 0%, #0a0523 100%);
+}
+
+.MotionArea .WelcomeBackground.six {
+  background: linear-gradient(180deg, #cfecfe 0%, #5db3e9 100%);
+}
+
+.MotionArea .WelcomeBackground.active {
+  opacity: 1;
+}
+
+.page1_logo {
+  position: absolute;
+  top: 80%;
+  left: 10%;
+  transform: translate(-10%, -80%);
+  color: #ffffff;
+  font-size: 20vh;
+}
+
+.page1_cloud1 {
+  position: absolute;
+  top: 20vh;
+  left: 10vw;
+}
+
+.page1_cloud2 {
+  position: absolute;
+  top: 5vh;
+  left: 53vw;
+}
+
+.ground {
+  position: absolute;
+  width: 100%;
+  height: 5vh;
+  top: 95vh;
+  background-color: #a38b69;
+}
+
+.welcome_character {
+  position: absolute;
+  width: 20vw;
+  top: 20%;
+  left: 5vw;
+  z-index: 100;
+}
+
+.WelcomeTitleText {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -15%);
+  color: #000000;
+  font-size: 5vh;
+}
+
+.WelcomeDescriptionText {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  font-size: 3vh;
+}
+
+.page2_cloud {
+  position: absolute;
+  top: 88%;
+  left: 70%;
+  transform: translate(-70%, -88%);
+}
+
+.NFTCardSlider {
+  position: relative;
+  top: 40%;
+  width: 100%;
+  /* display: flex; */
+}
+
+.NFTCardRotate {
+  position: absolute;
+  display: flex;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100%;
+  overflow: visible;
+  /* transform-style: preserve-3d; */
+  animation: roter 29s linear infinite;
+  justify-content: center;
+}
+
+.airplane {
+  position: absolute;
+  width: 100vw;
+  top: 90%;
+}
+
+.moon {
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  transform: translate(-10%, -30%);
+}
+
+.page4_cloud1 {
+  position: absolute;
+  width: 25vw;
+  top: 110%;
+  left: 5%;
+  transform: translate(-5%, -110%);
+}
+
+.develop_goal1 {
+  position: absolute;
+  text-align: center;
+  top: 92%;
+  left: 13.5%;
+  transform: translate(-13.5%, -92%);
+}
+
+.page4_cloud2 {
+  position: absolute;
+  width: 25vw;
+  top: 80%;
+  left: 35%;
+  transform: translate(-35%, -80%);
+}
+
+.develop_goal2 {
+  position: absolute;
+  text-align: center;
+  top: 70%;
+  left: 37.5%;
+  transform: translate(-37.5%, -70%);
+}
+
+.page4_cloud3 {
+  position: absolute;
+  width: 25vw;
+  top: 50%;
+  left: 65%;
+  transform: translate(-65%, -50%);
+}
+
+.develop_goal3 {
+  position: absolute;
+  text-align: center;
+  top: 48.5%;
+  left: 63.5%;
+  transform: translate(-63.5%, -48.5%);
+}
+
+.page4_cloud4 {
+  position: absolute;
+  width: 25vw;
+  top: 20%;
+  left: 95%;
+  transform: translate(-95%, -20%);
+}
+
+.develop_goal4 {
+  position: absolute;
+  text-align: center;
+  top: 27%;
+  left: 88%;
+  transform: translate(-88%, -27%);
+}
+
+.page4_star1 {
+  position: absolute;
+  width: 2vw;
+  top: 30%;
+  left: 30%;
+  transform: translate(-30%, -30%);
+  transform: rotate(33.73deg);
+}
+
+.page4_star2 {
+  position: absolute;
+  width: 2vw;
+  top: 85%;
+  left: 70%;
+  transform: translate(-70%, -85%);
+  transform: rotate(33.73deg);
+}
+
+.page4_star3 {
+  position: absolute;
+  width: 2vw;
+  top: 55%;
+  left: 25%;
+  transform: translate(-25%, -55%);
+  transform: rotate(28deg);
+}
+
+.page4_star4 {
+  position: absolute;
+  width: 2vw;
+  top: 95%;
+  left: 45%;
+  transform: translate(-45%, -95%);
+}
+
+.page4_star5 {
+  position: absolute;
+  width: 2vw;
+  top: 90%;
+  left: 92%;
+  transform: translate(-92%, -90%);
+  transform: rotate(-27.13deg);
+}
+
+.page4_star6 {
+  position: absolute;
+  width: 2vw;
+  top: 50%;
+  left: 92%;
+  transform: translate(-92%, -50%);
+  transform: rotate(25.9deg);
+}
+
+.page4_star7 {
+  position: absolute;
+  width: 2vw;
+  top: 75%;
+  left: 82%;
+  transform: translate(-82%, -75%);
+  transform: rotate(37.6deg);
+}
+
+.page4_star8 {
+  position: absolute;
+  width: 2vw;
+  top: 78%;
+  left: 55%;
+  transform: translate(-78%, -55%);
+  transform: rotate(34.02deg);
+}
+
+.page4_star9 {
+  position: absolute;
+  width: 2vw;
+  top: 55%;
+  left: 80%;
+  transform: translate(-80%, -55%);
+  transform: rotate(27.57deg);
+}
+
+.page4_star10 {
+  position: absolute;
+  width: 2vw;
+  top: 35%;
+  left: 48%;
+  transform: translate(-48%, -35%);
+  transform: rotate(-27.13deg);
+}
+
+.page4_star11 {
+  position: absolute;
+  width: 2vw;
+  top: 65%;
+  left: 5%;
+  transform: translate(-5%, -65%);
+  transform: rotate(-27.13deg);
+}
+
+.page6_cloud1 {
+  position: absolute;
+  width: 80vw;
+  top: 120%;
+  left: -20%;
+  transform: translate(0%, -100%);
+  z-index: 10;
+}
+
+.page6_cloud2 {
+  position: absolute;
+  width: 70vw;
+  top: 112%;
+  left: 120%;
+  transform: translate(-100%, -100%);
+  z-index: 10;
+}
+
+.page6_cloud3 {
+  position: absolute;
+  width: 70vw;
+  top: 95%;
+  left: 60%;
+  transform: translate(-60%, -95%);
+  z-index: 7;
+}
+
+.page6_cloud4 {
+  position: absolute;
+  width: 60vw;
+  top: 45%;
+  left: 100%;
+  transform: translate(-100%, -40%);
+  z-index: 5;
+}
+
 .Welcome {
   /* background-image: url("../../assets/08.jpg"); */
   /* width: 100vw; */
   /* height: 100vh; */
-  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* background-size: cover; */
   /* background-repeat: repeat-y; */
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   font-family: "IM_Hyemin-Bold";
 
   /* object-fit: cover; */
@@ -14,25 +356,35 @@
 .WelcomeNavbar {
   display: flex;
   padding: 15px;
-  /* text-align: center; */
+  position: absolute;
 }
 
-.img {
-  height: 32px;
+.logo_img {
+  height: 8vh;
   margin-left: 4px;
   /* display: flex; */
+  align-items: center;
+  justify-content: flex-start;
+  margin-right: auto;
+}
+
+.logo_text_img {
+  height: 3vh;
   align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .WelcomeNavbarLink {
   display: flex;
-  flex-flow: row nowrap;
+  /* margin-left: auto; */
   justify-content: flex-end;
   align-items: center;
 }
 
 .WelcomeNavbarText {
-  margin-right: 20px;
+  margin-right: 3vw;
+  font-size: 2.5vh;
+  margin-left: auto;
 }
 
 /* WalletAddress */
@@ -74,7 +426,6 @@
 
   /* background: none; */
 
-  border-image: url("../../assets/inputbox.svg");
   /* object-fit: cover; */
 }
 
@@ -115,58 +466,43 @@
 /* NFTCard */
 .NFTCard {
   display: inline-block;
+  /* position: absolute; */
   position: relative;
-  width: 20vw;
-  height: 65vh;
+  /* top: 30%; */
+  width: 18vw;
+  height: 45vh;
   justify-content: center;
-  margin-top: 10rem;
+  align-items: center;
+  /* margin-top: 10rem; */
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 
   background-color: #ffffff;
   border-radius: 30px;
   padding: 2em;
-}
-
-.NFTtape1 {
-  position: absolute;
-  width: 6.7vw;
-  height: 5.5vh;
-  left: -15%;
-  top: -3%;
-
-  background: rgba(59, 130, 191, 0.7);
-  transform: rotate(-46.45deg);
-}
-
-.NFTtape2 {
-  position: absolute;
-  width: 6.7vw;
-  height: 5.5vh;
-  left: 80%;
-  top: 95%;
-
-  background: rgba(59, 130, 191, 0.7);
-  transform: rotate(-33.71deg);
+  border: 3px solid #e56161;
 }
 
 .NFTCardImg {
-  width: 12vw;
-
-  margin-top: 1.5em;
-  margin-bottom: 2em;
+  width: 10vw;
+  /* margin-top: 0.5em; */
+  margin-bottom: 1em;
 }
 
 .NFTCardText {
   display: flex;
-  margin-top: 2em;
-  margin-bottom: 2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
 }
 
 .NFTTextTitle {
   text-align: left;
+  font-size: 1.5vh;
 }
 
 .NFTTextMain {
   margin-left: auto;
+  font-size: 1.5vh;
 }
 
 /* GameDescription */
