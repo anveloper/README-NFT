@@ -1,12 +1,13 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
 import { selectUserAddress } from "../auth/authSlice";
 import styles from "./NftDetail.module.css";
-import { selectNftDetail, setNftDetail } from "./NftDetailSlice";
+import { selectNftDetail, selectNftOwner, selectNftPrice, selectSaleDate, setNftDetail, setNftOwner, setNftPrice } from "./NftDetailSlice";
 import { truncatedAddress } from "../../features/auth/authSlice";
+import { change_date } from "../../features/auth/authSlice";
 
 const NftDetail = () => {
   const navigate = useNavigate();
@@ -14,9 +15,10 @@ const NftDetail = () => {
 
   const { tokenId } = useParams();
   const nftDetail = useAppSelector(selectNftDetail);
+  const nftPrice = useAppSelector(selectNftPrice);
+  const nftOwner = useAppSelector(selectNftOwner);
+  const saleDate = useAppSelector(selectSaleDate);
   const userAddress = useAppSelector(selectUserAddress);
-  const [nftPrice, setNftPrice] = useState(0);
-  const [nftOwner, setNftOwner] = useState("");
 
   const getMetadata = async () => {
     try {
@@ -36,11 +38,15 @@ const NftDetail = () => {
     try {
       const nftPrice = await SaleReadmeContract.methods.getReadmeTokenPrice(tokenId).call();
       const nftOwner = await MintReadmeContract.methods.ownerOf(tokenId).call();
-      setNftPrice(nftPrice);
-      setNftOwner(nftOwner);
+      dispatch(setNftPrice(nftPrice));
+      dispatch(setNftOwner(nftOwner));
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const moveToBack = () => {
+    navigate(-1);
   };
 
   // mount
@@ -75,7 +81,7 @@ const NftDetail = () => {
             </div>
             <div className={styles.card_contents_front_child}>
               <div>현재 가격</div>
-              <div>{nftPrice} SSF</div>
+              {nftPrice.toString() === "0" ? <div>판매 미등록</div> : <div>{nftPrice} SSF</div>}
             </div>
           </div>
         </div>
@@ -83,37 +89,53 @@ const NftDetail = () => {
           <div className={styles.card_contents_back}>
             <div className={styles.card_contents_back_info}>
               <div className={styles.card_contents_back_info_child}>
-                <div>판매가&nbsp;</div>
-                <div style={{ fontSize: "18px", color: "#21658F" }}>2022년 10월 7일</div>
-                <div>&nbsp;종료됩니다.</div>
-              </div>
-              <div className={styles.card_contents_back_info_child}>
-                <div style={{ fontSize: "22px" }}>2일 21시간 12분 2초</div>
-              </div>
-            </div>
-            <div className={styles.card_contents_back_info}>
-              어떻게 구성해야 할지 고민인 창. 구매 버튼 활성화 되긴 함.
-              <div>
-                {nftOwner.toLowerCase() === userAddress ? (
+                {nftPrice.toString() === "0" ? (
                   <>
-                    <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)}>
-                      판매
-                    </button>
+                    <div>판매하지 않는 리드미입니다.</div>
                   </>
                 ) : (
                   <>
-                    <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)}>
-                      구매
-                    </button>
+                    <div>판매가&nbsp;</div>
+                    <div style={{ fontSize: "18px", color: "#21658F" }}>{change_date(saleDate.saleEndDay)}</div>
+                    <div>&nbsp;종료됩니다.</div>
+                  </>
+                )}
+              </div>
+              <div className={styles.card_contents_back_info_child}>
+                {nftPrice.toString() === "0" ? (
+                  <></>
+                ) : (
+                  <>
+                    <div style={{ fontSize: "22px" }}>2일 21시간 12분 2초</div>
                   </>
                 )}
               </div>
             </div>
+            <div className={styles.card_contents_back_info}>
+              <div>여기다가 경매 관련된걸 넣으면 좋겠는데요</div>
+              <button className={styles.card_button}>경매 참여</button>
+            </div>
 
             <div className={styles.card_contents_back_info}>
               <div className={styles.card_buttons}>
-                <button className={styles.card_button}>이전</button>
-                <button className={styles.card_button}>경매 참여</button>
+                <button className={styles.card_button} onClick={moveToBack}>
+                  이전
+                </button>
+                <div>
+                  {nftOwner.toLowerCase() === userAddress ? (
+                    <>
+                      <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)}>
+                        판매
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)} disabled>
+                        구매
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>

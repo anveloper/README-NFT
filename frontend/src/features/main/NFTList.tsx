@@ -1,15 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { GetReadmeContract } from "../../web3Config";
-import {
-  findSolveList,
-  NftConfig,
-  selectNftList,
-  selectRawList,
-  selectSolveList,
-  setNftList,
-  setRawList,
-} from "../nft/nftSlice";
+import { findSolveList, NftConfig, selectNftList, selectRawList, selectSolveList, setNftList, setRawList } from "../nft/nftSlice";
 import NftItem from "../../components/nftItem/NftItem";
 
 import styles from "./Main.module.css";
@@ -43,12 +35,7 @@ const NFTList = () => {
       const result: NftConfig[] = [];
       const cnt = Math.min(rawList.length, itemCnt);
       for (let i = 0; i < cnt; i++) {
-        const {
-          metaDataURI,
-          readmeTokenId,
-          readmeTokenOwner,
-          readmeTokenPrice,
-        } = rawList[rawList.length - 1 - i];
+        const { metaDataURI, readmeTokenId, readmeTokenOwner, readmeTokenPrice } = rawList[rawList.length - 1 - i];
         if (metaDataURI.length < 69)
           // 임시방편
           result.push({
@@ -57,6 +44,7 @@ const NFTList = () => {
             readmeTokenOwner,
             readmeTokenPrice,
             metaData: undefined,
+            saleDate: undefined, // (정현) NftConfig 수정해서 넣었어욧
           });
       }
       dispatch(setNftList(result));
@@ -71,15 +59,7 @@ const NFTList = () => {
           <input type="text" placeholder="검색어를 입력해주세요." />
         </div>
         {nftList?.map((nft: NftConfig, i: number) => {
-          if (i === nftList.length - 1)
-            return (
-              <NftItem
-                lastRef={lastRef}
-                key={i}
-                nft={nft}
-                metaDataURI={nft.metaDataURI}
-              />
-            );
+          if (i === nftList.length - 1) return <NftItem lastRef={lastRef} key={i} nft={nft} metaDataURI={nft.metaDataURI} />;
           return <NftItem key={i} nft={nft} metaDataURI={nft.metaDataURI} />;
         })}
         {rawList && rawList.length > itemCnt && (

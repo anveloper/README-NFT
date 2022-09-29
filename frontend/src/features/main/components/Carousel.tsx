@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { GetReadmeContract } from "../../../web3Config";
-import {
-  NftConfig,
-  selectNftList,
-  selectRawList,
-  setNftList,
-  setRawList,
-} from "../../nft/nftSlice";
+import { NftConfig, selectNftList, selectRawList, setNftList, setRawList } from "../../nft/nftSlice";
 import CarouselItem from "../../../components/nftItem/CarouselItem";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import Slider from "react-slick";
@@ -32,12 +26,7 @@ const Carousel = ({ carouselRef }: any) => {
       const result: NftConfig[] = [];
       const cnt = Math.min(rawList.length, 10);
       for (let i = 0; i < cnt; i++) {
-        const {
-          metaDataURI,
-          readmeTokenId,
-          readmeTokenOwner,
-          readmeTokenPrice,
-        } = rawList[i];
+        const { metaDataURI, readmeTokenId, readmeTokenOwner, readmeTokenPrice } = rawList[i];
         if (metaDataURI.length < 69)
           // 임시방편
           result.push({
@@ -46,6 +35,7 @@ const Carousel = ({ carouselRef }: any) => {
             readmeTokenOwner,
             readmeTokenPrice,
             metaData: undefined,
+            saleDate: undefined, // (정현) NftConfig 수정해서 넣었어욧
           });
       }
       dispatch(setNftList(result));
@@ -76,14 +66,7 @@ const Carousel = ({ carouselRef }: any) => {
         <Slider {...settings}>
           {nftList.map((nft: NftConfig, i: number) => {
             return (
-              <div
-                key={i}
-                className={
-                  i === imageIndex
-                    ? `${styles.slide} ${styles.activeSlide}`
-                    : styles.slide
-                }
-              >
+              <div key={i} className={i === imageIndex ? `${styles.slide} ${styles.activeSlide}` : styles.slide}>
                 <CarouselItem nft={nft} metaDataURI={nft.metaDataURI} />
               </div>
             );

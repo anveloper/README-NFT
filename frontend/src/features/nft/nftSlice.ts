@@ -2,6 +2,12 @@ import { RootState } from "./../../app/store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import api from "../../api/api";
+
+interface SaleDate {
+  saleStartDay: Date; // 판매 시작일
+  saleEndDay: Date; // 판매 종료일
+}
+
 export interface Metadata {
   fileName: string;
   name: string;
@@ -16,6 +22,7 @@ export interface NftConfig {
   readmeTokenOwner: string;
   readmeTokenPrice: number;
   metaData: Metadata | undefined;
+  saleDate: SaleDate | undefined;
 }
 
 interface NftListConfig {
@@ -33,17 +40,14 @@ const initialState: NftListConfig = {
 };
 export const postProblem = createAsyncThunk("", () => {});
 
-export const findSolveList = createAsyncThunk(
-  "nft/findSolveList",
-  async ({ userAddress }: any, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(api.solver.getSolveList(userAddress));
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
-    }
+export const findSolveList = createAsyncThunk("nft/findSolveList", async ({ userAddress }: any, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(api.solver.getSolveList(userAddress));
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err);
   }
-);
+});
 
 const nftSlice = createSlice({
   name: "nft",
