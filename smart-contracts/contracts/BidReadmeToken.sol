@@ -16,24 +16,28 @@ contract BidReadmeToken{
         saleReadmeToken = SaleReadmeToken(_saleReadmeToken);
     }
 
+    // 입찰 기록 저장
+    struct Bid {
+        address bidder;
+        uint256 bidPrice;
+    }
+
     // 경매에 판매 등록된 토큰 저장 리스트(조회용)
-    uint256[] onAuctionReadmeToken;
+    uint256[] public onAuctionReadmeToken;
     // 토큰 별(tokenId) 가격 저장
     mapping (uint256 => uint256) public readmeTokenPrice;
     // 토큰 별 시간 저장
     mapping (uint256 => uint256) public readmeTokenEndTime;
     // 토큰별 입찰자별 입찰 가격 저장
     mapping (uint256 => mapping(address => uint256)) public tokenBiddingList;
-
-    event BidList(
-        address bidder,
-        uint256 biddingPrice
-     );
-
+    mapping (uint256 => Bid[]) public Bids;
+    // 토큰별 현재 최고 입찰가 저장
+    mapping (uint256 => uint256) public nowHighestPrice;
     // 최고가 저장
     uint256 highestPrice;
     // 최고가 입찰자 주소 저장
     address highestBidder;
+
 
     // 경매 등록: seller
     function enrollAuction(
@@ -60,6 +64,7 @@ contract BidReadmeToken{
         // 시간 등록
         uint256 endTime = _endTime + block.timestamp;
         readmeTokenEndTime[_readmeTokenId] = endTime;
+
         // 경매 등록 목록 수정
         onAuctionReadmeToken.push(_readmeTokenId);
         // 판매/경매 등록으로 변경
@@ -74,7 +79,7 @@ contract BidReadmeToken{
     ) public {
 
         uint256 price = readmeTokenPrice[_readmeTokenId];
-        address bidder = payable(msg.sender);
+        address bidder = msg.sender;
         
         // 시간 확인
         require(block.timestamp < readmeTokenEndTime[_readmeTokenId]);
@@ -91,14 +96,20 @@ contract BidReadmeToken{
         
         // 입찰자와 입찰 금액 저장
         tokenBiddingList[_readmeTokenId][bidder] = _biddingPrice;
+        // 현재 최고 입찰가 저장
+        nowHighestPrice[_readmeTokenId] = _biddingPrice;
+
+        // 입찰 기록 저장
+        Bids[_readmeTokenId].push(Bid({
+            bidder: bidder,
+            bidPrice: _biddingPrice
+        }));
 
         // 최고가 변경
         highestPrice = _biddingPrice;
         // 최고 입찰가 변경
         highestBidder = bidder;
 
-        // 입찰 목록을 위한 로그
-        emit BidList (bidder, _biddingPrice);
     }
 
     // 낙찰: buyer
@@ -157,9 +168,11 @@ contract BidReadmeToken{
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address cancel = msg.sender;
+        // 판매자 확인
+        address seller = mintReadmeToken.ownerOf(_readmeTokenId);
 
         // 호출자가 판매자인지 확인
-        require(cancel == mintReadmeToken.ownerOf(_readmeTokenId), "You are Not Seller");
+        require(cancel == seller, "You are Not Seller");
         // 판매/경매 등록 여부 확인
         require(saleReadmeToken.getIsActive(_readmeTokenId), "Not on Market");
         // 경매 중 확인
@@ -189,11 +202,13 @@ contract BidReadmeToken{
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address cancel = msg.sender;
+        // 판매자 확인
+        address seller = mintReadmeToken.ownerOf(_readmeTokenId);
 
         // 입찰 여부 확인
         require(highestBidder == address(0), "Here is Bidder");
         // 호출자가 판매자인지 확인
-        require(cancel == mintReadmeToken.ownerOf(_readmeTokenId), "You are Not Seller");
+        require(cancel == seller, "You are Not Seller");
         // 판매/경매 등록 여부 확인
         require(saleReadmeToken.getIsActive(_readmeTokenId), "Not on Market");
         // 경매 중 확인
@@ -216,10 +231,29 @@ contract BidReadmeToken{
         }
     }
         
-    // 경매 중인 토큰 정보 조회
+    // get: 경매 중인 토큰 개수 조회
+    function getTokenOnAuctionArrayLength() public view returns (uint256){
+        return onAuctionReadmeToken.length;
+    }
+
+    // get: 경매 중인 토큰 전체 목록 조회
     function getTokenOnAuction() public view returns (uint256[] memory){
         return onAuctionReadmeToken;
     }
 
+    // get: 개별 토큰 가격 조회
+    function getReadmeTokenPrice(uint256 _readmeTokenId) public view returns (uint256) {
+        return readmeTokenPrice[_readmeTokenId];
+    }
+
+    // get: 현재 최고 입찰가 조회
+    function getReadmeTokenHigh(uint256 _readmeTokenId) public view returns (uint256) {
+        return nowHighestPrice[_readmeTokenId];
+    }
+
+    // get: 토큰 별 입찰 기록 조회
+    function getBidList(uint256 _readmeTokenId) public view returns (Bid[] memory){
+        return Bids[_readmeTokenId];
+    }
 
 }
