@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { change_date, selectUserAddress } from "../auth/authSlice";
-import { selectNftDetail, selectNftPrice, selectNftOwner, selectSaleDate, setSaleDate } from "./NftDetailSlice";
+import { selectNftDetail, selectNftPrice, selectNftOwner } from "./NftDetailSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { truncatedAddress } from "../../features/auth/authSlice";
 import { Modal } from "../../components/modal/Modal";
@@ -25,10 +25,6 @@ const NftSell = () => {
   const dispatch = useAppDispatch();
 
   const handleChangePrice = (e: any) => {
-    if (e.target.value < 1) {
-      alert("0보다 큰 값");
-      return;
-    }
     setInputPrice(e.target.value);
   };
 
@@ -53,7 +49,7 @@ const NftSell = () => {
             saleStartDay: startDay,
             saleEndDay: endDay,
           };
-          dispatch(setSaleDate(saleDate));
+          // dispatch(setSaleDate(saleDate));
           navigate("/detail/" + tokenId);
         });
     } catch (error) {
@@ -62,6 +58,10 @@ const NftSell = () => {
   };
 
   const openModal = () => {
+    if (inputPrice < 1) {
+      alert("0보다 큰 값");
+      return;
+    }
     setModalOpen(true);
   };
 
@@ -122,15 +122,26 @@ const NftSell = () => {
                 </div>
               </div>
               <div className={styles.card_contents_back_info}>
-                <p>가격 입력</p>
-                <input type="number" name="inputPrice" onChange={handleChangePrice} value={inputPrice} />
-                <p>기간 설정</p>
-                <select onChange={handleChangePeriod}>
-                  <option value="1">1시간</option>
-                  <option value="12">12시간</option>
-                  <option value="24">1일</option>
-                  <option value="168">1주일</option>
-                </select>
+                <div className={styles.input_place}>
+                  <p>가격</p>
+                  <div className={styles.input_price}>
+                    <input className={styles.input_text} type="number" name="inputPrice" onChange={handleChangePrice} value={inputPrice} />
+                    <div>SSF</div>
+                  </div>
+                </div>
+                <div className={styles.input_place}>
+                  <p>판매 기간</p>
+                  <div className={styles.input_price}>
+                    <select className={styles.selectBox} onChange={handleChangePeriod}>
+                      <option value="1">1시간</option>
+                      <option value="12">12시간</option>
+                      <option value="24">1일</option>
+                      <option value="168">1주일</option>
+                    </select>
+                  </div>
+                </div>
+                <div>--확인용, 추후 삭제 예정--</div>
+                <div>가격: {inputPrice}</div>
                 <div>
                   시작일: {startDay.getFullYear()}년 {startDay.getMonth() + 1}월 {startDay.getDate()}일 {startDay.getHours()}시 {startDay.getMinutes()}분
                 </div>
@@ -154,6 +165,7 @@ const NftSell = () => {
                     <div>{change_date(endDay)} : 이 때까지</div>
                     <div>판매할 것?</div>
                     <div>확인하면 진짜 등록됨.</div>
+                    <div>css 나중에 수정할거에요. ....ㅜ</div>
                   </Modal>
                 </div>
               </div>
@@ -163,63 +175,6 @@ const NftSell = () => {
       </div>
     </div>
   );
-
-  // return (
-  //   <div className={styles.sell_background}>
-  //     <BackgroundFlower />
-  //     <div className={styles.detail}>
-  //       <div className={styles.detail_container}>
-  //         <div className={styles.cards}>
-  //           <div className={styles.card_contents_front}>
-  //             <img className={styles.card_img} src={nftDetail.imageURL} alt="dog" />
-  //             <div className={styles.card_img_info}>
-  //               <p>NFT Name: {nftDetail.fileName}</p>
-  //               <p>Price: {nftPrice} </p>
-  //               <p>Creator: {nftDetail.author}</p>
-  //               <p>Seller: {truncatedAddress(nftOwner)}</p>
-  //             </div>
-  //           </div>
-  //         </div>
-  //         <div className={styles.cards}>
-  //           <div className={styles.card_contents_back}>
-  //             <div className={styles.card_contents_back_price}>
-  //               <div>
-  //                 <button
-  //                   onClick={() => {
-  //                     MintReadmeContract.methods.setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true).send({ from: userAddress });
-  //                   }}
-  //                 >
-  //                   판매 권한 주기
-  //                 </button>
-  //               </div>
-  //             </div>
-  //             <div className={styles.card_contents_back_history}>
-  //               <p>가격 입력</p>
-  //               <input type="number" name="inputPrice" onChange={handleChangePrice} value={inputPrice} />
-  //               <p>기간 설정</p>
-  //               <select onChange={handleChangePeriod}>
-  //                 <option selected>기간 선택하기</option>
-  //                 <option>1시간</option>
-  //                 <option>12시간</option>
-  //                 <option>1일</option>
-  //                 <option>1주일</option>
-  //               </select>
-  //               <p>{inputPeriod}</p>
-  //             </div>
-  //             <div className={styles.card_buttons}>
-  //               <button className={styles.card_button} onClick={moveToBack}>
-  //                 이전
-  //               </button>
-  //               <button className={styles.card_button} onClick={sellReadmeTokens}>
-  //                 판매하기
-  //               </button>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default NftSell;

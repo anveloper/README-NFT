@@ -1,11 +1,11 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
 import { selectUserAddress } from "../auth/authSlice";
 import styles from "./NftDetail.module.css";
-import { selectNftDetail, selectNftOwner, selectNftPrice, selectSaleDate, setNftDetail, setNftOwner, setNftPrice } from "./NftDetailSlice";
+import { selectIsActive, selectNftDetail, selectNftOwner, selectNftPrice, setIsActive, setNftDetail, setNftOwner, setNftPrice } from "./NftDetailSlice";
 import { truncatedAddress } from "../../features/auth/authSlice";
 import { change_date } from "../../features/auth/authSlice";
 
@@ -17,7 +17,7 @@ const NftDetail = () => {
   const nftDetail = useAppSelector(selectNftDetail);
   const nftPrice = useAppSelector(selectNftPrice);
   const nftOwner = useAppSelector(selectNftOwner);
-  const saleDate = useAppSelector(selectSaleDate);
+  const isActive = useAppSelector(selectIsActive);
   const userAddress = useAppSelector(selectUserAddress);
 
   const getMetadata = async () => {
@@ -38,10 +38,34 @@ const NftDetail = () => {
     try {
       const nftPrice = await SaleReadmeContract.methods.getReadmeTokenPrice(tokenId).call();
       const nftOwner = await MintReadmeContract.methods.ownerOf(tokenId).call();
+      const isActive = await SaleReadmeContract.methods.getIsActive(tokenId).call();
+      dispatch(setIsActive(isActive));
       dispatch(setNftPrice(nftPrice));
       dispatch(setNftOwner(nftOwner));
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  /* 에러남. */
+  const cancelSale = async () => {
+    if (window.confirm("정말 판매 등록 취소?")) {
+      try {
+        await SaleReadmeContract.methods
+          .cancelReadmeToken(tokenId)
+          .call()
+          .then((res: any) => {
+            console.log(res);
+            alert("판매 취소가 완료되었습니다.");
+            dispatch(setIsActive(false));
+          })
+          .catch((err: any) => {
+            console.log(err);
+            alert("에러남.");
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -89,24 +113,20 @@ const NftDetail = () => {
           <div className={styles.card_contents_back}>
             <div className={styles.card_contents_back_info}>
               <div className={styles.card_contents_back_info_child}>
-                {nftPrice.toString() === "0" ? (
+                {isActive ? (
                   <>
-                    <div>판매하지 않는 리드미입니다.</div>
+                    <div>판매 중입니다.</div>
+                    <div>즉시 구매하시거나, 경매에 참여할 수 있습니다.</div>
                   </>
                 ) : (
+                  // <>
+                  //   <div>판매가&nbsp;</div>
+                  //   {/* <div style={{ fontSize: "18px", color: "#21658F" }}>{change_date(saleDate.saleEndDay)}</div> */}
+                  //   <div>&nbsp;종료됩니다.</div>
+                  // </>
                   <>
-                    <div>판매가&nbsp;</div>
-                    <div style={{ fontSize: "18px", color: "#21658F" }}>{change_date(saleDate.saleEndDay)}</div>
-                    <div>&nbsp;종료됩니다.</div>
-                  </>
-                )}
-              </div>
-              <div className={styles.card_contents_back_info_child}>
-                {nftPrice.toString() === "0" ? (
-                  <></>
-                ) : (
-                  <>
-                    <div style={{ fontSize: "22px" }}>2일 21시간 12분 2초</div>
+                    <div>판매 상태가 아닙니다.&nbsp;</div>
+                    <div>구매가 제한됩니다.</div>
                   </>
                 )}
               </div>
@@ -124,14 +144,24 @@ const NftDetail = () => {
                 <div>
                   {nftOwner.toLowerCase() === userAddress ? (
                     <>
-                      <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)}>
-                        판매
-                      </button>
+                      {isActive ? (
+                        <>
+                          <button className={styles.card_button} onClick={cancelSale}>
+                            판매 취소
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)}>
+                            즉시 판매
+                          </button>
+                        </>
+                      )}
                     </>
                   ) : (
                     <>
                       <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)} disabled>
-                        구매
+                        즉시 구매
                       </button>
                     </>
                   )}
