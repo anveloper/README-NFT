@@ -10,7 +10,7 @@ const NewHelmet = ({ title, description }: HelmetType) => {
   return (
     <Helmet>
       <title>README 🖌️ {title}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={description} data-react-helmet="true" />
     </Helmet>
   );
 };
