@@ -24,7 +24,7 @@ public class SolverController {
     private final SolverServiceImpl solverService;
 
     @PostMapping("/solver")
-    @ApiOperation(value = "문제를 푼다", notes = "사용자 아이디와 nft 아이디를 통해 사용자의 푼 nft 리스트에 등록한다.")
+    @ApiOperation(value = "문제를 푼다", notes = "사용자 지갑 주소와 token 아이디를 통해 사용자의 푼 nft 리스트에 등록한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 201, message = "풀이 성공"),
@@ -55,7 +55,7 @@ public class SolverController {
     }
 
     @GetMapping("/solver/{walletAddress}/{tokenId}")
-    @ApiOperation(value = "푼 문제를 조회한다", notes = "사용자 아이디와 nft 아이디를 통해 사용자가 푼 문제인지 조회한다.")
+    @ApiOperation(value = "푼 문제를 조회한다", notes = "사용자 지갑 주소와 token 아이디를 통해 사용자가 푼 문제인지 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "입력값 오류"),
@@ -80,7 +80,7 @@ public class SolverController {
     }
 
     @GetMapping("/solver/{walletAddress}")
-    @ApiOperation(value = "푼 문제를 조회한다", notes = "사용자 아이디를 통해 사용자가 푼 문제 리스트를 조회한다.")
+    @ApiOperation(value = "푼 문제 리스트를 조회한다", notes = "사용자 지갑 주소를 통해 사용자가 푼 문제 리스트를 조회한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 400, message = "입력값 오류"),
@@ -92,8 +92,13 @@ public class SolverController {
 
         try {
             List<Integer> nftList = solverService.getSolveList(walletAddress);
-            jsonMap.put("msg", "푼 문제 리스트 조회에 성공하였습니다.");
-            jsonMap.put("nftList", nftList);
+            if (!nftList.isEmpty()) {
+                jsonMap.put("msg", "푼 문제 리스트 조회에 성공하였습니다.");
+                jsonMap.put("nftList", nftList);
+            } else {
+                jsonMap.put("msg", "푼 문제가 없습니다.");
+                jsonMap.put("nftList", nftList);
+            }
             status = HttpStatus.OK;
 
         } catch (Exception e){
