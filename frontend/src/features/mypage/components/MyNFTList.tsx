@@ -25,8 +25,10 @@ interface MyNFTListProps {
 
 const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
   const walletAddress = useAppSelector(selectUserAddress);
+  const [selected, setSelected] = useState("");
   const [NFTCardArray, setNFTCardArray] = useState<IMyNFTCard[]>([]);
   const [cardList, setCardList] = useState(true);
+  const [nftList, setNftList] = useState([]);
 
   const scrollBox = useRef(null);
   const [scrollY, setScrollY] = useState(0);
@@ -49,7 +51,9 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     try {
       const tempNFTCardArray: IMyNFTCard[] = [];
 
-      const response = await GetReadmeContract.methods.getMyReadmeToken(walletAddress).call();
+      const response = await GetReadmeContract.methods
+        .getMyReadmeToken(walletAddress)
+        .call();
       console.log(response);
 
       response.map((v: IMyNFTCard) => {
@@ -88,7 +92,9 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     try {
       const tempNFTCardArray: IMyNFTCard[] = [];
 
-      const response = await GetReadmeContract.methods.getDrawReadmeToken(walletAddress).call();
+      const response = await GetReadmeContract.methods
+        .getDrawReadmeToken(walletAddress)
+        .call();
       console.log(response);
 
       response.map((v: IMyNFTCard) => {
@@ -105,6 +111,23 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
       setCardList(true);
     } catch (error) {
       setCardList(false);
+    }
+  };
+
+  const handleSelect = (e: any) => {
+    setSelected(e.target.value);
+  };
+
+  const getNFTName = async (metadataURI: string) => {
+    let name: any = "";
+    try {
+      await axios({ url: metadataURI }).then((response) => {
+        name = response.data.name;
+        console.log("name : ", name);
+        return name;
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -128,13 +151,73 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     };
   });
 
+  useEffect(() => {
+    console.log("값 변경");
+    const sortNFTList = () => {
+      console.log("NFTCardArray : ", NFTCardArray);
+      if (selected === "latest") {
+        NFTCardArray.sort((a, b) => {
+          return parseInt(b.readmeTokenId) - parseInt(a.readmeTokenId);
+        });
+        setNFTCardArray([...NFTCardArray]);
+      }
+      if (selected === "name") {
+        // const name = async (metaDataURI: string) => {
+        //   try {
+        //     return await getNFTName(metaDataURI);
+        //   } catch (error) {
+        //     console.error(error);
+        //   }
+        // };
+        NFTCardArray.sort((a, b) => {
+          console.log("a : ", a);
+          console.log("b : ", b);
+          let a_name = "";
+          let b_name = "";
+          axios({ url: a.metaDataURI }).then((response) => {
+            a_name = response.data.name;
+            console.log("a_name : ", a_name);
+          });
+          axios({ url: b.metaDataURI }).then((response) => {
+            b_name = response.data.name;
+            console.log("b_name : ", a_name);
+          });
+          // name(a.metaDataURI).then((res: any) => {
+          //   a_name = res;
+          //   console.log("res : ", res);
+          //   console.log("a_name : ", a_name);
+          // });
+          // name(b.metaDataURI).then((res: any) => {
+          //   b_name = res;
+          //   console.log("b_name : ", b_name);
+          // });
+          // let a_name = name(a.metaDataURI);
+          // let b_name = name(b.metaDataURI);
+          // console.log("a name : ", name(a.metaDataURI));
+          // console.log("b name : ", b_name);
+          if (a_name < b_name) {
+            console.log("NFTCARDARRAY : ", NFTCardArray);
+            return 1;
+          } else if (a_name > b_name) {
+            console.log("return -1 / CardArray", NFTCardArray);
+            return -1;
+          }
+          return 0;
+        });
+        console.log("NFTCARD", NFTCardArray);
+        setNFTCardArray([...NFTCardArray]);
+      }
+    };
+    sortNFTList();
+  }, [selected]);
+
   return (
     <div className={styles.MyNFTList}>
       {cardList ? (
-        <select name="" id="">
-          <option value="sort">Sort</option>
-          <option value="">이름순</option>
-          <option value="">가격순</option>
+        <select name="sort" value={selected} onChange={handleSelect}>
+          <option value="default">Sort</option>
+          <option value="latest">최신순</option>
+          <option value="name">이름순</option>
         </select>
       ) : (
         <div></div>
@@ -172,7 +255,11 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
               <button className={styles.movePageButton}>마켓으로 이동</button>
             </div>
             <img className={styles.cat_palette} src={cat_palette} alt="" />
-            <img className={styles.giraffe_palette} src={giraffe_palette} alt="" />
+            <img
+              className={styles.giraffe_palette}
+              src={giraffe_palette}
+              alt=""
+            />
             <img className={styles.flower3} src={flower3} alt="" />
             <img className={styles.flower4} src={flower4} alt="" />
             <img className={styles.sprout1} src={sprout1} alt="" />
@@ -197,7 +284,11 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
               <button className={styles.movePageButton}>게임하러 가기</button>
             </div>
             <img className={styles.cat_palette} src={cat_palette} alt="" />
-            <img className={styles.giraffe_palette} src={giraffe_palette} alt="" />
+            <img
+              className={styles.giraffe_palette}
+              src={giraffe_palette}
+              alt=""
+            />
             <img className={styles.flower3} src={flower3} alt="" />
             <img className={styles.flower4} src={flower4} alt="" />
             <img className={styles.sprout1} src={sprout1} alt="" />
