@@ -27,7 +27,7 @@ const NFTList = () => {
       const result: NftConfig[] = [];
       const cnt = Math.min(rawList.length, itemCnt);
       for (let i = 0; i < cnt; i++) {
-        const { metaDataURI, readmeTokenId, readmeTokenOwner, readmeTokenPrice } = rawList[rawList.length - 1 - i];
+        const { metaDataURI, readmeTokenId, readmeTokenOwner, readmeTokenPrice, isActive } = rawList[rawList.length - 1 - i];
         if (metaDataURI.length < 69)
           // 임시방편
           result.push({
@@ -36,7 +36,8 @@ const NFTList = () => {
             readmeTokenOwner,
             readmeTokenPrice,
             metaData: undefined,
-            saleDate: undefined, // (정현) NftConfig 수정해서 넣었어욧
+            isActive,
+            // saleDate: undefined, // (정현) NftConfig 수정해서 넣었어욧
           });
       }
       dispatch(setNftList(result));

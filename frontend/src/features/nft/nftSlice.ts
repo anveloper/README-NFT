@@ -22,7 +22,8 @@ export interface NftConfig {
   readmeTokenOwner: string;
   readmeTokenPrice: number;
   metaData: Metadata | undefined;
-  saleDate: SaleDate | undefined;
+  isActive: boolean;
+  // saleDate: SaleDate | undefined;
 }
 
 interface NftListConfig {

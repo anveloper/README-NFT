@@ -25,12 +25,7 @@ const Carousel = ({ carouselRef }: any) => {
       const result: NftConfig[] = [];
       let cnt = Math.min(rawList.length, 10);
       for (let i = 0; i < cnt; i++) {
-        const {
-          metaDataURI,
-          readmeTokenId,
-          readmeTokenOwner,
-          readmeTokenPrice,
-        } = rawList[i];
+        const { metaDataURI, readmeTokenId, readmeTokenOwner, readmeTokenPrice, isActive } = rawList[i];
         if (!solveList.includes(Number(readmeTokenId)))
           // 임시방편
           result.push({
@@ -39,7 +34,8 @@ const Carousel = ({ carouselRef }: any) => {
             readmeTokenOwner,
             readmeTokenPrice,
             metaData: undefined,
-            saleDate: undefined, // (정현) NftConfig 수정해서 넣었어욧
+            isActive,
+            //saleDate: undefined, // (정현) NftConfig 수정해서 넣었어욧
           });
         else if (cnt < rawList.length - 1) cnt++;
       }

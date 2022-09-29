@@ -8,6 +8,7 @@ const initialState: NftConfig = {
   readmeTokenId: "",
   readmeTokenOwner: "",
   readmeTokenPrice: 0,
+  isActive: false,
   metaData: {
     fileName: "",
     name: "",
@@ -15,10 +16,12 @@ const initialState: NftConfig = {
     description: "",
     imageURL: "",
   },
-  saleDate: {
-    saleStartDay: new Date(),
-    saleEndDay: new Date(),
-  },
+
+  // (정현) 구체적인 날짜 출력 기능 일시 보류
+  // saleDate: {
+  //   saleStartDay: new Date(),
+  //   saleEndDay: new Date(),
+  // },
 };
 
 const NftDetailSlice = createSlice({
@@ -28,25 +31,23 @@ const NftDetailSlice = createSlice({
     setNftDetail: (state, { payload: { fileName, name, author, description, imageURL } }) => {
       state.metaData = { fileName, name, author, description, imageURL };
     },
-    setNftInfo: (state, { payload: { readmeTokenId, readmeTokenOwner, readmeTokenPrice } }) => {
-      state.readmeTokenId = readmeTokenId;
-      state.readmeTokenOwner = readmeTokenOwner;
-      state.readmeTokenPrice = readmeTokenPrice;
-    },
     setNftPrice: (state, { payload }) => {
       state.readmeTokenPrice = payload;
     },
     setNftOwner: (state, { payload }) => {
       state.readmeTokenOwner = payload;
     },
-    setSaleDate: (state, { payload: { saleStartDay, saleEndDay } }) => {
-      state.saleDate = { saleStartDay, saleEndDay };
+    setIsActive: (state, { payload }) => {
+      state.isActive = payload;
     },
+    // setSaleDate: (state, { payload: { saleStartDay, saleEndDay } }) => {
+    //   state.saleDate = { saleStartDay, saleEndDay };
+    // },
   },
 });
-export const { setNftDetail, setNftPrice, setNftOwner, setSaleDate } = NftDetailSlice.actions;
+export const { setNftDetail, setNftPrice, setNftOwner, setIsActive } = NftDetailSlice.actions;
 export const selectNftDetail = (state: RootState) => state.detail.metaData;
 export const selectNftPrice = (state: RootState) => state.detail.readmeTokenPrice;
 export const selectNftOwner = (state: RootState) => state.detail.readmeTokenOwner;
-export const selectSaleDate = (state: RootState) => state.detail.saleDate;
+export const selectIsActive = (state: RootState) => state.detail.isActive;
 export default NftDetailSlice.reducer;
