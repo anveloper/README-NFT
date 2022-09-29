@@ -373,7 +373,11 @@ Name, Hostname, Username에 정보를 입력합니다.
 
 - Name : 그냥 이름
 - Hostname : EC2 IP (IPv4 address for XXXXXX에 뜨는 IP를 작성)
+  - ![화면 캡처 2022-09-15 085901](https://user-images.githubusercontent.com/93081720/192927634-f1d4d387-3d30-4e21-8043-79f66b672f20.png)
+
 - Username : EC2 접속 계정 이름
+
+
 
 ![image](https://user-images.githubusercontent.com/93081720/191681112-e93ab9c8-555d-4160-818e-13f0e7c737ab.png)
 
