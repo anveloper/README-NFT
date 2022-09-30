@@ -11,10 +11,13 @@ import {
 
 import IpfsAPI from "ipfs-api";
 import { Buffer } from "buffer";
+import { selectUserAddress } from "../features/auth/authSlice";
+import { useAppSelector } from "../app/hooks";
 /**
  * [등록하기]를 위한 UI와 기능
  */
 const TestPage = () => {
+  const account = useAppSelector(selectUserAddress);
   // [변수] 아이템 (파일, 이름, input 클릭 참조), 작가명, 제목, 아이템 소개, 토큰 ID
   const [item, setItem] = useState("");
   const [itemName, setItemName] = useState("");
@@ -31,31 +34,9 @@ const TestPage = () => {
   const [during, setDuring] = useState("");
   const [toBuy, setToBuy] = useState("");
   const [toBuyPrice, setToBuyPrice] = useState(null);
-  // Web3
-  // const web3 = new Web3(
-  //   new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
-  // );
-  const [account, setAccount] = useState("");
   const [eventLeft, setEventLeft] = useState(0);
-  const getAccount = async () => {
-    try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
 
-        setAccount(accounts[0]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getAccount();
-  }, [account]);
-
-  let isTokenImported = async () => {
+  const isTokenImported = async () => {
     try {
       // wasAdded is a boolean. Like any RPC method, an error may be thrown.
       const wasAdded = await window.ethereum.request({
