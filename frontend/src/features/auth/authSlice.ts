@@ -10,24 +10,14 @@ export interface AuthState {
   status: "idle" | "loading" | "success" | "failed";
 }
 
-const actionNicknameList = [
-  "피자먹는",
-  "치킨먹는",
-  "게임하는",
-  "퀴즈푸는",
-  "영화보는",
-  "노래하는",
-  "독서하는",
-];
-const actionNicknameRandom =
-  actionNicknameList[Math.floor(Math.random() * actionNicknameList.length)];
+const actionNicknameList = ["피자먹는", "치킨먹는", "게임하는", "퀴즈푸는", "영화보는", "노래하는", "독서하는"];
+const actionNicknameRandom = actionNicknameList[Math.floor(Math.random() * actionNicknameList.length)];
 
 const animalNicknameList = ["방태", "라이언", "고양이", "토끼", "다람쥐"];
-const animalNicknameRandom =
-  animalNicknameList[Math.floor(Math.random() * animalNicknameList.length)];
+const animalNicknameRandom = animalNicknameList[Math.floor(Math.random() * animalNicknameList.length)];
 
 const initialState: AuthState = {
-  userAddress: `testAddress-${Math.floor(Math.random() * 123456)}`,
+  userAddress: "",
   userName: `${actionNicknameRandom} ${animalNicknameRandom}`,
   userAvatar: `images/${Math.floor(Math.random() * 50 + 1)}.png`,
   status: "idle",
