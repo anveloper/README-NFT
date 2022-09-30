@@ -25,6 +25,7 @@ import TestPage from "./testWeb3/TestPage";
 
 import NFTSale from "./features/nft/NftSaleList";
 import Mint from "./features/mint/Mint";
+import NftDetail from "./features/detail/NftDetail";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -73,8 +74,8 @@ function App() {
                 <Route path="/list" element={<NFTList />} />
               </Route>
               <Route path="/mint" element={<Mint account={account} />} />
-              <Route path="/detail/:tokenId" element={<Detail />} />
-              <Route path="/sell/:tokenId" element={<Sell />} />
+
+              <Route path="/detail/:tokenId" element={<NftDetail />} />
               <Route path="/sale" element={<NFTSale />} />
 
               <Route path="/welcome" element={<Welcome />} />
