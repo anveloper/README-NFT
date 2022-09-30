@@ -47,13 +47,12 @@ const NftDetail = () => {
     }
   };
 
-  /* 에러남. */
   const cancelSale = async () => {
     if (window.confirm("정말 판매 등록 취소?")) {
       try {
         await SaleReadmeContract.methods
           .cancelReadmeToken(tokenId)
-          .call()
+          .send({ from: userAddress })
           .then((res: any) => {
             console.log(res);
             alert("판매 취소가 완료되었습니다.");
