@@ -1,9 +1,9 @@
 // core
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
 // state
-import { loginUser, selectUserAddress } from "./features/auth/authSlice";
+import { login, loginUser, selectUserAddress } from "./features/auth/authSlice";
 // components
 import Navbar from "./components/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
@@ -26,40 +26,31 @@ import TestPage from "./testWeb3/TestPage";
 import NFTSale from "./features/nft/NftSaleList";
 import Mint from "./features/mint/Mint";
 import NftDetail from "./features/detail/NftDetail";
+import MyMintList from "./features/mint/MyMintList";
+import MetaMaskOnboarding from "@metamask/onboarding";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
 
-  // (정현) 임의로 메타마스크 로그인 유저 계정 정보 가져오는 함수. 차후 삭제 예정
-  const [account, setAccount] = useState<string>("");
-
-  const getAccount = async () => {
-    try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        // console.log(accounts[0]);
-        setAccount(accounts[0]);
-
-        if (accounts[0].length > 0) {
-          dispatch(loginUser(accounts[0]));
-        }
-      } else {
-        dispatch(loginUser(`비회원 개발자 ${Math.floor(Math.random() * 19920722)}`));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    getAccount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
-
+    async function handleNewAccounts() {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      if (accounts[0].length > 0) {
+        console.log("accountsChaged");
+        dispatch(login(accounts[0]));
+      }
+    }
+    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+      window.ethereum.on("accountsChanged", handleNewAccounts);
+    }
+    return () => {
+      window.ethereum.removeListener("accountsChanged", handleNewAccounts);
+    };
+  }, []);
   return (
     <div className={styles.container}>
       {userAddress ? (
@@ -73,15 +64,22 @@ function App() {
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>
-              <Route path="/mint" element={<Mint account={account} />} />
-
-              <Route path="/detail/:tokenId" element={<NftDetail />} />
+              <Route path="/mint" element={<Mint account={userAddress} />} />
+              <Route path="/detail/:tokenId" element={<Detail />} />
+              <Route path="/sell/:tokenId" element={<Sell />} />
+              <Route
+                path="/temp-list"
+                element={<MyMintList account={userAddress} />}
+              />
               <Route path="/sale" element={<NFTSale />} />
 
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
-              <Route path="/mypage" element={<MyPage account={account} />} />
+              <Route
+                path="/mypage"
+                element={<MyPage account={userAddress} />}
+              />
               <Route path="/test" element={<TestPage />} />
             </Routes>
           </div>

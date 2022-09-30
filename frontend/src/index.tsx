@@ -1,10 +1,10 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { store } from "./app/store";
+import { persistor, store } from "./app/store";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-
+import { PersistGate } from "redux-persist/integration/react";
 import { socket, SocketProvider } from "./socketConfig";
 import "./index.css";
 import App from "./App";
@@ -17,7 +17,9 @@ root.render(
     <BrowserRouter>
       <SocketProvider value={socket}>
         <Provider store={store}>
-          <App />
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
         </Provider>
       </SocketProvider>
     </BrowserRouter>
