@@ -5,11 +5,15 @@ import LogoImg from "../assets/logo_img.svg";
 import LogoText from "../assets/logo_text.svg";
 // components
 import ProfileModal from "./ProfileModal";
+import { useAppSelector } from "app/hooks";
+import { selectUserAvatar, selectUserName } from "features/auth/authSlice";
 
 const Navbar = () => {
   const [profileImg, setProfileImg] = useState(LogoImg);
+  const userAvatar = useAppSelector(selectUserAvatar);
   const [nameTag, setNameTag] = useState("피자먹는 라이언");
   const [modalOpen, setModalOpen] = useState(false);
+  const nickname = useAppSelector(selectUserName);
 
   const showProfileModal = () => {
     setModalOpen(true);
@@ -43,9 +47,15 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.profileTag} onClick={showProfileModal}>
-        {modalOpen && <ProfileModal closeProfileModal={closeProfileModal} modalOpen={modalOpen} setModalOpen={setModalOpen} />}
-        <img src={profileImg} alt="" className={styles.avatar} />
-        <p className={styles.nameTag}>{nameTag}</p>
+        {modalOpen && (
+          <ProfileModal
+            closeProfileModal={closeProfileModal}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+          />
+        )}
+        <img src={userAvatar} alt="" className={styles.avatar} />
+        <p className={styles.nameTag}>{nickname}</p>
       </div>
     </div>
   );
