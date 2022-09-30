@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
-import "../node_modules/@openzeppelin/contracts/interfaces/IERC721.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "./MintReadmeToken.sol";
 
 contract DrawToken{
 
@@ -28,12 +24,16 @@ contract DrawToken{
     require(winnerCount < 50, "Over");
 
     // 당첨자 목록 확인
-    for(uint256 i = 0; i < winnerList.length; i++){
+    for(uint256 i = 0; i < winnerList.length;){
       if(winnerList[i] == msg.sender){
         who = true;
         break;
       }
       who = false;
+
+      unchecked{
+        ++i;
+        }
     }
     require(who == false, "msg.sender is beneficiary");
 

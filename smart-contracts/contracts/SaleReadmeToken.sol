@@ -91,7 +91,7 @@ contract SaleReadmeToken{
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 구매자의 구매 능력 확인(=> 지갑 돈으로 바꿔야할 것같음)
         // require(price <= (msg.sender).balance, "No money");
-        require(price <= token.balanceOf(msg.sender), "No Money");
+        require(price <= token.balanceOf(buyer), "No Money");
         // 판매자 != 구매자 
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
@@ -110,11 +110,14 @@ contract SaleReadmeToken{
         setIsActive(_readmeTokenId, false);
         
         // 판매 중 목록 수정
-        for(uint256 i = 0; i < onSaleReadmeToken.length; i++) {
+        for(uint256 i = 0; i < onSaleReadmeToken.length;) {
             if(readmeTokenPrice[onSaleReadmeToken[i]] == 0){
                 onSaleReadmeToken[i] = onSaleReadmeToken[onSaleReadmeToken.length-1];
                 onSaleReadmeToken.pop();
                 break;
+            }
+            unchecked{
+                ++i;
             }
         }
 
@@ -145,11 +148,15 @@ contract SaleReadmeToken{
         setIsActive(_readmeTokenId, false);
         
         // 판매 중 목록 수정
-        for(uint256 i = 0; i < onSaleReadmeToken.length; i++) {
+        for(uint256 i = 0; i < onSaleReadmeToken.length;) {
             if(readmeTokenPrice[onSaleReadmeToken[i]] == 0){
                 onSaleReadmeToken[i] = onSaleReadmeToken[onSaleReadmeToken.length-1];
                 onSaleReadmeToken.pop();
                 break;
+            }
+
+            unchecked{
+                ++i;
             }
         }
     }
@@ -177,11 +184,14 @@ contract SaleReadmeToken{
         setIsActive(_readmeTokenId, false);
         
         // 판매 중 목록 수정
-        for(uint256 i = 0; i < onSaleReadmeToken.length; i++) {
+        for(uint256 i = 0; i < onSaleReadmeToken.length;) {
             if(readmeTokenPrice[onSaleReadmeToken[i]] == 0){
                 onSaleReadmeToken[i] = onSaleReadmeToken[onSaleReadmeToken.length-1];
                 onSaleReadmeToken.pop();
                 break;
+            }
+            unchecked{
+                ++i;
             }
         }
     }

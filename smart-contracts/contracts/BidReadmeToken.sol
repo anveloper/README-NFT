@@ -168,11 +168,14 @@ contract BidReadmeToken{
         saleReadmeToken.setIsActive(_readmeTokenId, false);
 
         // 경매 중 목록 수정: 판매된 nft를 목록에서 제거
-        for(uint256 i = 0; i < onAuctionReadmeToken.length; i++) {
+        for(uint256 i = 0; i < onAuctionReadmeToken.length;) {
             if(readmeTokenPrice[onAuctionReadmeToken[i]] == 0){
                 onAuctionReadmeToken[i] = onAuctionReadmeToken[onAuctionReadmeToken.length - 1];
                 onAuctionReadmeToken.pop();
                 break;
+            }
+            unchecked{
+                ++i;
             }
         }
 
@@ -205,11 +208,14 @@ contract BidReadmeToken{
         saleReadmeToken.setIsActive(_readmeTokenId, false);
 
         // 경매 중 목록 수정
-        for(uint256 i = 0; i < onAuctionReadmeToken.length; i++) {
+        for(uint256 i = 0; i < onAuctionReadmeToken.length;) {
             if(readmeTokenPrice[onAuctionReadmeToken[i]] == 0){
                 onAuctionReadmeToken[i] = onAuctionReadmeToken[onAuctionReadmeToken.length - 1];
                 onAuctionReadmeToken.pop();
                 break;
+            }
+            unchecked{
+                ++i;
             }
         }
     }
@@ -241,11 +247,14 @@ contract BidReadmeToken{
         saleReadmeToken.setIsActive(_readmeTokenId, false);
 
         // 경매 중 목록 수정
-        for(uint256 i = 0; i < onAuctionReadmeToken.length; i++) {
+        for(uint256 i = 0; i < onAuctionReadmeToken.length;) {
             if(readmeTokenPrice[onAuctionReadmeToken[i]] == 0){
                 onAuctionReadmeToken[i] = onAuctionReadmeToken[onAuctionReadmeToken.length - 1];
                 onAuctionReadmeToken.pop();
                 break;
+            }
+            unchecked{
+                ++i;
             }
         }
     }
