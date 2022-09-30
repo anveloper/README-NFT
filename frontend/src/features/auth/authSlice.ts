@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import Axios from "../../api/Axios";
 import { RootState } from "../../app/store";
+import moment from "moment";
 
 export interface AuthState {
   userAddress: string;
@@ -73,4 +74,9 @@ export const truncatedAddress = (longAddress: String) => {
   if (!longAddress) return "정답자가 없습니다.";
   if (longAddress.length < 8) return longAddress;
   return `${longAddress.slice(0, 4) + "...." + longAddress.slice(-4)}`;
+};
+
+export const change_date = (date: Date) => {
+  const transDate = moment(date).format("YYYY년 MM월 DD일"); // 날짜 형식 변환
+  return transDate;
 };

@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { io } from "socket.io-client";
 // state
 import { setRoomInfo } from "../game/gameSlice";
 import { selectUserAddress, selectUserName } from "../auth/authSlice";
@@ -23,12 +22,9 @@ import { Modal } from "../../components/modal/Modal";
 import styles from "./Main.module.css";
 import Guide from "./Guide";
 import { throttle } from "lodash";
-import { SocketContext } from "../../socketConfig";
-
-const socketURL =
-  process.env.NODE_ENV !== "production"
-    ? "http://localhost:5000"
-    : "https://j7b108.p.ssafy.io";
+import { reload, SocketContext } from "../../socketConfig";
+import { findSolveList, setRawList } from "../nft/nftSlice";
+import { GetReadmeContract } from "../../web3Config";
 
 const Main = () => {
   // const socket = useAppSelector(selectSocket);
@@ -48,11 +44,21 @@ const Main = () => {
 
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
-
   useEffect(() => {
-    if (socket === undefined) {
-      console.log(socketURL);
-      // dispatch(setSocket(io(socketURL)));
+    GetReadmeContract.methods.getTotalToken().call((err: any, res: any) => {
+      dispatch(setRawList(res));
+    });
+    dispatch(findSolveList(userAddress));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    dispatch(findSolveList(userAddress))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userAddress]);
+  useEffect(() => {
+    if (!socket) {
+      reload();
+      console.log("reload");
     } else {
       console.log("연결된 소켓 정보", socket);
     }
@@ -66,14 +72,14 @@ const Main = () => {
         if (value > 0 && view < 6) setView(view + 1);
         else if (value > 0 && view === 6) setView(5);
         else if (value < 0 && view >= 0) setView(view - 1);
-      }, 300),
+      }, 200),
     [view]
   );
 
   const wheelAction = useCallback(
     (e: WheelEvent) => {
       const delY = e.deltaY;
-      // if (Math.abs(delY) > 200) e.preventDefault();
+      // if (Math.abs(delY) > 300) e.preventDefault();
       throttleWheel(delY);
     },
     [throttleWheel]
@@ -85,12 +91,12 @@ const Main = () => {
         block: "start",
         behavior: "smooth",
       });
-    else if (view === 1 || view === 2)
+    else if (view === 1)
       carouselRef.current.scrollIntoView({
         block: "start",
         behavior: "smooth",
       });
-    else if (view === 3 || view === 4)
+    else if (view === 2)
       tabRef.current.scrollIntoView({
         block: "start",
         behavior: "smooth",

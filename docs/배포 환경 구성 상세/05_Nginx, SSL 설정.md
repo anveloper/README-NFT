@@ -54,6 +54,8 @@ sudo letsencrypt certonly --standalone -d j7b108.p.ssafy.io
 
 이메일 입력, 구성 선택 등 메시지를 따라서 진행한 뒤에  "Congratulations!"로 시작하는 문구가 보이면, 인증서 발급이 완료된 것임
 
+![화면 캡처 2022-09-15 102320](https://user-images.githubusercontent.com/93081720/192927381-0f8add5a-542e-4298-a876-317c24fc755b.png)
+
 <br>
 
 #### 발급 경로 확인
@@ -111,23 +113,25 @@ server {
 
 > sudo ln -s /etc/nginx/sites-available/[파일명] /etc/nginx/sites-enabled/[파일명]
 
-```
+```bash
 sudo ln -s /etc/nginx/sites-available/b108 /etc/nginx/sites-enabled/b108
 ```
 
+- ln: link(연결)의 의미
 
+<br>
 
-> 다음 명령어에서 successful이 뜨는 nginx를 정상적으로 실행할 수 있다.
+> 다음 명령어(nginx 테스트)에서 successful이 뜨는 nginx를 정상적으로 실행할 수 있다.
 
-```
+```bash
 sudo nginx -t
 ```
 
-
+<br>
 
 > nginx 재시작
 
-```
+```bash
 sudo systemctl restart nginx
 ```
 

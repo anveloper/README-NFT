@@ -23,7 +23,6 @@ import styles from "./App.module.css";
 
 import TestPage from "./testWeb3/TestPage";
 
-import MyPageTest from "./features/mypage/MyPageTest";
 import NFTSale from "./features/nft/NftSaleList";
 import Mint from "./features/mint/Mint";
 import MyMintList from "./features/mint/MyMintList";
