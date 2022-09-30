@@ -31,7 +31,6 @@ contract SaleReadmeToken{
         uint8 second;
     }
 
-
     // 판매 등록 된 토큰 : tokenId
     uint256[] public onSaleReadmeToken;
     // 토큰 Id -> 가격
@@ -40,8 +39,6 @@ contract SaleReadmeToken{
     mapping (uint256 => uint256) public readmeTokenEndTime;
     // 판매/경매에 등록된 토큰
     mapping(uint256 => bool) onActiveTokens;
-    // 판매 등록한 사람
-    mapping(uint256 => address) public sellerTest;
 
     // 판매 등록: seller
     function setForSaleReadmeToken(

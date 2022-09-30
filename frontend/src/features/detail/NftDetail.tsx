@@ -5,17 +5,25 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
 import { selectUserAddress } from "../auth/authSlice";
 import styles from "./NftDetail.module.css";
-import { selectNftDetail, setNftDetail } from "./NftDetailSlice";
+import { selectIsActive, selectNftDetail, selectNftOwner, selectNftPrice, setIsActive, setNftDetail, setNftOwner, setNftPrice } from "./NftDetailSlice";
+import { truncatedAddress } from "../../features/auth/authSlice";
+import { change_date } from "../../features/auth/authSlice";
+import NftDetailCard from "./components/NftDetailCard";
+import NftDetailInfo from "./NftDetailInfo";
+import BackgroundFlower from "../../components/BackgroundFlower";
+import NftSell from "./NftSell";
+import { Modal } from "../../components/modal/Modal";
 
 const NftDetail = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const { tokenId } = useParams();
   const nftDetail = useAppSelector(selectNftDetail);
+  const nftPrice = useAppSelector(selectNftPrice);
+  const nftOwner = useAppSelector(selectNftOwner);
+  const isActive = useAppSelector(selectIsActive);
   const userAddress = useAppSelector(selectUserAddress);
-  const [nftPrice, setNftPrice] = useState(0);
-  const [nftOwner, setNftOwner] = useState("");
+  const [tab, setTab] = useState("info");
 
   const getMetadata = async () => {
     try {
@@ -31,12 +39,15 @@ const NftDetail = () => {
       console.error(err);
     }
   };
+
   const getNftInfo = async () => {
     try {
       const nftPrice = await SaleReadmeContract.methods.getReadmeTokenPrice(tokenId).call();
       const nftOwner = await MintReadmeContract.methods.ownerOf(tokenId).call();
-      setNftPrice(nftPrice);
-      setNftOwner(nftOwner);
+      const isActive = await SaleReadmeContract.methods.getIsActive(tokenId).call();
+      dispatch(setIsActive(isActive));
+      dispatch(setNftPrice(nftPrice));
+      dispatch(setNftOwner(nftOwner));
     } catch (error) {
       console.error(error);
     }
@@ -49,48 +60,27 @@ const NftDetail = () => {
   }, []);
 
   return (
-    <div className={styles.detail}>
-      <div className={styles.detail_container}>
-        <div className={styles.cards}>
-          <div className={styles.card_contents_front}>
-            <img className={styles.card_img} src={nftDetail.imageURL} alt="dog" />
-            <div className={styles.card_img_info}>
-              <p>TokenID: {tokenId}</p>
-              <p>FileName: {nftDetail.fileName}</p>
-              <p>Creator: {nftDetail.author}</p>
-              <p>Owner: {nftOwner}</p>
-            </div>
-          </div>
-        </div>
-        <div className={styles.cards}>
-          <div className={styles.card_contents_back}>
-            <div className={styles.card_contents_back_price}>
-              <div>
-                <p>현재 가격</p>
-                <p>{nftPrice} SSF</p>
-              </div>
-              <div>
-                {nftOwner.toLowerCase() === userAddress ? (
-                  <>
-                    <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)}>
-                      판매
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button className={styles.card_button} onClick={() => navigate("/sell/" + tokenId)}>
-                      구매
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-            <div className={styles.card_contents_back_history}></div>
-            <div className={styles.card_buttons}>
-              <button className={styles.card_button}>이전</button>
-              <button className={styles.card_button}>경매 참여</button>
-            </div>
-          </div>
+    <div className={styles.sell_background}>
+      <BackgroundFlower />
+      <div className={styles.detail}>
+        <div className={styles.detail_container}>
+          <NftDetailCard tokenId={tokenId} nftDetail={nftDetail} nftPrice={nftPrice} nftOwner={nftOwner} />
+          {
+            {
+              info: (
+                <NftDetailInfo
+                  tokenId={tokenId}
+                  nftDetail={nftDetail}
+                  nftPrice={nftPrice}
+                  isActive={isActive}
+                  nftOwner={nftOwner}
+                  userAddress={userAddress}
+                  setTab={setTab}
+                />
+              ),
+              sell: <NftSell />,
+            }[tab]
+          }
         </div>
       </div>
     </div>

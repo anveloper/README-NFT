@@ -1,26 +1,57 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import { getDefaultMiddleware } from "@reduxjs/toolkit";
+// core
+import {
+  configureStore,
+  ThunkAction,
+  Action,
+  combineReducers,
+} from "@reduxjs/toolkit";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storageSession from "redux-persist/lib/storage/session";
+
+// reducers
 import authReducer from "../features/auth/authSlice";
 import gameReducer from "../features/game/gameSlice";
 import mintReducer from "../features/mint/mintSlice";
 import nftReducer from "../features/nft/nftSlice";
-import detailReducer from "../features/detail/NftDetailSlice"
+import detailReducer from "../features/detail/NftDetailSlice";
+
+const reducers = combineReducers({
+  auth: authReducer,
+  game: gameReducer,
+  mint: mintReducer,
+  nft: nftReducer,
+  detail: detailReducer,
+});
+
+const persistConfig = {
+  key: "root",
+  version: 1,
+  storage: storageSession,
+  whitelist: ["auth"],
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    game: gameReducer,
-    mint: mintReducer,
-    nft: nftReducer,
-    detail: detailReducer,
-  },
-  // redux에는 직렬화 가는 한 정보만 갖지만,
-  // socket을 오브젝트로 저장하기 위해 직렬화를 해제함
-  // props로 내려주는 방식도 고민 중
-  middleware: getDefaultMiddleware({
-    serializableCheck: false,
-  }),
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
+
+export let persistor = persistStore(store);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

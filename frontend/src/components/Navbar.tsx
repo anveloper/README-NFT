@@ -5,11 +5,15 @@ import LogoImg from "../assets/logo_img.svg";
 import LogoText from "../assets/logo_text.svg";
 // components
 import ProfileModal from "./ProfileModal";
+import { useAppSelector } from "app/hooks";
+import { selectUserAvatar, selectUserName } from "features/auth/authSlice";
 
 const Navbar = () => {
   const [profileImg, setProfileImg] = useState(LogoImg);
+  const userAvatar = useAppSelector(selectUserAvatar);
   const [nameTag, setNameTag] = useState("피자먹는 라이언");
   const [modalOpen, setModalOpen] = useState(false);
+  const nickname = useAppSelector(selectUserName);
 
   const showProfileModal = () => {
     setModalOpen(true);
@@ -29,14 +33,8 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.navButtonBox}>
-        <Link to="/temp-list">
-          <button>NFT리스트(테스트용)</button>
-        </Link>
         <Link to="/sale">
           <button>NFT 판매</button>
-        </Link>
-        <Link to="/detail">
-          <button>NFT상세</button>
         </Link>
         <Link to="/login">
           <button>로그인</button>
@@ -56,8 +54,8 @@ const Navbar = () => {
             setModalOpen={setModalOpen}
           />
         )}
-        <img src={profileImg} alt="" className={styles.avatar} />
-        <p className={styles.nameTag}>{nameTag}</p>
+        <img src={userAvatar} alt="" className={styles.avatar} />
+        <p className={styles.nameTag}>{nickname}</p>
       </div>
     </div>
   );
