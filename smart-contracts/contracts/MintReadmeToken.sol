@@ -76,11 +76,13 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
         ownedTokens[msg.sender].push(newTokenId); // 소유 목록 추가 
 
-        drawTokens[msg.sender].push(newTokenId); // 그린 목록 추가(그린 사람 = 민팅)
+        // drawTokens[msg.sender].push(newTokenId); // 그린 목록 추가(그린 사람 = 민팅)
         
         totalReadmeToken.push(newTokenId); // 전체 토큰 목록에 추가
 
         _approve(saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
+
+        // _approve(bidReadmeToken, newTokenId); // 경매 컨트랙트에 권한 부여
 
         emit Mint(newTokenId, msg.sender, _metadataURI); // 생성 확인 로그(새로운 tokenId, 생성자, 메타데이터)
 

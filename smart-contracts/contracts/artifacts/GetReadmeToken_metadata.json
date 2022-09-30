@@ -281,35 +281,35 @@
 	},
 	"sources": {
 		"contracts/BidReadmeToken.sol": {
-			"keccak256": "0x3ebb7051511ad13d00d32781265ea4038a95d22f6754884c200366efde63bd99",
+			"keccak256": "0x21b701a942336302a56478929c017958481797f63bee5f71a78d627a34ef2da8",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://60432333039f2f02ec7c0056c9579c03d9399a283a051e265cb41100a5e0d3da",
-				"dweb:/ipfs/QmP5Hbuwgp52Vu5Ysfj7odrbd2NPPFkuxZBLSWbwvhwJxD"
+				"bzz-raw://f50b2cb59385dc7e2568fa5f7d89f477efd2d8690062429f71821c5db0dc9825",
+				"dweb:/ipfs/QmWujUrwC8AqVofi7wotzcFhCotVERXJeoNu2PHEBb1M5x"
 			]
 		},
 		"contracts/GetReadmeToken.sol": {
-			"keccak256": "0x3188853e4376ffc671efbda9bb6abc5a4d26a4d8149e6fe819b68dd23e7e796e",
+			"keccak256": "0x5778ad414a6f2a0aa03bd00543bfbb8ac8382e9fa51354da684961e66bdb3c33",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://56f35668dc5db53866e4eeb0aff72c824865df99d24459ad269449b9eeca695d",
-				"dweb:/ipfs/QmNoUgkTEApttt8bC3ik76VQNmNuAhKFYkAYoHCJ2fhts8"
+				"bzz-raw://1577c4bff236c8bfb3de879a8de9c3d6030a070ee529df128139922c9a431387",
+				"dweb:/ipfs/QmaAWDzNkmFMYB4tKReXHitUBfaXgHQMnmhsSJfsiKcYeJ"
 			]
 		},
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0x64666c46f15a1b4cd103daa1b3e0f565ecd5b023da6e390f4ec749dfb532098d",
+			"keccak256": "0x55c9860af7b0d2106a65039055a8d510b6b4e9b8d22c836b5467c933292ee559",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://224a57dbff7935eebcabd1c8afd4a14c71cfb135ebae12467492cd81840f48d6",
-				"dweb:/ipfs/QmdMoEVFFEBjyviJEXUP39b7EcS1qif6RFTsMGdkesKcfd"
+				"bzz-raw://30609bdaa6d6aac7d146a3abf54a3640b2e06a18358a74251bd9d3a9fc29beac",
+				"dweb:/ipfs/QmVYAj3fkTRDgUV74sZ3gvsV6LbWSLFXaTqtYw45Y9DkZb"
 			]
 		},
 		"contracts/SaleReadmeToken.sol": {
-			"keccak256": "0x5a95556b5bf5e9f20ecc32a85f5b30f8a9b405748888c901392ac8c0d0d26fcc",
+			"keccak256": "0xdecaad8c6e7aa8c8d2cca9b783718c03a179ece788b291c1ff29eacdde4a8d68",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f3e942b645170ca193f7d4731b44432f6aff4123dcce8a690f2bd854cfb27c25",
-				"dweb:/ipfs/QmUXXquS4ZmNTsiJxtTmvt1Kp65ACqBVKYq5C1uXkMey7c"
+				"bzz-raw://ca4007bc18b23316197440f581d717bac28c246019a4a0559b0c1eabe7704ead",
+				"dweb:/ipfs/QmULW2acEuRZGzKPeFRwsz5ooZrQgntC7yWDeRd1mF6yeY"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {
@@ -336,6 +336,14 @@
 				"dweb:/ipfs/QmbzgWeTm8hJVUqWrNAwFjshqbYVyeGpQA8D1huzxQdmw6"
 			]
 		},
+		"node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+			"keccak256": "0x24b04b8aacaaf1a4a0719117b29c9c3647b1f479c5ac2a60f5ff1bb6d839c238",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://43e46da9d9f49741ecd876a269e71bc7494058d7a8e9478429998adb5bc3eaa0",
+				"dweb:/ipfs/QmUtp4cqzf22C5rJ76AabKADquGWcjsc33yjYXxXC4sDvy"
+			]
+		},
 		"node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
 			"keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
 			"license": "MIT",
@@ -344,12 +352,20 @@
 				"dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
 			]
 		},
-		"node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
-			"keccak256": "0x0b606994df12f0ce35f6d2f6dcdde7e55e6899cdef7e00f180980caa81e3844e",
+		"node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+			"keccak256": "0x8de418a5503946cabe331f35fe242d3201a73f67f77aaeb7110acb1f30423aca",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4c827c981a552d1c76c96060e92f56b52bc20c6f9b4dbf911fe99ddbfb41f2ea",
-				"dweb:/ipfs/QmW8xvJdzHrr8Ry34C7viBsgG2b8T1mL4BQWJ5CdfD9JLB"
+				"bzz-raw://5a376d3dda2cb70536c0a45c208b29b34ac560c4cb4f513a42079f96ba47d2dd",
+				"dweb:/ipfs/QmZQg6gn1sUpM8wHzwNvSnihumUCAhxD119MpXeKp8B9s8"
+			]
+		},
+		"node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+			"keccak256": "0xc56375fb835be72c7525139f9bc85532eda5ebbd69dfe09df82701d34f3b98a0",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fd95de598929027f6ec49ba7f0479e66e26bc8c66cb77136fb544773c8f63034",
+				"dweb:/ipfs/QmdD7nckpgeEgczgthTznmseQojqH6ZpwuFjuNbPd6toEY"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
