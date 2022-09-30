@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import Axios from "../../api/Axios";
 import { RootState } from "../../app/store";
+import moment from "moment";
 
 export interface AuthState {
   userAddress: string;
@@ -26,9 +27,15 @@ const animalNicknameRandom =
   animalNicknameList[Math.floor(Math.random() * animalNicknameList.length)];
 
 const initialState: AuthState = {
+<<<<<<< frontend/src/features/auth/authSlice.ts
   userAddress: `testAddress-${Math.floor(Math.random() * 123456)}`,
   userName: `${actionNicknameRandom} ${animalNicknameRandom}`,
   userAvatar: `images/${Math.floor(Math.random() * 50 + 1)}.png`,
+=======
+  userAddress: ``,
+  userName: `익명의 ${Math.floor(Math.random() * 100)}번째 개발자`,
+  userAvatar: "",
+>>>>>>> frontend/src/features/auth/authSlice.ts
   status: "idle",
 };
 
@@ -55,6 +62,10 @@ export const authSlice = createSlice({
       state.userAddress = "";
       state.status = "idle";
     },
+    login: (state, { payload }) => {
+      console.log(payload);
+      state.userAddress = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -72,7 +83,7 @@ export const authSlice = createSlice({
 });
 
 // actions
-export const { logoutUser } = authSlice.actions;
+export const { logoutUser, login } = authSlice.actions;
 
 // selector
 export const selectUserAddress = (state: RootState) => state.auth.userAddress;
@@ -86,4 +97,9 @@ export const truncatedAddress = (longAddress: String) => {
   if (!longAddress) return "정답자가 없습니다.";
   if (longAddress.length < 8) return longAddress;
   return `${longAddress.slice(0, 4) + "...." + longAddress.slice(-4)}`;
+};
+
+export const change_date = (date: Date) => {
+  const transDate = moment(date).format("YYYY년 MM월 DD일"); // 날짜 형식 변환
+  return transDate;
 };
