@@ -1,5 +1,5 @@
 import styles from "./NftDetail.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SaleReadmeContract, SSFContract } from "../../web3Config";
 import { useDispatch } from "react-redux";
 import { setIsActive } from "./NftDetailSlice";
@@ -49,7 +49,8 @@ const NftDetailInfo = (props: any) => {
       .send({ from: userAddress })
       .then((res: any) => {
         console.log(res);
-        navigate("/detail/" + tokenId);
+        // 새로고침.
+        window.location.replace("/detail/" + tokenId);
       })
       .catch((err: any) => {
         console.log(err);
@@ -102,6 +103,7 @@ const NftDetailInfo = (props: any) => {
               <button className={styles.card_button} onClick={moveToBack}>
                 이전
               </button>
+
               <div>
                 {nftOwner.toLowerCase() === userAddress ? (
                   <>

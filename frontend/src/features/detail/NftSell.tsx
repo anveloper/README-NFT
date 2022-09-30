@@ -51,7 +51,8 @@ const NftSell = () => {
             saleEndDay: endDay,
           };
           // dispatch(setSaleDate(saleDate));
-          navigate("/detail/" + tokenId);
+          // 새로고침.
+          window.location.replace("/detail/" + tokenId);
         });
     } catch (error) {
       console.log(error);

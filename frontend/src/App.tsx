@@ -25,7 +25,6 @@ import TestPage from "./testWeb3/TestPage";
 
 import NFTSale from "./features/nft/NftSaleList";
 import Mint from "./features/mint/Mint";
-import NftDetail from "./features/detail/NftDetail";
 import MyMintList from "./features/mint/MyMintList";
 import MetaMaskOnboarding from "@metamask/onboarding";
 
@@ -66,20 +65,13 @@ function App() {
               </Route>
               <Route path="/mint" element={<Mint account={userAddress} />} />
               <Route path="/detail/:tokenId" element={<Detail />} />
-              <Route path="/sell/:tokenId" element={<Sell />} />
-              <Route
-                path="/temp-list"
-                element={<MyMintList account={userAddress} />}
-              />
+              <Route path="/temp-list" element={<MyMintList account={userAddress} />} />
               <Route path="/sale" element={<NFTSale />} />
 
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
-              <Route
-                path="/mypage"
-                element={<MyPage account={userAddress} />}
-              />
+              <Route path="/mypage" element={<MyPage account={userAddress} />} />
               <Route path="/test" element={<TestPage />} />
             </Routes>
           </div>
