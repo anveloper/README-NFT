@@ -57,8 +57,7 @@ contract GetReadmeToken{
         // 판매 중인 토큰 목록 가져오기
         uint256[] memory onSaleReadmeToken = saleReadmeToken.getOnSaleReadmeToken();
         // 판매중인 토큰 개수 확인
-        uint256 readmeTokenCount = saleReadmeToken.getOnSaleReadmeTokenArrayLength();
-
+        uint256 readmeTokenCount = onSaleReadmeToken.length;
         // 비어있는 목록인지 확인
         require(readmeTokenCount > 0, "Not exist on sale token");
 
@@ -109,7 +108,7 @@ contract GetReadmeToken{
     }
 
     // get: 내가 그린 토큰 정보 조회
-    function getDrawReadmeToken(address _readmeTokenOwner) view public returns (ReadmeTokenData[] memory) {
+    function getDrawReadmeToken(address _readmeTokenOwner) public view returns (ReadmeTokenData[] memory) {
         // 내가 그린 토큰 가져오기
         uint256[] memory drawReadmeToken = mintReadmeToken.getDrawTokens(_readmeTokenOwner);
         // 그린 토큰 개수 확인
@@ -137,10 +136,9 @@ contract GetReadmeToken{
     }
 
     // get: 전체 경매중인 토큰 조회
-    function getAuctionToken() view public returns (ReadmeTokenData[] memory) {
+    function getAuctionToken() public view returns (ReadmeTokenData[] memory) {
         // 경매중인 토큰 목록
         uint256[] memory onAuctionReadmeToken = bidReadmeToken.getTokenOnAuction();
-
         // 경매중인 토큰 개수 확인
         uint256 readmeTokenCount = onAuctionReadmeToken.length;
 

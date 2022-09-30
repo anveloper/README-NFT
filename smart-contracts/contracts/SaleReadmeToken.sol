@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
-import "../node_modules/@openzeppelin/contracts/interfaces/IERC721.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "../node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./MintReadmeToken.sol";
+// 재진입 공격 방지
 
-contract SaleReadmeToken{
+contract SaleReadmeToken is ReentrancyGuard{
     
     MintReadmeToken public mintReadmeToken;
 
@@ -56,14 +56,14 @@ contract SaleReadmeToken{
         // 가격은 0원 이상 설정
         require(_price > 0, "Zero Price");
         // 판매/경매 등록 여부 확인
-        require(onActiveTokens[_readmeTokenId] != true, "Already on Sale");
-        // 판매 등록 확인
-        require(readmeTokenPrice[_readmeTokenId] == 0, "Already On Sale");
-        
+        require(onActiveTokens[_readmeTokenId] != true, "Already on Market");
+        // 가격 등록 확인
+        require(readmeTokenPrice[_readmeTokenId] == 0, "Not On Sale");
+
         // 가격 등록
         readmeTokenPrice[_readmeTokenId] = _price;
         // 시간 등록
-        uint256 endTime = _endTime + block.timestamp;
+        uint256 endTime = SafeMath.add(_endTime, block.timestamp);
         readmeTokenEndTime[_readmeTokenId] = endTime;
         // 판매 등록 목록 수정
         onSaleReadmeToken.push(_readmeTokenId);
@@ -75,7 +75,10 @@ contract SaleReadmeToken{
 
 
     // 구매: buyer
-    function purchaseReadmeToken(IERC20 token, uint256 _readmeTokenId) public {        
+    function purchaseReadmeToken(
+        IERC20 token, 
+        uint256 _readmeTokenId) public nonReentrant{   
+
         // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address buyer = msg.sender;
@@ -85,10 +88,10 @@ contract SaleReadmeToken{
         
         // 시간 확인
         require(block.timestamp < readmeTokenEndTime[_readmeTokenId], "Time out!");
-        // 판매중 확인
-        require(price > 0, "Not On Sale");
         // 판매/경매 등록 여부 확인
         require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
+        // 가격 등록 확인
+        require(price > 0, "Not On Sale");
         // 구매자의 구매 능력 확인(=> 지갑 돈으로 바꿔야할 것같음)
         // require(price <= (msg.sender).balance, "No money");
         require(price <= token.balanceOf(buyer), "No Money");
@@ -96,7 +99,7 @@ contract SaleReadmeToken{
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
         
         // 송금
-        token.transferFrom(msg.sender, readmeTokenOwner, price);
+        token.transferFrom(msg.sender, readmeTokenOwner, price); // Checks Effects Interaction Pattern 적용
         // // 돈: 구매자(buyer: 함수 호출자) -> 판매자
         // payable(readmeTokenOwner).transfer(msg.value);
 
@@ -104,7 +107,7 @@ contract SaleReadmeToken{
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
 
         
-        // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
+        // 가격을 수정(가격 = 0: 판매중아님)
         readmeTokenPrice[_readmeTokenId] = 0;
         // 판매 중 목록에서 제거
         setIsActive(_readmeTokenId, false);
@@ -127,22 +130,23 @@ contract SaleReadmeToken{
 
     // 판매 취소
     function cancelReadmeToken(uint256 _readmeTokenId) public {
-        // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address cancel = msg.sender;
         // 판매자 확인
         address seller = mintReadmeToken.ownerOf(_readmeTokenId);
-        
-        // 취소자 == 판매자 
-        require(cancel == seller, "No Owner");
-        // 판매중 확인
-        require(price > 0, "Not On Sale");
-        // 판매/경매 등록 여부 확인
-        require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
+
+
         // 시간 확인
         require(block.timestamp < readmeTokenEndTime[_readmeTokenId], "Time out!");
+        // 판매/경매 등록 여부 확인
+        require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
+        // 가격 등록 확인
+        require(price > 0, "Not On Sale");
+        // 취소자 == 판매자 
+        require(cancel == seller, "No Owner");
         
-        // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
+        
+        // 가격을 수정
         readmeTokenPrice[_readmeTokenId] = 0;
         // 판매 중 목록에서 제거
         setIsActive(_readmeTokenId, false);
@@ -163,7 +167,6 @@ contract SaleReadmeToken{
 
     // 미판분
     function refundsReadmeToken(uint256 _readmeTokenId) public {
-        // 가격 및 판매 중 확인(0원일 경우 판매 하는 nft가 아님)
         uint256 price = readmeTokenPrice[_readmeTokenId];
         address refund = msg.sender;
         // 판매자 확인
@@ -171,14 +174,14 @@ contract SaleReadmeToken{
         
         // 취소자 == 판매자 
         require(refund == seller, "No Owner");
-        // 판매중 확인
-        require(price > 0, "Not On Sale");
-        // 판매/경매 등록 여부 확인
-        require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 시간 확인
         require(block.timestamp > readmeTokenEndTime[_readmeTokenId], "Time out!");
+        // 판매/경매 등록 여부 확인
+        require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
+        // 가격 등록 확인
+        require(price > 0, "Not On Sale");
         
-        // 가격을 수정해서 판매가 아닌 거로 함(가격 = 0: 판매중아님)
+        // 가격을 수정
         readmeTokenPrice[_readmeTokenId] = 0;
         // 판매 중 목록에서 제거
         setIsActive(_readmeTokenId, false);
@@ -196,10 +199,6 @@ contract SaleReadmeToken{
         }
     }
 
-    // get: 판매 중인 토큰 개수 조회
-    function getOnSaleReadmeTokenArrayLength() public view returns (uint256) {
-        return onSaleReadmeToken.length;
-    }
 
     // get: 판매 중인 토큰 전체 목록 조회
     function getOnSaleReadmeToken() public view returns (uint256[] memory) {
@@ -222,7 +221,7 @@ contract SaleReadmeToken{
     }
 
     // 시간 반환
-    function parseTimestamp(uint timestamp) internal pure returns (DateTime memory dt) {
+    function parseTimestamp(uint timestamp) public pure returns (DateTime memory dt) {
         uint secondsAccountedFor = 0;
         uint buf;
         uint8 i;
@@ -352,6 +351,8 @@ contract SaleReadmeToken{
                     return 28;
             }
     }
+
+
 
 }
 
