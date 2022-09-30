@@ -1,0 +1,80 @@
+.back {
+  display: flex;
+  justify-content: center;
+  font-family: "NanumSquareRound";
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  width: 80%;
+}
+
+/* 공통 */
+.contents {
+  margin: 20px 10px 20px 10px;
+  border-radius: 20px;
+}
+
+/* 왼쪽 : 카테고리 분류 */
+.contents:nth-child(1) {
+  background-color: #fcf5e9;
+}
+
+/* 오른쪽 : 컨텐츠 출력 */
+.contents:nth-child(2) {
+  display: flex;
+  flex-wrap: wrap;
+  /* flex-direction: row; */
+  /* justify-content: space-between; */
+  justify-items: center;
+  /* background-color: white; */
+}
+
+/* 카드 배경 틀 */
+.card_container {
+  width: 22%;
+  height: 25%;
+  display: flex;
+  justify-content: center;
+  border: none;
+
+  margin: 10px;
+}
+
+/* 카드 배경 */
+.card {
+  width: 100%;
+  background-color: white;
+  aspect-ratio: 12/11;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.4s;
+  transform-style: preserve-3d;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 5px 5px 5px #00000030;
+}
+
+/* 이미지 사각틀 */
+.img_sq {
+  width: 100%;
+  aspect-ratio: 12/10;
+  background-image: url("../../assets/template/template_sq.svg");
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* 이미지 */
+.img {
+  width: 89%;
+  aspect-ratio: 12/10;
+  border-radius: 1rem;
+}
