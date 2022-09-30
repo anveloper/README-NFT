@@ -7,25 +7,24 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 // img
-import lion from "../assets/characters/lion.svg";
-import { selectUserAddress, selectUserName } from "../features/auth/authSlice";
-import { SSFContract } from "../web3Config";
+import {
+  selectUserAddress,
+  selectUserAvatar,
+  selectUserName,
+} from "../../features/auth/authSlice";
+import { SSFContract } from "../../web3Config";
 // css
 import styles from "./Navbar.module.css";
 
 interface ProfileModalProps {
-  closeProfileModal: () => void;
   modalOpen: boolean;
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  showModal: () => void;
 }
 
-const ProfileModal: FC<ProfileModalProps> = ({
-  closeProfileModal,
-  modalOpen,
-  setModalOpen,
-}) => {
+const ProfileModal: FC<ProfileModalProps> = ({ modalOpen, showModal }) => {
+  const userAvater = useAppSelector(selectUserAvatar);
   const walletAddress = useAppSelector(selectUserAddress);
   const nickname = useAppSelector(selectUserName);
   const [balance, setBalance] = useState(0);
@@ -52,34 +51,25 @@ const ProfileModal: FC<ProfileModalProps> = ({
     setBalance(balance);
   }, [balance]);
 
-  // 모달창 닫기
-  const closeModal = () => {
-    setModalOpen(false);
+  const handler = (event: any) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      showModal();
+    }
   };
-
+  const closeModal = () => {
+    showModal();
+  };
   const navigate = useNavigate();
   const mypage = () => {
     navigate("/mypage");
-
-    // setModalOpen(false);
-    closeProfileModal();
-
-    console.log("myPage ; ", modalOpen);
+    showModal();
   };
 
   useEffect(() => {
-    const handler = (event: any) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setModalOpen(false);
-      }
-    };
-
-    // 모바일 대응
-    document.addEventListener("mousedown", handler);
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    };
-  });
+    if (modalOpen) document.addEventListener("mousedown", handler);
+    else document.removeEventListener("mousedown", handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalOpen]);
   return (
     <div
       className={
@@ -99,7 +89,7 @@ const ProfileModal: FC<ProfileModalProps> = ({
           </button>
           <div className={styles.ProfileModalTextBox}>
             <div className={styles.ProfileModalImgBox} onClick={mypage}>
-              <img className={styles.ProfileModalImg} src={lion} alt="" />
+              <img className={styles.ProfileModalImg} src={userAvater} alt="" />
             </div>
 
             <h2 style={{ marginTop: "1rem" }}>{nickname}</h2>
