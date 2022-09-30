@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
 import { selectUserAddress } from "../auth/authSlice";
+import styles from "./NftSaleList.module.css";
 
 interface IMyMintList {
   tokenId: number;
@@ -16,10 +18,10 @@ interface IMyMintList {
 const NftSaleList = () => {
   const userAddress = useAppSelector(selectUserAddress);
   const [saleList, setSaleList] = useState<IMyMintList[]>([]);
+  const navigator = useNavigate();
 
   const getOnSaleListTokens = async () => {
     try {
-      // const response = await SaleReadmeContract.methods.getOnSaleReadmeTokenArrayLength().call();
       const response = await SaleReadmeContract.methods.getOnSaleReadmeToken().call();
       const tmpSaleList: IMyMintList[] = [];
       for (let i = 0; i < response.length; i++) {
@@ -52,18 +54,27 @@ const NftSaleList = () => {
   }, []);
 
   return (
-    <div>
-      {userAddress}
-      <div style={{ display: "flex" }}>
-        {saleList.map((v: IMyMintList) => {
-          console.log(v);
-          return (
-            <div key={v.tokenId}>
-              <img src={v.imageURL} alt="NFT이미지" width={300} />
-              <p>{v.fileName}</p>
-            </div>
-          );
-        })}
+    <div className={styles.back}>
+      <div className={styles.container}>
+        <div className={styles.contents}>
+          <div>분류창</div>
+          <div>어떤 기준에 분류를 할까</div>
+          <div>css는 점차 수정할게요...</div>
+        </div>
+        <div className={styles.contents}>
+          {saleList.map((v: IMyMintList) => {
+            return (
+              <div className={styles.card_container} key={v.tokenId} onClick={() => navigator("/detail/" + v.tokenId)}>
+                <div className={styles.card}>
+                  <div className={styles.img_sq}>
+                    <img className={styles.img} src={v.imageURL} alt="NFT이미지" width={300} />
+                  </div>
+                  <p>{v.name}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

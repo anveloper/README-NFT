@@ -23,10 +23,8 @@ import styles from "./App.module.css";
 
 import TestPage from "./testWeb3/TestPage";
 
-import MyPageTest from "./features/mypage/MyPageTest";
 import NFTSale from "./features/nft/NftSaleList";
 import Mint from "./features/mint/Mint";
-import MyMintList from "./features/mint/MyMintList";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -77,7 +75,6 @@ function App() {
               <Route path="/mint" element={<Mint account={account} />} />
               <Route path="/detail/:tokenId" element={<Detail />} />
               <Route path="/sell/:tokenId" element={<Sell />} />
-              <Route path="/temp-list" element={<MyMintList account={account} />} />
               <Route path="/sale" element={<NFTSale />} />
 
               <Route path="/welcome" element={<Welcome />} />
