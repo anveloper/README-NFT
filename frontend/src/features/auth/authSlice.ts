@@ -27,15 +27,9 @@ const animalNicknameRandom =
   animalNicknameList[Math.floor(Math.random() * animalNicknameList.length)];
 
 const initialState: AuthState = {
-<<<<<<< frontend/src/features/auth/authSlice.ts
   userAddress: `testAddress-${Math.floor(Math.random() * 123456)}`,
   userName: `${actionNicknameRandom} ${animalNicknameRandom}`,
   userAvatar: `images/${Math.floor(Math.random() * 50 + 1)}.png`,
-=======
-  userAddress: ``,
-  userName: `익명의 ${Math.floor(Math.random() * 100)}번째 개발자`,
-  userAvatar: "",
->>>>>>> frontend/src/features/auth/authSlice.ts
   status: "idle",
 };
 
