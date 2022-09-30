@@ -13,5 +13,7 @@ declare namespace NodeJS {
     REACT_APP_IPFS_IP: string;
     REACT_APP_SOCKET_URL: string;
     REACT_APP_SOCKET_DEVELOP_URL: string;
+    REACT_APP_SALEREADMETOKEN_CA: string;
+    REACT_APP_ERC20_CA: string;
   }
 }
