@@ -27,6 +27,7 @@ import MyPageTest from "./features/mypage/MyPageTest";
 import NFTSale from "./features/nft/NftSaleList";
 import Mint from "./features/mint/Mint";
 import MyMintList from "./features/mint/MyMintList";
+import MetaMaskOnboarding from "@metamask/onboarding";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -43,7 +44,9 @@ function App() {
         dispatch(login(accounts[0]));
       }
     }
-    window.ethereum.on("accountsChanged", handleNewAccounts);
+    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+      window.ethereum.on("accountsChanged", handleNewAccounts);
+    }
     return () => {
       window.ethereum.removeListener("accountsChanged", handleNewAccounts);
     };
