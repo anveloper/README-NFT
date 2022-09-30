@@ -60,6 +60,12 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
         return drawTokens[_owner].length;
     }
 
+    // get: 발행된 전체 토큰 목록
+    function getTotalReadmeToken() public view returns(uint256[] memory){
+        return totalReadmeToken;
+    }
+
+
     // NFT 발행
     function create(string memory _metadataURI, address saleReadmeToken) public returns (uint256) {
         uint256 newTokenId = totalSupply() + 1; // 새로운 tokenId 생성
@@ -101,10 +107,6 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
                 break;
             }
         }
-    }
-
-    function getTotalReadmeToken() view public returns(uint256[] memory){
-        return totalReadmeToken;
     }
 
     // 입력한 주소 유효성 검사

@@ -22,6 +22,14 @@ contract BidReadmeToken{
         uint256 bidPrice;
     }
 
+    // 토큰 정보
+    struct Token {
+        uint256 readmeTokenId;
+        uint256 readmeTokenPrice;
+        address readmeTokenOwner;
+        string metaDataURI;
+    }
+
     // 경매에 판매 등록된 토큰 저장 리스트(조회용)
     uint256[] public onAuctionReadmeToken;
     // 토큰 별(tokenId) 가격 저장
@@ -33,6 +41,9 @@ contract BidReadmeToken{
     mapping (uint256 => Bid[]) public Bids;
     // 토큰별 현재 최고 입찰가 저장
     mapping (uint256 => uint256) public nowHighestPrice;
+    // 입찰자 별 입찰 토큰 정보 조회
+    mapping (address => Token[]) public Tokens;
+
     // 최고가 저장
     uint256 highestPrice;
     // 최고가 입찰자 주소 저장
@@ -103,6 +114,14 @@ contract BidReadmeToken{
         Bids[_readmeTokenId].push(Bid({
             bidder: bidder,
             bidPrice: _biddingPrice
+        }));
+
+        // 입찰자 별 입찰 토큰 정보 조회
+        Tokens[bidder].push(Token({
+            readmeTokenId: _readmeTokenId,
+            readmeTokenPrice: _biddingPrice,
+            readmeTokenOwner: mintReadmeToken.ownerOf(_readmeTokenId),
+            metaDataURI: mintReadmeToken.tokenURI(_readmeTokenId)
         }));
 
         // 최고가 변경
@@ -255,5 +274,9 @@ contract BidReadmeToken{
     function getBidList(uint256 _readmeTokenId) public view returns (Bid[] memory){
         return Bids[_readmeTokenId];
     }
-
+    // get: 내가 경매 참여중인 NFT 정보 조회
+    function getMyAuction(address _bidder) public view returns (Token[] memory) {
+        return Tokens[_bidder];
+    }
+    
 }
