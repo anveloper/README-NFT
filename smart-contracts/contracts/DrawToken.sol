@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
-import "../node_modules/@openzeppelin/contracts/interfaces/IERC721.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "./MintReadmeToken.sol";
+import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract DrawToken{
 
@@ -28,27 +25,32 @@ contract DrawToken{
     require(winnerCount < 50, "Over");
 
     // 당첨자 목록 확인
-    for(uint256 i = 0; i < winnerList.length; i++){
+    for(uint256 i = 0; i < winnerList.length;){
       if(winnerList[i] == msg.sender){
         who = true;
         break;
       }
       who = false;
+
+      unchecked{
+        ++i;
+        }
     }
     require(who == false, "msg.sender is beneficiary");
 
     // 승인 권한 받은 컨트랙트가 winner에게 1000원 줌
-    wooToken.transfer(msg.sender, 1000);
+    uint256 price = 1000; // Checks Effects Interaction Pattern 적용
+    wooToken.transfer(msg.sender, price);
     // 당첨자 목록 추가
     winnerList.push(msg.sender);
     // 금액 수정
-    winnerCount += 1;
+    winnerCount = SafeMath.add(winnerCount, 1);
 
   }
 
   // get: 남은 인원 조회
   function getWinnerCount() public view returns(uint256){
-    uint256 remainder = 50 - winnerCount;
+    uint256 remainder = SafeMath.sub(50,winnerCount);
 
     return remainder;
   }
