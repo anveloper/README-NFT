@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./RoomButton.module.css";
-import IMG from "../../../assets/carousel/plane02.svg";
+import IMG from "../../../assets/btn/game_btn.svg";
 
 const RoomButton = (prop: any) => {
   const { setModalOpen } = prop;

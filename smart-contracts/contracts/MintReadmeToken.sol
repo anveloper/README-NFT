@@ -4,8 +4,7 @@ pragma solidity ^0.8.4;
 import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
+import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract MintReadmeToken is ERC721Enumerable, Ownable{
 
@@ -20,13 +19,6 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
     // 전체 토큰 id 목록
     uint256[] totalReadmeToken;
-
-    // 생성된 토큰 확인
-    event Mint(
-        uint256 indexed tokenId,
-        address indexed owner,
-        string indexed metadataURI
-    );
 
     constructor() ERC721("ReadmeNFT", "RMN") {}
 
@@ -67,24 +59,24 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
 
     // NFT 발행
-    function create(string memory _metadataURI, address saleReadmeToken) public returns (uint256) {
-        uint256 newTokenId = totalSupply() + 1; // 새로운 tokenId 생성
+    function create(string memory _metadataURI, address _saleReadmeToken, address _bidReadmeToken) public returns (uint256) {
+        address own = msg.sender;
+
+        uint256 newTokenId = SafeMath.add(totalSupply(), 1); // 새로운 tokenId 생성
 
         metadataURIs[newTokenId] = _metadataURI; // 메타 데이터 추가
 
-        _mint(msg.sender, newTokenId); // 민팅
+        _mint(own, newTokenId); // 민팅
 
-        ownedTokens[msg.sender].push(newTokenId); // 소유 목록 추가 
+        ownedTokens[own].push(newTokenId); // 소유 목록 추가 
 
-        // drawTokens[msg.sender].push(newTokenId); // 그린 목록 추가(그린 사람 = 민팅)
+        drawTokens[own].push(newTokenId); // 그린 목록 추가(그린 사람 = 민팅)
         
         totalReadmeToken.push(newTokenId); // 전체 토큰 목록에 추가
 
-        _approve(saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
+        _approve(_saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
 
-        // _approve(bidReadmeToken, newTokenId); // 경매 컨트랙트에 권한 부여
-
-        emit Mint(newTokenId, msg.sender, _metadataURI); // 생성 확인 로그(새로운 tokenId, 생성자, 메타데이터)
+        _approve(_bidReadmeToken, newTokenId); // 경매 컨트랙트에 권한 부여
 
         return newTokenId;
     }
@@ -92,13 +84,15 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
     // nft 판매 시, 소유한 토큰 목록 변경
     function removeTokenFromList(address _to, address _from, uint256 _tokenId) validAddress(_to) public {
-        uint256 tokenList = ownedTokens[_from].length; // 현재 소유토큰 개수 확인
+        uint256[] memory _ownedTokens = ownedTokens[_from]; // 판매자의 토큰 목록 확인
 
-        uint256 lasTokenIdx = tokenList - 1; // 마지막 인덱스 값
+        uint256 tokenList = _ownedTokens.length; // 현재 소유토큰 개수 확인
+
+        uint256 lasTokenIdx = SafeMath.sub(tokenList, 1); // 마지막 인덱스 값
 
         ownedTokens[_to].push(_tokenId); // 구매자의 nft 목록 추가
         
-        for(uint256 i = 0; i < tokenList; i ++){
+        for(uint256 i = 0; i < tokenList;){
 
             if(ownedTokens[_from][i] == _tokenId){
                 
@@ -107,6 +101,10 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
                 ownedTokens[_from].pop(); // 제거
                 
                 break;
+            }
+            
+            unchecked{
+                ++i;
             }
         }
     }

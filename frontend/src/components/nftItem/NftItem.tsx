@@ -6,8 +6,6 @@ import axios from "axios";
 import { selectSolveList } from "../../features/nft/nftSlice";
 import { truncatedAddress } from "../../features/auth/authSlice";
 
-import blank from "../../assets/template/template_word.svg";
-
 import styles from "./NftItem.module.css";
 
 const NftItem = (props: any) => {
