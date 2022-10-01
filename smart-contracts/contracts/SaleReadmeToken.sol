@@ -12,6 +12,7 @@ contract SaleReadmeToken is ReentrancyGuard{
     MintReadmeToken public mintReadmeToken;
 
     constructor (address _mintReadmeToken) {
+        
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
     }
 
