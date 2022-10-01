@@ -23,6 +23,12 @@ const LiveList = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [registerRoomName, setRegisterRoomName] = useState("");
   const [registrtHostAddress, setRegisterHostAddress] = useState("");
+
+  useEffect(() => {
+    socket?.emit("init_room");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (socket) {
       socket.on("connect", () => {
@@ -37,11 +43,13 @@ const LiveList = () => {
         dispatch(setRoomList(data));
       });
     }
-  }, [dispatch, socket]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   const closeModal = () => {
     setModalOpen(false);
   };
+
   const handleJoinRoom = () => {
     if (socket) {
       socket.emit(
@@ -72,12 +80,14 @@ const LiveList = () => {
       );
     }
   };
+
   const handleScroll = () => {
     moreRef.current?.scrollIntoView({
       block: "end",
       behavior: "smooth",
     });
   };
+
   return (
     <>
       <div className={styles.container}>
