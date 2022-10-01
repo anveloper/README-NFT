@@ -28,6 +28,11 @@ const AnswerBox = () => {
   const answerRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    console.log(answerLength);
+  }, [answerLength]);
+
   const handleAnswer = () => {
     if (!newAnswer) {
       answerRef.current?.focus();

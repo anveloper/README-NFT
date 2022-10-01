@@ -37,7 +37,7 @@ const Main = () => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const tabRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
-  
+
   const [view, setView] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [registerRoomName, setRegisterRoomName] = useState("");
@@ -70,7 +70,7 @@ const Main = () => {
       throttle((value: number) => {
         // console.log(value);
         if (value > 0 && view < 7) setView(view + 1);
-        else if (value > 0 && view === 7) return;
+        else if (value > 0 && view >= 7) return;
         else if (value < 0 && view >= 0) setView(view - 1);
       }, 200),
     [view]
@@ -91,17 +91,17 @@ const Main = () => {
         block: "start",
         behavior: "smooth",
       });
-    else if (view >= 1 && view < 3)
+    else if (view > 1 && view < 4)
       carouselRef.current.scrollIntoView({
         block: "start",
         behavior: "smooth",
       });
-    else if (view >= 3 && view < 5)
+    else if (view > 3 && view < 6)
       tabRef.current.scrollIntoView({
         block: "start",
         behavior: "smooth",
       });
-    else if (view >= 5 && view < 7)
+    else if (view > 5 && view < 8)
       mainRef.current.scrollIntoView({
         block: "end",
         behavior: "smooth",
