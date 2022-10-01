@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 
 // state
-import { NftConfig, selectCarouselList, selectRawList, selectSolveList, setCarouselList } from "../../nft/nftSlice";
+import {
+  NftConfig,
+  selectCarouselList,
+  selectRawList,
+  selectSolveList,
+  setCarouselList,
+} from "../../nft/nftSlice";
 
 // components
 import CarouselItem from "../../../components/nftItem/CarouselItem";
@@ -25,7 +31,13 @@ const Carousel = ({ carouselRef }: any) => {
       const result: NftConfig[] = [];
       let cnt = Math.min(rawList.length, 10);
       for (let i = 0; i < cnt; i++) {
-        const { metaDataURI, readmeTokenId, readmeTokenOwner, readmeTokenPrice, isActive } = rawList[i];
+        const {
+          metaDataURI,
+          readmeTokenId,
+          readmeTokenOwner,
+          readmeTokenPrice,
+          isActive,
+        } = rawList[rawList.length - 1 - i];
         if (!solveList.includes(Number(readmeTokenId)))
           // 임시방편
           result.push({
@@ -67,7 +79,14 @@ const Carousel = ({ carouselRef }: any) => {
         <Slider {...settings}>
           {carouselList.map((nft: NftConfig, i: number) => {
             return (
-              <div key={i} className={i === imageIndex ? `${styles.slide} ${styles.activeSlide}` : styles.slide}>
+              <div
+                key={i}
+                className={
+                  i === imageIndex
+                    ? `${styles.slide} ${styles.activeSlide}`
+                    : styles.slide
+                }
+              >
                 <CarouselItem nft={nft} metaDataURI={nft.metaDataURI} />
               </div>
             );
