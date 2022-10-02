@@ -8,11 +8,11 @@ import "./BatchMint.sol";
 contract DrawToken{
 
   IERC20 public wooToken;
-  BatchMint public batchMint;
+  MintReadmeToken public mintReadmeToken;
 
-  constructor (IERC20 _wooToken, address _batchMint){
+  constructor (IERC20 _wooToken, address _mintReadmeToken){
     wooToken = _wooToken;
-    batchMint = BatchMint(_batchMint);
+    mintReadmeToken = MintReadmeToken(_mintReadmeToken);
   }
 
   // 금액
@@ -21,14 +21,15 @@ contract DrawToken{
   address[] winnerList;
   // 중복 확인
   bool who;
+  // 이벤트 토큰 번호
+  uint256 number = 1;
 
   // 호출자: winner
-  function shareToken(uint256 _eventTokenId) public {
+  function shareToken() public {
     // 해당 컨트랙트에게 50000원을 사용할 권한을 미리 줘야함
-    require(winnerCount < 50, "Over");
-
+    require(winnerCount <= 50, "Over");
     address winner = msg.sender;
-    address woo = batchMint.ownerOf(_eventTokenId);
+    address woo = mintReadmeToken.ownerOf(number);
 
     // 당첨자 목록 확인
     for(uint256 i = 0; i < winnerList.length;){
@@ -53,7 +54,10 @@ contract DrawToken{
     winnerCount = SafeMath.add(winnerCount, 1);
 
     // NFT 소유권 변환
-    batchMint.safeTransferFrom(woo, winner, _eventTokenId);
+    mintReadmeToken.safeTransferFrom(woo, winner, number);
+
+    // 다음 토큰 번호
+    number += 1;
   }
 
   // get: 남은 인원 조회
