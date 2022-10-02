@@ -56,6 +56,9 @@ contract DrawToken{
     // NFT 소유권 변환
     mintReadmeToken.safeTransferFrom(woo, winner, number);
 
+    // 소유 토큰 목록 수정
+    mintReadmeToken.removeTokenFromList(winner, woo, number);
+
     // 다음 토큰 번호
     number += 1;
   }

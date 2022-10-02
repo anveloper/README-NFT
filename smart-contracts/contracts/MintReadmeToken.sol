@@ -41,6 +41,11 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
         return totalSupply();
     }
 
+    // get: 메타데이터 조회
+    function getMetadata(uint256 _tokenId) public view returns (string memory) {
+        return metadataURIs[_tokenId];
+    }
+
     // get: tokenId -> metadata
     function tokenURI(uint256 _tokenId) public view override returns (string memory) {
         return string(abi.encodePacked(metadataURIs[_tokenId]));
@@ -78,7 +83,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
     // get: 최초 정답자 조회
     function getTokenSolver(uint256 _tokenId) public view returns (address){
-        return solver[_tokenId]; // 만약 return이 address(0)이면 최초 정답자가 없는 것
+        return solver[_tokenId]; // 만약 return이 address(0) = 0X0000... 이면 최초 정답자가 없는 것
     }
 
     // get: 내가 맞춘 문제 리스트
@@ -87,23 +92,30 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     }
 
     // 이벤트 컨트랙트 발행(1~50번 먼저 발행해야함)
-    function batchNFT(address _drawToken) public {
+    function batchNFT(address _drawToken, address _saleReadmeToken, address _bidReadmeToken) public {
         address own = msg.sender;
 
         for(uint i = 0; i < 50;){
         
-        uint256 newTokenId = SafeMath.add(totalSupply(), 1);
-        
-        _mint(own, newTokenId); // 민팅
+            uint256 newTokenId = SafeMath.add(totalSupply(), 1);
+            
+            metadataURIs[newTokenId] = batchMint.tokenURI(newTokenId); // 메타데이터 추가
 
-        _approve(_drawToken, newTokenId); // 권한 부여
-        
-        metadataURIs[newTokenId] = batchMint.tokenURI(newTokenId);
-        
-        unchecked{
-            ++i;
-            }
-        }   
+            _mint(own, newTokenId); // 민팅
+
+            _approve(_drawToken, newTokenId); // 이벤트 컨트랙트의 권한 부여
+
+            _approve(_saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
+
+            _approve(_bidReadmeToken, newTokenId); // 경매 컨트랙트에 권한 부여
+
+            ownedTokens[own].push(newTokenId); // 소유 목록 추가
+            
+            
+            unchecked{
+                ++i;
+                }
+            }   
     }
 
 
@@ -147,6 +159,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     function solveReadmeToken(uint256 _questionId, string memory _solve, string memory _answer) public {
         // 호출자: 문제 풀이를 시도한 시림
         address candidate = msg.sender;
+        
         // 만약 정답일 경우, 목록에 추가
         if(keccak256(bytes(_solve)) == keccak256(bytes(_answer))){
 
