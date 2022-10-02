@@ -58,13 +58,13 @@ NFT에 관심을 갖고 있으면서 게임을 좋아하는 젊은 세대 및 �
 <br>
 
 ## 🔍프로젝트 정보
-- [설계 산출물](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/develop/exec/설계%20산출물/설계%20산출물.md)
-  - [기능명세서](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/develop/exec/설계%20산출물/기능명세서.pdf)
+- [설계 산출물](/exec/설계%20산출물/설계%20산출물.md)
+  - [기능명세서](/exec/설계%20산출물/기능명세서.pdf)
   - [ERD](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/981982d4-ddfe-41fd-a45c-6941d20af78b/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220929%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220929T043406Z&X-Amz-Expires=86400&X-Amz-Signature=0723c4bb4d1bafde91e4f219a34ad31995386ac1341f0e0119470e3ed957d389&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
-  - [API](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/feature/develop/exec/설계%20산출물/API%20DOC.pdf)
+  - [API](/exec/설계%20산출물/API%20DOC.pdf)
   - 와이어 프레임
 
-- [배포 메뉴얼](https://lab.ssafy.com/s07-blockchain-nft-sub2/S07P22B108/-/blob/develop/exec/배포%20메뉴얼.md)
+- [배포 메뉴얼](/exec/배포%20메뉴얼.md)
 - [실행 메뉴얼](/exec/실행%20메뉴얼.md)
 
 <br>
