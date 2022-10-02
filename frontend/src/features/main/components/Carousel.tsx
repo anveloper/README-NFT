@@ -54,7 +54,7 @@ const Carousel = ({ carouselRef }: any) => {
       dispatch(setCarouselList(result));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rawList]);
+  }, [rawList, solveList]);
   const [imageIndex, setImageIndex] = useState(0);
   const settings = {
     // infinite: true,
