@@ -13,6 +13,7 @@ const NftDetailModal = (props: any) => {
   const [inputAnswer, setInputAnswer] = useState("");
   const [isAnswer, setIsAnswer] = useState(false);
   const [infoMsg, setInfoMsg] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [likeButtonText, setLikeButtonText] = useState("찜하기");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -27,9 +28,13 @@ const NftDetailModal = (props: any) => {
       setInfoMsg("정답입니다.");
       dispatch(postProblem({ userAddress, tokenId }));
       dispatch(findSolveList(userAddress));
+      setInputAnswer("");
+      close();
     } else if (inputAnswer.length >= 1 && inputAnswer !== answer) {
       setIsAnswer(false);
       setInfoMsg("오답입니다! 다시 시도해보세요.");
+      setInputAnswer("");
+      inputRef?.current.focus();
     } else if (inputAnswer.length < 1) {
       setInfoMsg("정답을 입력해주세요.");
     }
@@ -115,6 +120,7 @@ const NftDetailModal = (props: any) => {
               <p className={styles.input_msg}>정답은 무엇일까요?</p>
               <div className={styles.input}>
                 <input
+                  ref={inputRef}
                   className={styles.input_text}
                   type="text"
                   name="inputAnswer"
