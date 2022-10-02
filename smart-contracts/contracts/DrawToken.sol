@@ -27,7 +27,7 @@ contract DrawToken{
   // 호출자: winner
   function shareToken() public {
     // 해당 컨트랙트에게 50000원을 사용할 권한을 미리 줘야함
-    require(winnerCount <= 50, "Over");
+    require(winnerCount < 50, "Over");
     address winner = msg.sender;
     address woo = mintReadmeToken.ownerOf(number);
 
