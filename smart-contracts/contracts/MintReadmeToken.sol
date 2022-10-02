@@ -111,11 +111,10 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
             ownedTokens[own].push(newTokenId); // 소유 목록 추가
             
-            
             unchecked{
                 ++i;
-                }
-            }   
+            }
+        }   
     }
 
 

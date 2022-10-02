@@ -8,14 +8,9 @@ import "./MintReadmeToken.sol";
 
 contract BatchMint is ERC721Enumerable, Ownable{
 
-  string public metadataURI;
+  string public metadataURI = 'ipfs.io/ipfs/QmTfKx3aDbfnWVjnYAtaJitUt3tC8iLf5J22waJAa8NxNo';
 
-  // tokenId -> metadata
-  mapping(uint256 => string) metadataURIs;
-
-  constructor(string memory _metadataURI) ERC721("ReadmeEvnetNFT", "REN") {
-    metadataURI = _metadataURI;
-  } 
+  constructor() ERC721("ReadmeEvnetNFT", "REN") {} 
 
   // get: tokenId -> metadata
   function tokenURI(uint _tokenId) override public view returns (string memory){
