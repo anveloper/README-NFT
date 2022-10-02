@@ -77,8 +77,8 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     }
 
     // get: 최초 정답자 조회
-    function getTokenSolver(uint256 _tokenId) public view returns (address) {
-        return solver[_tokenId];
+    function getTokenSolver(uint256 _tokenId) public view returns (address){
+        return solver[_tokenId]; // 만약 return이 address(0)이면 최초 정답자가 없는 것
     }
 
     // get: 내가 맞춘 문제 리스트
@@ -126,7 +126,13 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
         answer[newTokenId] = _answer; // 정답 추가
 
-        solver[newTokenId] = _solver; // 최초 정답자 추가: 없을 경우, 본인 address가 들어감
+        // 최초 정답자 추가: 없을 경우, 본인 address가 들어감
+        if(own == _solver){
+            solver[newTokenId] = address(0); 
+        }
+        else{
+            solver[newTokenId] = _solver; 
+        }
 
         _approve(_saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
 
