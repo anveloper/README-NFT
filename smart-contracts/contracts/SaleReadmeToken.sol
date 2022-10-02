@@ -5,13 +5,14 @@ import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "../node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./MintReadmeToken.sol";
-// 재진입 공격 방지
 
+// 재진입 공격 방지
 contract SaleReadmeToken is ReentrancyGuard{
     
     MintReadmeToken public mintReadmeToken;
 
     constructor (address _mintReadmeToken) {
+        
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
     }
 
@@ -39,6 +40,28 @@ contract SaleReadmeToken is ReentrancyGuard{
     mapping (uint256 => uint256) public readmeTokenEndTime;
     // 판매/경매에 등록된 토큰
     mapping(uint256 => bool) onActiveTokens;
+    
+
+    // get: 판매 중인 토큰 전체 목록 조회
+    function getOnSaleReadmeToken() public view returns (uint256[] memory) {
+        return onSaleReadmeToken;
+    }
+
+    // get: 개별 토큰 가격 조회
+    function getReadmeTokenPrice(uint256 _readmeTokenId) public view returns (uint256) {
+        return readmeTokenPrice[_readmeTokenId];
+    }
+
+    // 판매/경매 상태 확인
+    function getIsActive(uint256 _tokenId) public view returns (bool) {
+        return onActiveTokens[_tokenId];
+    }
+
+    // 판매/경매 상태 변경
+    function setIsActive(uint _tokenId, bool check) public {
+        onActiveTokens[_tokenId] = check;
+    }
+
 
     // 판매 등록: seller
     function setForSaleReadmeToken(
@@ -200,25 +223,7 @@ contract SaleReadmeToken is ReentrancyGuard{
     }
 
 
-    // get: 판매 중인 토큰 전체 목록 조회
-    function getOnSaleReadmeToken() public view returns (uint256[] memory) {
-        return onSaleReadmeToken;
-    }
-
-    // get: 개별 토큰 가격 조회
-    function getReadmeTokenPrice(uint256 _readmeTokenId) public view returns (uint256) {
-        return readmeTokenPrice[_readmeTokenId];
-    }
-
-    // 판매/경매 상태 확인
-    function getIsActive(uint256 _tokenId) public view returns (bool) {
-        return onActiveTokens[_tokenId];
-    }
-
-    // 판매/경매 상태 변경
-    function setIsActive(uint _tokenId, bool check) public {
-        onActiveTokens[_tokenId] = check;
-    }
+    
 
     // 시간 반환
     function parseTimestamp(uint timestamp) public pure returns (DateTime memory dt) {

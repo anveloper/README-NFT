@@ -52,6 +52,32 @@ contract BidReadmeToken is ReentrancyGuard{
     address highestBidder;
 
 
+    // get: 경매 중인 토큰 전체 목록 조회
+    function getTokenOnAuction() public view returns (uint256[] memory){
+        return onAuctionReadmeToken;
+    }
+
+    // get: 개별 토큰 가격 조회
+    function getReadmeTokenPrice(uint256 _readmeTokenId) public view returns (uint256) {
+        return readmeTokenPrice[_readmeTokenId];
+    }
+
+    // get: 현재 최고 입찰가 조회
+    function getReadmeTokenHigh(uint256 _readmeTokenId) public view returns (uint256) {
+        return nowHighestPrice[_readmeTokenId];
+    }
+
+    // get: 토큰 별 입찰 기록 조회
+    function getBidList(uint256 _readmeTokenId) public view returns (Bid[] memory){
+        return Bids[_readmeTokenId];
+    }
+
+    // get: 내가 경매 참여중인 NFT 정보 조회
+    function getMyAuction(address _bidder) public view returns (Token[] memory) {
+        return Tokens[_bidder];
+    }
+
+
     // 경매 등록: seller
     function enrollAuction(
         uint256 _readmeTokenId, 
@@ -265,31 +291,6 @@ contract BidReadmeToken is ReentrancyGuard{
                 ++i;
             }
         }
-    }
-
-    // get: 경매 중인 토큰 전체 목록 조회
-    function getTokenOnAuction() public view returns (uint256[] memory){
-        return onAuctionReadmeToken;
-    }
-
-    // get: 개별 토큰 가격 조회
-    function getReadmeTokenPrice(uint256 _readmeTokenId) public view returns (uint256) {
-        return readmeTokenPrice[_readmeTokenId];
-    }
-
-    // get: 현재 최고 입찰가 조회
-    function getReadmeTokenHigh(uint256 _readmeTokenId) public view returns (uint256) {
-        return nowHighestPrice[_readmeTokenId];
-    }
-
-    // get: 토큰 별 입찰 기록 조회
-    function getBidList(uint256 _readmeTokenId) public view returns (Bid[] memory){
-        return Bids[_readmeTokenId];
-    }
-
-    // get: 내가 경매 참여중인 NFT 정보 조회
-    function getMyAuction(address _bidder) public view returns (Token[] memory) {
-        return Tokens[_bidder];
     }
     
 }
