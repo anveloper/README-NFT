@@ -83,10 +83,13 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
             const tokenInfo = await MintReadmeContract.methods
               .tokenURI(response.data.nfts[i])
               .call();
-            tempNFTCardArray[i].readmeTokenId = response.data.nfts[i];
-            tempNFTCardArray[i].metaDataURI = tokenInfo;
-            tempNFTCardArray[i].readmeTokenOwner = null;
-            tempNFTCardArray[i].readmeTokenOwner = null;
+
+            tempNFTCardArray.push({
+              readmeTokenId: String(response.data.nfts[i]),
+              readmeTokenPrice: null,
+              readmeTokenOwner: null,
+              metaDataURI: tokenInfo,
+            });
           }
 
           setNFTCardArray([]);
