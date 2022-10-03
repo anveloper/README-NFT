@@ -6,7 +6,7 @@ const BidReadme = artifacts.require("BidReadmeToken");
 const Draw = artifacts.require("DrawToken");
 
 module.exports = async function (deployer) {
-  await deployer.deploy(MintReadme, Batch.address);
+  await deployer.deploy(MintReadme);
   await deployer.deploy(SaleReadme, MintReadme.address);
   await deployer.deploy(BidReadme, MintReadme.address, SaleReadme.address);
   await deployer.deploy(
