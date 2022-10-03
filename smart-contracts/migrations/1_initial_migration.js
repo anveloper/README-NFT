@@ -11,6 +11,7 @@ module.exports = async function (deployer) {
   await deployer.deploy(
     Draw,
     "0x0c54E456CE9E4501D2c43C38796ce3F06846C966",
-    MintReadme.address
+    MintReadme.address,
+    SaleReadme.address
   );
 };
