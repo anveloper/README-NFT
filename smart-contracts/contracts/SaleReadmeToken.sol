@@ -5,13 +5,14 @@ import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "../node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./MintReadmeToken.sol";
-// 재진입 공격 방지
 
+// 재진입 공격 방지
 contract SaleReadmeToken is ReentrancyGuard{
     
     MintReadmeToken public mintReadmeToken;
 
     constructor (address _mintReadmeToken) {
+        
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
     }
 
@@ -37,8 +38,17 @@ contract SaleReadmeToken is ReentrancyGuard{
     mapping (uint256 => uint256) public readmeTokenPrice;
     // 토큰 Id -> 시간
     mapping (uint256 => uint256) public readmeTokenEndTime;
-    // 판매/경매에 등록된 토큰
-    mapping(uint256 => bool) onActiveTokens;
+    
+
+    // get: 판매 중인 토큰 전체 목록 조회
+    function getOnSaleReadmeToken() public view returns (uint256[] memory) {
+        return onSaleReadmeToken;
+    }
+
+    // get: 개별 토큰 가격 조회
+    function getReadmeTokenPrice(uint256 _readmeTokenId) public view returns (uint256) {
+        return readmeTokenPrice[_readmeTokenId];
+    }
 
     // 판매 등록: seller
     function setForSaleReadmeToken(
@@ -55,8 +65,6 @@ contract SaleReadmeToken is ReentrancyGuard{
         require(seller == readmeTokenOwner, "Not Owner");
         // 가격은 0원 이상 설정
         require(_price > 0, "Zero Price");
-        // 판매/경매 등록 여부 확인
-        require(onActiveTokens[_readmeTokenId] != true, "Already on Market");
         // 가격 등록 확인
         require(readmeTokenPrice[_readmeTokenId] == 0, "Not On Sale");
 
@@ -67,8 +75,6 @@ contract SaleReadmeToken is ReentrancyGuard{
         readmeTokenEndTime[_readmeTokenId] = endTime;
         // 판매 등록 목록 수정
         onSaleReadmeToken.push(_readmeTokenId);
-        // 판매/경매 등록으로 변경
-        onActiveTokens[_readmeTokenId] = true;
 
         return parseTimestamp(endTime);
     }
@@ -88,8 +94,6 @@ contract SaleReadmeToken is ReentrancyGuard{
         
         // 시간 확인
         require(block.timestamp < readmeTokenEndTime[_readmeTokenId], "Time out!");
-        // 판매/경매 등록 여부 확인
-        require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 가격 등록 확인
         require(price > 0, "Not On Sale");
         // 구매자의 구매 능력 확인(=> 지갑 돈으로 바꿔야할 것같음)
@@ -106,11 +110,11 @@ contract SaleReadmeToken is ReentrancyGuard{
         // nft 전송: 판매자 -> 구매자
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
 
+        // 권한 부여
+        mintReadmeToken.approveNFT(buyer, address(this), true);
         
         // 가격을 수정(가격 = 0: 판매중아님)
         readmeTokenPrice[_readmeTokenId] = 0;
-        // 판매 중 목록에서 제거
-        setIsActive(_readmeTokenId, false);
         
         // 판매 중 목록 수정
         for(uint256 i = 0; i < onSaleReadmeToken.length;) {
@@ -138,8 +142,6 @@ contract SaleReadmeToken is ReentrancyGuard{
 
         // 시간 확인
         require(block.timestamp < readmeTokenEndTime[_readmeTokenId], "Time out!");
-        // 판매/경매 등록 여부 확인
-        require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 가격 등록 확인
         require(price > 0, "Not On Sale");
         // 취소자 == 판매자 
@@ -148,8 +150,6 @@ contract SaleReadmeToken is ReentrancyGuard{
         
         // 가격을 수정
         readmeTokenPrice[_readmeTokenId] = 0;
-        // 판매 중 목록에서 제거
-        setIsActive(_readmeTokenId, false);
         
         // 판매 중 목록 수정
         for(uint256 i = 0; i < onSaleReadmeToken.length;) {
@@ -176,15 +176,11 @@ contract SaleReadmeToken is ReentrancyGuard{
         require(refund == seller, "No Owner");
         // 시간 확인
         require(block.timestamp > readmeTokenEndTime[_readmeTokenId], "Time out!");
-        // 판매/경매 등록 여부 확인
-        require(onActiveTokens[_readmeTokenId] == true, "Not on Sale");
         // 가격 등록 확인
         require(price > 0, "Not On Sale");
         
         // 가격을 수정
         readmeTokenPrice[_readmeTokenId] = 0;
-        // 판매 중 목록에서 제거
-        setIsActive(_readmeTokenId, false);
         
         // 판매 중 목록 수정
         for(uint256 i = 0; i < onSaleReadmeToken.length;) {
@@ -200,25 +196,7 @@ contract SaleReadmeToken is ReentrancyGuard{
     }
 
 
-    // get: 판매 중인 토큰 전체 목록 조회
-    function getOnSaleReadmeToken() public view returns (uint256[] memory) {
-        return onSaleReadmeToken;
-    }
-
-    // get: 개별 토큰 가격 조회
-    function getReadmeTokenPrice(uint256 _readmeTokenId) public view returns (uint256) {
-        return readmeTokenPrice[_readmeTokenId];
-    }
-
-    // 판매/경매 상태 확인
-    function getIsActive(uint256 _tokenId) public view returns (bool) {
-        return onActiveTokens[_tokenId];
-    }
-
-    // 판매/경매 상태 변경
-    function setIsActive(uint _tokenId, bool check) public {
-        onActiveTokens[_tokenId] = check;
-    }
+    
 
     // 시간 반환
     function parseTimestamp(uint timestamp) public pure returns (DateTime memory dt) {

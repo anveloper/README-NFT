@@ -137,7 +137,13 @@ const TestPage = () => {
             // );
             console.log(account);
             MintReadmeContract.methods
-              .create(tokenURI, process.env.REACT_APP_SALEREADMETOKEN_CA)
+              .create(
+                tokenURI,
+                process.env.REACT_APP_SALEREADMETOKEN_CA,
+                process.env.REACT_APP_BIDREADMETOKEN,
+                "0xF5C110E4Cf6e82f737FFaDC7a6bC2b8bf1EcD4d5",
+                "0xF5C110E4Cf6e82f737FFaDC7a6bC2b8bf1EcD4d5"
+              )
               .send({ from: account })
               .then((receipt) => {
                 console.log(receipt);
@@ -203,11 +209,6 @@ const TestPage = () => {
       });
   };
   const getOnSale = () => {
-    SaleReadmeContract.methods
-      .getOnSaleReadmeTokenArrayLength()
-      .call((err, res) => {
-        console.log(res);
-      });
     SaleReadmeContract.methods.getOnSaleReadmeToken().call((err, res) => {
       console.log(res);
     });
@@ -411,6 +412,21 @@ const TestPage = () => {
       <button onClick={addNet}>싸트워크 추가하기</button>
       <h2>ssf token import 하기</h2>
       <button onClick={isTokenImported}>ssftoken import하기</button>
+      <button
+        onClick={() => {
+          MintReadmeContract.methods
+            .batchNFT(
+              process.env.REACT_APP_DRAWTOKEN,
+              process.env.REACT_APP_SALEREADMETOKEN_CA
+            )
+            .send({ from: account })
+            .then((receipt) => {
+              console.log(receipt);
+            });
+        }}
+      >
+        배치민팅 받기 김우원만 누르셈
+      </button>
     </div>
   );
 };

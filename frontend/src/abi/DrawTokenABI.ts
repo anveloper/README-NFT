@@ -8,9 +8,47 @@ export const DrawToken: AbiItem[] = [
         name: "_wooToken",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "_mintReadmeToken",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_saleReadmeToken",
+        type: "address",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "mintReadmeToken",
+    outputs: [
+      {
+        internalType: "contract MintReadmeToken",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [],
+    name: "saleReadmeToken",
+    outputs: [
+      {
+        internalType: "contract SaleReadmeToken",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
   },
   {
     inputs: [],
