@@ -5,7 +5,6 @@ import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "./BatchMint.sol";
 
 contract MintReadmeToken is ERC721Enumerable, Ownable{
 
@@ -30,12 +29,9 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     // 전체 토큰 id 목록
     uint256[] totalReadmeToken;
 
-    BatchMint public batchMint;
     string public metadataURI = 'ipfs.io/ipfs/QmcXmGLeFNbVzAWjYxGiv3u9mqiyqX7kQTveH8WuYWLfxR';
 
-    constructor(address _batchMint) ERC721("ReadmeNFT", "RMN") {
-        batchMint = BatchMint(_batchMint);
-    }
+    constructor() ERC721("ReadmeNFT", "RMN") {}
 
     // get: 현재 발행된 nft 개수
     function getCurrentNft() public view returns (uint256) {

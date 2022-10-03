@@ -4,10 +4,8 @@ const SaleReadme = artifacts.require("SaleReadmeToken");
 const GetReadme = artifacts.require("GetReadmeToken");
 const BidReadme = artifacts.require("BidReadmeToken");
 const Draw = artifacts.require("DrawToken");
-const Batch = artifacts.require("BatchMint");
 
 module.exports = async function (deployer) {
-  await deployer.deploy(Batch);
   await deployer.deploy(MintReadme, Batch.address);
   await deployer.deploy(SaleReadme, MintReadme.address);
   await deployer.deploy(BidReadme, MintReadme.address, SaleReadme.address);
