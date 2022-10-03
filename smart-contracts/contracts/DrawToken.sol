@@ -4,16 +4,21 @@ pragma solidity ^0.8.4;
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "../node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "./MintReadmeToken.sol";
+import "./SaleReadmeToken.sol";
 
 contract DrawToken is ReentrancyGuard{
 
   IERC20 public wooToken;
+  SaleReadmeToken public saleReadmeToken;
   MintReadmeToken public mintReadmeToken;
 
-  constructor (IERC20 _wooToken, address _mintReadmeToken){
+  constructor (IERC20 _wooToken, address _mintReadmeToken, address _saleReadmeToken)
+  {
     wooToken = _wooToken;
     mintReadmeToken = MintReadmeToken(_mintReadmeToken);
+    saleReadmeToken = SaleReadmeToken(_saleReadmeToken);
   }
 
   // 금액
@@ -55,10 +60,12 @@ contract DrawToken is ReentrancyGuard{
     winnerCount = SafeMath.add(winnerCount, 1);
 
     // NFT 소유권 변환
-    mintReadmeToken.safeTransferFrom(woo, winner, number);
+    mintReadmeToken.transferFrom(woo, winner, number);
 
     // 소유 토큰 목록 수정
     mintReadmeToken.removeTokenFromList(winner, woo, number);
+
+    mintReadmeToken.approveNFT(winner, address(saleReadmeToken), true); // 권한 부여
 
     // 다음 토큰 번호
     number += 1;

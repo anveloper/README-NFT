@@ -107,9 +107,12 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
             _mint(own, newTokenId); // 민팅
 
-            _approve(_drawToken, newTokenId); // 이벤트 컨트랙트의 권한 부여
+            // _approve(_drawToken, newTokenId); // 이벤트 컨트랙트의 권한 부여
+            // _setApprovalForAll(own, _drawToken, true);
+            approveNFT(own, _drawToken, true);
 
-            _approve(_saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
+            //_approve(_saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
+            approveNFT(own, _saleReadmeToken, true);
 
             ownedTokens[own].push(newTokenId); // 소유 목록 추가
             
@@ -117,6 +120,11 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
                 ++i;
             }
         }   
+    }
+
+    // 권한 부여
+    function approveNFT(address _from, address _to, bool _approved) public {
+        _setApprovalForAll(_from, _to, _approved);
     }
 
 
@@ -147,8 +155,9 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
             solver[newTokenId] = _solver; 
         }
 
-        _approve(_saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
-
+        // _approve(_saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
+        approveNFT(own, _saleReadmeToken, true);
+        
         return newTokenId;
     }
 

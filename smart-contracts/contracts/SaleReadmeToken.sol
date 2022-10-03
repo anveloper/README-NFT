@@ -110,6 +110,8 @@ contract SaleReadmeToken is ReentrancyGuard{
         // nft 전송: 판매자 -> 구매자
         mintReadmeToken.safeTransferFrom(readmeTokenOwner, buyer, _readmeTokenId);
 
+        // 권한 부여
+        mintReadmeToken.approveNFT(buyer, address(this), true);
         
         // 가격을 수정(가격 = 0: 판매중아님)
         readmeTokenPrice[_readmeTokenId] = 0;
