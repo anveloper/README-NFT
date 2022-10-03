@@ -7,10 +7,10 @@ import axios from "axios";
 import { Metadata } from "features/nft/nftSlice";
 
 import styles from "./SNS.module.css";
+import MoveSale from "./components/MoveSale";
+import MoveGame from "./components/MoveGame";
 
-const web3 = new Web3(
-  new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
-);
+const web3 = new Web3(process.env.REACT_APP_ETHEREUM_RPC_URL);
 const MintReadmeContract = new web3.eth.Contract(
   MintReadmeToken,
   process.env.REACT_APP_MINTREADMETOKEN_CA
@@ -50,56 +50,35 @@ const SNS = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, tokenId]);
 
-  const moveLive = () => {
-    navigate("/live");
-  };
-  const moveMarket = () => {
-    navigate("/sale");
-  };
   return (
     <div className={styles.container}>
       <div className={styles.btnGroup}>
-        <button className={`${styles.btn} ${styles.lg}`} onClick={moveLive}>
-          리드미
-          <br />
-          게임하러
-          <br />
-          가기
-        </button>
+        <MoveGame className={`${styles.btn} ${styles.lg}`} />
       </div>
-      <div className={styles.card}>
-        <img
-          className={styles.img}
-          src={rtk.imageURL}
-          alt={`README ${tokenId}번째 토큰 이미지 `}
-        />
-        <div>
-          <div>리드미 : {rtk.name}</div>
+      <div className={styles.content}>
+        <div className={styles.title}>README 🎨 내 마음을 읽어줘</div>
+        <div className={styles.card}>
+          <img
+            className={styles.img}
+            src={rtk.imageURL}
+            alt={`README ${tokenId}번째 토큰 이미지 `}
+          />
           <div>
-            <p>그린 사람</p>
-            <p className={styles.address}>{rtk.author}</p>
-          </div>
-          <div>
-            <p>맞춘 사람</p>
-            <p className={styles.address}>{rtk.description}</p>
+            <div>리드미 : {rtk.name}</div>
+            <div>
+              <p>그린 사람</p>
+              <p className={styles.address}>{rtk.author}</p>
+            </div>
+            <div>
+              <p>맞춘 사람</p>
+              <p className={styles.address}>{rtk.description}</p>
+            </div>
           </div>
         </div>
       </div>
       <div className={styles.btnGroup}>
-        <button className={`${styles.btn} ${styles.sm}`} onClick={moveLive}>
-          리드미
-          <br />
-          게임하러
-          <br />
-          가기
-        </button>
-        <button className={styles.btn} onClick={moveMarket}>
-          NFT
-          <br />
-          구경하러
-          <br />
-          가기
-        </button>
+        <MoveGame className={`${styles.btn} ${styles.sm}`} />
+        <MoveSale />
       </div>
       <p className={styles.fileName}>{rtk.fileName}</p>
     </div>

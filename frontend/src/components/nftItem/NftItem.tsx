@@ -53,14 +53,17 @@ const NftItem = (props: any) => {
   }, [props, solveList]);
   const renderName = () => {
     const result = [];
-    for (let i = 0; i < answer.length; i++) {
-      result.push(
-        <p key={i} className={styles.answer}>
-          {solved ? answer[i] : "　"}
-        </p>
-      );
-    }
-    return result;
+    console.log("nftItem", props);
+    if (answer) {
+      for (let i = 0; i < answer.length; i++) {
+        result.push(
+          <p key={i} className={styles.answer}>
+            {solved ? answer[i] : "　"}
+          </p>
+        );
+      }
+      return result;
+    } else return <p className={styles.answer}>{"　"}</p>;
   };
   return (
     <button
