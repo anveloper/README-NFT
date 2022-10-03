@@ -3,17 +3,14 @@ pragma solidity ^0.8.4;
 
 import "./MintReadmeToken.sol";
 import "./SaleReadmeToken.sol";
-import "./BidReadmeToken.sol";
 
 contract GetReadmeToken{
     MintReadmeToken public mintReadmeToken;
     SaleReadmeToken public saleReadmeToken;
-    BidReadmeToken public bidReadmeToken;
 
-    constructor (address _mintReadmeToken, address _saleReadmeToken, address _bidReadmeToken) {
+    constructor (address _mintReadmeToken, address _saleReadmeToken) {
         mintReadmeToken = MintReadmeToken(_mintReadmeToken);
         saleReadmeToken = SaleReadmeToken(_saleReadmeToken);
-        bidReadmeToken = BidReadmeToken(_bidReadmeToken);
     }
 
     // 토큰 정보 : id, 가격, 소유주, 메타데이터
@@ -133,34 +130,6 @@ contract GetReadmeToken{
         }
 
         return drawReadmeTokendata;
-    }
-
-    // get: 전체 경매중인 토큰 조회
-    function getAuctionToken() public view returns (ReadmeTokenData[] memory) {
-        // 경매중인 토큰 목록
-        uint256[] memory onAuctionReadmeToken = bidReadmeToken.getTokenOnAuction();
-        // 경매중인 토큰 개수 확인
-        uint256 readmeTokenCount = onAuctionReadmeToken.length;
-
-        // 비어있는 목록인지 확인
-        require(readmeTokenCount > 0, "Not exist on sale token");
-
-        ReadmeTokenData[] memory onAuctionReadmeTokendata = new ReadmeTokenData[](readmeTokenCount);
-
-        for(uint256 i = 0; i < readmeTokenCount;){
-            uint256 readmeTokenId = onAuctionReadmeToken[i]; // tokenId
-            uint256 readmeTokenPrice = saleReadmeToken.getReadmeTokenPrice(readmeTokenId); // price
-            address readmeTokenOwner = mintReadmeToken.ownerOf(readmeTokenId); // 소유주
-            string memory metaDataURI = mintReadmeToken.tokenURI(readmeTokenId); // 메타데이터
-
-            onAuctionReadmeTokendata[i] = ReadmeTokenData(readmeTokenId, readmeTokenPrice, readmeTokenOwner, metaDataURI);
-
-            unchecked{
-                ++i;
-            }
-        }
-
-        return onAuctionReadmeTokendata;
     }
 
 }
