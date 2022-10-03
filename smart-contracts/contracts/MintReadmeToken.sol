@@ -29,7 +29,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     // 전체 토큰 id 목록
     uint256[] totalReadmeToken;
 
-    string public metadataURI = 'ipfs.io/ipfs/QmcXmGLeFNbVzAWjYxGiv3u9mqiyqX7kQTveH8WuYWLfxR';
+    string public metadataURI = 'https://ipfs.io/ipfs/QmP4NwDndDHYR2sYJohSi5ctsAxWCB1r2uyzo9W6KZaf4L';
 
     constructor() ERC721("ReadmeNFT", "RMN") {}
 
