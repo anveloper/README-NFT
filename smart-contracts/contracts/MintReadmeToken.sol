@@ -31,6 +31,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     uint256[] totalReadmeToken;
 
     BatchMint public batchMint;
+    string public metadataURI = 'ipfs.io/ipfs/QmcXmGLeFNbVzAWjYxGiv3u9mqiyqX7kQTveH8WuYWLfxR';
 
     constructor(address _batchMint) ERC721("ReadmeNFT", "RMN") {
         batchMint = BatchMint(_batchMint);
@@ -48,7 +49,14 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
     // get: tokenId -> metadata
     function tokenURI(uint256 _tokenId) public view override returns (string memory) {
-        return string(abi.encodePacked(metadataURIs[_tokenId]));
+
+        if (_tokenId <= 50 ){
+            return string(abi.encodePacked(metadataURI, '/', _tokenId, '.json'));
+        }
+        else{
+            return string(abi.encodePacked(metadataURIs[_tokenId]));
+        }
+        
     }
 
     // get: 내 주소 -> 소유 nft tokenId
@@ -99,7 +107,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
         
             uint256 newTokenId = SafeMath.add(totalSupply(), 1);
             
-            metadataURIs[newTokenId] = batchMint.tokenURI(newTokenId); // 메타데이터 추가
+            metadataURIs[newTokenId] = tokenURI(newTokenId); // 메타데이터 추가
 
             _mint(own, newTokenId); // 민팅
 
