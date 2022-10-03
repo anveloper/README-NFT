@@ -54,29 +54,33 @@ const NftSaleList = () => {
   }, []);
 
   return (
-    <div className={styles.back}>
-      <div className={styles.container}>
-        <div className={styles.contents}>
-          <div>분류창</div>
-          <div>어떤 기준에 분류를 할까</div>
-          <div>css는 점차 수정할게요...</div>
-        </div>
-        <div className={styles.contents}>
-          {saleList.map((v: IMyMintList) => {
-            return (
-              <div className={styles.card_container} key={v.tokenId} onClick={() => navigator("/detail/" + v.tokenId)}>
-                <div className={styles.card}>
-                  <div className={styles.img_sq}>
-                    <img className={styles.img} src={v.imageURL} alt="NFT이미지" width={300} />
+    <>
+      <div className={styles.back}>
+        <div className={styles.top_info}>여기</div>
+      </div>
+      <div className={styles.back}>
+        <div className={styles.container}>
+          <div className={styles.contents}>
+            <div>분류창</div>
+            <div>어떤 기준에 분류를 할까</div>
+            <div>css는 점차 수정할게요...</div>
+          </div>
+          <div className={styles.contents}>
+            {saleList.map((v: IMyMintList) => {
+              return (
+                <div className={styles.card_container} key={v.tokenId} onClick={() => navigator("/detail/" + v.tokenId)}>
+                  <div className={styles.card}>
+                    <div className={styles.img_sq}>
+                      <img className={styles.img} src={v.imageURL} alt="NFT이미지" width={300} />
+                    </div>
                   </div>
-                  <p>{v.name}</p>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
