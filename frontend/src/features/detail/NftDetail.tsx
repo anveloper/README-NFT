@@ -21,9 +21,9 @@ const NftDetail = () => {
   const nftDetail = useAppSelector(selectNftDetail);
   const nftPrice = useAppSelector(selectNftPrice);
   const nftOwner = useAppSelector(selectNftOwner);
-  const isActive = useAppSelector(selectIsActive);
   const userAddress = useAppSelector(selectUserAddress);
   const [tab, setTab] = useState("info");
+  const [isSale, setIsSale] = useState(false);
 
   const getMetadata = async () => {
     try {
@@ -44,8 +44,10 @@ const NftDetail = () => {
     try {
       const nftPrice = await SaleReadmeContract.methods.getReadmeTokenPrice(tokenId).call();
       const nftOwner = await MintReadmeContract.methods.ownerOf(tokenId).call();
-      const isActive = await SaleReadmeContract.methods.getIsActive(tokenId).call();
-      dispatch(setIsActive(isActive));
+      if (nftPrice !== "0") {
+        setIsSale(true);
+      }
+      dispatch(setIsActive(isSale));
       dispatch(setNftPrice(nftPrice));
       dispatch(setNftOwner(nftOwner));
     } catch (error) {
@@ -60,30 +62,30 @@ const NftDetail = () => {
   }, []);
 
   return (
-    <div className={styles.sell_background}>
-      <BackgroundFlower />
-      <div className={styles.detail}>
-        <div className={styles.detail_container}>
-          <NftDetailCard tokenId={tokenId} nftDetail={nftDetail} nftPrice={nftPrice} nftOwner={nftOwner} />
+    // <div className={styles.sell_background}>
+    //   <BackgroundFlower />
+    <div className={styles.detail}>
+      <div className={styles.detail_container}>
+        <NftDetailCard tokenId={tokenId} nftDetail={nftDetail} nftPrice={nftPrice} nftOwner={nftOwner} />
+        {
           {
-            {
-              info: (
-                <NftDetailInfo
-                  tokenId={tokenId}
-                  nftDetail={nftDetail}
-                  nftPrice={nftPrice}
-                  isActive={isActive}
-                  nftOwner={nftOwner}
-                  userAddress={userAddress}
-                  setTab={setTab}
-                />
-              ),
-              sell: <NftSell />,
-            }[tab]
-          }
-        </div>
+            info: (
+              <NftDetailInfo
+                tokenId={tokenId}
+                nftDetail={nftDetail}
+                nftPrice={nftPrice}
+                isActive={isSale}
+                nftOwner={nftOwner}
+                userAddress={userAddress}
+                setTab={setTab}
+              />
+            ),
+            sell: <NftSell />,
+          }[tab]
+        }
       </div>
     </div>
+    // </div>
   );
 };
 
