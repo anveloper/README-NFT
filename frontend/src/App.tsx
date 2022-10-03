@@ -5,10 +5,11 @@ import { Routes, Route, useLocation } from "react-router-dom";
 // state
 import { login, loginUser, selectUserAddress } from "./features/auth/authSlice";
 // components
-import Navbar from "./components/Navbar";
+import Navbar from "./components/nav/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
 // page
 import Main from "./features/main/Main";
+import Mint from "./features/mint/Mint";
 import LiveList from "./features/main/LiveList";
 import NFTList from "./features/main/NFTList";
 import Detail from "./features/detail/NftDetail";
@@ -24,15 +25,16 @@ import styles from "./App.module.css";
 import TestPage from "./testWeb3/TestPage";
 
 import NFTSale from "./features/nft/NftSaleList";
-import Mint from "./features/mint/Mint";
 import MyMintList from "./features/mint/MyMintList";
 import MetaMaskOnboarding from "@metamask/onboarding";
+import DevRoute from "routes/DevRoute";
+import Milestone from "routes/Milestone";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
   const { pathname } = useLocation();
+  const isGame = pathname.startsWith("/game");
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     async function handleNewAccounts() {
       const accounts = await window.ethereum.request({
@@ -49,13 +51,14 @@ function App() {
     return () => {
       window.ethereum.removeListener("accountsChanged", handleNewAccounts);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className={styles.container}>
-      {userAddress ? (
-        <div>
+      <Milestone>
+        <>
           <BackgroundCloud />
-          {pathname.length < 16 && <Navbar />}
+          {!isGame && <Navbar />}
           <div className={styles.content}>
             <Routes>
               <Route path="/" element={<Main />}>
@@ -63,22 +66,33 @@ function App() {
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>
-              <Route path="/mint" element={<Mint account={userAddress} />} />
+              <Route path="/mint" element={<Mint />} />
               <Route path="/detail/:tokenId" element={<Detail />} />
-              <Route path="/temp-list" element={<MyMintList account={userAddress} />} />
+              <Route
+                path="/temp-list"
+                element={<MyMintList account={userAddress} />}
+              />
               <Route path="/sale" element={<NFTSale />} />
 
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
-              <Route path="/mypage" element={<MyPage account={userAddress} />} />
-              <Route path="/test" element={<TestPage />} />
+              <Route
+                path="/mypage"
+                element={<MyPage account={userAddress} />}
+              />
+              <Route
+                path="/test"
+                element={
+                  <DevRoute>
+                    <TestPage />
+                  </DevRoute>
+                }
+              />
             </Routes>
           </div>
-        </div>
-      ) : (
-        <Welcome />
-      )}
+        </>
+      </Milestone>
     </div>
   );
 }

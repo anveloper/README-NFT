@@ -4,14 +4,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { selectSolveList } from "../../features/nft/nftSlice";
-import { truncatedAddress } from "../../features/auth/authSlice";
-
-import blank from "../../assets/template/template_word.svg";
+import {
+  selectUserAddress,
+  truncatedAddress,
+} from "../../features/auth/authSlice";
 
 import styles from "./NftItem.module.css";
 
 const NftItem = (props: any) => {
   const solveList = useAppSelector(selectSolveList);
+  const userAddress = useAppSelector(selectUserAddress);
   const { nft, lastRef } = props;
   const [solved, setSolved] = useState(
     solveList.includes(Number(nft.readmeTokenId))
@@ -20,6 +22,7 @@ const NftItem = (props: any) => {
   const [answer, setAnswer] = useState("");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
+  const [onwer, setOwner] = useState("");
   const [description, setDescription] = useState("");
   const [imageURL, setImageURL] = useState("");
   const navigator = useNavigate();
@@ -28,8 +31,8 @@ const NftItem = (props: any) => {
     await axios({ url: metaDataURI })
       .then((res: any) => {
         const { fileName, name, author, description, imageURL } = res.data;
-        setFileName(solved ? fileName : "???");
-        setName(solved ? name : "???");
+        setFileName(solved || userAddress === onwer ? fileName : "???");
+        setName(solved || userAddress === onwer ? name : "???");
         setAnswer(name);
         setAuthor(author);
         setDescription(description);
@@ -43,10 +46,11 @@ const NftItem = (props: any) => {
   };
 
   useEffect(() => {
-    const { metaDataURI } = props;
-    getMetadata(metaDataURI);
+    const { nft } = props;
+    setOwner(nft.readmeTokenOwner);
+    getMetadata(nft.metaDataURI);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props]);
+  }, [props, solveList]);
   const renderName = () => {
     const result = [];
     for (let i = 0; i < answer.length; i++) {

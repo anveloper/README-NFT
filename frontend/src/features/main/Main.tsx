@@ -25,9 +25,9 @@ import { throttle } from "lodash";
 import { reload, SocketContext } from "../../socketConfig";
 import { findSolveList, setRawList } from "../nft/nftSlice";
 import { GetReadmeContract } from "../../web3Config";
+import SaleButton from "./components/SaleButton";
 
 const Main = () => {
-  // const socket = useAppSelector(selectSocket);
   const socket = useContext(SocketContext);
   const userAddress = useAppSelector(selectUserAddress);
   const userName = useAppSelector(selectUserName);
@@ -37,7 +37,7 @@ const Main = () => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const tabRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
-  // const view = useAppSelector(sview);
+
   const [view, setView] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [registerRoomName, setRegisterRoomName] = useState("");
@@ -52,7 +52,7 @@ const Main = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    dispatch(findSolveList(userAddress))
+    dispatch(findSolveList(userAddress));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAddress]);
   useEffect(() => {
@@ -69,8 +69,8 @@ const Main = () => {
     () =>
       throttle((value: number) => {
         // console.log(value);
-        if (value > 0 && view < 6) setView(view + 1);
-        else if (value > 0 && view === 6) setView(5);
+        if (value > 0 && view < 7) setView(view + 1);
+        else if (value > 0 && view >= 7) return;
         else if (value < 0 && view >= 0) setView(view - 1);
       }, 200),
     [view]
@@ -91,21 +91,22 @@ const Main = () => {
         block: "start",
         behavior: "smooth",
       });
-    else if (view === 1)
+    else if (view > 1 && view < 4)
       carouselRef.current.scrollIntoView({
         block: "start",
         behavior: "smooth",
       });
-    else if (view === 2)
+    else if (view > 3 && view < 6)
       tabRef.current.scrollIntoView({
         block: "start",
         behavior: "smooth",
       });
-    else
+    else if (view > 5 && view < 8)
       mainRef.current.scrollIntoView({
         block: "end",
         behavior: "smooth",
       });
+    else return;
   }, [view]);
 
   useEffect(() => {
@@ -178,6 +179,7 @@ const Main = () => {
           />
         </div>
       </Modal>
+      <SaleButton />
       {socket && socket.connected && <RoomButton setModalOpen={setModalOpen} />}
     </div>
   );

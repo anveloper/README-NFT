@@ -1,8 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectUserAddress } from "../auth/authSlice";
 import { findSolveList, postProblem } from "../nft/nftSlice";
+import axios from "api/Axios";
+import api from "api/api";
 import styles from "./NftDetailModal.module.css";
 
 const NftDetailModal = (props: any) => {
@@ -11,6 +13,8 @@ const NftDetailModal = (props: any) => {
   const [inputAnswer, setInputAnswer] = useState("");
   const [isAnswer, setIsAnswer] = useState(false);
   const [infoMsg, setInfoMsg] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [likeButtonText, setLikeButtonText] = useState("찜하기");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -24,9 +28,13 @@ const NftDetailModal = (props: any) => {
       setInfoMsg("정답입니다.");
       dispatch(postProblem({ userAddress, tokenId }));
       dispatch(findSolveList(userAddress));
+      setInputAnswer("");
+      close();
     } else if (inputAnswer.length >= 1 && inputAnswer !== answer) {
       setIsAnswer(false);
       setInfoMsg("오답입니다! 다시 시도해보세요.");
+      setInputAnswer("");
+      inputRef?.current.focus();
     } else if (inputAnswer.length < 1) {
       setInfoMsg("정답을 입력해주세요.");
     }
@@ -36,6 +44,51 @@ const NftDetailModal = (props: any) => {
     console.log("true");
     navigate("/detail/" + tokenId);
   };
+
+  const likeNFT = async (tokenId: number) => {
+    await axios
+      .put(api.like.likeNFT(), {
+        tokenId: tokenId,
+        walletAddress: userAddress,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.data.count === 1) {
+          setLikeButtonText("찜하기 취소");
+        } else {
+          setLikeButtonText("찜하기");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    const checkLikeNFT = async () => {
+      await axios
+        .put(api.like.likeNFT(), {
+          tokenId: parseInt(tokenId),
+          walletAddress: userAddress,
+        })
+        .then(async (res) => {
+          if (res.data.count === 1) {
+            setLikeButtonText("찜하기");
+            await axios.put(api.like.likeNFT(), {
+              tokenId: parseInt(tokenId),
+              walletAddress: userAddress,
+            });
+          } else {
+            setLikeButtonText("찜하기 취소");
+            await axios.put(api.like.likeNFT(), {
+              tokenId: parseInt(tokenId),
+              walletAddress: userAddress,
+            });
+          }
+        });
+    };
+    checkLikeNFT();
+  }, []);
 
   return (
     <div className={styles.MyModal}>
@@ -67,6 +120,7 @@ const NftDetailModal = (props: any) => {
               <p className={styles.input_msg}>정답은 무엇일까요?</p>
               <div className={styles.input}>
                 <input
+                  ref={inputRef}
                   className={styles.input_text}
                   type="text"
                   name="inputAnswer"
@@ -109,7 +163,12 @@ const NftDetailModal = (props: any) => {
               >
                 자세히 보기
               </button>
-              <button className={styles.card_button_on}>찜하기</button>
+              <button
+                className={styles.card_button_on}
+                onClick={() => likeNFT(parseInt(tokenId))}
+              >
+                {likeButtonText}
+              </button>
             </div>
           </div>
         </div>

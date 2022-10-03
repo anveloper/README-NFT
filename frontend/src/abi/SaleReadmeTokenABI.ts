@@ -8,39 +8,9 @@ export const SaleReadmeToken: AbiItem[] = [
         name: "_mintReadmeToken",
         type: "address",
       },
-      {
-        internalType: "address",
-        name: "addressOfSSF",
-        type: "address",
-      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "msgsender",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "msgvalue",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "msgsenderbalance",
-        type: "uint256",
-      },
-    ],
-    name: "Logs",
-    type: "event",
   },
   {
     inputs: [],
@@ -117,19 +87,33 @@ export const SaleReadmeToken: AbiItem[] = [
     constant: true,
   },
   {
+    inputs: [],
+    name: "getOnSaleReadmeToken",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
     inputs: [
+      {
+        internalType: "uint256",
+        name: "_readmeTokenId",
+        type: "uint256",
+      },
+    ],
+    name: "getReadmeTokenPrice",
+    outputs: [
       {
         internalType: "uint256",
         name: "",
         type: "uint256",
-      },
-    ],
-    name: "sellerTest",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
       },
     ],
     stateMutability: "view",
@@ -155,7 +139,45 @@ export const SaleReadmeToken: AbiItem[] = [
       },
     ],
     name: "setForSaleReadmeToken",
-    outputs: [],
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint16",
+            name: "year",
+            type: "uint16",
+          },
+          {
+            internalType: "uint8",
+            name: "month",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "day",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "hour",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "minute",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "second",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct SaleReadmeToken.DateTime",
+        name: "dt",
+        type: "tuple",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -204,30 +226,54 @@ export const SaleReadmeToken: AbiItem[] = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "getOnSaleReadmeTokenArrayLength",
-    outputs: [
+    inputs: [
       {
         internalType: "uint256",
-        name: "",
+        name: "timestamp",
         type: "uint256",
       },
     ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [],
-    name: "getOnSaleReadmeToken",
+    name: "parseTimestamp",
     outputs: [
       {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
+        components: [
+          {
+            internalType: "uint16",
+            name: "year",
+            type: "uint16",
+          },
+          {
+            internalType: "uint8",
+            name: "month",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "day",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "hour",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "minute",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "second",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct SaleReadmeToken.DateTime",
+        name: "dt",
+        type: "tuple",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "pure",
     type: "function",
     constant: true,
   },
@@ -235,19 +281,19 @@ export const SaleReadmeToken: AbiItem[] = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_readmeTokenId",
+        name: "timestamp",
         type: "uint256",
       },
     ],
-    name: "getReadmeTokenPrice",
+    name: "getYear",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint16",
         name: "",
-        type: "uint256",
+        type: "uint16",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "pure",
     type: "function",
     constant: true,
   },
@@ -255,11 +301,111 @@ export const SaleReadmeToken: AbiItem[] = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_tokenId",
+        name: "timestamp",
         type: "uint256",
       },
     ],
-    name: "getIsActive",
+    name: "getMonth",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
+    ],
+    name: "getDay",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
+    ],
+    name: "getHour",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
+    ],
+    name: "getMinute",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
+    ],
+    name: "getSecond",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint16",
+        name: "year",
+        type: "uint16",
+      },
+    ],
+    name: "isLeapYear",
     outputs: [
       {
         internalType: "bool",
@@ -267,7 +413,7 @@ export const SaleReadmeToken: AbiItem[] = [
         type: "bool",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "pure",
     type: "function",
     constant: true,
   },
@@ -275,18 +421,45 @@ export const SaleReadmeToken: AbiItem[] = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_tokenId",
+        name: "year",
         type: "uint256",
       },
+    ],
+    name: "leapYearsBefore",
+    outputs: [
       {
-        internalType: "bool",
-        name: "check",
-        type: "bool",
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
-    name: "setIsActive",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "pure",
     type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint8",
+        name: "month",
+        type: "uint8",
+      },
+      {
+        internalType: "uint16",
+        name: "year",
+        type: "uint16",
+      },
+    ],
+    name: "getDaysInMonth",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+    constant: true,
   },
 ];

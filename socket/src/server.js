@@ -52,15 +52,16 @@ const getParticipants = (session) => {
   });
   return JSON.stringify(result);
 };
+const devFlag = process.env.NODE_ENV !== "production";
 let i = 0;
 io.on("connection", (socket) => {
-  if (process.env.NODE_ENV !== "production") console.log(i++, socket.id);
+  if (devFlag) console.log(i++, socket.id);
   // common
   const { rooms } = io.sockets.adapter;
   socket["nickname"] = "none";
   socket.emit("init_room", publicRooms());
 
-  if (process.env.NODE_ENV !== "production")
+  if (devFlag)
     socket.onAny((event) => {
       console.log(`SocketIO Event: ${event}`);
     }); // 모든 이벤트 리스너
@@ -70,6 +71,7 @@ io.on("connection", (socket) => {
     socket.emit("noti_send", msg, color);
   };
   // room
+  socket.on("init_room", () => socket.emit("init_room", publicRooms()));
   socket.on("enter_room", (userAddress, nickname, roomTitle, done) => {
     console.log(userAddress);
     socket["address"] = userAddress;
@@ -117,10 +119,6 @@ io.on("connection", (socket) => {
         getParticipants(session)
       );
     io.sockets.emit("room_change", publicRooms());
-    // if (rooms.get(session)["started"]) {
-    //   socket.emit("game_start");
-    //   socket.emit("set_data", JSON.stringify(rooms.get(session)["data"]));
-    // }
   });
   socket.on("leave_room", (session) => {
     socket.leave(session);
@@ -216,15 +214,12 @@ io.on("connection", (socket) => {
     notiSend(session, "제시어가 생성되었습니다.", "#FF713E");
   });
   socket.on("get_answer", (session) =>
-    socket.emit(
-      "send_answer",
-      rooms.get(session)["answer"] ?? "아직 정답이 등록되지 않았습니다."
-    )
+    socket.emit("send_answer", rooms.get(session)["answer"] ?? "unknown")
   );
   socket.on("get_solver", (session) => {
     socket.emit(
       "send_solver",
-      rooms.get(session)?.["solver"] ?? "아직 정답자가 없습니다."
+      rooms.get(session)?.["solver"] ?? socket["address"]
     );
   });
   socket.on("game_start", (session) => {
@@ -242,7 +237,8 @@ io.on("connection", (socket) => {
   });
   socket.on("get_data", (session) => {
     socket.emit("set_data", JSON.stringify(rooms.get(session)?.["data"]));
-    if (rooms.get(session)?.["started"]) socket.emit("game_start");
+    if (rooms.get(session)?.["started"])
+      socket.emit("game_start", rooms.get(session)?.["answer"]);
   });
   socket.on("reset_canvas", (session) => {
     rooms.get(session)["data"] = [];
@@ -257,20 +253,6 @@ io.on("connection", (socket) => {
   socket.on("game_end", (session, done) => {
     socket.to(session).emit("host_leave");
     done(rooms.get(session)?.["answer"], rooms.get(session)?.["solver"]);
-  });
-  socket.on("test_join", (text1, text2, text3, fn) => {
-    console.log(text1);
-    socket["address"] = text1;
-    socket["nickname"] = text2;
-    const session = text1;
-    socket.join(session);
-    rooms.get(session)["title"] = text3;
-    rooms.get(session)["started"] = false;
-    rooms.get(session)["answer"] = "";
-    rooms.get(session)["solver"] = "";
-    rooms.get(session)["data"] = [];
-    console.log(fn);
-    io.sockets.emit("room_change", publicRooms());
   });
 });
 

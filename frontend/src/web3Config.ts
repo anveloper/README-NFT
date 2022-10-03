@@ -16,12 +16,23 @@ const ABI = {
   DrawToken: DrawToken,
   SSF: SSF,
 };
-
+// mint
 export const MintReadmeContract = new web3.eth.Contract(
   ABI.MintReadmeToken,
   process.env.REACT_APP_MINTREADMETOKEN_CA
 );
 
+export const mintReadmeToken = (
+  tokenURI: string,
+  account: string,
+  answer: string,
+  solver: string
+) =>
+  MintReadmeContract.methods
+    .create(tokenURI, process.env.REACT_APP_SALEREADMETOKEN_CA, answer, solver)
+    .send({ from: account });
+
+// sale
 export const SaleReadmeContract = new web3.eth.Contract(
   ABI.SaleReadmeToken,
   process.env.REACT_APP_SALEREADMETOKEN_CA

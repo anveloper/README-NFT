@@ -2,7 +2,7 @@ import React, { useEffect, FC } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 // state
-import { MintReadmeContract } from "../../web3Config";
+import { MintReadmeContract, mintReadmeToken } from "../../web3Config";
 import { selectImgBlob, selectStatus, selectTmpInfo } from "./mintSlice";
 // components
 import NewHelmet from "../../components/NewHelmet";
@@ -11,15 +11,16 @@ import { create } from "ipfs-http-client";
 // css
 import styles from "./Mint.module.css";
 import Loading from "../../components/loading/Loading";
-interface MintProps {
-  account: string;
-}
+import { postProblem } from "features/nft/nftSlice";
+import { selectUserAddress } from "features/auth/authSlice";
+
 const ipfsUrl =
   process.env.NODE_ENV !== "production"
     ? "http://j7b108.p.ssafy.io:5001"
     : "https://j7b108.p.ssafy.io";
 
-const Mint: FC<MintProps> = ({ account }) => {
+const Mint: FC = () => {
+  const account = useAppSelector(selectUserAddress);
   const { answer, creator, solver, tmpUrl } = useAppSelector(selectTmpInfo);
   const imgBlob: Blob = useAppSelector(selectImgBlob);
   const status = useAppSelector(selectStatus);
@@ -43,11 +44,14 @@ const Mint: FC<MintProps> = ({ account }) => {
         };
         const result = await client.add(JSON.stringify(metadata));
         const tokenURI = "https://ipfs.io/ipfs/" + result.path;
-        MintReadmeContract.methods
-          .create(tokenURI, process.env.REACT_APP_SALEREADMETOKEN_CA)
-          .send({ from: account })
+        mintReadmeToken(tokenURI, account, answer, solver)
           .then((receipt: any) => {
-            console.log(receipt);
+            console.log(receipt?.events.Mint.returnValues);
+            if (receipt.events?.Mint) {
+              const tokenId = receipt?.events.Mint.returnValues.tokenId;
+              dispatch(postProblem({ userAddress: creator, tokenId }));
+              dispatch(postProblem({ userAddress: solver, tokenId }));
+            }
             navigate("/list");
           })
           .catch((err: any) => err);
