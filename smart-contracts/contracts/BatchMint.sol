@@ -8,7 +8,7 @@ import "./MintReadmeToken.sol";
 
 contract BatchMint is ERC721Enumerable, Ownable{
 
-  string public metadataURI = 'ipfs.io/ipfs/QmTfKx3aDbfnWVjnYAtaJitUt3tC8iLf5J22waJAa8NxNo';
+  string public metadataURI = 'ipfs.io/ipfs/QmcXmGLeFNbVzAWjYxGiv3u9mqiyqX7kQTveH8WuYWLfxR';
 
   constructor() ERC721("ReadmeEvnetNFT", "REN") {} 
 
