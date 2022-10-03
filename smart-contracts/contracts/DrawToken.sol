@@ -3,9 +3,10 @@ pragma solidity ^0.8.4;
 
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "../node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./BatchMint.sol";
 
-contract DrawToken{
+contract DrawToken is ReentrancyGuard{
 
   IERC20 public wooToken;
   MintReadmeToken public mintReadmeToken;
@@ -25,7 +26,7 @@ contract DrawToken{
   uint256 number = 1;
 
   // 호출자: winner
-  function shareToken() public {
+  function shareToken() public nonReentrant{
     // 해당 컨트랙트에게 50000원을 사용할 권한을 미리 줘야함
     require(winnerCount < 50, "Over");
     address winner = msg.sender;
