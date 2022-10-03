@@ -16,7 +16,7 @@
   align-items: center;
   background-image: url("../../assets/bg-cloud/bg_bangtae.svg");
   background-size: 10%;
-  animation: movebg 15s linear infinite;
+  animation: movebg 30s linear infinite;
 }
 .container * {
   font-family: "LeeSeoyun";
