@@ -11,6 +11,7 @@ import { create } from "ipfs-http-client";
 // css
 import styles from "./Mint.module.css";
 import Loading from "../../components/loading/Loading";
+import { postProblem } from "features/nft/nftSlice";
 interface MintProps {
   account: string;
 }
@@ -47,7 +48,12 @@ const Mint: FC<MintProps> = ({ account }) => {
           .create(tokenURI, process.env.REACT_APP_SALEREADMETOKEN_CA)
           .send({ from: account })
           .then((receipt: any) => {
-            console.log(receipt);
+            console.log(receipt?.events.Mint.returnValues);            
+            if (receipt.events?.Mint) {
+              const tokenId = receipt?.events.Mint.returnValues.tokenId;
+              dispatch(postProblem({ userAddress: creator, tokenId }));
+              dispatch(postProblem({ userAddress: solver, tokenId }));
+            }
             navigate("/list");
           })
           .catch((err: any) => err);

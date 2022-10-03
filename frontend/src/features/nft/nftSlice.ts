@@ -41,26 +41,32 @@ const initialState: NftListConfig = {
   solveList: [],
   status: "idle",
 };
-export const postProblem = createAsyncThunk("nft/postProblem", async ({ userAddress, tokenId }: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(api.solver.solveProblem(), {
-      walletAddress: userAddress,
-      tokenId,
-    });
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err);
+export const postProblem = createAsyncThunk(
+  "nft/postProblem",
+  async ({ userAddress, tokenId }: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(api.solver.solveProblem(), {
+        walletAddress: userAddress,
+        tokenId,
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
   }
-});
+);
 
-export const findSolveList = createAsyncThunk("nft/findSolveList", async (userAddress: string, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(api.solver.getSolveList(userAddress));
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(err);
+export const findSolveList = createAsyncThunk(
+  "nft/findSolveList",
+  async (userAddress: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(api.solver.getSolveList(userAddress));
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
   }
-});
+);
 
 const nftSlice = createSlice({
   name: "nft",
