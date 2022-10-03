@@ -61,31 +61,6 @@ export const MintReadmeToken: AbiItem[] = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "string",
-        name: "metadataURI",
-        type: "string",
-      },
-    ],
-    name: "Mint",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
         internalType: "address",
         name: "previousOwner",
         type: "address",
@@ -202,6 +177,20 @@ export const MintReadmeToken: AbiItem[] = [
         internalType: "bool",
         name: "",
         type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [],
+    name: "metadataURI",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -483,6 +472,26 @@ export const MintReadmeToken: AbiItem[] = [
         type: "uint256",
       },
     ],
+    name: "getMetadata",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_tokenId",
+        type: "uint256",
+      },
+    ],
     name: "tokenURI",
     outputs: [
       {
@@ -576,6 +585,121 @@ export const MintReadmeToken: AbiItem[] = [
     constant: true,
   },
   {
+    inputs: [],
+    name: "getTotalReadmeToken",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "getTokenAnswer",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "getTokenSolver",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_owner",
+        type: "address",
+      },
+    ],
+    name: "getSolveReadmeTokenArray",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_drawToken",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_saleReadmeToken",
+        type: "address",
+      },
+    ],
+    name: "batchNFT",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
+      {
+        internalType: "bool",
+        name: "_approved",
+        type: "bool",
+      },
+    ],
+    name: "approveNFT",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "string",
@@ -584,7 +708,17 @@ export const MintReadmeToken: AbiItem[] = [
       },
       {
         internalType: "address",
-        name: "_saleReadmeTokenAddress",
+        name: "_saleReadmeToken",
+        type: "address",
+      },
+      {
+        internalType: "string",
+        name: "_answer",
+        type: "string",
+      },
+      {
+        internalType: "address",
+        name: "_solver",
         type: "address",
       },
     ],
@@ -596,6 +730,29 @@ export const MintReadmeToken: AbiItem[] = [
         type: "uint256",
       },
     ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_questionId",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "_solve",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_answer",
+        type: "string",
+      },
+    ],
+    name: "solveReadmeToken",
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -621,19 +778,5 @@ export const MintReadmeToken: AbiItem[] = [
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
-  },
-  {
-    inputs: [],
-    name: "getTotalReadmeToken",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
   },
 ];

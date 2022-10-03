@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { GetReadmeContract } from "../../../web3Config";
+import { GetReadmeContract, MintReadmeContract } from "../../../web3Config";
 import { useAppSelector } from "../../../app/hooks";
 import { selectUserAddress } from "../../auth/authSlice";
 import axios from "axios";
@@ -73,10 +73,27 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
   };
 
   const likeNFTList = async () => {
+    const tempNFTCardArray: IMyNFTCard[] = [];
+
     axios
       .get(api.like.likeNFTList(walletAddress))
-      .then((response) => {
+      .then(async (response) => {
         if (response.data.count !== 0) {
+          for (let i = 0; i < response.data.nfts.length; i++) {
+            const tokenInfo = await MintReadmeContract.methods
+              .tokenURI(response.data.nfts[i])
+              .call();
+
+            tempNFTCardArray.push({
+              readmeTokenId: String(response.data.nfts[i]),
+              readmeTokenPrice: null,
+              readmeTokenOwner: null,
+              metaDataURI: tokenInfo,
+            });
+          }
+
+          setNFTCardArray([]);
+          setNFTCardArray(tempNFTCardArray);
           setCardList(true);
           console.log(response);
         } else {

@@ -54,8 +54,9 @@ const ChatBox = () => {
       socket.on("solve_cnt", (solver, solversCnt, roomCnt) => {
         dispatch(setSolvers({ solver, solversCnt, roomCnt }));
       });
-      socket.on("game_start", () => {
+      socket.on("game_start", (answer: string) => {
         dispatch(setStarted(true));
+        dispatch(setAnswerLength(answer.length));
       });
       socket.on("host_leave", () => {
         socket.emit("leave_room", hostUserName);

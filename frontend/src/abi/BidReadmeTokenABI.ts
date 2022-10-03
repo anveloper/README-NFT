@@ -18,23 +18,84 @@ export const BidReadmeToken: AbiItem[] = [
     type: "constructor",
   },
   {
-    anonymous: false,
     inputs: [
       {
-        indexed: false,
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "Bids",
+    outputs: [
+      {
         internalType: "address",
         name: "bidder",
         type: "address",
       },
       {
-        indexed: false,
         internalType: "uint256",
-        name: "biddingPrice",
+        name: "bidPrice",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "bidTime",
         type: "uint256",
       },
     ],
-    name: "BidList",
-    type: "event",
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "Tokens",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "readmeTokenId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "readmeTokenPrice",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "bidTime",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "readmeTokenOwner",
+        type: "address",
+      },
+      {
+        internalType: "string",
+        name: "metaDataURI",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -44,6 +105,46 @@ export const BidReadmeToken: AbiItem[] = [
         internalType: "contract MintReadmeToken",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "nowHighestPrice",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "onAuctionReadmeToken",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -105,24 +206,137 @@ export const BidReadmeToken: AbiItem[] = [
     constant: true,
   },
   {
+    inputs: [],
+    name: "getTokenOnAuction",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
-        name: "",
+        name: "_readmeTokenId",
         type: "uint256",
       },
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
     ],
-    name: "tokenBiddingList",
+    name: "getReadmeTokenPrice",
     outputs: [
       {
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_readmeTokenId",
+        type: "uint256",
+      },
+    ],
+    name: "getReadmeTokenHigh",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_readmeTokenId",
+        type: "uint256",
+      },
+    ],
+    name: "getBidList",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "bidder",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "bidPrice",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "bidTime",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BidReadmeToken.Bid[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_bidder",
+        type: "address",
+      },
+    ],
+    name: "getMyAuction",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "readmeTokenId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "readmeTokenPrice",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "bidTime",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "readmeTokenOwner",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "metaDataURI",
+            type: "string",
+          },
+        ],
+        internalType: "struct BidReadmeToken.Token[]",
+        name: "",
+        type: "tuple[]",
       },
     ],
     stateMutability: "view",
@@ -155,6 +369,11 @@ export const BidReadmeToken: AbiItem[] = [
   {
     inputs: [
       {
+        internalType: "contract IERC20",
+        name: "token",
+        type: "address",
+      },
+      {
         internalType: "uint256",
         name: "_readmeTokenId",
         type: "uint256",
@@ -167,12 +386,16 @@ export const BidReadmeToken: AbiItem[] = [
     ],
     name: "bid",
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     type: "function",
-    payable: true,
   },
   {
     inputs: [
+      {
+        internalType: "contract IERC20",
+        name: "token",
+        type: "address",
+      },
       {
         internalType: "uint256",
         name: "_readmeTokenId",
@@ -181,9 +404,8 @@ export const BidReadmeToken: AbiItem[] = [
     ],
     name: "buy",
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     type: "function",
-    payable: true,
   },
   {
     inputs: [
@@ -210,19 +432,5 @@ export const BidReadmeToken: AbiItem[] = [
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
-  },
-  {
-    inputs: [],
-    name: "getTokenOnAuction",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
   },
 ];
