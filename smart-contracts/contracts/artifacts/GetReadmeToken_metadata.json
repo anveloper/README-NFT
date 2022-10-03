@@ -16,63 +16,10 @@
 						"internalType": "address",
 						"name": "_saleReadmeToken",
 						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "_bidReadmeToken",
-						"type": "address"
 					}
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
-			},
-			{
-				"inputs": [],
-				"name": "bidReadmeToken",
-				"outputs": [
-					{
-						"internalType": "contract BidReadmeToken",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "getAuctionToken",
-				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "readmeTokenId",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "readmeTokenPrice",
-								"type": "uint256"
-							},
-							{
-								"internalType": "address",
-								"name": "readmeTokenOwner",
-								"type": "address"
-							},
-							{
-								"internalType": "string",
-								"name": "metaDataURI",
-								"type": "string"
-							}
-						],
-						"internalType": "struct GetReadmeToken.ReadmeTokenData[]",
-						"name": "",
-						"type": "tuple[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
 			},
 			{
 				"inputs": [
@@ -280,36 +227,28 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/BidReadmeToken.sol": {
-			"keccak256": "0x4e535584f581a53d3a0b278198787b423dcc8aab58afd6c5f5a3898bdafb005a",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://b9dfca558de07c318a319b71e2e0e36cfb575fe377b9d411494dc87b9700e5cc",
-				"dweb:/ipfs/QmcjGtsgKsKUhtCZepmXFtkgkimvRr7EM15UJHhEQaUUce"
-			]
-		},
 		"contracts/GetReadmeToken.sol": {
-			"keccak256": "0xa5b0cb6fa21c53027cd91613c5ce1362aee7cb13dedd946cfc7c6fc401a9be51",
+			"keccak256": "0xcf857639032a8d1795176b62f638784db3943b106fda9b36802900bc4a72f28f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://aa9d7c5b5d8c909499accfdc7a11ce47e9482aca875545822516d5b6a5c370bd",
-				"dweb:/ipfs/QmXsvv3kgx6WreUjrbvhCs1dSLmWJ9xQowLVJSqHWMaswH"
+				"bzz-raw://f1b87a9dd084d4d1357c02b71c630c61cfc3d108549180116713273ca173884a",
+				"dweb:/ipfs/QmdfZwGP6BvBU7NQ4hXdZtnFzy5AWvs6At4yJKe1CbdiVa"
 			]
 		},
 		"contracts/MintReadmeToken.sol": {
-			"keccak256": "0xd69f565f5af7b4fb870106283aa26fcb556c4c52111e31b36b90b1d6df6c8d7b",
+			"keccak256": "0x07caf231c8589b8eae3464e45614e31376cb7f5ba27f691d9dca5204a1934fb2",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6e170c6a761ead2d315258367c2a73a82f14af67d3709c136145f4a20fa281b3",
-				"dweb:/ipfs/QmV71jy3p9dZJcc6EeoEUPfvhAB5iKD8hU4yMvD3DMvWp1"
+				"bzz-raw://8c4dedc657127bb46663fd231588b62c4930ccb0f75358d629d763c330fc4753",
+				"dweb:/ipfs/QmRjcrNPSRz9S2QsrZr7CakpdcUrPqccaNrhfLdnTMhy7v"
 			]
 		},
 		"contracts/SaleReadmeToken.sol": {
-			"keccak256": "0x8c10be12994d1705e2381f4b6cc8d18da1d4f18a6c0ce4dcad535a5ef0d8c5ac",
+			"keccak256": "0xf145d0f5663fd385db0ea7c0f628cc388a18aab402dfe68bec16238737b25501",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3ffd4a424cff49b759d30a2ef9900667ec58523ea8f1bde94331af38b0446212",
-				"dweb:/ipfs/QmWQJ8i2Xi1mK3FLoQHTvBzJYbNXcTCM9dKLfLjauEevtd"
+				"bzz-raw://ffc67a52c65a679928d2e87c415a8e374b54500ed8106d95cdfa2ad3fe0564e8",
+				"dweb:/ipfs/QmX96L49o7WztQmSDq6hmwo8ttoEzkg3fv9L1W7ctbTPBj"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {
