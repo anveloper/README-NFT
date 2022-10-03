@@ -43,9 +43,9 @@ const SNS = () => {
         .call((err: any, res: any) => {
           const metadataURI = res;
           if (metadataURI) getMetadata(metadataURI);
-          else navigate("/");
+          console.log(metadataURI);
         });
-    else navigate("/");
+    console.log("readme", pathname, tokenId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, tokenId]);
   return (
