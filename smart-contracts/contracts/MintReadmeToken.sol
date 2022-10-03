@@ -47,7 +47,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     function tokenURI(uint256 _tokenId) public view override returns (string memory) {
 
         if (_tokenId <= 50 ){
-            return string(abi.encodePacked(metadataURI, '/', _tokenId, '.json'));
+            return string(abi.encodePacked(metadataURI, '/', Strings.toString(_tokenId), '.json'));
         }
         else{
             return string(abi.encodePacked(metadataURIs[_tokenId]));
@@ -96,7 +96,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
     }
 
     // 이벤트 컨트랙트 발행(1~50번 먼저 발행해야함)
-    function batchNFT(address _drawToken, address _saleReadmeToken, address _bidReadmeToken) public {
+    function batchNFT(address _drawToken, address _saleReadmeToken) public {
         address own = msg.sender;
 
         for(uint i = 0; i < 50;){
@@ -111,8 +111,6 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
             _approve(_saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
 
-            _approve(_bidReadmeToken, newTokenId); // 경매 컨트랙트에 권한 부여
-
             ownedTokens[own].push(newTokenId); // 소유 목록 추가
             
             unchecked{
@@ -123,7 +121,7 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
 
 
     // NFT 발행
-    function create(string memory _metadataURI, address _saleReadmeToken, address _bidReadmeToken, string memory _answer, address _solver) public returns (uint256) {
+    function create(string memory _metadataURI, address _saleReadmeToken, string memory _answer, address _solver) public returns (uint256) {
         
         address own = msg.sender;
 
@@ -150,8 +148,6 @@ contract MintReadmeToken is ERC721Enumerable, Ownable{
         }
 
         _approve(_saleReadmeToken, newTokenId); // 판매 컨트랙트에 권한 부여 
-
-        _approve(_bidReadmeToken, newTokenId); // 경매 컨트랙트에 권한 부여
 
         return newTokenId;
     }
