@@ -63,6 +63,7 @@ function App() {
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
               </Route>
+
               <Route path="/mint" element={<Mint account={userAddress} />} />
               <Route path="/detail/:tokenId" element={<Detail />} />
               <Route
