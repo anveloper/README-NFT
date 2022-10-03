@@ -1,14 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { GetReadmeContract } from "../../web3Config";
 import {
-  findSolveList,
   NftConfig,
   selectNftList,
   selectRawList,
-  selectSolveList,
   setNftList,
-  setRawList,
 } from "../nft/nftSlice";
 import NftItem from "../../components/nftItem/NftItem";
 
@@ -17,7 +13,6 @@ import styles from "./Main.module.css";
 const NFTList = () => {
   const rawList = useAppSelector(selectRawList);
   const nftList = useAppSelector(selectNftList);
-  const solveList = useAppSelector(selectSolveList);
   const lastRef = useRef<HTMLButtonElement | null>(null);
   const [itemCnt, setItemCnt] = useState(8);
   const dispatch = useAppDispatch();
@@ -65,15 +60,9 @@ const NFTList = () => {
         <div className={styles.nftSearch}>
           {/* <input type="text" placeholder="검색어를 입력해주세요." /> */}
         </div>
-        {nftList?.map((nft: NftConfig, i: number) => {          
+        {nftList?.map((nft: NftConfig, i: number) => {
           if (i === nftList.length - 1)
-            return (
-              <NftItem
-                lastRef={lastRef}
-                key={i}
-                nft={nft}
-              />
-            );
+            return <NftItem lastRef={lastRef} key={i} nft={nft} />;
           return <NftItem key={i} nft={nft} />;
         })}
         {rawList && rawList.length > itemCnt && (

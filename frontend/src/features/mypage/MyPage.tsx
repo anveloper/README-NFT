@@ -10,7 +10,7 @@ interface MyPageProps {
 }
 
 const MyPage: FC<MyPageProps> = ({ account }) => {
-  const [NFTListValue, setNFTListValue] = useState("");
+  const [NFTListValue, setNFTListValue] = useState("myNFT");
 
   console.log(account);
   return (

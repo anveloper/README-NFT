@@ -114,7 +114,6 @@
   flex-wrap: wrap;
   align-content: flex-start;
   overflow-y: auto;
-  gap: 2%;
 }
 .liveContainer {
   padding-top: 3rem;

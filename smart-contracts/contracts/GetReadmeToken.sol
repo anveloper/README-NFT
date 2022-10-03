@@ -60,7 +60,7 @@ contract GetReadmeToken{
 
         ReadmeTokenData[] memory onSaleReadmeTokendata = new ReadmeTokenData[](readmeTokenCount);
 
-        for(uint256 i = 0; i < readmeTokenCount; i++){
+        for(uint256 i = 0; i < readmeTokenCount;){
             uint256 readmeTokenId = onSaleReadmeToken[i]; // tokenId
             uint256 readmeTokenPrice = saleReadmeToken.getReadmeTokenPrice(readmeTokenId); // price
             address readmeTokenOwner = mintReadmeToken.ownerOf(readmeTokenId); // 소유주
@@ -88,7 +88,7 @@ contract GetReadmeToken{
 
         ReadmeTokenData[] memory myReadmeTokendata = new ReadmeTokenData[](myReadmeTokenCount);
 
-        for(uint256 i = 0; i < myReadmeTokenCount; i++){
+        for(uint256 i = 0; i < myReadmeTokenCount;){
             uint256 readmeTokenId = myReadmeToken[i]; // tokenId
             uint256 readmeTokenPrice = saleReadmeToken.getReadmeTokenPrice(readmeTokenId); //price
             address readmeTokenOwner = mintReadmeToken.ownerOf(readmeTokenId); // 소유주
