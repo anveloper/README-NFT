@@ -17,13 +17,24 @@
   background-image: url("../../assets/bg-cloud/bg_bangtae.svg");
   background-size: 10%;
   animation: movebg 30s linear infinite;
+  overflow: hidden;
 }
 .container * {
   font-family: "LeeSeoyun";
 }
-.card {
+.content {
   max-width: 50%;
   max-height: 80%;
+}
+.title {
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+  color: white;
+  text-shadow: 2px 2px 10px #000000;
+}
+.card {
+  width: 100%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,20 +44,26 @@
   border-radius: 2rem;
   padding: 2rem;
   gap: 1%;
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 .btn {
   width: 40%;
-  aspect-ratio: 1/1;
-  background-color: #ffffff;
-  box-shadow: 5px 5px 5px #00000030;
+  height: 100%;
+  background-color: transparent;
   border: none;
-  border-radius: 100%;
   font-size: 2rem;
 }
 .btn:active {
   cursor: pointer;
   transform: scale(0.9);
+}
+.box {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
 }
 .sm {
   display: none;
@@ -68,11 +85,23 @@
   right: 0;
 }
 .btnGroup {
-  flex-grow: 1;
+  width: 40%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  -webkit-animation: slide-in-bottom 5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    infinite alternate-reverse both;
+  animation: slide-in-bottom 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite
+    alternate-reverse both;
+}
+.btnImg {
+  max-width: 90%;
+}
+.text {
+  margin-bottom: 1rem;
+  color: white;
+  text-shadow: 2px 2px 10px #000000;
 }
 @keyframes movebg {
   0% {
@@ -104,14 +133,40 @@
   .lg {
     display: none;
   }
-  .card {
+  .content {
     max-width: 90%;
     max-height: 80%;
+  }
+  .title {
+    font-size: 1.6rem;
   }
   .card * {
     font-size: 1.6rem;
   }
   .address {
     font-size: 1.2rem;
+  }
+  .btnImg {
+    max-width: 60%;
+  }
+}
+@-webkit-keyframes slide-in-bottom {
+  0% {
+    -webkit-transform: translateY(60px);
+    transform: translateY(60px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+@keyframes slide-in-bottom {
+  0% {
+    -webkit-transform: translateY(60px);
+    transform: translateY(60px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
   }
 }
