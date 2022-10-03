@@ -8,7 +8,7 @@ interface DevRouteProps {
 const isDev = process.env.NODE_ENV !== "production";
 
 const DevRoute = ({ children }: DevRouteProps) => {
-  if (!isDev) return children;
+  if (isDev) return children;
   else return <Navigate to="/" replace />;
 };
 
