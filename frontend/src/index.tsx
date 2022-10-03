@@ -14,14 +14,14 @@ const root = createRoot(container);
 
 root.render(
   <HelmetProvider>
-    <BrowserRouter>
-      <SocketProvider value={socket}>
+    <SocketProvider value={socket}>
+      <BrowserRouter>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <App />
           </PersistGate>
         </Provider>
-      </SocketProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </SocketProvider>
   </HelmetProvider>
 );
