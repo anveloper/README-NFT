@@ -228,11 +228,11 @@
 	},
 	"sources": {
 		"contracts/GetReadmeToken.sol": {
-			"keccak256": "0xcf857639032a8d1795176b62f638784db3943b106fda9b36802900bc4a72f28f",
+			"keccak256": "0xd2c14f6cfa4120e0dc8ddc3563aae7144122421a84c86fad1fb55b3ac838f6ff",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f1b87a9dd084d4d1357c02b71c630c61cfc3d108549180116713273ca173884a",
-				"dweb:/ipfs/QmdfZwGP6BvBU7NQ4hXdZtnFzy5AWvs6At4yJKe1CbdiVa"
+				"bzz-raw://00072006907071c6e52acc9df329e62931ecc173bc07f990a002f663b16f57b9",
+				"dweb:/ipfs/QmR4cyWwc6w9wfTmtfnQcHWnQCHYsZiEfy3dst1anJo9jB"
 			]
 		},
 		"contracts/MintReadmeToken.sol": {
