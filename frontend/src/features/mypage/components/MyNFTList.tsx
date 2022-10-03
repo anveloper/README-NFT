@@ -18,6 +18,8 @@ import flower3 from "../../../assets/flowers/flower3.svg";
 import flower4 from "../../../assets/flowers/flower4.svg";
 import sprout1 from "../../../assets/flowers/sprout1.svg";
 import sprout2 from "../../../assets/flowers/sprout2.svg";
+import NftItem from "components/nftItem/NftItem";
+import { useNavigate } from "react-router-dom";
 
 interface MyNFTListProps {
   NFTListValue: any;
@@ -25,6 +27,7 @@ interface MyNFTListProps {
 
 const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
   const walletAddress = useAppSelector(selectUserAddress);
+
   const [selected, setSelected] = useState("");
   const [NFTCardArray, setNFTCardArray] = useState<IMyNFTCard[]>([]);
   const [cardList, setCardList] = useState(true);
@@ -33,6 +36,8 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
   const scrollBox = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [scrollActive, setScrollActive] = useState(false);
+
+  const navigate = useNavigate();
 
   const logit = () => {
     setScrollY(scrollBox.current.scrollTop);
@@ -227,15 +232,16 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
         {cardList ? (
           <div className={styles.MyNFTCardList}>
             {NFTCardArray.map((v, i) => {
-              return (
-                <MyNFTCard
-                  key={i}
-                  readmeTokenId={v.readmeTokenId}
-                  readmeTokenPrice={v.readmeTokenPrice}
-                  readmeTokenOwner={v.readmeTokenOwner}
-                  metaDataURI={v.metaDataURI}
-                />
-              );
+              return <NftItem key={i} nft={v} />;
+              // return (
+              //   <MyNFTCard
+              //     key={i}
+              //     readmeTokenId={v.readmeTokenId}
+              //     readmeTokenPrice={v.readmeTokenPrice}
+              //     readmeTokenOwner={v.readmeTokenOwner}
+              //     metaDataURI={v.metaDataURI}
+              //   />
+              // );
             })}
           </div>
         ) : NFTListValue === "likeNFT" ? (
@@ -252,7 +258,12 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
                 마켓에서 마음에 드는 리드미를 골라보세요!
                 <br />
               </p>
-              <button className={styles.movePageButton}>마켓으로 이동</button>
+              <button
+                onClick={() => navigate("/sale")}
+                className={styles.movePageButton}
+              >
+                마켓으로 이동
+              </button>
             </div>
             <img className={styles.cat_palette} src={cat_palette} alt="" />
             <img
