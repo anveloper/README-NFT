@@ -217,10 +217,7 @@ io.on("connection", (socket) => {
     socket.emit("send_answer", rooms.get(session)["answer"] ?? "unknown")
   );
   socket.on("get_solver", (session) => {
-    socket.emit(
-      "send_solver",
-      rooms.get(session)?.["solver"] ?? socket["address"]
-    );
+    socket.emit("send_solver", rooms.get(session)?.["solver"]);
   });
   socket.on("game_start", (session) => {
     rooms.get(session)["started"] = true;
