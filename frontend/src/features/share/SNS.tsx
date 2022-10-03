@@ -13,6 +13,7 @@ const MintReadmeContract = new web3.eth.Contract(
   MintReadmeToken,
   process.env.REACT_APP_MINTREADMETOKEN_CA
 );
+
 const SNS = () => {
   const { pathname } = useLocation();
   const tokenId = Number(pathname.split("/")[2]);
@@ -42,12 +43,8 @@ const SNS = () => {
         .tokenURI(tokenId)
         .call((err: any, res: any) => {
           const metadataURI = res;
-          console.log(err);
-          console.log(res);
           if (metadataURI) getMetadata(metadataURI);
         });
-    console.log("readme", pathname, tokenId);
-    console.log(MintReadmeContract.methods);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, tokenId]);
 
