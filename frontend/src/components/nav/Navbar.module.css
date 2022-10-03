@@ -83,7 +83,9 @@
   border-radius: 100%;
 }
 .nameTag {
+  min-width: 80%;
   margin-right: 3%;
+  text-align: center;
   font-size: 1.2rem;
   font-family: "NanumSquareRound", "Courier New", Courier, monospace;
   -webkit-animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.61, 0.355, 1)
