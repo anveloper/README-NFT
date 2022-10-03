@@ -4,13 +4,32 @@
 
 .top_info {
   width: 100%;
-  height: 300px;
-  background-color: black;
+  height: 350px;
+  background-color: rgba(121, 196, 242, 0.3);
   display: inline-block;
+  position: relative;
 
   /* 할까말까 */
   /* margin: 0 10px 0 10px; */
   /* border-radius: 20px; */
+}
+
+.top_info_text {
+  position: absolute;
+  left: 285px;
+  top: 30%;
+  color: black;
+}
+
+.top_info_h2 {
+  font-weight: bold;
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.top_info_p {
+  font-weight: bold;
+  font-size: 24px;
 }
 
 .back {
@@ -22,18 +41,21 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 3fr;
+  width: 100%;
   /* width: 80%; */
 }
 
 /* 왼쪽틀, 오른쪽틀 공통 */
 .contents {
-  margin: 10px 20px 20px 20px;
+  /* height: 300vh; */
+  margin: 10px;
   border-radius: 20px;
 }
 
 /* 왼쪽 : 카테고리 분류 */
 .contents:nth-child(1) {
-  background-color: #fcf5e9;
+  background-color: white;
+  margin-left: 20px;
 }
 
 /* 오른쪽 : 컨텐츠 출력 */
@@ -43,8 +65,9 @@
   flex-direction: row;
   justify-content: space-between;
   justify-items: center; */
-  /* background-color: red; */
+  background-color: white;
   border: none;
+  margin-right: 20px;
 }
 
 /* 카드 배경 틀 */
@@ -93,4 +116,16 @@
   width: 89%;
   aspect-ratio: 12/10;
   border-radius: 1rem;
+}
+
+.badge {
+  width: 10vh;
+  height: 5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 20px;
+  background-color: black;
+  color: white;
 }
