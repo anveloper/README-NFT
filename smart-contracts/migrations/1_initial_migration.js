@@ -7,7 +7,7 @@ const Draw = artifacts.require("DrawToken");
 const Batch = artifacts.require("BatchMint");
 
 module.exports = async function (deployer) {
-  await deployer.deploy(Batch, "new");
+  await deployer.deploy(Batch);
   await deployer.deploy(MintReadme, Batch.address);
   await deployer.deploy(SaleReadme, MintReadme.address);
   await deployer.deploy(BidReadme, MintReadme.address, SaleReadme.address);
@@ -17,5 +17,9 @@ module.exports = async function (deployer) {
     SaleReadme.address,
     BidReadme.address
   );
-  await deployer.deploy(Draw, "0x0c54E456CE9E4501D2c43C38796ce3F06846C966", MintReadme.address);
+  await deployer.deploy(
+    Draw,
+    "0x0c54E456CE9E4501D2c43C38796ce3F06846C966",
+    MintReadme.address
+  );
 };
