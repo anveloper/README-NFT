@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "../node_modules/@openzeppelin/contracts/interfaces/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "../node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "./BatchMint.sol";
+import "./MintReadmeToken.sol";
 
 contract DrawToken is ReentrancyGuard{
 
