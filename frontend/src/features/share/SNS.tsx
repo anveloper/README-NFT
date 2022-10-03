@@ -8,7 +8,9 @@ import { Metadata } from "features/nft/nftSlice";
 
 import styles from "./SNS.module.css";
 
-const web3 = new Web3(process.env.REACT_APP_ETHEREUM_RPC_URL);
+const web3 = new Web3(
+  new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
+);
 const MintReadmeContract = new web3.eth.Contract(
   MintReadmeToken,
   process.env.REACT_APP_MINTREADMETOKEN_CA
