@@ -10,7 +10,8 @@ const MoveSale = () => {
     <button
       className={styles.btn}
       onClick={() => {
-        navigate("/sale");
+        window.location.href = "https://j7b108.p.ssafy.io/sale";
+        return null;
       }}
     >
       <div className={styles.box}>

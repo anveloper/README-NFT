@@ -9,6 +9,7 @@ import {
   truncatedAddress,
 } from "../../features/auth/authSlice";
 
+import { RiKakaoTalkFill } from "react-icons/ri";
 import styles from "./NftItem.module.css";
 
 const NftItem = (props: any) => {
@@ -53,7 +54,6 @@ const NftItem = (props: any) => {
   }, [props, solveList]);
   const renderName = () => {
     const result = [];
-    console.log("nftItem", props);
     if (answer) {
       for (let i = 0; i < answer.length; i++) {
         result.push(
@@ -99,6 +99,17 @@ const NftItem = (props: any) => {
             <p>PRICE</p>
             <p>{nft.readmeTokenPrice}</p>
           </div>
+          <button
+            className={styles.shareBtn}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              alert("test " + nft.readmeTokenId);
+            }}
+          >
+            {"공유하기 "}
+            <RiKakaoTalkFill width={20} height={20} />
+          </button>
         </div>
       </div>
     </button>

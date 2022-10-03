@@ -11,7 +11,8 @@ const MoveGame = (props: any) => {
     <button
       className={className}
       onClick={() => {
-        navigate("/live");
+        window.location.href = "https://j7b108.p.ssafy.io/live";
+        return null;
       }}
     >
       <div className={styles.box}>

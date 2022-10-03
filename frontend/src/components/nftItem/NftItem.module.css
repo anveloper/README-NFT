@@ -112,6 +112,23 @@
   justify-content: space-between;
   align-items: center;
 }
+.shareBtn {
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.shareBtn:hover {
+  cursor: pointer;
+}
 
 /* 캐러셀 들어갈 아이템 CSS */
 .carouselContainer {
