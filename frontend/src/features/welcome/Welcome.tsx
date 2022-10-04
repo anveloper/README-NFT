@@ -22,6 +22,14 @@ const Welcome = () => {
   const onboarding = useRef<MetaMaskOnboarding>();
   const ref = useRef();
 
+  const [welcomeNav, setWelcomeNav] = useState<number>(1);
+  const [welcomeRef, setWelcomeRef] = useState<HTMLDivElement[]>([]);
+  const welcomePageRef = useRef<HTMLDivElement | null>(null);
+  const storyRef = useRef<HTMLDivElement | null>(null);
+  const gameRef = useRef<HTMLDivElement | null>(null);
+  const roadmapRef = useRef<HTMLDivElement | null>(null);
+  const teamRef = useRef<HTMLDivElement | null>(null);
+
   //메타마스트 onboarding객체 생성
   useEffect(() => {
     if (!onboarding.current) {
@@ -50,6 +58,22 @@ const Welcome = () => {
     }
   }, [accounts]);
 
+  useEffect(() => {
+    const observer = getIntersectionObserver(setWelcomeNav);
+
+    const headers = [
+      storyRef.current,
+      gameRef.current,
+      roadmapRef.current,
+      teamRef.current,
+    ];
+
+    headers.map((header) => {
+      observer.observe(header);
+    });
+    setWelcomeRef(headers);
+  }, []);
+
   const connectWallet = async () => {
     //메타마스크가 깔려있으면
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
@@ -67,28 +91,10 @@ const Welcome = () => {
       onboarding.current.startOnboarding();
     }
   };
-  const [welcomeNav, setWelcomeNav] = useState(2);
-  const pageTwoRef = useRef();
-  const pageThreeRef = useRef();
-  const pageFourRef = useRef();
-  const pageFiveRef = useRef();
-  useEffect(() => {
-    const observer = getIntersectionObserver(setWelcomeNav);
 
-    const headers = [
-      pageTwoRef.current,
-      pageThreeRef.current,
-      pageFourRef.current,
-      pageFiveRef.current,
-    ];
-
-    headers.map((header) => {
-      observer.observe(header);
-    });
-  }, []);
   return (
     // <Parallax ref={ref} pages={6}>
-    <div className={styles.Welcome}>
+    <div className={styles.Welcome} ref={welcomePageRef}>
       {/* <ParallaxLayer offset={0} speed={1} factor={6}> */}
       <img
         className={styles.welcome_character}
@@ -97,7 +103,7 @@ const Welcome = () => {
         onClick={connectWallet}
       />
 
-      <WelcomeNavbar welcomeNav={welcomeNav} />
+      <WelcomeNavbar welcomeNav={welcomeNav} welcomeRef={welcomeRef} />
 
       {/* <ScrollPage /> */}
       {/* </ParallaxLayer> */}
@@ -110,25 +116,33 @@ const Welcome = () => {
 
       {/* <ParallaxLayer offset={1} speed={-1} factor={1.5}> */}
       {/* <div id="story"> */}
-      <WelcomePageTwo pageTwoRef={pageTwoRef} />
+
+      <WelcomePageTwo storyRef={storyRef} />
+
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={2} speed={0.1} factor={1.5}> */}
       {/* <div id="game"> */}
-      <WelcomePageThree pageThreeRef={pageThreeRef} />
+
+      <WelcomePageThree gameRef={gameRef} />
+
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={3} speed={0.1} factor={1.5}> */}
       {/* <div id="roadmap"> */}
-      <WelcomePageFour pageFourRef={pageFourRef} />
+
+      <WelcomePageFour roadmapRef={roadmapRef} />
+
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={4} speed={0.1} factor={1.5}> */}
       {/* <div id="team"> */}
-      <WelcomePageFive pageFiveRef={pageFiveRef} />
+
+      <WelcomePageFive teamRef={teamRef} />
+
       {/* </div> */}
       {/* </ParallaxLayer> */}
 

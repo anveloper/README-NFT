@@ -14,9 +14,9 @@ import rabbit from "../../../assets/nft-img/5.png";
 import sheep from "../../../assets/nft-img/6.png";
 import airplane from "../../../assets/welcome/airplane.svg";
 
-const WelcomePageTwo = ({ pageTwoRef }: any) => {
+const WelcomePageTwo = ({ storyRef }: any) => {
   return (
-    <div id="2" ref={pageTwoRef} className={styles.welcomePageTwo}>
+    <div id="2" className={styles.welcomePageTwo} ref={storyRef}>
       <img className={styles.page2_cloud1} src={yellow_cloud} alt="" />
       <img className={styles.page2_cloud2} src={white_cloud} alt="" />
       <img className={styles.page2_cloud3} src={pink_cloud} alt="" />
