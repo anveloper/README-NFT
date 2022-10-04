@@ -1,5 +1,4 @@
 // component
-import WelcomeNavbar from "./WelcomeNavbar";
 import NFTCard from "./NFTCard";
 // css
 import styles from "../Welcome.module.css";
@@ -17,18 +16,7 @@ import airplane from "../../../assets/welcome/airplane.svg";
 
 const WelcomePageTwo = () => {
   return (
-    <div className={styles.MotionArea}>
-      <div className={`${styles.WelcomeBackground} ${styles.one}`}></div>
-      <div
-        className={`${styles.WelcomeBackground} ${styles.two} ${styles.active}`}
-      ></div>
-      <div className={`${styles.WelcomeBackground} ${styles.three}`}></div>
-      <div className={`${styles.WelcomeBackground} ${styles.four}`}></div>
-      <div className={`${styles.WelcomeBackground} ${styles.five}`}></div>
-      <div className={`${styles.WelcomeBackground} ${styles.six}`}></div>
-
-      <WelcomeNavbar />
-
+    <div className={styles.welcomePageTwo}>
       <img className={styles.page2_cloud1} src={yellow_cloud} alt="" />
       <img className={styles.page2_cloud2} src={white_cloud} alt="" />
       <img className={styles.page2_cloud3} src={pink_cloud} alt="" />

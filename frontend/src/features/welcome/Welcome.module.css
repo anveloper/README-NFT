@@ -1,10 +1,14 @@
 /* NEW */
 /* WelcomePageStart */
-.MotionArea {
+/* .motionArea {
   position: relative;
   width: 100%;
   height: 100%;
-  /* background-color: #ffffff; */
+  -ms-overflow-style: none;
+}
+
+.MotionArea::-webkit-scrollbar {
+  display: none;
 }
 
 .MotionArea .WelcomeBackground {
@@ -14,32 +18,50 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 0.5s;
-  background-attachment: fixed;
+  /* transition: opacity 0.5s; */
+/* background-attachment: fixed;
   background: cover;
-}
+}  */
 
-.MotionArea .WelcomeBackground.one {
+.welcomePageOne {
+  position: relative;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(180deg, #f2f2f2 0%, #ffbaa4 100%);
 }
 
-.MotionArea .WelcomeBackground.two {
+.welcomePageTwo {
+  position: relative;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(180deg, #ffbaa4 0%, #fb9e80 100%);
 }
 
-.MotionArea .WelcomeBackground.three {
+.welcomePageThree {
+  position: relative;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(180deg, #fb9e80 0%, #66529d 100%);
 }
 
-.MotionArea .WelcomeBackground.four {
+.welcomePageFour {
+  position: relative;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(180deg, #66529d 0%, #0a0523 100%);
 }
 
-.MotionArea .WelcomeBackground.five {
+.welcomePageFive {
+  position: relative;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(180deg, #0a0523 0%, #5db3e9 100%);
 }
 
-.MotionArea .WelcomeBackground.six {
+.welcomePageSix {
+  position: relative;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(180deg, #5db3e9 0%, #cfecfe 100%);
 }
 
@@ -84,14 +106,19 @@
 }
 
 .welcome_character {
-  position: absolute;
-  width: 15vw;
-  top: 20%;
-  left: 80%;
-  z-index: 100;
+  position: fixed;
+  width: 25vw;
+  top: 50%;
+  left: 70%;
+  transform: translate(-70%, -50%);
+  z-index: 50;
   -webkit-animation: wobble-hor-bottom 10s infinite both;
   animation: wobble-hor-bottom 10s infinite both;
   cursor: pointer;
+}
+
+.welcome_character:hover {
+  z-index: 100;
 }
 
 .WelcomeTitleText {
@@ -138,6 +165,7 @@
   position: relative;
   top: 40%;
   width: 100%;
+  z-index: 50;
   /* display: flex; */
 }
 
@@ -185,12 +213,13 @@
 
 .page3_gameDisplay {
   position: absolute;
-  top: 90%;
+  top: 35%;
   left: 50%;
-  transform: translate(-50%, -90%);
+  transform: translate(-50%);
   background-color: #ffffff;
-  width: 55vw;
-  height: 35vw;
+  width: 50vw;
+  height: 30vw;
+  z-index: 50;
 }
 
 .page4_cloud1 {
@@ -223,6 +252,7 @@
   top: 35%;
   left: 91%;
   transform: translate(-91%, -35%);
+  z-index: 50;
 }
 
 .page4_star1 {
@@ -325,7 +355,7 @@
 
 .page5_developers {
   position: absolute;
-  width: 45vw;
+  width: 40vw;
   top: 25%;
   left: 50%;
   transform: translate(-50%);
@@ -369,6 +399,9 @@
   color: #ffffff;
   font-size: 20vh;
   letter-spacing: 0.2em;
+  -webkit-animation: fade-in 5s cubic-bezier(0.39, 0.575, 0.565, 1) infinite
+    both;
+  animation: fade-in 5s cubic-bezier(0.39, 0.575, 0.565, 1) infinite both;
 }
 
 .page6_ground {
@@ -398,9 +431,12 @@
 .WelcomeNavbar {
   display: flex;
   padding: 15px;
-  position: absolute;
+  position: fixed;
   z-index: 100;
-  position: relative;
+  /* position: relative; */
+  top: 0;
+  left: 0;
+  width: 100vw;
 }
 
 .logo_img {
@@ -437,6 +473,8 @@
   font-size: 2.5vh;
   margin-left: auto;
   cursor: pointer;
+  color: #ffffff;
+  text-shadow: 5px 5px 5px #000000aa;
 }
 
 /* WalletAddress */
@@ -509,12 +547,6 @@
   margin-right: 1rem;
 }
 
-/* NFTDescription */
-.NFTDescription {
-  align-items: center;
-  text-align: center;
-}
-
 /* NFTCard */
 .NFTCard {
   display: inline-block;
@@ -522,7 +554,7 @@
   position: relative;
   /* top: 30%; */
   width: 18vw;
-  height: 45vh;
+  height: 42vh;
   justify-content: center;
   align-items: center;
   /* margin-top: 10rem; */
@@ -531,7 +563,7 @@
 
   background-color: #ffffff;
   border-radius: 30px;
-  padding: 2em;
+  padding: 1rem;
   border: 3px solid #e56161;
 }
 
@@ -543,8 +575,8 @@
 
 .NFTCardText {
   display: flex;
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .NFTTextTitle {
@@ -555,140 +587,6 @@
 .NFTTextMain {
   margin-left: auto;
   font-size: 1.5vh;
-}
-
-/* GameDescription */
-.GameDescription {
-  align-items: center;
-  text-align: center;
-
-  margin-top: 10rem;
-  margin-bottom: 10rem;
-}
-
-.GameDescriptionTitle {
-  margin-top: 5rem;
-  margin-bottom: 5rem;
-}
-
-.GameFrame {
-  margin-top: 5rem;
-  width: 45vw;
-}
-
-.GameDescriptionImg {
-  position: relative;
-}
-
-.GameDescriptionCatImg {
-  width: 10vw;
-
-  position: absolute;
-  top: 0.1%;
-  left: 22%;
-}
-
-.GameDescriptionRabbitImg {
-  width: 10vw;
-
-  position: absolute;
-  top: 75%;
-  left: 68%;
-}
-
-/* RoadMap */
-.RoadMap {
-  align-items: center;
-  text-align: center;
-
-  margin-bottom: 10rem;
-}
-
-/* RoadMapImg */
-.RoadMapImg {
-  margin-top: 10rem;
-}
-
-.RoadMapSigns {
-  display: flex;
-
-  justify-content: center;
-}
-
-.RoadMapSign {
-  position: relative;
-  margin-left: 3rem;
-  margin-right: 3rem;
-}
-
-.RoadMapSignImg {
-  width: 17vw;
-}
-
-.RoadMapPercent {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
-
-.RoadMapGoal {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
-
-.RoadMapPosition {
-  position: relative;
-}
-
-.RoadMapCar {
-  position: absolute;
-  top: 5%;
-  left: 75%;
-}
-
-/* DeveloperInfo */
-.DeveloperInfo {
-  align-items: center;
-  text-align: center;
-}
-
-.DeveloperImgInfo {
-  position: relative;
-  margin-bottom: 2rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-}
-
-.DeveloperFrame {
-  width: 13vw;
-}
-
-.DeveloperImg {
-  position: absolute;
-  width: 7vw;
-  top: 50%;
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-}
-
-/* Developers */
-.Developers {
-  align-items: center;
-  text-align: center;
-}
-
-.DevelopersInfo {
-  display: inline-block;
-}
-
-.DeveloperSort {
-  display: flex;
-  margin-bottom: 2rem;
-  margin-top: 5rem;
 }
 
 /* animation */
@@ -748,5 +646,22 @@
   75% {
     -webkit-transform: translateX(-6px) rotate(-1.2deg);
     transform: translateX(-6px) rotate(-1.2deg);
+  }
+}
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

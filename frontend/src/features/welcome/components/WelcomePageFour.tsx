@@ -1,5 +1,3 @@
-// components
-import WelcomeNavbar from "./WelcomeNavbar";
 // css
 import styles from "../Welcome.module.css";
 // img
@@ -18,18 +16,7 @@ import star7 from "../../../assets/welcome/page4_star7.svg";
 
 const WelcomePageFour = () => {
   return (
-    <div className={styles.MotionArea}>
-      <div className={`${styles.WelcomeBackground} ${styles.one}`}></div>
-      <div className={`${styles.WelcomeBackground} ${styles.two}`}></div>
-      <div className={`${styles.WelcomeBackground} ${styles.three}`}></div>
-      <div
-        className={`${styles.WelcomeBackground} ${styles.four} ${styles.active}`}
-      ></div>
-      <div className={`${styles.WelcomeBackground} ${styles.five}`}></div>
-      <div className={`${styles.WelcomeBackground} ${styles.six}`}></div>
-
-      <WelcomeNavbar color={"#ffffff"} />
-
+    <div className={styles.welcomePageFour}>
       <h1 className={styles.WelcomeTitleText} style={{ color: "#ffffff" }}>
         README, 개발 목표는요!
       </h1>
