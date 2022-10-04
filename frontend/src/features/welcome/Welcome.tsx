@@ -15,6 +15,7 @@ import styles from "./Welcome.module.css";
 import welcomeCharacter from "../../assets/welcome/welcome_character.svg";
 import WelcomeNavbar from "./components/WelcomeNavbar";
 import { getIntersectionObserver } from "./observer";
+import WelcomePageEvent from "./components/WelcomePageEvent";
 
 const Welcome = () => {
   const dispatch = useAppDispatch();
@@ -109,6 +110,8 @@ const Welcome = () => {
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={0} speed={-1} factor={1.5}> */}
+
+      <WelcomePageEvent />
 
       <WelcomePageOne />
 

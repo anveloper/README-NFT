@@ -1,33 +1,47 @@
-/* NEW */
-/* WelcomePageStart */
-/* .motionArea {
+.welcomePageEvent {
   position: relative;
   width: 100%;
   height: 100%;
-  -ms-overflow-style: none;
+  background: linear-gradient(180deg, #b8e5ff 0%, #ffe9e9 100%);
 }
 
-.MotionArea::-webkit-scrollbar {
-  display: none;
+.eventNFT {
+  position: relative;
+  top: 30%;
+  left: 7%;
+  transform: rotate(-14.36deg);
 }
 
-.MotionArea .WelcomeBackground {
+.eventSSF {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  /* transition: opacity 0.5s; */
-/* background-attachment: fixed;
-  background: cover;
-}  */
+  top: 30%;
+  right: 20%;
+  font-size: 15rem;
+  transform: rotate(19.38deg);
+}
+
+.eventButton {
+  position: absolute;
+  top: 60%;
+  left: 37%;
+  background: #fcf5e9;
+  border-radius: 30px;
+  border: none;
+  width: 25vw;
+  height: 12vh;
+  font-family: "IM_Hyemin-Bold";
+  font-size: 1.7rem;
+  cursor: pointer;
+
+  -webkit-animation: heartbeat 3s ease-in-out infinite both;
+  animation: heartbeat 3s ease-in-out infinite both;
+}
 
 .welcomePageOne {
   position: relative;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, #f2f2f2 0%, #ffbaa4 100%);
+  background: linear-gradient(180deg, #ffe9e9 0%, #ffbaa4 100%);
 }
 
 .welcomePageTwo {
@@ -132,6 +146,8 @@
 }
 
 .WelcomeDescriptionText {
+  display: inline-block;
+  white-space: nowrap;
   position: absolute;
   top: 30%;
   left: 50%;
@@ -225,34 +241,38 @@
 .page4_cloud1 {
   position: absolute;
   width: 20vw;
-  top: 95%;
-  left: 7%;
-  transform: translate(-7%, -95%);
+  top: 75%;
+  left: 5%;
+  -webkit-animation: heartbeat 3s ease-in-out infinite both;
+  animation: heartbeat 3s ease-in-out infinite both;
 }
 
 .page4_cloud2 {
   position: absolute;
   width: 20vw;
-  top: 80%;
-  left: 35%;
-  transform: translate(-35%, -80%);
+  top: 58%;
+  left: 27%;
+  -webkit-animation: heartbeat 3s ease-in-out infinite both;
+  animation: heartbeat 3s ease-in-out infinite both;
 }
 
 .page4_cloud3 {
   position: absolute;
   width: 20vw;
-  top: 60%;
-  left: 63%;
-  transform: translate(-63%, -65%);
+  top: 40%;
+  left: 50%;
+  -webkit-animation: heartbeat 3s ease-in-out infinite both;
+  animation: heartbeat 3s ease-in-out infinite both;
 }
 
 .page4_cloud4 {
   position: absolute;
   width: 20vw;
-  top: 35%;
-  left: 91%;
-  transform: translate(-91%, -35%);
+  top: 22%;
+  left: 72%;
   z-index: 50;
+  -webkit-animation: heartbeat 3s ease-in-out infinite both;
+  animation: heartbeat 3s ease-in-out infinite both;
 }
 
 .page4_star1 {
@@ -554,12 +574,12 @@
   position: relative;
   /* top: 30%; */
   width: 18vw;
-  height: 42vh;
+  height: 40vh;
   justify-content: center;
   align-items: center;
   /* margin-top: 10rem; */
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 
   background-color: #ffffff;
   border-radius: 30px;
@@ -570,7 +590,7 @@
 .NFTCardImg {
   width: 10vw;
   /* margin-top: 0.5em; */
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
 }
 
 .NFTCardText {
@@ -646,6 +666,75 @@
   75% {
     -webkit-transform: translateX(-6px) rotate(-1.2deg);
     transform: translateX(-6px) rotate(-1.2deg);
+  }
+}
+
+@-webkit-keyframes heartbeat {
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  10% {
+    -webkit-transform: scale(0.91);
+    transform: scale(0.91);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  17% {
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  33% {
+    -webkit-transform: scale(0.87);
+    transform: scale(0.87);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  45% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+@keyframes heartbeat {
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  10% {
+    -webkit-transform: scale(0.91);
+    transform: scale(0.91);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  17% {
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  33% {
+    -webkit-transform: scale(0.87);
+    transform: scale(0.87);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  45% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
   }
 }
 
