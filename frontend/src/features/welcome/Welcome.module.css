@@ -129,6 +129,8 @@
   color: #000000;
   font-size: 5vh;
   z-index: 50;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .WelcomeDescriptionText {
@@ -216,7 +218,6 @@
   top: 35%;
   left: 50%;
   transform: translate(-50%);
-  background-color: #ffffff;
   width: 50vw;
   height: 30vw;
   z-index: 50;
