@@ -1,11 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import IMG from "../../../assets/btn/sale_btn.svg";
 import styles from "../SNS.module.css";
 
 const MoveSale = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <button
       className={styles.btn}
