@@ -14,6 +14,7 @@ import styles from "./Welcome.module.css";
 // img
 import welcomeCharacter from "../../assets/welcome/welcome_character.svg";
 import WelcomeNavbar from "./components/WelcomeNavbar";
+import { getIntersectionObserver } from "./observer";
 
 const Welcome = () => {
   const dispatch = useAppDispatch();
@@ -66,7 +67,25 @@ const Welcome = () => {
       onboarding.current.startOnboarding();
     }
   };
+  const [welcomeNav, setWelcomeNav] = useState(2);
+  const pageTwoRef = useRef();
+  const pageThreeRef = useRef();
+  const pageFourRef = useRef();
+  const pageFiveRef = useRef();
+  useEffect(() => {
+    const observer = getIntersectionObserver(setWelcomeNav);
 
+    const headers = [
+      pageTwoRef.current,
+      pageThreeRef.current,
+      pageFourRef.current,
+      pageFiveRef.current,
+    ];
+
+    headers.map((header) => {
+      observer.observe(header);
+    });
+  }, []);
   return (
     // <Parallax ref={ref} pages={6}>
     <div className={styles.Welcome}>
@@ -78,7 +97,7 @@ const Welcome = () => {
         onClick={connectWallet}
       />
 
-      <WelcomeNavbar />
+      <WelcomeNavbar welcomeNav={welcomeNav} />
 
       {/* <ScrollPage /> */}
       {/* </ParallaxLayer> */}
@@ -91,25 +110,25 @@ const Welcome = () => {
 
       {/* <ParallaxLayer offset={1} speed={-1} factor={1.5}> */}
       {/* <div id="story"> */}
-      <WelcomePageTwo />
+      <WelcomePageTwo pageTwoRef={pageTwoRef} />
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={2} speed={0.1} factor={1.5}> */}
       {/* <div id="game"> */}
-      <WelcomePageThree />
+      <WelcomePageThree pageThreeRef={pageThreeRef} />
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={3} speed={0.1} factor={1.5}> */}
       {/* <div id="roadmap"> */}
-      <WelcomePageFour />
+      <WelcomePageFour pageFourRef={pageFourRef} />
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={4} speed={0.1} factor={1.5}> */}
       {/* <div id="team"> */}
-      <WelcomePageFive />
+      <WelcomePageFive pageFiveRef={pageFiveRef} />
       {/* </div> */}
       {/* </ParallaxLayer> */}
 

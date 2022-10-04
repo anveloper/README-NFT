@@ -14,9 +14,9 @@ import star5 from "../../../assets/welcome/page4_star5.svg";
 import star6 from "../../../assets/welcome/page4_star6.svg";
 import star7 from "../../../assets/welcome/page4_star7.svg";
 
-const WelcomePageFour = () => {
+const WelcomePageFour = ({ pageFourRef }: any) => {
   return (
-    <div className={styles.welcomePageFour}>
+    <div id="4" ref={pageFourRef} className={styles.welcomePageFour}>
       <h1 className={styles.WelcomeTitleText} style={{ color: "#ffffff" }}>
         README, 개발 목표는요!
       </h1>

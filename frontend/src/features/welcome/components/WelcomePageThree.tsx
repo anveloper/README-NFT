@@ -4,9 +4,9 @@ import styles from "../Welcome.module.css";
 import cloud1 from "assets/welcome/page3_cloud1.svg";
 import cloud2 from "assets/welcome/page3_cloud2.svg";
 
-const WelcomePageThree = () => {
+const WelcomePageThree = ({ pageThreeRef }: any) => {
   return (
-    <div className={styles.welcomePageThree}>
+    <div id="3" ref={pageThreeRef} className={styles.welcomePageThree}>
       <h1 className={styles.WelcomeTitleText}>
         게임을 통해 특별한 NFT를 소유하세요!
       </h1>
