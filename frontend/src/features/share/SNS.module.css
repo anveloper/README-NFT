@@ -120,7 +120,7 @@
   .container {
     flex-direction: column;
     background-size: 20%;
-    font-size: 0.3rem;
+    font-size: 0.5rem;
   }
   .btnGroup {
     width: 100%;
@@ -154,7 +154,7 @@
     font-size: 1.1rem;
   }
   .btnImg {
-    max-width: 60%;
+    max-width: 50%;
   }
 }
 @-webkit-keyframes slide-in-bottom {
