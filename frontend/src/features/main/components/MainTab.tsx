@@ -17,9 +17,9 @@ const MainTab = ({ tabRef }: any) => {
     });
   };
   return (
-    <div className={styles.tabContainer} ref={tabRef}>
+    <div id="3" className={styles.tabContainer} ref={tabRef}>
       <div className={styles.tabInfo}>
-        <p className={styles.tabTitle}>내 마음을 읽어줘</p>
+        <p className={styles.tabTitle}>내 마음을 읽어줘!</p>
         <p className={styles.tabDescription}>
           실시간 [리드미]게임에 참여하여 NFT의 정답자가 되어보세요.
           <br />

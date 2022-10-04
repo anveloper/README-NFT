@@ -135,3 +135,73 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
+<br>
+
+### 특정 포트만 http로 연결하기
+
+상황에 따라 특정 포트로 들어오는 요청만 http로 설정하게 할 수 있다.
+
+해당 방법은 모든 http요청이 https로 리다이렉트되는 상황에서 임시적으로 사용 가능한 방법이므로 급할 경우에 참고만 할 것
+
+#### 스웨거 연결하기 예시
+
+다음과 같은 nginx 설정인 상황에서 배포 서버의 https로 swagger를 열어야하는데 원하는 대로 열리지 않는 경우가 있다. location /swagger-ui로 분명히 proxy_pass를 설정해줬음에도 Bad Gateway를 리턴할 경우 급한대로 http로 열리게 하는 방법이 있다.
+
+```nginx
+server {
+        location /{
+                proxy_pass http://localhost:3000;
+        }
+
+        location /api {
+                proxy_pass http://localhost:8085;
+        }
+
+	.. 중략...
+}
+```
+
+<br>
+
+#### 방화벽 설정
+
+명령어
+
+- sudo ufw enable : 방화벽 활성화
+- sudo ufw disable : 방화벽 비활성화
+- sudo ufw app list : 포트를 사용 중인 앱 리스트 출력
+- sudo ufw status: 방화벽 포트 상태 출력
+- sudo ufw allow [포트 번호] : 특정 포트 번호를 허락함
+- sudo ufw deny [포트 번호] : 특정 포트 번호를 닫음
+
+<br>
+
+sudo ufw enable으로 방화벽을 활성화 한 다음에 sudo ufw status로 방화벽 포트 상태를 출력한다. 해당 리스트에 없는 포트 중에 아무거나 원하는 숫자를 골라서 sudo ufw allow [포트 번호]를 통해 해당 포트로 들어오는 요청을 허락한다
+
+그 후 다음과 같이 server 블록에 이어서 작성한다.
+
+```nginx
+	location /swagger-ui {
+		return 301  http://j7b108.p.ssafy.io:8085/swagger-ui/index.html;
+	}
+```
+
+해당 포트에 한해서만 http를 허락했으므로 배포 서버 url로 swagger 문서를 확인할 수 있다.
+
+<br>
+
+#### 만약 request가 매번 다르다면?
+
+http://도메인/user1, http://도메인/user2와 같이 url이 바뀌어서 요청되는 경우에는 http로 리다이렉트 되더라도 요청했던 url을 유지해야한다. 이 때 사용가능한 것이 있다.
+
+http://도메인/readme/1, http://도메인/readme/16과 같이 들어온다고 가정
+
+```nginx
+	location /readme/ {
+		return 301 http://j7b108.p.ssafy.io:3000$request_uri;
+	}
+```
+
+- `$request_uri`라는 nginx 변수를 통해서 맵핑해주면 된다.
+  - /readme/ 이후에 들어온 요청에 대한 파라미터 값을 /readme/와 함께 그대로 반환한다. 
+- j7b108.p.ssafy.io는 `$host`로 쓸 수 있긴 하다.

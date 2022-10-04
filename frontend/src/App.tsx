@@ -1,13 +1,15 @@
 // core
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
 // state
-import { login, loginUser, selectUserAddress } from "./features/auth/authSlice";
+import { login, selectUserAddress } from "./features/auth/authSlice";
 // components
 import Navbar from "./components/nav/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
 // page
+import Milestone from "routes/Milestone";
+import DevRoute from "routes/DevRoute";
 import Main from "./features/main/Main";
 import Mint from "./features/mint/Mint";
 import LiveList from "./features/main/LiveList";
@@ -24,11 +26,9 @@ import styles from "./App.module.css";
 
 import TestPage from "./testWeb3/TestPage";
 
+import MetaMaskOnboarding from "@metamask/onboarding";
 import NFTSale from "./features/nft/NftSaleList";
 import MyMintList from "./features/mint/MyMintList";
-import MetaMaskOnboarding from "@metamask/onboarding";
-import DevRoute from "routes/DevRoute";
-import Milestone from "routes/Milestone";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -51,17 +51,25 @@ function App() {
     return () => {
       window.ethereum.removeListener("accountsChanged", handleNewAccounts);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const [mainNav, setMainNav] = useState<number>(1);
+  const [mainRef, setMainRef] = useState<HTMLDivElement[]>([]);
   return (
     <div className={styles.container}>
       <Milestone>
         <>
           <BackgroundCloud />
-          {!isGame && <Navbar />}
+          {!isGame && <Navbar mainNav={mainNav} mainRef={mainRef} />}
           <div className={styles.content}>
             <Routes>
-              <Route path="/" element={<Main />}>
+              <Route
+                path="/"
+                element={
+                  <Main setMainNav={setMainNav} setMainRef={setMainRef} />
+                }
+              >
                 <Route index element={<LiveList />} />
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />

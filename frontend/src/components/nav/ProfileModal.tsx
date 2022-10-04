@@ -2,12 +2,15 @@ import {
   Dispatch,
   FC,
   SetStateAction,
+  useContext,
   useEffect,
   useRef,
+  memo,
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
+import io from "socket.io-client";
 // img
 import {
   selectUserAddress,
@@ -17,6 +20,8 @@ import {
 import { SSFContract } from "../../web3Config";
 // css
 import styles from "./Navbar.module.css";
+import useNotification from "./Notification";
+import { SocketContext } from "socketConfig";
 
 interface ProfileModalProps {
   modalOpen: boolean;
@@ -29,6 +34,8 @@ const ProfileModal: FC<ProfileModalProps> = ({ modalOpen, showModal }) => {
   const nickname = useAppSelector(selectUserName);
   const [balance, setBalance] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
+  const socket = useContext(SocketContext);
+  const [notifications, setNotifications] = useState([]);
 
   const getBalance = async () => {
     try {
@@ -65,11 +72,36 @@ const ProfileModal: FC<ProfileModalProps> = ({ modalOpen, showModal }) => {
     showModal();
   };
 
+  const triggerNotif = useNotification("Test Noti", {
+    body: "notification body test",
+  });
+
   useEffect(() => {
     if (modalOpen) document.addEventListener("mousedown", handler);
     else document.removeEventListener("mousedown", handler);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalOpen]);
+
+  useEffect(() => {
+    socket.emit("newUser", walletAddress);
+  }, [socket, walletAddress]);
+
+  useEffect(() => {
+    socket.on("getNotification", (data: any) => {
+      setNotifications((prev) => [...prev, data]);
+    });
+  }, [socket]);
+
+  console.log(notifications);
+
+  const displayNotification = (nftName: any) => {
+    return (
+      <p className="notification">{`보유하신 '${nftName}'의 판매가 완료되었습니다`}</p>
+    );
+  };
+  useEffect(() => {
+    console.log("재렌더링~");
+  }, []);
   return (
     <div
       className={
@@ -99,8 +131,10 @@ const ProfileModal: FC<ProfileModalProps> = ({ modalOpen, showModal }) => {
         </div>
 
         <div className={styles.ProfileModalNotification}>
+          <button onClick={triggerNotif}>Push Notification</button>
           <div className={styles.ProfileModalNotificationText}>
-            <p>보유하신 '귓속말'의 판매가 완료되었습니다.</p>
+            {notifications.map((n) => displayNotification(n))}
+            {/* <p>보유하신 '귓속말'의 판매가 완료되었습니다.</p> */}
             <button className={styles.ProfileModalNotificationTextDelete}>
               X
             </button>

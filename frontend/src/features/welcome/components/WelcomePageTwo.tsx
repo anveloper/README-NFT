@@ -1,12 +1,11 @@
 // component
-import WelcomeNavbar from "./WelcomeNavbar";
 import NFTCard from "./NFTCard";
 // css
 import styles from "../Welcome.module.css";
 // img
-import white_cloud from "../../../assets/welcome/page1_cloud1.svg";
-import yellow_cloud from "../../../assets/welcome/page1_cloud2.svg";
-import pink_cloud from "../../../assets/welcome/page2_cloud.svg";
+import yellow_cloud from "../../../assets/welcome/page2_cloud1.svg";
+import white_cloud from "../../../assets/welcome/page2_cloud2.svg";
+import pink_cloud from "../../../assets/welcome/page2_cloud3.svg";
 import dog from "../../../assets/nft-img/1.png";
 import cat from "../../../assets/nft-img/2.png";
 import giraffe from "../../../assets/nft-img/3.png";
@@ -15,23 +14,12 @@ import rabbit from "../../../assets/nft-img/5.png";
 import sheep from "../../../assets/nft-img/6.png";
 import airplane from "../../../assets/welcome/airplane.svg";
 
-const WelcomePageTwo = () => {
+const WelcomePageTwo = ({ storyRef }: any) => {
   return (
-    <div className={styles.MotionArea}>
-      <div className={`${styles.WelcomeBackground} ${styles.one}`}></div>
-      <div
-        className={`${styles.WelcomeBackground} ${styles.two} ${styles.active}`}
-      ></div>
-      <div className={`${styles.WelcomeBackground} ${styles.three}`}></div>
-      <div className={`${styles.WelcomeBackground} ${styles.four}`}></div>
-      <div className={`${styles.WelcomeBackground} ${styles.five}`}></div>
-      <div className={`${styles.WelcomeBackground} ${styles.six}`}></div>
-
-      <WelcomeNavbar />
-
-      <img className={styles.page1_cloud1} src={white_cloud} alt="" />
-      <img className={styles.page1_cloud2} src={yellow_cloud} alt="" />
-      <img className={styles.page2_cloud} src={pink_cloud} alt="" />
+    <div id="2" className={styles.welcomePageTwo} ref={storyRef}>
+      <img className={styles.page2_cloud1} src={yellow_cloud} alt="" />
+      <img className={styles.page2_cloud2} src={white_cloud} alt="" />
+      <img className={styles.page2_cloud3} src={pink_cloud} alt="" />
 
       <h1 className={styles.WelcomeTitleText}>나만의 NFT를 만들어보세요!</h1>
       <h4 className={styles.WelcomeDescriptionText}>
@@ -85,7 +73,7 @@ const WelcomePageTwo = () => {
         </div>
       </div>
 
-      <img className={airplane} src={airplane} alt="" />
+      <img className={styles.airplane} src={airplane} alt="airplane" />
     </div>
   );
 };

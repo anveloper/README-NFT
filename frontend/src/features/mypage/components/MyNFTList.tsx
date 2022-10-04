@@ -249,6 +249,7 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
         {cardList ? (
           <div className={styles.MyNFTCardList}>
             {NFTCardArray.map((v, i) => {
+              console.log(v);
               return <NftItem key={i} nft={v} />;
               // return (
               //   <MyNFTCard

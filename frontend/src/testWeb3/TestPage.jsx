@@ -7,6 +7,7 @@ import {
   BidReadmeContract,
   SSFContract,
   DrawTokenContract,
+  mintReadmeToken,
 } from "../web3Config";
 
 import IpfsAPI from "ipfs-api";
@@ -162,11 +163,9 @@ const TestPage = () => {
     MintReadmeContract.methods.getOwnedTokens(account).call((err, res) => {
       console.log(res);
     });
-    MintReadmeContract.methods
-      .getMyReadmeTokenArrayLength(account)
-      .call((err, res) => {
-        console.log(res);
-      });
+    MintReadmeContract.methods.getMyReadmeTokenArrayLength(account).call((err, res) => {
+      console.log(res);
+    });
     GetReadmeContract.methods.getMyReadmeToken(account).call((err, res) => {
       console.log(res);
     });
@@ -180,11 +179,9 @@ const TestPage = () => {
     MintReadmeContract.methods.getDrawTokens(account).call((err, res) => {
       console.log(res);
     });
-    MintReadmeContract.methods
-      .getDrawReadmeTokenArrayLength(account)
-      .call((err, res) => {
-        console.log(res);
-      });
+    MintReadmeContract.methods.getDrawReadmeTokenArrayLength(account).call((err, res) => {
+      console.log(res);
+    });
     GetReadmeContract.methods.getDrawReadmeToken(account).call((err, res) => {
       console.log(res);
     });
@@ -233,9 +230,7 @@ const TestPage = () => {
     //     .purchaseReadmeToken(account, toBuy)
     //     .send({ from: account });
     // }
-    await SSFContract.methods
-      .approve(process.env.REACT_APP_SALEREADMETOKEN_CA, toBuyPrice)
-      .send({ from: account });
+    await SSFContract.methods.approve(process.env.REACT_APP_SALEREADMETOKEN_CA, toBuyPrice).send({ from: account });
     SaleReadmeContract.methods
       .purchaseReadmeToken(process.env.REACT_APP_ERC20_CA, toBuy)
       .send({ from: account })
@@ -244,12 +239,10 @@ const TestPage = () => {
       });
   };
   const getEventMoney = async () => {
-    await DrawTokenContract.methods
-      .shareToken()
-      .send({ from: account }, (receipt, error) => {
-        console.log(receipt);
-        console.log(error);
-      });
+    await DrawTokenContract.methods.shareToken().send({ from: account }, (receipt, error) => {
+      console.log(receipt);
+      console.log(error);
+    });
     DrawTokenContract.methods.getWinnerCount().call((err, res) => {
       setEventLeft(res);
     });
@@ -263,11 +256,7 @@ const TestPage = () => {
         type="file"
         accept="image/png, image/jpeg, image/jpg, image/gif"
         ref={itemSelect}
-        onChange={(e) =>
-          e.target.files.length !== 0
-            ? handleItem(e.target.files[0])
-            : handleItem("")
-        }
+        onChange={(e) => (e.target.files.length !== 0 ? handleItem(e.target.files[0]) : handleItem(""))}
       />
       <br />
       <label htmlFor="title">제목 :</label>
@@ -323,6 +312,16 @@ const TestPage = () => {
       <button onClick={getToken}>조회하기</button>
       <h2>내가 그린 nft 조회</h2>
       <button onClick={drawToken}>조회하기</button>
+      <h2>전체 발행한 nft 조회</h2>
+      <button
+        onClick={() =>
+          MintReadmeContract.methods.getTotalReadmeToken().call((err, res) => {
+            console.log(res);
+          })
+        }
+      >
+        조회하기
+      </button>
       <h2>NFT 소유권 변경하기</h2>
       <label htmlFor="to">얘한테</label>
       <input
@@ -370,9 +369,7 @@ const TestPage = () => {
       />
       <button
         onClick={() => {
-          MintReadmeContract.methods
-            .setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true)
-            .send({ from: account });
+          MintReadmeContract.methods.setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true).send({ from: account });
         }}
       >
         판매 권한 주기
@@ -391,19 +388,16 @@ const TestPage = () => {
       />
       <button
         onClick={() => {
-          SaleReadmeContract.methods
-            .getReadmeTokenPrice(toBuy)
-            .call((err, res) => {
-              setToBuyPrice(res);
-            });
+          SaleReadmeContract.methods.getReadmeTokenPrice(toBuy).call((err, res) => {
+            setToBuyPrice(res);
+          });
         }}
       >
         구매하기
       </button>
       {toBuyPrice && (
         <div>
-          {toBuyPrice}SSF임 진짜 살거임?{" "}
-          <button onClick={buyNFT}>진짜 사기</button>
+          {toBuyPrice}SSF임 진짜 살거임? <button onClick={buyNFT}>진짜 사기</button>
         </div>
       )}
       <h2>{eventLeft}/50</h2>
@@ -415,10 +409,7 @@ const TestPage = () => {
       <button
         onClick={() => {
           MintReadmeContract.methods
-            .batchNFT(
-              process.env.REACT_APP_DRAWTOKEN,
-              process.env.REACT_APP_SALEREADMETOKEN_CA
-            )
+            .batchNFT(process.env.REACT_APP_DRAWTOKEN, process.env.REACT_APP_SALEREADMETOKEN_CA)
             .send({ from: account })
             .then((receipt) => {
               console.log(receipt);

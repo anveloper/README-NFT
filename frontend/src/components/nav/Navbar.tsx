@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import LogoImg from "../../assets/logo_img.svg";
@@ -13,8 +13,11 @@ import {
 } from "features/auth/authSlice";
 
 const isDev = process.env.NODE_ENV !== "production";
-
-const Navbar = () => {
+interface Props {
+  mainNav: number;
+  mainRef: HTMLDivElement[];
+}
+const Navbar = ({ mainNav, mainRef }: Props) => {
   const userAddress = useAppSelector(selectUserAddress);
   const userAvatar = useAppSelector(selectUserAvatar);
   const [modalOpen, setModalOpen] = useState(false);
@@ -22,7 +25,9 @@ const Navbar = () => {
   const showModal = () => {
     setModalOpen(!modalOpen);
   };
-
+  useEffect(() => {
+    console.log(mainRef);
+  }, [mainRef]);
   return (
     <div className={styles.navBar}>
       <div className={styles.logoBox}>
@@ -45,6 +50,32 @@ const Navbar = () => {
           {"개발때만 보여요."}
         </div>
       )}
+      <div className={styles.navButtonBox}>
+        <button
+          style={mainNav == 1 ? { backgroundColor: "#fddf61" } : {}}
+          onClick={() => {
+            mainRef[0].scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          가이드
+        </button>
+        <button
+          style={mainNav == 2 ? { backgroundColor: "#fddf61" } : {}}
+          onClick={() => {
+            mainRef[1].scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          한번 맞춰볼래?
+        </button>
+        <button
+          style={mainNav == 3 ? { backgroundColor: "#fddf61" } : {}}
+          onClick={() => {
+            mainRef[2].scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          실시간/NFT
+        </button>
+      </div>
       <div
         className={
           modalOpen
@@ -55,7 +86,9 @@ const Navbar = () => {
       >
         <img src={userAvatar} alt="" className={styles.avatar} />
         {!modalOpen && <p className={styles.nameTag}>{nickname}</p>}
+        <div className={styles.notificationCounter}></div>
       </div>
+
       {userAddress && (
         <ProfileModal modalOpen={modalOpen} showModal={showModal} />
       )}
