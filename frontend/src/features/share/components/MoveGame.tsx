@@ -1,17 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import IMG from "../../../assets/btn/game_btn.svg";
 import styles from "../SNS.module.css";
 
 const MoveGame = (props: any) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { className } = props;
   return (
     <button
       className={className}
       onClick={() => {
-        navigate("/live");
+        window.location.href = "https://j7b108.p.ssafy.io/live";
+        return null;
       }}
     >
       <div className={styles.box}>
