@@ -55,7 +55,9 @@ const Navbar = () => {
       >
         <img src={userAvatar} alt="" className={styles.avatar} />
         {!modalOpen && <p className={styles.nameTag}>{nickname}</p>}
+        <div className={styles.notificationCounter}></div>
       </div>
+
       {userAddress && (
         <ProfileModal modalOpen={modalOpen} showModal={showModal} />
       )}

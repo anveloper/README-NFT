@@ -4,13 +4,16 @@ import { SaleReadmeContract, SSFContract } from "../../web3Config";
 import { useDispatch } from "react-redux";
 import { setIsActive } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SocketContext } from "socketConfig";
 
 const NftDetailInfo = (props: any) => {
-  const { isActive, nftOwner, userAddress, tokenId, nftDetail, nftPrice } = props;
+  const { isActive, nftOwner, userAddress, tokenId, nftDetail, nftPrice } =
+    props;
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const socket = useContext(SocketContext);
 
   const cancelSale = async () => {
     if (window.confirm("정말 판매 등록 취소?")) {
@@ -39,7 +42,7 @@ const NftDetailInfo = (props: any) => {
       .approve(process.env.REACT_APP_SALEREADMETOKEN_CA, nftPrice)
       .send({ from: userAddress })
       .then((res: any) => {
-        console.log(res);
+        console.log("approve : ", res);
       })
       .catch((err: any) => {
         console.log(err);
@@ -49,8 +52,13 @@ const NftDetailInfo = (props: any) => {
       .send({ from: userAddress })
       .then((res: any) => {
         console.log(res);
+        socket.emit("sendNotification", {
+          receiverWallet: nftOwner,
+          nftName: nftDetail.name,
+        });
         // 새로고침.
         window.location.replace("/detail/" + tokenId);
+        console.log("purchase : ", res);
       })
       .catch((err: any) => {
         console.log(err);
@@ -109,13 +117,19 @@ const NftDetailInfo = (props: any) => {
                   <>
                     {isActive ? (
                       <>
-                        <button className={styles.card_button} onClick={cancelSale}>
+                        <button
+                          className={styles.card_button}
+                          onClick={cancelSale}
+                        >
                           판매 취소
                         </button>
                       </>
                     ) : (
                       <>
-                        <button className={styles.card_button} onClick={() => props.setTab("sell")}>
+                        <button
+                          className={styles.card_button}
+                          onClick={() => props.setTab("sell")}
+                        >
                           즉시 판매
                         </button>
                       </>
@@ -123,7 +137,11 @@ const NftDetailInfo = (props: any) => {
                   </>
                 ) : (
                   <>
-                    <button disabled={!isActive} className={styles.card_button} onClick={openModal}>
+                    <button
+                      disabled={!isActive}
+                      className={styles.card_button}
+                      onClick={openModal}
+                    >
                       즉시 구매
                     </button>
                   </>
@@ -133,7 +151,12 @@ const NftDetailInfo = (props: any) => {
           </div>
         </div>
       </div>
-      <Modal open={modalOpen} close={closeModal} fn={buyNftToken} header="리드미 구매 확인">
+      <Modal
+        open={modalOpen}
+        close={closeModal}
+        fn={buyNftToken}
+        header="리드미 구매 확인"
+      >
         <img src={nftDetail.imageURL} alt="" />
         <div>이거 진짜 살거?</div>
         <div>{nftPrice} SSF : 이 가격에 ?</div>
