@@ -3,27 +3,27 @@ import { useEffect, useRef, useState } from "react";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { login } from "features/auth/authSlice";
 // component
-import WelcomeNavbar from "./components/WelcomeNavbar";
-import WalletAddress from "./components/WalletAddress";
-import NFTDescription from "./components/NFTDescription";
-import GameDescription from "./components/GameDescription";
-import RoadMap from "./components/RoadMap";
-import Developers from "./components/Developers";
-// css
-import styles from "./Welcome.module.css";
-import WelcomePageStart from "./components/WelcomePageStart";
+import WelcomePageOne from "./components/WelcomePageOne";
 import WelcomePageTwo from "./components/WelcomePageTwo";
 import WelcomePageThree from "./components/WelcomePageThree";
 import WelcomePageFour from "./components/WelcomePageFour";
 import WelcomePageFive from "./components/WelcomePageFive";
 import WelcomePageSix from "./components/WelcomePageSix";
+// css
+import styles from "./Welcome.module.css";
 // img
-import welcome_character from "../../assets/welcome/welcome_character.svg";
+import welcomeCharacter from "../../assets/welcome/welcome_character.svg";
+import WelcomeNavbar from "./components/WelcomeNavbar";
+import { Parallax, ParallaxLayer } from "@react-spring/parallax";
+import { Element } from "react-scroll";
+import ScrollPage from "./ScrollPage";
 
 const Welcome = () => {
   const dispatch = useAppDispatch();
   const [accounts, setAccounts] = useState<string[]>([]);
   const onboarding = useRef<MetaMaskOnboarding>();
+  const ref = useRef();
+
   //메타마스트 onboarding객체 생성
   useEffect(() => {
     if (!onboarding.current) {
@@ -71,31 +71,56 @@ const Welcome = () => {
   };
 
   return (
+    // <Parallax ref={ref} pages={6}>
     <div className={styles.Welcome}>
-      {/* <WelcomeNavbar /> */}
+      {/* <ParallaxLayer offset={0} speed={1} factor={6}> */}
       <img
         className={styles.welcome_character}
-        src={welcome_character}
+        src={welcomeCharacter}
         alt=""
         onClick={connectWallet}
       />
-      <WelcomePageSix />
-      <WelcomePageFive />
-      <WelcomePageFour />
-      <WelcomePageThree />
+
+      <WelcomeNavbar />
+
+      {/* <ScrollPage /> */}
+      {/* </ParallaxLayer> */}
+
+      {/* <ParallaxLayer offset={0} speed={-1} factor={1.5}> */}
+
+      <WelcomePageOne />
+
+      {/* </ParallaxLayer> */}
+
+      {/* <ParallaxLayer offset={1} speed={-1} factor={1.5}> */}
+      {/* <div id="story"> */}
       <WelcomePageTwo />
-      <WelcomePageStart />
+      {/* </div> */}
+      {/* </ParallaxLayer> */}
 
-      {/* <WalletAddress />
+      {/* <ParallaxLayer offset={2} speed={0.1} factor={1.5}> */}
+      {/* <div id="game"> */}
+      <WelcomePageThree />
+      {/* </div> */}
+      {/* </ParallaxLayer> */}
 
-      <NFTDescription />
+      {/* <ParallaxLayer offset={3} speed={0.1} factor={1.5}> */}
+      {/* <div id="roadmap"> */}
+      <WelcomePageFour />
+      {/* </div> */}
+      {/* </ParallaxLayer> */}
 
-      <GameDescription />
+      {/* <ParallaxLayer offset={4} speed={0.1} factor={1.5}> */}
+      {/* <div id="team"> */}
+      <WelcomePageFive />
+      {/* </div> */}
+      {/* </ParallaxLayer> */}
 
-      <RoadMap />
-
-      <Developers /> */}
+      {/* <ParallaxLayer offset={5} speed={0.1} factor={1.5}> */}
+      <WelcomePageSix />
+      {/* </ParallaxLayer> */}
     </div>
+    // </Parallax>
   );
 };
 

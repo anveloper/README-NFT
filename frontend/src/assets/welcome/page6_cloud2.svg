@@ -1,15 +1,10 @@
-<svg width="994" height="457" viewBox="0 0 994 457" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M622.569 149.187C622.569 200.07 673.481 241.319 736.285 241.319C799.088 241.319 865.5 218.883 865.5 168C865.5 117.117 799.088 57.056 736.285 57.056C673.481 57.056 622.569 98.3047 622.569 149.187Z" fill="white"/>
-<ellipse rx="93.5122" ry="75.7629" transform="matrix(-1 0 0 1 575.236 184.263)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 481.146 288.554)" fill="white"/>
-<ellipse rx="102.456" ry="104.509" transform="matrix(-0.746346 0.665558 0.805345 0.592807 312.634 326.144)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 386.48 183.795)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 473.065 92.1315)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 220.236 255.817)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 113.715 359.131)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 499.715 352.131)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 700.715 326.131)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 879.715 333.131)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 616.219 119.256)" fill="white"/>
-<rect width="516" height="211" transform="matrix(-1 0 0 1 850 184)" fill="white"/>
+<svg width="792" height="611" viewBox="0 0 792 611" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse rx="82.465" ry="68.51" transform="matrix(-0.950078 -0.312013 -0.312013 0.950078 406.758 367.609)" fill="white"/>
+<ellipse rx="100.281" ry="83.3115" transform="matrix(-0.950078 -0.312013 -0.312013 0.950078 528.304 359.231)" fill="white"/>
+<ellipse rx="91.3763" ry="92.9922" transform="matrix(-0.911693 0.410872 0.570344 0.821406 300.297 367.509)" fill="white"/>
+<ellipse rx="100.281" ry="83.3115" transform="matrix(-0.950078 -0.312013 -0.312013 0.950078 406.801 252.034)" fill="white"/>
+<ellipse rx="100.281" ry="83.3115" transform="matrix(-0.950078 -0.312013 -0.312013 0.950078 514.304 214.231)" fill="white"/>
+<ellipse rx="100.281" ry="83.3115" transform="matrix(-0.950078 -0.312013 -0.312013 0.950078 247.195 268.167)" fill="white"/>
+<ellipse rx="100.281" ry="83.3115" transform="matrix(-0.950078 -0.312013 -0.312013 0.950078 124.605 334.737)" fill="white"/>
+<ellipse rx="100.281" ry="83.3115" transform="matrix(-0.950078 -0.312013 -0.312013 0.950078 653.304 317.231)" fill="white"/>
 </svg>
