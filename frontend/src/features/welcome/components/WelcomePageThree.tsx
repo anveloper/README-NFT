@@ -6,7 +6,7 @@ import cloud2 from "assets/welcome/page3_cloud2.svg";
 
 const WelcomePageThree = ({ gameRef }: any) => {
   return (
-    <div id="2" className={styles.welcomePageThree} ref={gameRef}>
+    <div id="3" className={styles.welcomePageThree} ref={gameRef}>
       <h1 className={styles.WelcomeTitleText}>
         게임을 통해 특별한 NFT를 소유하세요!
       </h1>

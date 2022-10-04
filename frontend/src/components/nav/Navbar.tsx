@@ -36,7 +36,7 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
           <img className={styles.img2} src={LogoText} alt="" />
         </Link>
       </div>
-      {/* {isDev && (
+      {isDev && (
         <div className={styles.navButtonBox}>
           <Link to="/login">
             <button>로그인</button>
@@ -49,7 +49,7 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
           </Link>
           {"개발때만 보여요."}
         </div>
-      )} */}
+      )}
       <div className={styles.navButtonBox}>
         <button
           style={mainNav == 1 ? { backgroundColor: "#fddf61" } : {}}

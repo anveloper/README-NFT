@@ -6,7 +6,7 @@ import cloud from "assets/welcome/page6_cloud2.svg";
 
 const WelcomePageFive = ({ teamRef }: any) => {
   return (
-    <div id="4" className={styles.welcomePageFive} ref={teamRef}>
+    <div id="5" className={styles.welcomePageFive} ref={teamRef}>
       <h1 className={styles.WelcomeTitleText} style={{ color: "#ffffff" }}>
         개발자를 소개합니다!
       </h1>

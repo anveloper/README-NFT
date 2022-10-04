@@ -16,7 +16,7 @@ import star7 from "../../../assets/welcome/page4_star7.svg";
 
 const WelcomePageFour = ({ roadmapRef }: any) => {
   return (
-    <div id="3" className={styles.welcomePageFour} ref={roadmapRef}>
+    <div id="4" className={styles.welcomePageFour} ref={roadmapRef}>
       <h1 className={styles.WelcomeTitleText} style={{ color: "#ffffff" }}>
         README, 개발 목표는요!
       </h1>
