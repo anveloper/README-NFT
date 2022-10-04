@@ -4,16 +4,32 @@ import { SaleReadmeContract, SSFContract } from "../../web3Config";
 import { useDispatch } from "react-redux";
 import { setIsActive } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
-import { useContext, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { SocketContext } from "socketConfig";
 
 const NftDetailInfo = (props: any) => {
   const { isActive, nftOwner, userAddress, tokenId, nftDetail, nftPrice } =
     props;
   const [modalOpen, setModalOpen] = useState(false);
+  const [nftYear, setNftYear] = useState("");
+  const [nftMonth, setNftMonth] = useState("");
+  const [nftDay, setNftDay] = useState("");
+  const [nftMinute, setNftMinute] = useState("");
+  const [nftSecond, setNftSecond] = useState("");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const socket = useContext(SocketContext);
+
+  const getTimeInfo = async () => {
+    await SaleReadmeContract.methods.parseTimestamp(3600).call((res: any) => {
+      console.log(res);
+    });
+    await SaleReadmeContract.methods.getYear(tokenId).call((res: any) => {
+      console.log(res);
+      setNftYear(res);
+    });
+  };
 
   const cancelSale = async () => {
     if (window.confirm("정말 판매 등록 취소?")) {
@@ -77,6 +93,10 @@ const NftDetailInfo = (props: any) => {
     navigate(-1);
   };
 
+  useEffect(() => {
+    getTimeInfo();
+  }, []);
+
   return (
     <>
       <div className={styles.cards}>
@@ -87,6 +107,7 @@ const NftDetailInfo = (props: any) => {
                 <>
                   <div>판매 중입니다.</div>
                   <div>즉시 구매하시거나, 경매에 참여할 수 있습니다.</div>
+                  <div>종료일: {nftYear}</div>
                 </>
               ) : (
                 // <>

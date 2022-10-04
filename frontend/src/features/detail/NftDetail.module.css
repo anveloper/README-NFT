@@ -192,7 +192,7 @@ input::-webkit-inner-spin-button {
 /* input창 오른쪽 정렬 */
 .input_price {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   margin: 5px;
 }
