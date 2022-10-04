@@ -7,9 +7,9 @@ import styles from "./MainTab.module.css";
 import BtnLive from "../../../assets/btn/btn_live.svg";
 import BtnNFT from "../../../assets/btn/btn_nft.svg";
 
-const MainTab = () => {
+const MainTab = ({ tabRef }: any) => {
   const [under, setUnder] = useState("left");
-  const tabRef = useRef<HTMLDivElement | null>(null);
+  // const tabRef = useRef<HTMLDivElement | null>(null);
   const handleScroll = () => {
     tabRef.current?.scrollIntoView({
       block: "start",
@@ -17,7 +17,7 @@ const MainTab = () => {
     });
   };
   return (
-    <div className={styles.tabContainer} ref={tabRef}>
+    <div id="3" className={styles.tabContainer} ref={tabRef}>
       <div className={styles.tabInfo}>
         <p className={styles.tabTitle}>내 마음을 읽어줘!</p>
         <p className={styles.tabDescription}>
