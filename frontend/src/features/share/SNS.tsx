@@ -19,7 +19,6 @@ const MintReadmeContract = new web3.eth.Contract(
 const SNS = () => {
   const { pathname } = useLocation();
   const tokenId = Number(pathname.split("/")[2]);
-  const navigate = useNavigate();
 
   const [rtk, setRtk] = useState<Metadata>({
     fileName: "",
