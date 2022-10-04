@@ -14,9 +14,6 @@ import styles from "./Welcome.module.css";
 // img
 import welcomeCharacter from "../../assets/welcome/welcome_character.svg";
 import WelcomeNavbar from "./components/WelcomeNavbar";
-import { Parallax, ParallaxLayer } from "@react-spring/parallax";
-import { Element } from "react-scroll";
-import ScrollPage from "./ScrollPage";
 
 const Welcome = () => {
   const dispatch = useAppDispatch();
