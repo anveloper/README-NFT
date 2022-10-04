@@ -16,7 +16,7 @@ import airplane from "../../../assets/welcome/airplane.svg";
 
 const WelcomePageTwo = ({ storyRef }: any) => {
   return (
-    <div id="1" className={styles.welcomePageTwo} ref={storyRef}>
+    <div id="2" className={styles.welcomePageTwo} ref={storyRef}>
       <img className={styles.page2_cloud1} src={yellow_cloud} alt="" />
       <img className={styles.page2_cloud2} src={white_cloud} alt="" />
       <img className={styles.page2_cloud3} src={pink_cloud} alt="" />

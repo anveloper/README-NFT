@@ -14,7 +14,7 @@ import styles from "./Welcome.module.css";
 // img
 import welcomeCharacter from "../../assets/welcome/welcome_character.svg";
 import WelcomeNavbar from "./components/WelcomeNavbar";
-import { getIntersectionObserver } from "features/main/observer";
+import { getIntersectionObserver } from "./observer";
 import WelcomePageEvent from "./components/WelcomePageEvent";
 
 const Welcome = () => {
@@ -119,25 +119,33 @@ const Welcome = () => {
 
       {/* <ParallaxLayer offset={1} speed={-1} factor={1.5}> */}
       {/* <div id="story"> */}
+
       <WelcomePageTwo storyRef={storyRef} />
+
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={2} speed={0.1} factor={1.5}> */}
       {/* <div id="game"> */}
+
       <WelcomePageThree gameRef={gameRef} />
+
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={3} speed={0.1} factor={1.5}> */}
       {/* <div id="roadmap"> */}
+
       <WelcomePageFour roadmapRef={roadmapRef} />
+
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={4} speed={0.1} factor={1.5}> */}
       {/* <div id="team"> */}
+
       <WelcomePageFive teamRef={teamRef} />
+
       {/* </div> */}
       {/* </ParallaxLayer> */}
 
