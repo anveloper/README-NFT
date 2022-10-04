@@ -1,0 +1,43 @@
+{
+  "config": {
+    "target": "http://localhost:5000",
+    "phases": [
+      {
+        "duration": 10,
+        "arrivalRate": 20
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "engine": "socketio",
+      "flow": [
+        {
+          "emit": {
+            "channel": "test_join_room",
+            "data": {
+              "userAddress": "{{$randomString()}}{{$randomString()}}",
+              "nickname": "{{$randomString()}}",
+              "hostAddress": "0x6359deebf4bdc9c299aeb557341686333c45c568"
+            }
+          }
+        },
+        {
+          "think": 10
+        },
+        {
+          "emit": {
+            "channel": "test_new_message",
+            "data": {
+              "session": "0x6359deebf4bdc9c299aeb557341686333c45c568",
+              "msg": "정답이요 정답"
+            }
+          }
+        },
+        {
+          "think": 10
+        }
+      ]
+    }
+  ]
+}
