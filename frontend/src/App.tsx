@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
 // state
-import { login, loginUser, selectUserAddress } from "./features/auth/authSlice";
+import { login, selectUserAddress } from "./features/auth/authSlice";
 // components
 import Navbar from "./components/nav/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
@@ -29,6 +29,7 @@ import MyMintList from "./features/mint/MyMintList";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import DevRoute from "routes/DevRoute";
 import Milestone from "routes/Milestone";
+import { socket, SocketProvider } from "socketConfig";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -59,7 +60,7 @@ function App() {
   return (
     <div className={styles.container}>
       <Milestone>
-        <>
+        <SocketProvider value={socket}>
           <BackgroundCloud />
           {!isGame && <Navbar mainNav={mainNav} mainRef={mainRef} />}
           <div className={styles.content}>
@@ -99,7 +100,7 @@ function App() {
               />
             </Routes>
           </div>
-        </>
+        </SocketProvider>
       </Milestone>
     </div>
   );
