@@ -446,3 +446,24 @@
     opacity: 1;
   }
 }
+
+.main {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  max-height: calc(100vh - 60px);
+}
+.main::-webkit-scrollbar {
+  display: none;
+}
+.snap {
+  scroll-snap-align: start;
+}
+
+.snap2 {
+  scroll-snap-align: start;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+.snap2::-webkit-scrollbar {
+  display: none;
+}

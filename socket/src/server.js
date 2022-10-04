@@ -54,6 +54,21 @@ const getParticipants = (session) => {
 };
 const devFlag = process.env.NODE_ENV !== "production";
 let i = 0;
+
+let onlineUsers = [];
+const addNewUser = (userWallet, socketId) => {
+  !onlineUsers.some((user) => user.userWallet === userWallet) &&
+    onlineUsers.push({ userWallet, socketId });
+};
+
+const removeUser = (socketId) => {
+  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userWallet) => {
+  return onlineUsers.find((user) => user.userWallet === userWallet);
+};
+
 io.on("connection", (socket) => {
   if (devFlag) console.log(i++, socket.id);
   // common
@@ -217,10 +232,7 @@ io.on("connection", (socket) => {
     socket.emit("send_answer", rooms.get(session)["answer"] ?? "unknown")
   );
   socket.on("get_solver", (session) => {
-    socket.emit(
-      "send_solver",
-      rooms.get(session)?.["solver"] ?? socket["address"]
-    );
+    socket.emit("send_solver", rooms.get(session)?.["solver"]);
   });
   socket.on("game_start", (session) => {
     rooms.get(session)["started"] = true;
@@ -253,6 +265,22 @@ io.on("connection", (socket) => {
   socket.on("game_end", (session, done) => {
     socket.to(session).emit("host_leave");
     done(rooms.get(session)?.["answer"], rooms.get(session)?.["solver"]);
+  });
+
+  // Notification
+  socket.on("newUser", (userWallet) => {
+    addNewUser(userWallet, socket.id);
+  });
+
+  socket.on("sendNotification", ({ receiverWallet, nftName }) => {
+    const receiver = getUser(receiverWallet);
+    io.to(receiver.socketId).emit("getNotification", {
+      nftName,
+    });
+  });
+
+  socket.on("disconnect", () => {
+    removeUser(socket.id);
   });
 });
 

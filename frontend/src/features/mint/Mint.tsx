@@ -33,18 +33,19 @@ const Mint: FC = () => {
     fr.readAsArrayBuffer(imgBlob);
     fr.onload = async () => {
       if (typeof fr.result !== "string") {
+        const sol = solver.length !== 0 ? solver : creator;
         const cid = await client.add(Buffer.from(fr.result));
         const imageURL = "https://ipfs.io/ipfs/" + cid.path;
         let metadata = {
           fileName: answer,
           name: answer,
           author: creator,
-          description: solver,
+          description: sol,
           imageURL: imageURL,
         };
         const result = await client.add(JSON.stringify(metadata));
         const tokenURI = "https://ipfs.io/ipfs/" + result.path;
-        mintReadmeToken(tokenURI, account, answer, solver)
+        mintReadmeToken(tokenURI, account, answer, sol)
           .then((receipt: any) => {
             console.log(receipt?.events.Mint.returnValues);
             if (receipt.events?.Mint) {
