@@ -66,7 +66,7 @@ const Carousel = ({ carouselRef }: any) => {
     beforeChange: (current: number, next: number) => setImageIndex(next),
   };
   return (
-    <div className={styles.carouselContainer} ref={carouselRef}>
+    <div id="2" className={styles.carouselContainer} ref={carouselRef}>
       <div className={styles.carouselInfo}>
         <p className={styles.carouselTitle}>한 번 맞춰볼래?</p>
         <p className={styles.carouselDescription}>

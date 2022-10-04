@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   useRef,
+  memo,
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
@@ -98,7 +99,9 @@ const ProfileModal: FC<ProfileModalProps> = ({ modalOpen, showModal }) => {
       <p className="notification">{`보유하신 '${nftName}'의 판매가 완료되었습니다`}</p>
     );
   };
-
+  useEffect(() => {
+    console.log("재렌더링~");
+  }, []);
   return (
     <div
       className={

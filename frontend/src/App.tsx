@@ -1,5 +1,5 @@
 // core
-import React, { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
 // state
@@ -54,15 +54,23 @@ function App() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const [mainNav, setMainNav] = useState<number>(1);
+  const [mainRef, setMainRef] = useState<HTMLDivElement[]>([]);
   return (
     <div className={styles.container}>
       <Milestone>
         <SocketProvider value={socket}>
           <BackgroundCloud />
-          {!isGame && <Navbar />}
+          {!isGame && <Navbar mainNav={mainNav} mainRef={mainRef} />}
           <div className={styles.content}>
             <Routes>
-              <Route path="/" element={<Main />}>
+              <Route
+                path="/"
+                element={
+                  <Main setMainNav={setMainNav} setMainRef={setMainRef} />
+                }
+              >
                 <Route index element={<LiveList />} />
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
