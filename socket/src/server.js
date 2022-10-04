@@ -87,6 +87,7 @@ io.on("connection", (socket) => {
   };
   // room
   socket.on("init_room", () => socket.emit("init_room", publicRooms()));
+  socket.on("echo", (asdf) => console.log(asdf));
   socket.on("enter_room", (userAddress, nickname, roomTitle, done) => {
     console.log(userAddress);
     socket["address"] = userAddress;
@@ -281,6 +282,56 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     removeUser(socket.id);
+  });
+
+  // test code
+  socket.on("test_join_room", ({ userAddress, nickname, hostAddress }) => {
+    socket["address"] = userAddress;
+    socket["nickname"] = nickname;
+    socket["solved"] = false;
+    const session = hostAddress;
+    socket.join(session);
+    socket
+      .to(session)
+      .emit(
+        "welcome",
+        socket.nickname,
+        countRoom(session) - 1,
+        getParticipants(session)
+      );
+    io.sockets.emit("room_change", publicRooms());
+  });
+  socket.on("test_new_message", ({ session, msg }) => {
+    const answer = rooms.get(session)["answer"];
+    if (answer && msg.includes(answer)) {
+      if (!rooms.get(session)["solver"]) {
+        rooms.get(session)["solver"] = socket["address"];
+        notiSend(session, "최초 정답자가 나왔습니다!", "green");
+      }
+      socket.join("solvers::" + session);
+      socket["solved"] = true;
+      socket
+        .to(session)
+        .emit(
+          "solve_cnt",
+          rooms.get(session)["solver"],
+          countSolvers(session) - 1,
+          countRoom(session) - 1
+        );
+      socket.emit(
+        "solve_cnt",
+        rooms.get(session)["solver"],
+        countSolvers(session) - 1,
+        countRoom(session) - 1
+      );
+    }
+    if (!socket["solved"]) {
+      socket.to(session).emit("new_message", socket.nickname, msg);
+    } else {
+      socket
+        .to("solvers::" + session)
+        .emit("new_message", "익명의 정답자", msg);
+    }
   });
 });
 
