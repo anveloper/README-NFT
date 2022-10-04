@@ -1,9 +1,10 @@
 // css
 import styles from "../Welcome.module.css";
 // img
-import white_cloud from "../../../assets/welcome/page1_cloud1.svg";
-import yellow_cloud from "../../../assets/welcome/page1_cloud2.svg";
-import welcome_character from "../../../assets/welcome/welcome_character.svg";
+import cloud1 from "../../../assets/welcome/page1_cloud1.svg";
+import cloud2 from "../../../assets/welcome/page1_cloud2.svg";
+import cloud3 from "../../../assets/welcome/page1_cloud3.svg";
+import cloud4 from "../../../assets/welcome/page1_cloud4.svg";
 import WelcomeNavbar from "./WelcomeNavbar";
 
 const WelcomePageStart = () => {
@@ -20,11 +21,10 @@ const WelcomePageStart = () => {
 
       <WelcomeNavbar />
 
-      <h1 className={styles.page1_logo}>README</h1>
-
-      <img className={styles.page1_cloud1} src={white_cloud} alt="" />
-      <img className={styles.page1_cloud2} src={yellow_cloud} alt="" />
-      <div className={styles.ground}></div>
+      <img className={styles.page1_cloud1} src={cloud1} alt="" />
+      <img className={styles.page1_cloud2} src={cloud2} alt="" />
+      <img className={styles.page1_cloud3} src={cloud3} alt="" />
+      <img className={styles.page1_cloud4} src={cloud4} alt="" />
 
       {/* <img
         className={styles.welcome_character}

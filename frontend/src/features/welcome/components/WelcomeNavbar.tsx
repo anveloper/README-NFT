@@ -10,7 +10,6 @@ const WelcomeNavbar = ({ color }: any) => {
       <img className={styles.logo_img} src={LogoImg} alt="" />
       <img className={styles.logo_text_img} src={LogoText} alt="" />
       <div className={styles.WelcomeNavbarLink} style={{ color: color }}>
-        <h5 className={styles.WelcomeNavbarText}>CONNECT WALLET</h5>
         <h5 className={styles.WelcomeNavbarText}>STORY</h5>
         <h5 className={styles.WelcomeNavbarText}>GAME</h5>
         <h5 className={styles.WelcomeNavbarText}>ROADMAP</h5>

@@ -4,7 +4,10 @@ import WelcomeNavbar from "./WelcomeNavbar";
 import styles from "../Welcome.module.css";
 // img
 import moon from "../../../assets/welcome/moon.svg";
-import cloud from "../../../assets/welcome/page4_cloud.svg";
+import cloud1 from "../../../assets/welcome/page4_cloud1.svg";
+import cloud2 from "../../../assets/welcome/page4_cloud2.svg";
+import cloud3 from "../../../assets/welcome/page4_cloud3.svg";
+import cloud4 from "../../../assets/welcome/page4_cloud4.svg";
 import star1 from "../../../assets/welcome/page4_star1.svg";
 import star2 from "../../../assets/welcome/page4_star2.svg";
 import star3 from "../../../assets/welcome/page4_star3.svg";
@@ -31,29 +34,10 @@ const WelcomePageFour = () => {
         README, 개발 목표는요!
       </h1>
 
-      <img className={styles.page4_cloud1} src={cloud} alt="" />
-      <div className={styles.develop_goal1}>
-        <h3 style={{ fontSize: "4.5vh" }}>25%</h3>
-        <h5 style={{ fontSize: "3vh" }}>펜 색상 추가</h5>
-      </div>
-
-      <img className={styles.page4_cloud2} src={cloud} alt="" />
-      <div className={styles.develop_goal2}>
-        <h3 style={{ fontSize: "4.5vh" }}>50%</h3>
-        <h5 style={{ fontSize: "3vh" }}>리드미 라이브 대회</h5>
-      </div>
-
-      <img className={styles.page4_cloud3} src={cloud} alt="" />
-      <div className={styles.develop_goal3}>
-        <h3 style={{ fontSize: "4.5vh" }}>75%</h3>
-        <h5 style={{ fontSize: "3vh" }}>리드미 NFT 발급</h5>
-      </div>
-
-      <img className={styles.page4_cloud4} src={cloud} alt="" />
-      <div className={styles.develop_goal4}>
-        <h3 style={{ fontSize: "4.5vh" }}>100%</h3>
-        <h5 style={{ fontSize: "3vh" }}>추가 기능 구현</h5>
-      </div>
+      <img className={styles.page4_cloud1} src={cloud1} alt="" />
+      <img className={styles.page4_cloud2} src={cloud2} alt="" />
+      <img className={styles.page4_cloud3} src={cloud3} alt="" />
+      <img className={styles.page4_cloud4} src={cloud4} alt="" />
 
       <img className={styles.moon} src={moon} alt="" />
       <img className={styles.page4_star1} src={star1} alt="" />

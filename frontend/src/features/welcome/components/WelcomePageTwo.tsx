@@ -4,9 +4,9 @@ import NFTCard from "./NFTCard";
 // css
 import styles from "../Welcome.module.css";
 // img
-import white_cloud from "../../../assets/welcome/page1_cloud1.svg";
-import yellow_cloud from "../../../assets/welcome/page1_cloud2.svg";
-import pink_cloud from "../../../assets/welcome/page2_cloud.svg";
+import yellow_cloud from "../../../assets/welcome/page2_cloud1.svg";
+import white_cloud from "../../../assets/welcome/page2_cloud2.svg";
+import pink_cloud from "../../../assets/welcome/page2_cloud3.svg";
 import dog from "../../../assets/nft-img/1.png";
 import cat from "../../../assets/nft-img/2.png";
 import giraffe from "../../../assets/nft-img/3.png";
@@ -29,9 +29,9 @@ const WelcomePageTwo = () => {
 
       <WelcomeNavbar />
 
-      <img className={styles.page1_cloud1} src={white_cloud} alt="" />
-      <img className={styles.page1_cloud2} src={yellow_cloud} alt="" />
-      <img className={styles.page2_cloud} src={pink_cloud} alt="" />
+      <img className={styles.page2_cloud1} src={yellow_cloud} alt="" />
+      <img className={styles.page2_cloud2} src={white_cloud} alt="" />
+      <img className={styles.page2_cloud3} src={pink_cloud} alt="" />
 
       <h1 className={styles.WelcomeTitleText}>나만의 NFT를 만들어보세요!</h1>
       <h4 className={styles.WelcomeDescriptionText}>
@@ -85,7 +85,7 @@ const WelcomePageTwo = () => {
         </div>
       </div>
 
-      <img className={airplane} src={airplane} alt="" />
+      <img className={styles.airplane} src={airplane} alt="airplane" />
     </div>
   );
 };
