@@ -1,9 +1,9 @@
 // core
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
 // state
-import { login, loginUser, selectUserAddress } from "./features/auth/authSlice";
+import { login, selectUserAddress } from "./features/auth/authSlice";
 // components
 import Navbar from "./components/nav/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
@@ -29,6 +29,7 @@ import MyMintList from "./features/mint/MyMintList";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import DevRoute from "routes/DevRoute";
 import Milestone from "routes/Milestone";
+import { socket, SocketProvider } from "socketConfig";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -51,12 +52,12 @@ function App() {
     return () => {
       window.ethereum.removeListener("accountsChanged", handleNewAccounts);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className={styles.container}>
       <Milestone>
-        <>
+        <SocketProvider value={socket}>
           <BackgroundCloud />
           {!isGame && <Navbar />}
           <div className={styles.content}>
@@ -91,7 +92,7 @@ function App() {
               />
             </Routes>
           </div>
-        </>
+        </SocketProvider>
       </Milestone>
     </div>
   );
