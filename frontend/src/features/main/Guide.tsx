@@ -9,7 +9,7 @@ import { ReactComponent as Plane2 } from "../../assets/carousel/plane02.svg";
 import styles from "./Main.module.css";
 const Guide = ({ guideRef }: any) => {
   return (
-    <div className={styles.guideContainer} ref={guideRef}>
+    <div id="1" className={styles.guideContainer} ref={guideRef}>
       <div className={styles.guide}>
         <div>
           <p className={styles.guideTitle}>Read Me</p>

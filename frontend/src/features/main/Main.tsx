@@ -1,5 +1,12 @@
 // core
-import { useState, useEffect, useRef, useContext } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 // state
@@ -18,13 +25,20 @@ import { reload, SocketContext } from "../../socketConfig";
 import { findSolveList, setRawList } from "../nft/nftSlice";
 import { GetReadmeContract } from "../../web3Config";
 import SaleButton from "./components/SaleButton";
-
-const Main = () => {
+import { getIntersectionObserver } from "./observer";
+interface Props {
+  setMainNav: Dispatch<SetStateAction<number>>;
+  setMainRef: Dispatch<SetStateAction<HTMLDivElement[]>>;
+}
+const Main = ({ setMainNav, setMainRef }: Props) => {
   const socket = useContext(SocketContext);
   const userAddress = useAppSelector(selectUserAddress);
   const userName = useAppSelector(selectUserName);
 
   const mainRef = useRef<HTMLDivElement | null>(null);
+  const guideRef = useRef<HTMLDivElement | null>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+  const tabRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -58,6 +72,7 @@ const Main = () => {
     setModalOpen(false);
     setRegisterRoomName("");
   };
+
   const handleEnterRoom = () => {
     if (socket) {
       socket.emit(
@@ -82,25 +97,26 @@ const Main = () => {
       );
     }
   };
+  useEffect(() => {
+    const observer = getIntersectionObserver(setMainNav);
 
+    const headers = [guideRef.current, carouselRef.current, tabRef.current];
+
+    headers.map((header) => {
+      observer.observe(header);
+    });
+    setMainRef(headers);
+  }, []);
   return (
-    <div className={styles.main} ref={mainRef}>
+    <div ref={mainRef}>
       <NewHelmet
         title="리드미 & NFT"
         description="README 게임 라이브 목록 및 NFT 목록을 보여줍니다."
       />
-      <div className={styles.snap}>
-        <Guide />
-      </div>
-      <div className={styles.snap}>
-        <Carousel />
-      </div>
-      <div className={styles.snap}>
-        <MainTab />
-      </div>
-      <div className={styles.snap2}>
-        <Outlet />
-      </div>
+      <Guide guideRef={guideRef} />
+      <Carousel carouselRef={carouselRef} />
+      <MainTab tabRef={tabRef} />
+      <Outlet />
       <div ref={contentRef} />
       <Modal
         open={modalOpen}
