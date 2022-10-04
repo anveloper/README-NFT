@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useParams } from "react-router-dom";
 import { MintReadmeToken } from "abi/MintReadmeTokenABI";
 import axios from "axios";
 import { Metadata } from "features/nft/nftSlice";
@@ -18,9 +18,9 @@ const MintReadmeContract = new web3.eth.Contract(
 
 const SNS = () => {
   const { pathname } = useLocation();
-  const tokenId = Number(pathname.split("/")[2]);
-  const navigate = useNavigate();
-
+  let { tokenId } = useParams();
+  const id = Number(tokenId);
+  console.log(useParams());
   const [rtk, setRtk] = useState<Metadata>({
     fileName: "",
     name: "",
@@ -32,7 +32,6 @@ const SNS = () => {
   const getMetadata = async (metadataURI: string) => {
     try {
       const response = await axios({ url: metadataURI });
-      console.log(response.data);
       setRtk(response.data);
     } catch (err) {
       console.log(err);
@@ -40,15 +39,14 @@ const SNS = () => {
   };
 
   useEffect(() => {
-    if (!isNaN(tokenId))
-      MintReadmeContract.methods
-        .tokenURI(tokenId)
-        .call((err: any, res: any) => {
-          const metadataURI = res;
-          if (metadataURI) getMetadata(metadataURI);
-        });
+    console.log(id);
+    if (!isNaN(id))
+      MintReadmeContract.methods.tokenURI(id).call((err: any, res: any) => {
+        const metadataURI = res;
+        if (metadataURI) getMetadata(metadataURI);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, tokenId]);
+  }, [pathname, id]);
 
   return (
     <div className={styles.container}>
@@ -61,7 +59,7 @@ const SNS = () => {
           <img
             className={styles.img}
             src={rtk.imageURL}
-            alt={`README ${tokenId}번째 토큰 이미지 `}
+            alt={`README ${id}번째 토큰 이미지 `}
           />
           <div>
             <div>리드미 : {rtk.name}</div>
@@ -86,3 +84,11 @@ const SNS = () => {
 };
 
 export default SNS;
+
+export const SNSRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/readme/:tokenId" element={<SNS />} />;
+    </Routes>
+  );
+};

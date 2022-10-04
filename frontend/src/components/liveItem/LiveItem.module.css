@@ -1,6 +1,8 @@
 .container {
+  flex-grow: 1;
   width: 23%;
-  aspect-ratio: 12/11;
+  min-width: 210px;
+  max-width: 30%;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -11,7 +13,7 @@
   border-radius: 1rem;
   box-shadow: 5px 5px 5px #00000030;
   position: relative;
-  margin-bottom: 2%;
+  margin: 1%;
 }
 
 .img {

@@ -3,13 +3,14 @@ import { useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import { selectSolveList } from "../../features/nft/nftSlice";
+import { Metadata, selectSolveList } from "../../features/nft/nftSlice";
 import {
   selectUserAddress,
   truncatedAddress,
 } from "../../features/auth/authSlice";
 
 import styles from "./NftItem.module.css";
+import ShareBtn from "./ShareBtn";
 
 const NftItem = (props: any) => {
   const solveList = useAppSelector(selectSolveList);
@@ -26,7 +27,13 @@ const NftItem = (props: any) => {
   const [description, setDescription] = useState("");
   const [imageURL, setImageURL] = useState("");
   const navigator = useNavigate();
-
+  const [metadata, setMetadata] = useState<Metadata>({
+    fileName: "",
+    name: "",
+    author: "",
+    description: "",
+    imageURL: "",
+  });
   const getMetadata = async (metaDataURI: string) => {
     await axios({ url: metaDataURI })
       .then((res: any) => {
@@ -37,6 +44,13 @@ const NftItem = (props: any) => {
         setAuthor(author);
         setDescription(description);
         setImageURL(imageURL);
+        setMetadata({
+          fileName,
+          name,
+          author,
+          description,
+          imageURL,
+        });
       })
       .catch((err) => {});
   };
@@ -53,7 +67,6 @@ const NftItem = (props: any) => {
   }, [props, solveList]);
   const renderName = () => {
     const result = [];
-    console.log("nftItem", props);
     if (answer) {
       for (let i = 0; i < answer.length; i++) {
         result.push(
@@ -66,7 +79,7 @@ const NftItem = (props: any) => {
     } else return <p className={styles.answer}>{"　"}</p>;
   };
   return (
-    <button
+    <div
       ref={lastRef ?? null}
       className={styles.container}
       onClick={() => moveToDetail(nft.readmeTokenId)}
@@ -99,9 +112,10 @@ const NftItem = (props: any) => {
             <p>PRICE</p>
             <p>{nft.readmeTokenPrice}</p>
           </div>
+          <ShareBtn tokenId={nft.readmeTokenId} metadata={metadata} />
         </div>
       </div>
-    </button>
+    </div>
   );
 };
 

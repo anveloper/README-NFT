@@ -95,6 +95,10 @@
   animation: slide-in-bottom 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite
     alternate-reverse both;
 }
+.btnGroup:hover {
+  -webkit-animation: vibrate-1 5s linear infinite both;
+  animation: vibrate-1 5s linear infinite both;
+}
 .btnImg {
   max-width: 90%;
 }
@@ -116,10 +120,13 @@
   .container {
     flex-direction: column;
     background-size: 20%;
+    font-size: 0.5rem;
   }
   .btnGroup {
     width: 100%;
     gap: 4%;
+    -webkit-animation: vibrate-1 5s linear infinite both;
+    animation: vibrate-1 5s linear infinite both;
   }
   .btn {
     width: 38%;
@@ -128,7 +135,7 @@
     display: inline;
   }
   .img {
-    max-width: 100%;
+    max-height: 70%;
   }
   .lg {
     display: none;
@@ -141,13 +148,13 @@
     font-size: 1.6rem;
   }
   .card * {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
   }
   .address {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   .btnImg {
-    max-width: 60%;
+    max-width: 50%;
   }
 }
 @-webkit-keyframes slide-in-bottom {
@@ -168,5 +175,57 @@
   100% {
     -webkit-transform: translateY(0);
     transform: translateY(0);
+  }
+}
+@-webkit-keyframes vibrate-1 {
+  0% {
+    -webkit-transform: translate(0);
+    transform: translate(0);
+  }
+  20% {
+    -webkit-transform: translate(-2px, 2px);
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    -webkit-transform: translate(-2px, -2px);
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    -webkit-transform: translate(2px, 2px);
+    transform: translate(2px, 2px);
+  }
+  80% {
+    -webkit-transform: translate(2px, -2px);
+    transform: translate(2px, -2px);
+  }
+  100% {
+    -webkit-transform: translate(0);
+    transform: translate(0);
+  }
+}
+@keyframes vibrate-1 {
+  0% {
+    -webkit-transform: translate(0);
+    transform: translate(0);
+  }
+  20% {
+    -webkit-transform: translate(-2px, 2px);
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    -webkit-transform: translate(-2px, -2px);
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    -webkit-transform: translate(2px, 2px);
+    transform: translate(2px, 2px);
+  }
+  80% {
+    -webkit-transform: translate(2px, -2px);
+    transform: translate(2px, -2px);
+  }
+  100% {
+    -webkit-transform: translate(0);
+    transform: translate(0);
   }
 }
