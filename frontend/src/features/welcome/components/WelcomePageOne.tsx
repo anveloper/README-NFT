@@ -5,7 +5,6 @@ import cloud1 from "../../../assets/welcome/page1_cloud1.svg";
 import cloud2 from "../../../assets/welcome/page1_cloud2.svg";
 import cloud3 from "../../../assets/welcome/page1_cloud3.svg";
 import cloud4 from "../../../assets/welcome/page1_cloud4.svg";
-import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { useRef } from "react";
 
 const WelcomePageOne = () => {
