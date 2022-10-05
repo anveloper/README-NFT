@@ -17,17 +17,16 @@ interface IMyMintList {
   description: string;
   imageURL: string;
   onSale: boolean;
-  price: number;
+  price: string;
 }
 
 const NftSaleList = () => {
   const [allList, setAllList] = useState<IMyMintList[]>([]);
   const [filteredList, setFilteredList] = useState<IMyMintList[]>([]);
   const [isOnSale, setIsOnSale] = useState(false);
-  const [isAvail, setIsAvail] = useState(false);
-  const [inputMinPrice, setInputMinPrice] = useState(0);
-  const [inputMaxPrice, setInputMaxPrice] = useState(0);
-  const [sortedList, setSortedList] = useState<IMyMintList[]>([]);
+  const [isIncrease, setIsIncrease] = useState(false);
+  const [inputMinPrice, setInputMinPrice] = useState("");
+  const [inputMaxPrice, setInputMaxPrice] = useState("");
   const [checkedList, setCheckedList] = useState([]); // 뱃지 리스트
   const navigator = useNavigate();
 
@@ -47,7 +46,7 @@ const NftSaleList = () => {
           description: "",
           imageURL: "",
           onSale: false,
-          price: 0,
+          price: "",
         };
         await axios(tokenUrl).then((res: any) => {
           data.fileName = res.data.fileName;
@@ -58,43 +57,31 @@ const NftSaleList = () => {
           data.onSale = nftPrice === "0" ? false : true; // false -> 미판매, true -> 판매
           data.price = nftPrice;
         });
-
-        // if (data.onSale) tmpSaleList.push(data); // 판매리스트 따로 생성
         tmpAllList.push(data);
       }
-      // if (isOnSale) {
-      //   setDisplayList(tmpSaleList);
-      // } else setDisplayList(tmpAllList);
       setAllList(tmpAllList);
-      // setSaleList(tmpSaleList);
     } catch (error) {
       console.log(error);
     }
   };
 
   const filterData = () => {
-    if (!isOnSale && inputMaxPrice === 0 && inputMinPrice === 0) {
+    if (!isOnSale && inputMaxPrice === "" && inputMinPrice === "") {
       // 판매중인 리스트
       console.log("전체");
       setFilteredList(allList);
     } else {
       console.log("조건문");
-      console.log(inputMinPrice);
       let init: IMyMintList[] = [];
       const result = allList.reduce((acc, cur) => {
-        const saleCondition = isOnSale ? cur.price !== 0 : true;
-        const priceMinCondition = inputMinPrice != null ? cur.price >= inputMinPrice : true;
-        // const priceMaxCondition = inputMaxPrice != null ? cur.price <= inputMaxPrice : true;
-        console.log(saleCondition);
+        const saleCondition = isOnSale ? parseInt(cur.price) !== 0 : true;
+        const priceMinCondition = inputMinPrice !== "" ? parseInt(cur.price) >= Number(inputMinPrice) : true;
+        const priceMaxCondition = inputMaxPrice !== "" ? parseInt(cur.price) <= Number(inputMaxPrice) : true;
+        const priceIncreaseCondition = isIncrease ? allList.sort() : true;
 
-        if (saleCondition && priceMinCondition) {
-          console.log(cur.price);
+        if (saleCondition && priceMinCondition && priceMaxCondition) {
           acc.push(cur);
         }
-        // console.log(inputMinPrice);
-        // if (cur.price > inputMinPrice) {
-        //   acc.push(cur);
-        // }
         return acc;
       }, init);
       setFilteredList(result);
@@ -108,16 +95,6 @@ const NftSaleList = () => {
   const handleInputMaxPrice = (e: any) => {
     setInputMaxPrice(e.target.value);
   };
-
-  // const getSortedList = (type: string) => {
-  //   console.log(type);
-  //   if (type === "increase") {
-  //     displayList.sort((a, b) => (a.price > b.price ? -1 : 1));
-  //   } else if (type === "decrease") {
-  //     displayList.sort((a, b) => (a.price < b.price ? -1 : 1));
-  //   }
-  //   setSortedList(displayList);
-  // };
 
   useEffect(() => {
     getAllListTokens();
@@ -160,21 +137,21 @@ const NftSaleList = () => {
             </div>
             <div className={styles.category_container}>
               <div className={styles.category_title}>가격 정렬</div>
-              {/* <div className={styles.category_price_sort}>
-                <button className={styles.category_button} onClick={() => getSortedList("increase")}>
+              <div className={styles.category_price_sort}>
+                <button className={styles.category_button} onClick={() => setIsIncrease(true)}>
                   가격 높은 순
                 </button>
-                <button className={styles.category_button} onClick={() => getSortedList("decrease")}>
+                <button className={styles.category_button} onClick={() => setIsIncrease(false)}>
                   가격 낮은 순
                 </button>
-              </div> */}
+              </div>
             </div>
             <div className={styles.category_container}>
               <div className={styles.category_title}>가격대 찾기</div>
               <div className={styles.category_price_range}>
-                <input type="text" name="inputMin" defaultValue={inputMinPrice} onChange={handleInputMinPrice} placeholder="최저가" />
+                <input type="text" name="inputMin" defaultValue="" onChange={handleInputMinPrice} placeholder="최저가" />
                 <div className={styles.category_price_range_text}>to</div>
-                <input type="text" name="inputMax" defaultValue={inputMaxPrice} onChange={handleInputMaxPrice} placeholder="최고가" />
+                <input type="text" name="inputMax" defaultValue="" onChange={handleInputMaxPrice} placeholder="최고가" />
               </div>
               <button className={styles.category_button} style={{ backgroundColor: "#fddf61" }} onClick={filterData}>
                 찾기
@@ -184,18 +161,12 @@ const NftSaleList = () => {
           <div className={styles.contents}>
             <div className={styles.badge}>
               <div style={{ marginRight: "10px" }}>설정값</div>
-              {/* <div onClick={deleteBadge}>X</div> */}
             </div>
             <div>
               {filteredList.map((nft: IMyMintList, i: number) => {
                 return <NftSaleListItem key={i} nft={nft} />;
               })}
             </div>
-
-            {/* {displayList.map((nft: IMyMintList, i: number) => {
-              // return <NftSaleListItem key={i} nft={nft} />;
-              return <div>{{ priceFilter: <></>, sortByLowPrice: <></>, sortByHighPrice: <></> }[priceFilter]}</div>;
-            })} */}
           </div>
         </div>
       </div>
