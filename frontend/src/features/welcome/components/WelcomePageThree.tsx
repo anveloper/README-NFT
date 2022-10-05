@@ -3,6 +3,7 @@ import styles from "../Welcome.module.css";
 // img
 import cloud1 from "assets/welcome/page3_cloud1.svg";
 import cloud2 from "assets/welcome/page3_cloud2.svg";
+import game from "assets/welcome/page3_game.gif";
 
 const WelcomePageThree = ({ gameRef }: any) => {
   return (
@@ -15,7 +16,7 @@ const WelcomePageThree = ({ gameRef }: any) => {
       <img className={styles.page3_cloud1} src={cloud1} alt="" />
       <img className={styles.page3_cloud2} src={cloud2} alt="" />
 
-      <div className={styles.page3_gameDisplay}></div>
+      <img className={styles.page3_gameDisplay} src={game} alt="" />
     </div>
   );
 };
