@@ -17,7 +17,7 @@ import WelcomeNavbar from "./components/WelcomeNavbar";
 import { getIntersectionObserver } from "./observer";
 import WelcomePageEvent from "./components/WelcomePageEvent";
 
-const Welcome = ({ setIsWelcome }: any) => {
+const Welcome = ({ setIsWelcome, isSsafyNet }: any) => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectUserAddress);
   const onboarding = useRef<MetaMaskOnboarding>();
@@ -112,7 +112,7 @@ const Welcome = ({ setIsWelcome }: any) => {
 
       {/* <ParallaxLayer offset={0} speed={-1} factor={1.5}> */}
 
-      <WelcomePageEvent onboarding={onboarding} />
+      <WelcomePageEvent onboarding={onboarding} isSsafyNet={isSsafyNet} />
 
       <WelcomePageOne />
 

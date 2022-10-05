@@ -9,12 +9,12 @@ import { useAppSelector } from "app/hooks";
 import { selectUserAddress } from "features/auth/authSlice";
 
 interface nftTime {
-  year: number,
-  month: number,
-  day: number,
-  hour: number,
-  minute: number,
-  second: number
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+  second: number;
 }
 
 const NftDetailInfo = (props: any) => {
@@ -34,19 +34,24 @@ const NftDetailInfo = (props: any) => {
   const dispatch = useDispatch();
 
   const getTimeInfo = async () => {
-    const response = await SaleReadmeContract.methods.readmeTokenEndTime(tokenId).call();
+    const response = await SaleReadmeContract.methods
+      .readmeTokenEndTime(tokenId)
+      .call();
     // console.log("결과", response);
-    await SaleReadmeContract.methods.parseTimestamp(response).call((err: any, res: any) => {
-      const nftEndTime : nftTime = {
-        year: Number(res.year),
-        month: Number(res.month),
-        day: Number(res.day),
-        hour: Number(res.hour),
-        minute: Number(res.minute),
-        second: Number(res.second),
-      };
-      setNftEndTime(nftEndTime);
-    });
+
+    await SaleReadmeContract.methods
+      .parseTimestamp(response)
+      .call((err: any, res: any) => {
+        const nftEndTime: nftTime = {
+          year: Number(res.year),
+          month: Number(res.month),
+          day: Number(res.day),
+          hour: Number(res.hour),
+          minute: Number(res.minute),
+          second: Number(res.second),
+        };
+        setNftEndTime(nftEndTime);
+      });
   };
 
   const cancelSale = async () => {
@@ -72,28 +77,39 @@ const NftDetailInfo = (props: any) => {
   };
 
   const buyNftToken = async () => {
+    let balance = 0;
     await SSFContract.methods
-      .approve(process.env.REACT_APP_SALEREADMETOKEN_CA, nftPrice)
-      .send({ from: userAddress })
-      .then((res: any) => {
-        console.log("approve : ", res);
-      })
-      .catch((err: any) => {
-        console.log(err);
+      .balanceOf(userAddress)
+      .call((err: any, res: any) => {
+        balance = res;
       });
-    SaleReadmeContract.methods
-      .purchaseReadmeToken(process.env.REACT_APP_ERC20_CA, tokenId)
-      .send({ from: userAddress })
-      .then((res: any) => {
-        console.log(res);
-        // 새로고침.
-        navigate("/deatil/" + tokenId);
-        // window.location.replace("/detail/" + tokenId);
-        console.log("purchase : ", res);
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
+    console.log(balance);
+    if (balance >= nftPrice) {
+      await SSFContract.methods
+        .approve(process.env.REACT_APP_SALEREADMETOKEN_CA, nftPrice)
+        .send({ from: userAddress })
+        .then((res: any) => {
+          console.log("approve : ", res);
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+      SaleReadmeContract.methods
+        .purchaseReadmeToken(process.env.REACT_APP_ERC20_CA, tokenId)
+        .send({ from: userAddress })
+        .then((res: any) => {
+          console.log(res);
+          // 새로고침.
+          navigate("/deatil/" + tokenId);
+          // window.location.replace("/detail/" + tokenId);
+          console.log("purchase : ", res);
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    } else {
+      alert("잔액이 부족합니다.");
+    }
   };
 
   const openModal = () => {
@@ -108,7 +124,7 @@ const NftDetailInfo = (props: any) => {
     navigate(-1);
   };
 
-  useEffect( () => {
+  useEffect(() => {
     getTimeInfo();
   }, []);
 
@@ -122,7 +138,11 @@ const NftDetailInfo = (props: any) => {
                 <>
                   <div>판매 중입니다.</div>
                   <div>즉시 구매하시거나, 경매에 참여할 수 있습니다.</div>
-                  <div>종료일: {nftEndTime.year}년 {nftEndTime.month}월 {nftEndTime.day}일 {nftEndTime.hour}시 {nftEndTime.minute}분 {nftEndTime.second}초 </div>
+                  <div>
+                    종료일: {nftEndTime.year}년 {nftEndTime.month}월{" "}
+                    {nftEndTime.day}일 {nftEndTime.hour}시 {nftEndTime.minute}분{" "}
+                    {nftEndTime.second}초{" "}
+                  </div>
                 </>
               ) : (
                 // <>
@@ -153,13 +173,19 @@ const NftDetailInfo = (props: any) => {
                   <>
                     {isActive ? (
                       <>
-                        <button className={styles.card_button} onClick={cancelSale}>
+                        <button
+                          className={styles.card_button}
+                          onClick={cancelSale}
+                        >
                           판매 취소
                         </button>
                       </>
                     ) : (
                       <>
-                        <button className={styles.card_button} onClick={() => props.setTab("sell")}>
+                        <button
+                          className={styles.card_button}
+                          onClick={() => props.setTab("sell")}
+                        >
                           즉시 판매
                         </button>
                       </>
@@ -167,7 +193,11 @@ const NftDetailInfo = (props: any) => {
                   </>
                 ) : (
                   <>
-                    <button disabled={!isActive} className={styles.card_button} onClick={openModal}>
+                    <button
+                      disabled={!isActive}
+                      className={styles.card_button}
+                      onClick={openModal}
+                    >
                       즉시 구매
                     </button>
                   </>
@@ -183,13 +213,29 @@ const NftDetailInfo = (props: any) => {
         fn={buyNftToken}
         header="리드미 구매 확인"
       >
-        
-        <div className={styles.modal_img_container}>
+        <div className={styles.modal_container}>
           <img className={styles.modal_img} src={nftDetail.imageURL} alt="" />
+          <div className={styles.modal_info_container}>
+            <div className={styles.modal_info}>
+              <div className={styles.modal_info_text1}>
+                <div>제목</div>
+                <div>{nftDetail.name}</div>
+              </div>
+              <div className={styles.modal_info_text1}>
+                <div>가격</div>
+                <div>{nftPrice} SSF</div>
+              </div>
+            </div>
+            <div className={styles.modal_info}>
+              <div className={styles.modal_info_text2}>
+                <div>구매하시겠습니까?</div>
+              </div>
+              <div className={styles.modal_info_text2}>
+                <div>확인 버튼을 누르시면 구매가 완료됩니다.</div>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div>이거 진짜 살거?</div>
-        <div>{nftPrice} SSF : 이 가격에 ???</div>
       </Modal>
     </>
   );
