@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { setIsActive } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
 import { useEffect, useContext, useState } from "react";
+import { useAppSelector } from "app/hooks";
+import { selectUserAddress } from "features/auth/authSlice";
 
 interface nftTime {
   year: number;
@@ -16,8 +18,8 @@ interface nftTime {
 }
 
 const NftDetailInfo = (props: any) => {
-  const { isActive, nftOwner, userAddress, tokenId, nftDetail, nftPrice } =
-    props;
+  const { isActive, nftOwner, tokenId, nftDetail, nftPrice } = props;
+  const userAddress = useAppSelector(selectUserAddress);
   const [modalOpen, setModalOpen] = useState(false);
   const [nftEndTime, setNftEndTime] = useState<nftTime>({
     year: 0,
@@ -36,6 +38,7 @@ const NftDetailInfo = (props: any) => {
       .readmeTokenEndTime(tokenId)
       .call();
     // console.log("결과", response);
+
     await SaleReadmeContract.methods
       .parseTimestamp(response)
       .call((err: any, res: any) => {
@@ -97,7 +100,8 @@ const NftDetailInfo = (props: any) => {
         .then((res: any) => {
           console.log(res);
           // 새로고침.
-          window.location.replace("/detail/" + tokenId);
+          navigate("/deatil/" + tokenId);
+          // window.location.replace("/detail/" + tokenId);
           console.log("purchase : ", res);
         })
         .catch((err: any) => {
@@ -209,11 +213,29 @@ const NftDetailInfo = (props: any) => {
         fn={buyNftToken}
         header="리드미 구매 확인"
       >
-        <div className={styles.modal_img_container}>
+        <div className={styles.modal_container}>
           <img className={styles.modal_img} src={nftDetail.imageURL} alt="" />
+          <div className={styles.modal_info_container}>
+            <div className={styles.modal_info}>
+              <div className={styles.modal_info_text1}>
+                <div>제목</div>
+                <div>{nftDetail.name}</div>
+              </div>
+              <div className={styles.modal_info_text1}>
+                <div>가격</div>
+                <div>{nftPrice} SSF</div>
+              </div>
+            </div>
+            <div className={styles.modal_info}>
+              <div className={styles.modal_info_text2}>
+                <div>구매하시겠습니까?</div>
+              </div>
+              <div className={styles.modal_info_text2}>
+                <div>확인 버튼을 누르시면 구매가 완료됩니다.</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>이거 진짜 살거?</div>
-        <div>{nftPrice} SSF : 이 가격에 ???</div>
       </Modal>
     </>
   );

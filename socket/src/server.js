@@ -60,6 +60,7 @@ io.on("connection", (socket) => {
   // common
   const { rooms } = io.sockets.adapter;
   socket["nickname"] = "none";
+  socket["solved"] = false;
   socket.emit("init_room", publicRooms());
 
   if (devFlag)
@@ -186,23 +187,23 @@ io.on("connection", (socket) => {
     done(msg);
   });
   socket.on("set_answer", (session, answer, done) => {
-    // rooms.get(session)["started"] = false;
-    // io.in(session).socketsLeave("solvers::" + session);
+    rooms.get(session)["started"] = false;
+    io.in(session).socketsLeave("solvers::" + session);
     socket.to(session).emit("reset_answer", answer.length);
-    // rooms.get(session)["solver"] = "";
+    rooms.get(session)["solver"] = "";
     rooms.get(session)["answer"] = answer;
-    // rooms.get(session)["data"] = [];
+    rooms.get(session)["data"] = [];
     socket.join("solvers::" + session);
     done(answer);
     notiSend(session, "제시어가 생성되었습니다.", "#FF713E");
   });
   socket.on("reset_answer", (session) => {
+    if (socket["solved"]) socket.leave("solvers::" + session);
     socket["solved"] = false;
-    socket.leave("solvers::" + session);
     socket.join(session);
     socket.emit(
       "solve_cnt",
-      rooms.get(session)["solver"],
+      rooms.get(session)?.["solver"],
       countSolvers(session) - 1,
       countRoom(session) - 1
     );
@@ -216,7 +217,7 @@ io.on("connection", (socket) => {
   socket.on("game_start", (session) => {
     rooms.get(session)["started"] = true;
     socket.emit("reset_draw");
-    // socket.to(session).emit("reset_draw");
+    socket.to(session).emit("reset_draw");
     socket.to(session).emit("game_start");
     notiSend(session, "게임이 시작되었습니다.", "#FDDF61");
   });
