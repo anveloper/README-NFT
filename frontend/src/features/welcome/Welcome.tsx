@@ -19,7 +19,6 @@ import WelcomePageEvent from "./components/WelcomePageEvent";
 
 const Welcome = ({ setIsWelcome }: any) => {
   const dispatch = useAppDispatch();
-  const [accounts, setAccounts] = useState<string[]>([]);
   const account = useAppSelector(selectUserAddress);
   const onboarding = useRef<MetaMaskOnboarding>();
   const [welcomeNav, setWelcomeNav] = useState<number>(1);
@@ -90,6 +89,7 @@ const Welcome = ({ setIsWelcome }: any) => {
       }
     } else {
       //안깔려 있으면 설치 유도
+      alert("메타마스크를 설치해 주세요!");
       onboarding.current.startOnboarding();
     }
   };
@@ -112,7 +112,7 @@ const Welcome = ({ setIsWelcome }: any) => {
 
       {/* <ParallaxLayer offset={0} speed={-1} factor={1.5}> */}
 
-      <WelcomePageEvent />
+      <WelcomePageEvent onboarding={onboarding} />
 
       <WelcomePageOne />
 
