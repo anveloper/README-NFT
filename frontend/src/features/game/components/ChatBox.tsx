@@ -29,6 +29,9 @@ const ChatBox = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (socket) {
+      // socket.onAny((event) => {
+      //   console.log(`SocketIO Server Event: ${event}`);
+      // }); // 모든 이벤트 리스너
       socket.on("bye", (user: string, cnt: number, data: string) => {
         dispatch(setRoomCnt(cnt));
         dispatch(setParticipants(JSON.parse(data)));
@@ -53,11 +56,9 @@ const ChatBox = () => {
       });
       socket.on("solve_cnt", (solver, solversCnt, roomCnt) => {
         dispatch(setSolvers({ solver, solversCnt, roomCnt }));
-        console.log(solver, solversCnt, roomCnt);
       });
-      socket.on("game_start", (answer: string) => {
+      socket.on("game_start", () => {
         dispatch(setStarted(true));
-        dispatch(setAnswerLength(answer.length));
       });
       socket.on("host_leave", () => {
         socket.emit("leave_room", hostUserName);
