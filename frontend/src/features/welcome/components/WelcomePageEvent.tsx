@@ -4,6 +4,8 @@ import NFTCard from "./NFTCard";
 import styles from "../Welcome.module.css";
 // img
 import dog from "../../../assets/nft-img/1.png";
+import eventSSF from "assets/welcome/eventMoney.svg";
+import eventInfo from "assets/welcome/eventInfo.svg";
 import { DrawTokenContract } from "web3Config";
 import { useEffect, useState, useRef } from "react";
 import { useAppSelector } from "app/hooks";
@@ -21,6 +23,30 @@ const WelcomePageEvent = () => {
       console.log(res);
     });
   }, []);
+
+  const isTokenImported = async () => {
+    try {
+      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+      const wasAdded = await window.ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20", // Initially only supports ERC20, but eventually more!
+          options: {
+            address: process.env.REACT_APP_ERC20_CA, // The address that the token is at.
+            symbol: "SSF", // A ticker symbol or shorthand, up to 5 chars.
+            decimals: 0,
+          },
+        },
+      });
+      if (wasAdded) {
+        console.log("Thanks for your interest!");
+      } else {
+        console.log("Your loss!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getEventMoney = async () => {
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
@@ -63,10 +89,15 @@ const WelcomePageEvent = () => {
         />
       </div>
 
-      <p className={styles.eventSSF}> 💰 </p>
+      <p className={styles.eventText}>{eventLeft}명 남았습니다! 서두르세요!</p>
+      <img className={styles.eventSSF} src={eventSSF} alt="" />
 
-      <button onClick={getEventMoney} className={styles.eventButton}>
+      <button className={styles.eventButton} onClick={getEventMoney}>
         이벤트 참여하기
+      </button>
+      <button className={styles.importSSFButton} onClick={isTokenImported}>
+        <img className={styles.eventInfo} src={eventInfo} alt="" />
+        SSAFY 토큰이 보이지 않아요!
       </button>
     </div>
   );
