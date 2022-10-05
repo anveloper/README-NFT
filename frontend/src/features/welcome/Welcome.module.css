@@ -20,9 +20,23 @@
   transform: rotate(19.38deg);
 }
 
+.eventText {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -45%);
+}
+
+.eventSSF {
+  position: absolute;
+  width: 13vw;
+  top: 37%;
+  left: 63%;
+}
+
 .eventButton {
   position: absolute;
-  top: 60%;
+  top: 48%;
   left: 37%;
   background: #fcf5e9;
   border-radius: 30px;
@@ -35,6 +49,29 @@
 
   -webkit-animation: heartbeat 3s ease-in-out infinite both;
   animation: heartbeat 3s ease-in-out infinite both;
+}
+
+.importSSFButton {
+  position: absolute;
+  top: 95%;
+  left: 50%;
+  transform: translate(-50%, -95%);
+  background: #fcf5e9;
+  border: none;
+  width: 18vw;
+  height: 7vh;
+  border-radius: 30px;
+  font-family: "IM_Hyemin-Bold";
+  cursor: pointer;
+}
+
+.eventInfo {
+  width: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 3%;
+
+  transform: translate(0, -50%);
 }
 
 .welcomePageOne {
@@ -98,7 +135,7 @@
   top: 112%;
   left: 120%;
   transform: translate(-100%, -100%);
-  z-index: 10;
+  z-index: 70;
 }
 
 .page1_cloud3 {
@@ -420,8 +457,7 @@
   color: #ffffff;
   font-size: 20vh;
   letter-spacing: 0.2em;
-  -webkit-animation: fade-in 5s cubic-bezier(0.39, 0.575, 0.565, 1) infinite
-    both;
+  -webkit-animation: fade-in 5s cubic-bezier(0.39, 0.575, 0.565, 1) infinite both;
   animation: fade-in 5s cubic-bezier(0.39, 0.575, 0.565, 1) infinite both;
 }
 
