@@ -11,14 +11,11 @@ import { useEffect, useState, useRef } from "react";
 import { useAppSelector } from "app/hooks";
 import { selectUserAddress } from "features/auth/authSlice";
 import MetaMaskOnboarding from "@metamask/onboarding";
-
-const WelcomePageEvent = () => {
+const WelcomePageEvent = ({ onboarding }: any) => {
   const account = useAppSelector(selectUserAddress);
   const [eventLeft, setEventLeft] = useState(0);
-  const onboarding = useRef<MetaMaskOnboarding>();
-
   useEffect(() => {
-    DrawTokenContract.methods.getWinnerCount().call(({ err, res }: any) => {
+    DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
       setEventLeft(res);
       console.log(res);
     });
@@ -63,12 +60,17 @@ const WelcomePageEvent = () => {
           });
       } catch {
         alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
+        window.open(
+          "https://lace-raptorex-71b.notion.site/SSAFY-af21aeede5834fb1a721ffd87ced99bd",
+          "_blank"
+        );
       }
     } else {
       //안깔려 있으면 설치 유도
+      alert("메타마스크를 설치해 주세요!");
       onboarding.current.startOnboarding();
     }
-    DrawTokenContract.methods.getWinnerCount().call(({ err, res }: any) => {
+    DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
       setEventLeft(res);
     });
   };
@@ -89,7 +91,11 @@ const WelcomePageEvent = () => {
         />
       </div>
 
-      <p className={styles.eventText}>{eventLeft}명 남았습니다! 서두르세요!</p>
+      <p className={styles.eventText}>
+        {eventLeft
+          ? `${eventLeft}명 남았습니다! 서두르세요!`
+          : `먼저 SSAFY 네트워크에 연결해 주세요!`}
+      </p>
       <img className={styles.eventSSF} src={eventSSF} alt="" />
 
       <button className={styles.eventButton} onClick={getEventMoney}>
