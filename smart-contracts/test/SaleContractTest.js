@@ -5,95 +5,73 @@ const GetReadme = artifacts.require("GetReadmeToken");
 const Draw = artifacts.require("DrawToken");
 const Ssafy = artifacts.require("SsafyToken");
 
-// module.exports = async function (deployer) {
-//   await deployer.deploy(MintReadme);
-//   await deployer.deploy(SaleReadme, MintReadme.address);
-//   await deployer.deploy(GetReadme, MintReadme.address, SaleReadme.address);
-//   await deployer.deploy(
-//     Draw,
-//     "0x0c54E456CE9E4501D2c43C38796ce3F06846C966",
-//     MintReadme.address,
-//     SaleReadme.address
-//   );
-//   await deployer.deploy(Ssafy);
-// };
 
-
-let ssafyTokenContract, salesFactoryContract, nftContract, salesContract;
-let itemId = 0;
-
-contract("Minting And Sale Testing", (accounts) => {
+contract("Testing", (accounts) => {
   const mintAmount = 10000; // 초기 토큰
 
-  console.log('===================ㅅㅣㄴㅏㄹㅣㅇㅗ 1=================')
+  console.log('===================시나리오 1=================')
 
   it("MintSale", async () => {
 
-    // ㅁㅣㄴㅌㅣㅇㅁㅐㄱㅐㅂㅕㄴㅅㅜ
-    const buyer = accounts[0]; // 나
+    // 민팅 매개변수
+    const adming = accounts[0]
+    const seller = accounts[1];
+    const buyer = accounts[2]; // 나
     const uri = "NFT Metadata"; // 생성할 토큰 메타데이터
     const answer = "Hyeon";
     const solver = accounts[7];
 
-    // ㅋㅓㄴㅌㅡㄹㅐㄱㅌㅡ 배포
-    const MintReadmeContract = await MintReadme.deployed();
-    const SaleReadmeContract = await SaleReadme.deployed();
+    // 컨트랙트 인스턴스
+    const MintReadmeContract = await MintReadme.new();
+    const SaleReadmeContract = await SaleReadme.new(MintReadmeContract.address);
     
-    // buyerㅇㅡㅣ ㅈㅣㄱㅏㅂ
-    const SsafyContract = await Ssafy.deployed();
+    // buyer의 지갑 인스턴스
+    const SsafyContract = await Ssafy.new("SSAFY", "SSF");
 
+    const create_tx = await MintReadmeContract.create(
+      uri, 
+      SaleReadmeContract.address, 
+      answer, 
+      solver,
+      {from: seller});
 
-    // 시간 제한 함수
-    function timeout(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    }
+    await MintReadmeContract.create(
+      uri, 
+      SaleReadmeContract.address, 
+      answer, 
+      solver,
+      {from: seller});
 
-    // 초기 ERC20 토큰 부여
-    await SsafyTokenContract.mint(100000, { from: seller }); // 호출자(나)에게 100000 민팅
+    const tokenId = await MintReadmeContract.totalSupply();
+    const owner = await MintReadmeContract.ownerOf(tokenId.words[0]);
+    const mytokenId = await MintReadmeContract.getOwnedTokens(seller);
 
-    // seller 의 NFT 생성
-    await ReadmeTokenContract.create(uri, { from: seller });
+    console.log('=================== Seller의 민팅 =================')
+    console.log("SaleContract: ", SaleReadmeContract.address)
+    console.log("tokenId: ", tokenId.words[0])
+    assert.equal(seller, owner, "Seller is Not Onwer")
+    console.log("seller: ", seller);
+    console.log("owner: ", owner);
+    console.log("Approvals owner: ", create_tx.logs[1].args.owner);
+    console.log("operator(SaleContract): ", create_tx.logs[1].args.operator);
+    console.log("Seller Token: ", mytokenId)
 
-    // 현재 토큰 번호
-    itemId = await ReadmeTokenContract.current();
-
-    // tokenNo => BN { negative: 0, words: [ 1, <1 empty item> ], length: 1, red: null }
-    itemId = itemId.words[0];
-
-    // 계약을 진행할 contract
-    currencyAddress = SsafyTokenContract.address;
-    nftAddress = ReadmeTokenContract.address;
-
-    // 시작 시간
-    startTime = new Date();
-    startTime = parseInt(startTime.getTime() / 1000); //  초단위로 변환
-    // 종료 시간 : + 10초
-    endTime = startTime + 10;
-
-    // 입력 가격
-    startPrice = 10;
-
-    const firstowner = await ReadmeTokenContract.ownerOf(itemId);
-
-    console.log("seller" + seller);
-    console.log("firstowner" + firstowner);
-
-    // 경매 등록
-    const BidContract = await SaleContract.bid(
-      seller,
-      itemId,
-      startPrice,
-      startTime,
-      endTime,
-      currencyAddress,
-      nftAddress,
-      { from: seller }
+    console.log('=================== Seller의 판매 등록 =================')
+    
+    const sale_tx = await SaleReadmeContract.setForSaleReadmeToken(
+      tokenId.words[0],
+      1,
+      60000,
+      {from: seller}
     );
 
-    // 경매 등록 후, 토큰 소유권 확인
-    const finalowner = await ReadmeTokenContract.ownerOf(itemId);
+    const onSale = await SaleReadmeContract.getOnSaleReadmeToken();
+    console.log("OnSale List: ", onSale);
 
-    assert.equal(finalowner, BidContract, "Fail to TransferFrom");
+    console.log('=================== Buyer의 구매를 위한 토큰 발행 =================')
+    const wallet_tx = await SsafyContract.mint(10000, {from: buyer})
+    // console.log(wallet_tx)
+    //const buy_tx = await SaleReadmeContract.purchaseReadmeToken();
   });
 
   console.log('===================ㅅㅣㄴㅏㄹㅣㅇㅗ 2=================')
