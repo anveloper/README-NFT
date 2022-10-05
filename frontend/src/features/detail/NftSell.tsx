@@ -127,14 +127,29 @@ const NftSell = () => {
               판매 등록
             </button>
             <Modal open={modalOpen} close={closeModal} fn={sellReadmeTokens} header="리드미 판매 확인">
-              <img src={nftDetail.imageURL} alt="dog" width={300} />
-              <div>이거 진짜</div>
-              <div>{inputPrice} : 이 가격에</div>
-              <div>{change_date(startDay)} : 이 때부터</div>
-              <div>{change_date(endDay)} : 이 때까지</div>
-              <div>판매할 것?</div>
-              <div>확인하면 진짜 등록됨.</div>
-              <div>css 나중에 수정할거에요. ....ㅜ</div>
+              <div className={styles.modal_container}>
+                <img className={styles.modal_img} src={nftDetail.imageURL} alt="" />
+                <div className={styles.modal_info_container}>
+                  <div className={styles.modal_info}>
+                    <div className={styles.modal_info_text1}>
+                      <div>판매 가격</div>
+                      <div>{inputPrice} SSF</div>
+                    </div>
+                    <div className={styles.modal_info_text1}>
+                      <div>판매 종료일</div>
+                      <div>{change_date(endDay)}</div>
+                    </div>
+                  </div>
+                  <div className={styles.modal_info}>
+                    <div className={styles.modal_info_text2}>
+                      <div>해당 리드미를 판매하시겠습니까?</div>
+                    </div>
+                    <div className={styles.modal_info_text2}>
+                      <div>확인 버튼을 누르면 등록이 완료됩니다.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Modal>
           </div>
         </div>
