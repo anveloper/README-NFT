@@ -22,19 +22,12 @@ const actionNicknameList = [
 const actionNicknameRandom =
   actionNicknameList[Math.floor(Math.random() * actionNicknameList.length)];
 
-const animalNicknameList = [
-  "방태",
-  "강태",
-  "김태",
-  "박태",
-  "안태",
-  "이태",
-];
+const animalNicknameList = ["방태", "강태", "김태", "박태", "안태", "이태"];
 const animalNicknameRandom =
   animalNicknameList[Math.floor(Math.random() * animalNicknameList.length)];
 
 const initialState: AuthState = {
-  userAddress: "",
+  userAddress: ``,
   userName: `${actionNicknameRandom} ${animalNicknameRandom}`,
   userAvatar: `images/${Math.floor(Math.random() * 50 + 1)}.png`,
   status: "idle",
