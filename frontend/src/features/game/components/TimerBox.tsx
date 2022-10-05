@@ -43,9 +43,10 @@ const TimerBox = () => {
   }, [socket]);
 
   const handleTimerStart = () => {
-    setIsStart(true);
-    if (socket && userAddress === hostUserName)
+    if (socket && userAddress === hostUserName) {
+      setIsStart(true);
       socket.emit("timer_start", hostUserName, MAX_TIME);
+    }
   };
   return (
     <div className={styles.timerBox}>

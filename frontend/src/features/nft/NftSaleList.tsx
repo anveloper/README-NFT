@@ -1,4 +1,6 @@
+import { current } from "@reduxjs/toolkit";
 import axios from "axios";
+import { result } from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
@@ -15,28 +17,24 @@ interface IMyMintList {
   description: string;
   imageURL: string;
   onSale: boolean;
-  price: number;
+  price: string;
 }
 
 const NftSaleList = () => {
-  const userAddress = useAppSelector(selectUserAddress);
   const [allList, setAllList] = useState<IMyMintList[]>([]);
-  const [saleList, setSaleList] = useState<IMyMintList[]>([]);
-  const [displayList, setDisplayList] = useState<IMyMintList[]>([]);
+  const [filteredList, setFilteredList] = useState<IMyMintList[]>([]);
   const [isOnSale, setIsOnSale] = useState(false);
-  const [inputMinPrice, setInputMinPrice] = useState(null);
-  const [inputMaxPrice, setInputMaxPrice] = useState(null);
-  const [sortedList, setSortedList] = useState<IMyMintList[]>([]);
+  const [isIncrease, setIsIncrease] = useState(false);
+  const [inputMinPrice, setInputMinPrice] = useState("");
+  const [inputMaxPrice, setInputMaxPrice] = useState("");
   const [checkedList, setCheckedList] = useState([]); // 뱃지 리스트
-  const [priceFilter, setPriceFilter] = useState("noPriceFilter");
   const navigator = useNavigate();
 
   const getAllListTokens = async () => {
     try {
       const response = await MintReadmeContract.methods.getTotalReadmeToken().call();
       const tmpAllList: IMyMintList[] = [];
-      console.log("실행됨?");
-      const tmpSaleList: IMyMintList[] = [];
+      // const tmpSaleList: IMyMintList[] = [];
       for (let i = 0; i < response.length; i++) {
         const tokenUrl = await MintReadmeContract.methods.tokenURI(response[i]).call();
         const nftPrice = await SaleReadmeContract.methods.getReadmeTokenPrice(response[i]).call();
@@ -48,7 +46,7 @@ const NftSaleList = () => {
           description: "",
           imageURL: "",
           onSale: false,
-          price: 0,
+          price: "",
         };
         await axios(tokenUrl).then((res: any) => {
           data.fileName = res.data.fileName;
@@ -59,19 +57,46 @@ const NftSaleList = () => {
           data.onSale = nftPrice === "0" ? false : true; // false -> 미판매, true -> 판매
           data.price = nftPrice;
         });
-
-        if (data.onSale) tmpSaleList.push(data); // 판매리스트 따로 생성
         tmpAllList.push(data);
       }
-      if (isOnSale) {
-        setDisplayList(tmpSaleList);
-      } else setDisplayList(tmpAllList);
-      // setAllList(tmpAllList);
-      // setSaleList(tmpSaleList);
+      setAllList(tmpAllList);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const filterData = () => {
+    if (!isOnSale && inputMaxPrice === "" && inputMinPrice === "") {
+      // 판매중인 리스트
+      console.log("전체");
+      setFilteredList(allList);
+    } else {
+      console.log("조건문");
+      let init: IMyMintList[] = [];
+      const result = allList.reduce((acc, cur) => {
+        const saleCondition = isOnSale ? parseInt(cur.price) !== 0 : true;
+        const priceMinCondition = inputMinPrice !== "" ? parseInt(cur.price) >= Number(inputMinPrice) : true;
+        const priceMaxCondition = inputMaxPrice !== "" ? parseInt(cur.price) <= Number(inputMaxPrice) : true;
+        if (saleCondition && priceMinCondition && priceMaxCondition) {
+          acc.push(cur);
+        }
+        return acc;
+      }, init);
+      setFilteredList(result);
+    }
+  };
+
+  const getDecreasedList = () => {
+    filteredList.sort((a:IMyMintList, b:IMyMintList) : number => Number(b.price) - Number(a.price));
+    console.log(filteredList)
+    setFilteredList([...filteredList]);
+  }
+
+  const getIncreasedList = () => {
+    filteredList.sort((a:IMyMintList, b:IMyMintList) : number => Number(a.price) - Number(b.price));
+    console.log(filteredList)
+    setFilteredList([...filteredList]);
+  }
 
   const handleInputMinPrice = (e: any) => {
     setInputMinPrice(e.target.value);
@@ -81,22 +106,14 @@ const NftSaleList = () => {
     setInputMaxPrice(e.target.value);
   };
 
-  const getSortedList = (type: string) => {
-    console.log(type);
-    if (type === "increase") {
-      displayList.sort((a, b) => (a.price > b.price ? -1 : 1));
-    } else if (type === "decrease") {
-      displayList.sort((a, b) => (a.price < b.price ? -1 : 1));
-    }
-    setSortedList(displayList);
-  };
-
-  const getPriceBetween = () => {};
-
   useEffect(() => {
     getAllListTokens();
     console.log("isOnSale 상태가 바뀔 때마다 리렌더링");
   }, [isOnSale]);
+
+  useEffect(() => {
+    filterData();
+  }, [allList]);
 
   return (
     <>
@@ -113,67 +130,52 @@ const NftSaleList = () => {
       <div className={styles.back}>
         <div className={styles.container}>
           <div className={styles.contents}>
-            <div className={styles.category_title}>판매 상태</div>
-            <div className={styles.category_isOnSale}>
-              <input
-                type="checkbox"
-                id="isOnSale"
-                onChange={(e) => {
-                  setIsOnSale(!isOnSale);
-                }}
-              />
-              <label htmlFor="isOnSale" className={styles.category_isOnSale_text} />
-              <div className={styles.category_isOnSale_text}>판매중</div>
+            <div className={styles.category_container}>
+              <div className={styles.category_title}>판매 상태</div>
+              <div className={styles.category_isOnSale}>
+                <input
+                  type="checkbox"
+                  id="isOnSale"
+                  onChange={(e) => {
+                    setIsOnSale(!isOnSale);
+                  }}
+                />
+                <label htmlFor="isOnSale" className={styles.category_isOnSale_text} />
+                <div className={styles.category_isOnSale_text}>판매중</div>
+              </div>
             </div>
-            <div className={styles.category_title}>가격 정렬</div>
-            <div className={styles.category_price_sort}>
-              <button className={styles.category_button} onClick={() => getSortedList("increase")}>
-                가격 높은 순
+            <div className={styles.category_container}>
+              <div className={styles.category_title}>가격 정렬</div>
+              <div className={styles.category_price_sort}>
+                <button className={styles.category_button} onClick={getDecreasedList}>
+                  가격 높은 순
+                </button>
+                <button className={styles.category_button} onClick={getIncreasedList}>
+                  가격 낮은 순
+                </button>
+              </div>
+            </div>
+            <div className={styles.category_container}>
+              <div className={styles.category_title}>가격대 찾기</div>
+              <div className={styles.category_price_range}>
+                <input type="text" name="inputMin" defaultValue={inputMinPrice} onChange={handleInputMinPrice} placeholder="최저가" />
+                <div className={styles.category_price_range_text}>to</div>
+                <input type="text" name="inputMax" defaultValue={inputMaxPrice} onChange={handleInputMaxPrice} placeholder="최고가" />
+              </div>
+              <button className={styles.category_button} style={{ backgroundColor: "#fddf61" }} onClick={filterData}>
+                찾기
               </button>
-              <button className={styles.category_button} onClick={() => getSortedList("decrease")}>
-                가격 낮은 순
-              </button>
             </div>
-            <div className={styles.category_title}>가격대 찾기</div>
-            <div className={styles.category_price_range}>
-              <input type="number" name="inputMin" value={inputMinPrice} onChange={handleInputMinPrice} placeholder="최저가" />
-              <div className={styles.category_price_range_text}>to</div>
-              <input type="number" name="inputMax" value={inputMaxPrice} onChange={handleInputMaxPrice} placeholder="최고가" />
-            </div>
-            <button className={styles.category_button} onClick={getPriceBetween}>
-              찾기
-            </button>
           </div>
           <div className={styles.contents}>
             <div className={styles.badge}>
               <div style={{ marginRight: "10px" }}>설정값</div>
-              {/* <div onClick={deleteBadge}>X</div> */}
             </div>
             <div>
-              {
-                {
-                  noPriceFilter: (
-                    <>
-                      {displayList.map((nft: IMyMintList, i: number) => {
-                        return <NftSaleListItem key={i} nft={nft} />;
-                      })}
-                    </>
-                  ),
-                  sortByPrice: (
-                    <>
-                      {sortedList.map((nft: IMyMintList, i: number) => {
-                        return <NftSaleListItem key={i} nft={nft} />;
-                      })}
-                    </>
-                  ),
-                }[priceFilter]
-              }
+              {filteredList.map((nft: IMyMintList, i: number) => {
+                return <NftSaleListItem key={i} nft={nft} />;
+              })}
             </div>
-
-            {/* {displayList.map((nft: IMyMintList, i: number) => {
-              // return <NftSaleListItem key={i} nft={nft} />;
-              return <div>{{ priceFilter: <></>, sortByLowPrice: <></>, sortByHighPrice: <></> }[priceFilter]}</div>;
-            })} */}
           </div>
         </div>
       </div>

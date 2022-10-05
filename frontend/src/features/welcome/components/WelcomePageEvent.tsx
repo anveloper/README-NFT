@@ -7,16 +7,15 @@ import dog from "../../../assets/nft-img/1.png";
 import eventSSF from "assets/welcome/eventMoney.svg";
 import eventInfo from "assets/welcome/eventInfo.svg";
 import { DrawTokenContract } from "web3Config";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAppSelector } from "app/hooks";
 import { selectUserAddress } from "features/auth/authSlice";
-
-const WelcomePageEvent = () => {
+import MetaMaskOnboarding from "@metamask/onboarding";
+const WelcomePageEvent = ({ onboarding }: any) => {
   const account = useAppSelector(selectUserAddress);
   const [eventLeft, setEventLeft] = useState(0);
-
   useEffect(() => {
-    DrawTokenContract.methods.getWinnerCount().call(({ err, res }: any) => {
+    DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
       setEventLeft(res);
       console.log(res);
     });
@@ -47,13 +46,31 @@ const WelcomePageEvent = () => {
   };
 
   const getEventMoney = async () => {
-    await DrawTokenContract.methods
-      .shareToken()
-      .send({ from: account }, ({ receipt, error }: any) => {
-        console.log(receipt);
-        console.log(error);
-      });
-    DrawTokenContract.methods.getWinnerCount().call(({ err, res }: any) => {
+    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x79F5" }],
+        });
+        await DrawTokenContract.methods
+          .shareToken()
+          .send({ from: account }, ({ receipt, error }: any) => {
+            console.log(receipt);
+            console.log(error);
+          });
+      } catch {
+        alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
+        window.open(
+          "https://lace-raptorex-71b.notion.site/SSAFY-af21aeede5834fb1a721ffd87ced99bd",
+          "_blank"
+        );
+      }
+    } else {
+      //안깔려 있으면 설치 유도
+      alert("메타마스크를 설치해 주세요!");
+      onboarding.current.startOnboarding();
+    }
+    DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
       setEventLeft(res);
     });
   };
@@ -66,10 +83,19 @@ const WelcomePageEvent = () => {
       </h4>
 
       <div className={styles.eventNFT}>
-        <NFTCard img={dog} name="특별제작 방태" creater="README" owner="피자먹는 방태" />
+        <NFTCard
+          img={dog}
+          name="특별제작 방태"
+          creater="README"
+          owner="피자먹는 방태"
+        />
       </div>
 
-      <p className={styles.eventText}>{eventLeft}명 남았습니다! 서두르세요!</p>
+      <p className={styles.eventText}>
+        {eventLeft
+          ? `${eventLeft}명 남았습니다! 서두르세요!`
+          : `먼저 SSAFY 네트워크에 연결해 주세요!`}
+      </p>
       <img className={styles.eventSSF} src={eventSSF} alt="" />
 
       <button className={styles.eventButton} onClick={getEventMoney}>

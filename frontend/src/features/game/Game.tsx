@@ -38,9 +38,21 @@ const Game = () => {
     return () => {
       dispatch(resetRoomInfo());
       if (socket) socket.emit("leave_room", hostUserName);
+      if (hostUserName === userAddress) {
+        socket.emit(
+          "game_end",
+          hostUserName,
+          (answer: string, solver: string) => {
+            console.log(answer, solver);
+          }
+        );
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hostUserName]);
+  }, []);
+  useEffect(() => {
+    console.log(socket);
+  }, [socket]);
   const handleExit = () => {
     if (socket) {
       if (hostUserName === userAddress) {

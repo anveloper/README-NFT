@@ -1,34 +1,51 @@
 import styles from "./NftDetail.module.css";
 import { useNavigate } from "react-router-dom";
-import { SaleReadmeContract, SSFContract } from "../../web3Config";
+import { SaleReadmeContract, SSFContract, web3 } from "../../web3Config";
 import { useDispatch } from "react-redux";
 import { setIsActive } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
 import { useEffect, useContext, useState } from "react";
-import { SocketContext } from "socketConfig";
 import { useAppSelector } from "app/hooks";
 import { selectUserAddress } from "features/auth/authSlice";
+
+interface nftTime {
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  minute: number,
+  second: number
+}
 
 const NftDetailInfo = (props: any) => {
   const { isActive, nftOwner, tokenId, nftDetail, nftPrice } = props;
   const userAddress = useAppSelector(selectUserAddress);
   const [modalOpen, setModalOpen] = useState(false);
-  const [nftYear, setNftYear] = useState("");
-  const [nftMonth, setNftMonth] = useState("");
-  const [nftDay, setNftDay] = useState("");
-  const [nftMinute, setNftMinute] = useState("");
-  const [nftSecond, setNftSecond] = useState("");
+  const [nftEndTime, setNftEndTime] = useState<nftTime>({
+    year: 0,
+    month: 0,
+    day: 0,
+    hour: 0,
+    minute: 0,
+    second: 0,
+  });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getTimeInfo = async () => {
-    await SaleReadmeContract.methods.parseTimestamp(3600).call((res: any) => {
-      console.log(res);
-    });
-    await SaleReadmeContract.methods.getYear(tokenId).call((res: any) => {
-      console.log(res);
-      setNftYear(res);
+    const response = await SaleReadmeContract.methods.readmeTokenEndTime(tokenId).call();
+    // console.log("결과", response);
+    await SaleReadmeContract.methods.parseTimestamp(response).call((err: any, res: any) => {
+      const nftEndTime : nftTime = {
+        year: Number(res.year),
+        month: Number(res.month),
+        day: Number(res.day),
+        hour: Number(res.hour),
+        minute: Number(res.minute),
+        second: Number(res.second),
+      };
+      setNftEndTime(nftEndTime);
     });
   };
 
@@ -91,7 +108,7 @@ const NftDetailInfo = (props: any) => {
     navigate(-1);
   };
 
-  useEffect(() => {
+  useEffect( () => {
     getTimeInfo();
   }, []);
 
@@ -105,7 +122,7 @@ const NftDetailInfo = (props: any) => {
                 <>
                   <div>판매 중입니다.</div>
                   <div>즉시 구매하시거나, 경매에 참여할 수 있습니다.</div>
-                  <div>종료일: {nftYear}</div>
+                  <div>종료일: {nftEndTime.year}년 {nftEndTime.month}월 {nftEndTime.day}일 {nftEndTime.hour}시 {nftEndTime.minute}분 {nftEndTime.second}초 </div>
                 </>
               ) : (
                 // <>
@@ -160,10 +177,19 @@ const NftDetailInfo = (props: any) => {
           </div>
         </div>
       </div>
-      <Modal open={modalOpen} close={closeModal} fn={buyNftToken} header="리드미 구매 확인">
-        <img src={nftDetail.imageURL} alt="" />
+      <Modal
+        open={modalOpen}
+        close={closeModal}
+        fn={buyNftToken}
+        header="리드미 구매 확인"
+      >
+        
+        <div className={styles.modal_img_container}>
+          <img className={styles.modal_img} src={nftDetail.imageURL} alt="" />
+        </div>
+
         <div>이거 진짜 살거?</div>
-        <div>{nftPrice} SSF : 이 가격에 ?</div>
+        <div>{nftPrice} SSF : 이 가격에 ???</div>
       </Modal>
     </>
   );

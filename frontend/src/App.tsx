@@ -45,11 +45,18 @@ function App() {
         dispatch(login(accounts[0]));
       }
     }
+    function handleChainChanged(chainId: any) {
+      if (chainId !== "0x79f5") {
+        window.location.reload();
+      }
+    }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       window.ethereum.on("accountsChanged", handleNewAccounts);
+      window.ethereum.on("chainChanged", handleChainChanged);
     }
     return () => {
       window.ethereum.removeListener("accountsChanged", handleNewAccounts);
+      window.ethereum.removeListener("chainChanged", handleChainChanged);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -40,6 +40,14 @@ contract SaleReadmeToken is ReentrancyGuard{
     mapping (uint256 => uint256) public readmeTokenEndTime;
     
 
+    // get: ㅈㅗㅇㄹㅛ ㅅㅣㄱㅏㄴ ㅂㅏㄴㅎㅗㅏㄴ
+    function getEndTime(uint256 _tokenId) public view returns(DateTime memory dt){
+        
+        uint256 endTime = readmeTokenEndTime[_tokenId];
+        return parseTimestamp(endTime);
+
+    }
+
     // get: 판매 중인 토큰 전체 목록 조회
     function getOnSaleReadmeToken() public view returns (uint256[] memory) {
         return onSaleReadmeToken;
@@ -101,6 +109,9 @@ contract SaleReadmeToken is ReentrancyGuard{
         require(price <= token.balanceOf(buyer), "No Money");
         // 판매자 != 구매자 
         require(readmeTokenOwner != buyer, "Seller is not Buyer");
+
+        // 가격을 수정(가격 = 0: 판매중아님)
+        readmeTokenPrice[_readmeTokenId] = 0;
         
         // 송금
         token.transferFrom(msg.sender, readmeTokenOwner, price); // Checks Effects Interaction Pattern 적용
@@ -113,8 +124,7 @@ contract SaleReadmeToken is ReentrancyGuard{
         // 권한 부여
         mintReadmeToken.approveNFT(buyer, address(this), true);
         
-        // 가격을 수정(가격 = 0: 판매중아님)
-        readmeTokenPrice[_readmeTokenId] = 0;
+        
         
         // 판매 중 목록 수정
         for(uint256 i = 0; i < onSaleReadmeToken.length;) {
