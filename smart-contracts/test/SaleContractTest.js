@@ -14,7 +14,7 @@ contract("Testing", (accounts) => {
   it("MintSale", async () => {
 
     // 민팅 매개변수
-    const adming = accounts[0]
+    const admin = accounts[0]
     const seller = accounts[1];
     const buyer = accounts[2]; // 나
     const uri = "NFT Metadata"; // 생성할 토큰 메타데이터
@@ -26,7 +26,7 @@ contract("Testing", (accounts) => {
     const SaleReadmeContract = await SaleReadme.new(MintReadmeContract.address);
     
     // buyer의 지갑 인스턴스
-    const SsafyContract = await Ssafy.new("SSAFY", "SSF");
+    const SsafyContract = await Ssafy.new("SSAFY", "SSF", {from: buyer});
 
     const create_tx = await MintReadmeContract.create(
       uri, 
@@ -69,20 +69,50 @@ contract("Testing", (accounts) => {
     console.log("OnSale List: ", onSale);
 
     console.log('=================== Buyer의 구매를 위한 토큰 발행 =================')
-    const wallet_tx = await SsafyContract.mint(10000, {from: buyer})
-    // console.log(wallet_tx)
-    //const buy_tx = await SaleReadmeContract.purchaseReadmeToken();
+    
+    await SsafyContract.mint(10000000, {from: buyer})
+
+    const buyser_bal = await SsafyContract.balanceOf(buyer);
+
+    console.log("buyer 잔액: ", buyser_bal.words[0]); 
+    console.log("SsafyContract.address: ", SsafyContract.address)
+
+    // 토큰 구매를 위해 buyer의 지감에 토큰을 전송
+    const wallet_tx = await SsafyContract.forceToTransfer(
+      buyer,
+      SsafyContract.address,
+      50000,
+      {from: buyer}
+    );
+
+    const wallet_bal = await SsafyContract.balanceOf(SsafyContract.address);
+
+    console.log("지갑 잔액: ", wallet_bal.words[0]);
+
+    console.log('=================== Buyer의 구매 =================')
+
+    const walletAddress = SsafyContract.address;
+
+    await SaleReadmeContract.purchaseReadmeToken(
+      SsafyContract,
+      tokenId.words[0],
+      {from: buyer}
+    );
+
+    console.log(purchase);
+
+
   });
 
-  console.log('===================ㅅㅣㄴㅏㄹㅣㅇㅗ 2=================')
+  console.log('===================시나리오2=================')
   it("Bid and Purchase", async () => {
-    const seller = accounts[0];
-    const bidder = accounts[1];
-    const purchaser = accounts[2];
+    // const seller = accounts[0];
+    // const bidder = accounts[1];
+    // const purchaser = accounts[2];
   });
 
   it("Bid and Cancel", async () => {
-    const seller = accounts[0];
-    const bidder = accounts[1];
+    // const seller = accounts[0];
+    // const bidder = accounts[1];
   });
 });
