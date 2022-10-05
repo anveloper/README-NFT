@@ -14,33 +14,35 @@ const MemberBox = ({ visible }: any) => {
       style={{ display: visible ? "" : "none" }}
     >
       <div className={styles.memberList}>
-        {participants.map((p, index) => {
-          const shortName = truncatedAddress(p.address);
-          if (userAddress === p.address)
-            return (
-              <div key={index} className={styles.memberItemMine}>
-                {`${p.nickname} (나)`}
-                <br />
-                {`${shortName}`}
-              </div>
-            );
-          else if (hostUserName !== p.address)
-            return (
-              <div key={index} className={styles.memberItem}>
-                {`${p.nickname}`}
-                <br />
-                {`${shortName}`}
-              </div>
-            );
-          else
-            return (
-              <div key={index} className={styles.memberItemHost}>
-                {`${p.nickname} (HOST)`}
-                <br />
-                {`${shortName}`}
-              </div>
-            );
-        })}
+        {participants.map(
+          (p: { address: string; nickname: string }, index: number) => {
+            const shortName = truncatedAddress(p.address);
+            if (userAddress === p.address)
+              return (
+                <div key={index} className={styles.memberItemMine}>
+                  {`${p.nickname} (나)`}
+                  <br />
+                  {`${shortName}`}
+                </div>
+              );
+            else if (hostUserName !== p.address)
+              return (
+                <div key={index} className={styles.memberItem}>
+                  {`${p.nickname}`}
+                  <br />
+                  {`${shortName}`}
+                </div>
+              );
+            else
+              return (
+                <div key={index} className={styles.memberItemHost}>
+                  {`${p.nickname} (HOST)`}
+                  <br />
+                  {`${shortName}`}
+                </div>
+              );
+          }
+        )}
       </div>
     </div>
   );

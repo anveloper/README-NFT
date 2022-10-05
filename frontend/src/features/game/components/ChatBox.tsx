@@ -89,50 +89,53 @@ const ChatBox = () => {
     <>
       <div ref={boxRef} className={styles.chatBox}>
         <div className={styles.chatList}>
-          {messages.map((m, index) => {
-            const { name, type, msg } = m;
-            if (index !== messages.length - 1) {
-              if (type === "mine")
-                return (
-                  <div key={index} className={styles.mine}>
-                    <p>{msg}</p>
-                  </div>
-                );
-              else if (type === "system")
-                return (
-                  <div key={index} className={styles.system}>
-                    <p>{msg}</p>
-                  </div>
-                );
-              else if (type === "other")
-                return (
-                  <div key={index} className={styles.other}>
-                    <h6>{name}</h6>
-                    <p>{msg}</p>
-                  </div>
-                );
-            } else {
-              if (type === "mine")
-                return (
-                  <div ref={lastRef} key={index} className={styles.mine}>
-                    <p>{msg}</p>
-                  </div>
-                );
-              else if (type === "system")
-                return (
-                  <div ref={lastRef} key={index} className={styles.system}>
-                    <p>{msg}</p>
-                  </div>
-                );
-              else if (type === "other")
-                return (
-                  <div ref={lastRef} key={index} className={styles.other}>
-                    <h6>{name}</h6>
-                    <p>{msg}</p>
-                  </div>
-                );
+          {messages.map(
+            (m: { name: any; type: any; msg: any }, index: number) => {
+              const { name, type, msg } = m;
+              if (index !== messages.length - 1) {
+                if (type === "mine")
+                  return (
+                    <div key={index} className={styles.mine}>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else if (type === "system")
+                  return (
+                    <div key={index} className={styles.system}>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else if (type === "other")
+                  return (
+                    <div key={index} className={styles.other}>
+                      <h6>{name}</h6>
+                      <p>{msg}</p>
+                    </div>
+                  );
+              } else {
+                if (type === "mine")
+                  return (
+                    <div ref={lastRef} key={index} className={styles.mine}>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else if (type === "system")
+                  return (
+                    <div ref={lastRef} key={index} className={styles.system}>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else if (type === "other")
+                  return (
+                    <div ref={lastRef} key={index} className={styles.other}>
+                      <h6>{name}</h6>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else return null;
+              }
             }
-          })}
+          )}
         </div>
       </div>
       <div className={styles.inputBox}>
