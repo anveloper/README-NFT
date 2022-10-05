@@ -77,8 +77,6 @@ const NftSaleList = () => {
         const saleCondition = isOnSale ? parseInt(cur.price) !== 0 : true;
         const priceMinCondition = inputMinPrice !== "" ? parseInt(cur.price) >= Number(inputMinPrice) : true;
         const priceMaxCondition = inputMaxPrice !== "" ? parseInt(cur.price) <= Number(inputMaxPrice) : true;
-        const priceIncreaseCondition = isIncrease ? allList.sort() : true;
-
         if (saleCondition && priceMinCondition && priceMaxCondition) {
           acc.push(cur);
         }
@@ -87,6 +85,18 @@ const NftSaleList = () => {
       setFilteredList(result);
     }
   };
+
+  const getDecreasedList = () => {
+    filteredList.sort((a:IMyMintList, b:IMyMintList) : number => Number(b.price) - Number(a.price));
+    console.log(filteredList)
+    setFilteredList([...filteredList]);
+  }
+
+  const getIncreasedList = () => {
+    filteredList.sort((a:IMyMintList, b:IMyMintList) : number => Number(a.price) - Number(b.price));
+    console.log(filteredList)
+    setFilteredList([...filteredList]);
+  }
 
   const handleInputMinPrice = (e: any) => {
     setInputMinPrice(e.target.value);
@@ -98,7 +108,6 @@ const NftSaleList = () => {
 
   useEffect(() => {
     getAllListTokens();
-
     console.log("isOnSale 상태가 바뀔 때마다 리렌더링");
   }, [isOnSale]);
 
@@ -138,10 +147,10 @@ const NftSaleList = () => {
             <div className={styles.category_container}>
               <div className={styles.category_title}>가격 정렬</div>
               <div className={styles.category_price_sort}>
-                <button className={styles.category_button} onClick={() => setIsIncrease(true)}>
+                <button className={styles.category_button} onClick={getDecreasedList}>
                   가격 높은 순
                 </button>
-                <button className={styles.category_button} onClick={() => setIsIncrease(false)}>
+                <button className={styles.category_button} onClick={getIncreasedList}>
                   가격 낮은 순
                 </button>
               </div>
@@ -149,9 +158,9 @@ const NftSaleList = () => {
             <div className={styles.category_container}>
               <div className={styles.category_title}>가격대 찾기</div>
               <div className={styles.category_price_range}>
-                <input type="text" name="inputMin" defaultValue="" onChange={handleInputMinPrice} placeholder="최저가" />
+                <input type="text" name="inputMin" defaultValue={inputMinPrice} onChange={handleInputMinPrice} placeholder="최저가" />
                 <div className={styles.category_price_range_text}>to</div>
-                <input type="text" name="inputMax" defaultValue="" onChange={handleInputMaxPrice} placeholder="최고가" />
+                <input type="text" name="inputMax" defaultValue={inputMaxPrice} onChange={handleInputMaxPrice} placeholder="최고가" />
               </div>
               <button className={styles.category_button} style={{ backgroundColor: "#fddf61" }} onClick={filterData}>
                 찾기
