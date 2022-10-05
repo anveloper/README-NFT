@@ -193,7 +193,7 @@ const CanvasBox = () => {
   const [fileUrl, setFileUrl] = useState("");
   const [newRawData, setNewRawData] = useState("");
   useEffect(() => {
-    if (canvasRef.current) {      
+    if (canvasRef.current) {
       if (socket) socket.emit("get_solver", hostUserName);
       const canvas: HTMLCanvasElement = canvasRef.current;
       const imgBase64 = canvas.toDataURL("image/jpeg", "image/octet-stream");

@@ -55,20 +55,6 @@ const getParticipants = (session) => {
 const devFlag = process.env.NODE_ENV !== "production";
 let i = 0;
 
-let onlineUsers = [];
-const addNewUser = (userWallet, socketId) => {
-  !onlineUsers.some((user) => user.userWallet === userWallet) &&
-    onlineUsers.push({ userWallet, socketId });
-};
-
-const removeUser = (socketId) => {
-  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
-};
-
-const getUser = (userWallet) => {
-  return onlineUsers.find((user) => user.userWallet === userWallet);
-};
-
 io.on("connection", (socket) => {
   if (devFlag) console.log(i++, socket.id);
   // common
@@ -87,7 +73,6 @@ io.on("connection", (socket) => {
   };
   // room
   socket.on("init_room", () => socket.emit("init_room", publicRooms()));
-  socket.on("echo", (asdf) => console.log(asdf));
   socket.on("enter_room", (userAddress, nickname, roomTitle, done) => {
     console.log(userAddress);
     socket["address"] = userAddress;
@@ -167,6 +152,7 @@ io.on("connection", (socket) => {
 
   // chat
   socket.on("new_message", (session, msg, done) => {
+    console.log(socket["nickname"]);
     const answer = rooms.get(session)["answer"];
     if (answer && msg.includes(answer)) {
       if (!rooms.get(session)["solver"]) {
@@ -200,11 +186,12 @@ io.on("connection", (socket) => {
     done(msg);
   });
   socket.on("set_answer", (session, answer, done) => {
-    rooms.get(session)["started"] = false;
-    io.in(session).socketsLeave("solvers::" + session);
+    // rooms.get(session)["started"] = false;
+    // io.in(session).socketsLeave("solvers::" + session);
     socket.to(session).emit("reset_answer", answer.length);
-    rooms.get(session)["solver"] = "";
+    // rooms.get(session)["solver"] = "";
     rooms.get(session)["answer"] = answer;
+    // rooms.get(session)["data"] = [];
     socket.join("solvers::" + session);
     done(answer);
     notiSend(session, "제시어가 생성되었습니다.", "#FF713E");
@@ -213,21 +200,12 @@ io.on("connection", (socket) => {
     socket["solved"] = false;
     socket.leave("solvers::" + session);
     socket.join(session);
-    socket
-      .to(session)
-      .emit(
-        "solve_cnt",
-        rooms.get(session)["solver"],
-        countSolvers(session) - 1,
-        countRoom(session) - 1
-      );
     socket.emit(
       "solve_cnt",
       rooms.get(session)["solver"],
       countSolvers(session) - 1,
       countRoom(session) - 1
     );
-    notiSend(session, "제시어가 생성되었습니다.", "#FF713E");
   });
   socket.on("get_answer", (session) =>
     socket.emit("send_answer", rooms.get(session)["answer"] ?? "unknown")
@@ -238,15 +216,14 @@ io.on("connection", (socket) => {
   socket.on("game_start", (session) => {
     rooms.get(session)["started"] = true;
     socket.emit("reset_draw");
-    socket.to(session).emit("reset_draw");
+    // socket.to(session).emit("reset_draw");
     socket.to(session).emit("game_start");
     notiSend(session, "게임이 시작되었습니다.", "#FDDF61");
   });
   socket.on("draw_data", (session, data) => {
-    // rooms.get(session)["data"].push(data);
-    const dataList = rooms.get(session)["data"];
-    if (rooms.get(session)?.["started"]) dataList.push(data);
     socket.to(session).emit("draw_data", data);
+    const dataList = rooms.get(session)?.["data"];
+    if (rooms.get(session)?.["started"]) dataList.push(data);
   });
   socket.on("get_data", (session) => {
     socket.emit("set_data", JSON.stringify(rooms.get(session)?.["data"]));
@@ -266,22 +243,6 @@ io.on("connection", (socket) => {
   socket.on("game_end", (session, done) => {
     socket.to(session).emit("host_leave");
     done(rooms.get(session)?.["answer"], rooms.get(session)?.["solver"]);
-  });
-
-  // Notification
-  socket.on("newUser", (userWallet) => {
-    addNewUser(userWallet, socket.id);
-  });
-
-  socket.on("sendNotification", ({ receiverWallet, nftName }) => {
-    const receiver = getUser(receiverWallet);
-    io.to(receiver.socketId).emit("getNotification", {
-      nftName,
-    });
-  });
-
-  socket.on("disconnect", () => {
-    removeUser(socket.id);
   });
 
   // test code

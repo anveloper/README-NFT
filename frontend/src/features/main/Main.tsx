@@ -21,7 +21,7 @@ import { Modal } from "../../components/modal/Modal";
 // css
 import styles from "./Main.module.css";
 import Guide from "./Guide";
-import { reload, SocketContext } from "../../socketConfig";
+import { SocketContext } from "../../socketConfig";
 import { findSolveList, setRawList } from "../nft/nftSlice";
 import { GetReadmeContract } from "../../web3Config";
 import SaleButton from "./components/SaleButton";
@@ -58,16 +58,6 @@ const Main = ({ setMainNav, setMainRef }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAddress]);
 
-  useEffect(() => {
-    if (!socket) {
-      reload();
-      console.log("reload");
-    } else {
-      console.log("연결된 소켓 정보", socket);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
-
   const closeModal = () => {
     setModalOpen(false);
     setRegisterRoomName("");
@@ -99,13 +89,12 @@ const Main = ({ setMainNav, setMainRef }: Props) => {
   };
   useEffect(() => {
     const observer = getIntersectionObserver(setMainNav);
-
     const headers = [guideRef.current, carouselRef.current, tabRef.current];
-
     headers.map((header) => {
       observer.observe(header);
     });
     setMainRef(headers);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div ref={mainRef}>
