@@ -115,7 +115,6 @@ const NftDetailModal = (props: any) => {
               <div className={styles.info}>
                 {/* {<div style={{ fontSize: "20px" }}>💡</div>} */}
                 <p>리드미의 제목을 맞춰보세요!</p>
-                <p>정답을 맞추면 리드미를 구매할 수 있어요.</p>
               </div>
             </div>
             <div className={styles.answer}>
@@ -132,23 +131,41 @@ const NftDetailModal = (props: any) => {
                   onChange={onChange}
                   value={inputAnswer}
                 />
-                <button className={styles.input_button} onClick={() => checkAnswer(inputAnswer)}>
+                <button
+                  className={styles.input_button}
+                  onClick={() => checkAnswer(inputAnswer)}
+                >
                   제출
                 </button>
               </div>
               <div className={styles.result_msg}>
-                {infoMsg && <p className={isAnswer ? `${styles.result_msg_answer}` : `${styles.result_msg_wrong}`}>{infoMsg}</p>}
+                {infoMsg && (
+                  <p
+                    className={
+                      isAnswer
+                        ? `${styles.result_msg_answer}`
+                        : `${styles.result_msg_wrong}`
+                    }
+                  >
+                    {infoMsg}
+                  </p>
+                )}
               </div>
             </div>
+
             <div className={styles.card_buttons}>
               <button
-                disabled={!isAnswer}
-                className={isAnswer ? `${styles.card_button_on}` : `${styles.card_button_off}`}
+                className={styles.card_button_on}
                 onClick={() => moveToDetail(tokenId)}
               >
-                자세히 보기
+                <span>자세히 보기</span>
+                <p className={styles.arrow_box}>정답을 확인할 수 있어요!</p>
               </button>
-              <button className={styles.card_button_on} onClick={() => likeNFT(parseInt(tokenId))}>
+
+              <button
+                className={styles.card_button_on}
+                onClick={() => likeNFT(parseInt(tokenId))}
+              >
                 {likeButtonText}
               </button>
             </div>
