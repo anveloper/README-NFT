@@ -229,22 +229,57 @@ input::-webkit-inner-spin-button {
   padding-right: 20px;
 }
 
-/* .modal_container {
-  width: 200px;
-  height: 200px
-} */
-
-.modal_img_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.modal_container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 20px;
   width: 100%;
+  padding: 20px;
+  background-color: #fcf5e9;
+  border-radius: 20px;
 }
 
 /* 모달창: 구매 확인 */
 .modal_img {
-  width: 60%;
+  width: 100%;
   aspect-ratio: 12/10;
-  border: 5px solid black;
+  border-radius: 20px;
+  /* border: 5px solid black; */
 }
 
+.modal_info_container {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-row-gap: 20px;
+}
+.modal_info {
+  border-radius: 20px;
+  background-color: white;
+  padding: 20px;
+}
+
+.modal_info:nth-child(1) {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.modal_info:nth-child(2) {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.modal_info_text1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.modal_info_text2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
