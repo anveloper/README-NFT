@@ -234,12 +234,10 @@
   justify-content: center;
   align-items: center;
   margin: auto;
-
-  background-color: #fddf61;
 }
 
 .ProfileModalImg {
-  width: 7vw;
+  width: 8vw;
 }
 
 .ProfileModalNotification {
