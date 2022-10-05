@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Web3 from "web3";
 
 import { Route, Routes, useLocation, useParams } from "react-router-dom";
@@ -9,6 +9,7 @@ import { Metadata } from "features/nft/nftSlice";
 import styles from "./SNS.module.css";
 import MoveSale from "./components/MoveSale";
 import MoveGame from "./components/MoveGame";
+import { SocketContext } from "socketConfig";
 
 const web3 = new Web3(process.env.REACT_APP_ETHEREUM_RPC_URL);
 const MintReadmeContract = new web3.eth.Contract(
@@ -17,10 +18,10 @@ const MintReadmeContract = new web3.eth.Contract(
 );
 
 const SNS = () => {
+  const socket = useContext(SocketContext);
   const { pathname } = useLocation();
   let { tokenId } = useParams();
   const id = Number(tokenId);
-  console.log(useParams());
   const [rtk, setRtk] = useState<Metadata>({
     fileName: "",
     name: "",
@@ -37,7 +38,10 @@ const SNS = () => {
       console.log(err);
     }
   };
-
+  useEffect(() => {
+    if (socket) socket.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   useEffect(() => {
     console.log(id);
     if (!isNaN(id))

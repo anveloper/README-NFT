@@ -23,7 +23,6 @@ export interface NftConfig {
   readmeTokenPrice: number;
   metaData: Metadata | undefined;
   isActive: boolean;
-  // saleDate: SaleDate | undefined;
 }
 
 interface NftListConfig {
@@ -78,8 +77,31 @@ const nftSlice = createSlice({
     setNftList: (state, { payload }) => {
       state.nftList = payload;
     },
-    setCarouselList: (state, { payload }) => {
-      state.carouselList = payload;
+    setCarouselList: (state) => {
+      const { rawList, solveList } = state;
+      const result: NftConfig[] = [];
+      let cnt = Math.min(rawList.length, 10);
+      for (let i = 0; i < cnt; i++) {
+        const {
+          metaDataURI,
+          readmeTokenId,
+          readmeTokenOwner,
+          readmeTokenPrice,
+          isActive,
+        } = rawList[rawList.length - 1 - i];
+        if (!solveList.includes(Number(readmeTokenId)))
+          // 임시방편
+          result.push({
+            metaDataURI,
+            readmeTokenId,
+            readmeTokenOwner,
+            readmeTokenPrice,
+            metaData: undefined,
+            isActive,
+          });
+        else if (cnt < rawList.length - 1) cnt++;
+      }
+      state.carouselList = result;
     },
   },
   extraReducers: (builder) => {

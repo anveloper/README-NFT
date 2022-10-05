@@ -8,6 +8,8 @@ import { login, selectUserAddress } from "./features/auth/authSlice";
 import Navbar from "./components/nav/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
 // page
+import Milestone from "routes/Milestone";
+import DevRoute from "routes/DevRoute";
 import Main from "./features/main/Main";
 import Mint from "./features/mint/Mint";
 import LiveList from "./features/main/LiveList";
@@ -24,12 +26,9 @@ import styles from "./App.module.css";
 
 import TestPage from "./testWeb3/TestPage";
 
+import MetaMaskOnboarding from "@metamask/onboarding";
 import NFTSale from "./features/nft/NftSaleList";
 import MyMintList from "./features/mint/MyMintList";
-import MetaMaskOnboarding from "@metamask/onboarding";
-import DevRoute from "routes/DevRoute";
-import Milestone from "routes/Milestone";
-import { socket, SocketProvider } from "socketConfig";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -46,11 +45,18 @@ function App() {
         dispatch(login(accounts[0]));
       }
     }
+    function handleChainChanged(chainId: any) {
+      if (chainId !== "0x79f5") {
+        window.location.reload();
+      }
+    }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       window.ethereum.on("accountsChanged", handleNewAccounts);
+      window.ethereum.on("chainChanged", handleChainChanged);
     }
     return () => {
       window.ethereum.removeListener("accountsChanged", handleNewAccounts);
+      window.ethereum.removeListener("chainChanged", handleChainChanged);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -60,7 +66,7 @@ function App() {
   return (
     <div className={styles.container}>
       <Milestone>
-        <SocketProvider value={socket}>
+        <>
           <BackgroundCloud />
           {!isGame && <Navbar mainNav={mainNav} mainRef={mainRef} />}
           <div className={styles.content}>
@@ -100,7 +106,7 @@ function App() {
               />
             </Routes>
           </div>
-        </SocketProvider>
+        </>
       </Milestone>
     </div>
   );

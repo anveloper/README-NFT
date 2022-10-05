@@ -5,7 +5,8 @@ import { useDispatch } from "react-redux";
 import { setIsActive } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
 import { useEffect, useContext, useState } from "react";
-import { SocketContext } from "socketConfig";
+import { useAppSelector } from "app/hooks";
+import { selectUserAddress } from "features/auth/authSlice";
 
 interface nftTime {
   year: number;
@@ -17,7 +18,8 @@ interface nftTime {
 }
 
 const NftDetailInfo = (props: any) => {
-  const { isActive, nftOwner, userAddress, tokenId, nftDetail, nftPrice } = props;
+  const { isActive, nftOwner, tokenId, nftDetail, nftPrice } = props;
+  const userAddress = useAppSelector(selectUserAddress);
   const [modalOpen, setModalOpen] = useState(false);
   const [nftEndTime, setNftEndTime] = useState<nftTime>({
     year: 0,
@@ -30,7 +32,6 @@ const NftDetailInfo = (props: any) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const socket = useContext(SocketContext);
 
   const getTimeInfo = async () => {
     const response = await SaleReadmeContract.methods.readmeTokenEndTime(tokenId).call();
@@ -85,12 +86,9 @@ const NftDetailInfo = (props: any) => {
       .send({ from: userAddress })
       .then((res: any) => {
         console.log(res);
-        socket.emit("sendNotification", {
-          receiverWallet: nftOwner,
-          nftName: nftDetail.name,
-        });
         // 새로고침.
-        window.location.replace("/detail/" + tokenId);
+        navigate("/deatil/" + tokenId);
+        // window.location.replace("/detail/" + tokenId);
         console.log("purchase : ", res);
       })
       .catch((err: any) => {

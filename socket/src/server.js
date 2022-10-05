@@ -55,25 +55,12 @@ const getParticipants = (session) => {
 const devFlag = process.env.NODE_ENV !== "production";
 let i = 0;
 
-let onlineUsers = [];
-const addNewUser = (userWallet, socketId) => {
-  !onlineUsers.some((user) => user.userWallet === userWallet) &&
-    onlineUsers.push({ userWallet, socketId });
-};
-
-const removeUser = (socketId) => {
-  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
-};
-
-const getUser = (userWallet) => {
-  return onlineUsers.find((user) => user.userWallet === userWallet);
-};
-
 io.on("connection", (socket) => {
   if (devFlag) console.log(i++, socket.id);
   // common
   const { rooms } = io.sockets.adapter;
   socket["nickname"] = "none";
+  socket["solved"] = false;
   socket.emit("init_room", publicRooms());
 
   if (devFlag)
@@ -166,6 +153,7 @@ io.on("connection", (socket) => {
 
   // chat
   socket.on("new_message", (session, msg, done) => {
+    console.log(socket["nickname"]);
     const answer = rooms.get(session)["answer"];
     if (answer && msg.includes(answer)) {
       if (!rooms.get(session)["solver"]) {
@@ -204,29 +192,21 @@ io.on("connection", (socket) => {
     socket.to(session).emit("reset_answer", answer.length);
     rooms.get(session)["solver"] = "";
     rooms.get(session)["answer"] = answer;
+    rooms.get(session)["data"] = [];
     socket.join("solvers::" + session);
     done(answer);
     notiSend(session, "제시어가 생성되었습니다.", "#FF713E");
   });
   socket.on("reset_answer", (session) => {
+    if (socket["solved"]) socket.leave("solvers::" + session);
     socket["solved"] = false;
-    socket.leave("solvers::" + session);
     socket.join(session);
-    socket
-      .to(session)
-      .emit(
-        "solve_cnt",
-        rooms.get(session)["solver"],
-        countSolvers(session) - 1,
-        countRoom(session) - 1
-      );
     socket.emit(
       "solve_cnt",
-      rooms.get(session)["solver"],
+      rooms.get(session)?.["solver"],
       countSolvers(session) - 1,
       countRoom(session) - 1
     );
-    notiSend(session, "제시어가 생성되었습니다.", "#FF713E");
   });
   socket.on("get_answer", (session) =>
     socket.emit("send_answer", rooms.get(session)["answer"] ?? "unknown")
@@ -242,10 +222,9 @@ io.on("connection", (socket) => {
     notiSend(session, "게임이 시작되었습니다.", "#FDDF61");
   });
   socket.on("draw_data", (session, data) => {
-    // rooms.get(session)["data"].push(data);
-    const dataList = rooms.get(session)["data"];
-    if (rooms.get(session)?.["started"]) dataList.push(data);
     socket.to(session).emit("draw_data", data);
+    const dataList = rooms.get(session)?.["data"];
+    if (rooms.get(session)?.["started"]) dataList.push(data);
   });
   socket.on("get_data", (session) => {
     socket.emit("set_data", JSON.stringify(rooms.get(session)?.["data"]));
@@ -267,20 +246,54 @@ io.on("connection", (socket) => {
     done(rooms.get(session)?.["answer"], rooms.get(session)?.["solver"]);
   });
 
-  // Notification
-  socket.on("newUser", (userWallet) => {
-    addNewUser(userWallet, socket.id);
+  // test code
+  socket.on("test_join_room", ({ userAddress, nickname, hostAddress }) => {
+    socket["address"] = userAddress;
+    socket["nickname"] = nickname;
+    socket["solved"] = false;
+    const session = hostAddress;
+    socket.join(session);
+    socket
+      .to(session)
+      .emit(
+        "welcome",
+        socket.nickname,
+        countRoom(session) - 1,
+        getParticipants(session)
+      );
+    io.sockets.emit("room_change", publicRooms());
   });
-
-  socket.on("sendNotification", ({ receiverWallet, nftName }) => {
-    const receiver = getUser(receiverWallet);
-    io.to(receiver.socketId).emit("getNotification", {
-      nftName,
-    });
-  });
-
-  socket.on("disconnect", () => {
-    removeUser(socket.id);
+  socket.on("test_new_message", ({ session, msg }) => {
+    const answer = rooms.get(session)["answer"];
+    if (answer && msg.includes(answer)) {
+      if (!rooms.get(session)["solver"]) {
+        rooms.get(session)["solver"] = socket["address"];
+        notiSend(session, "최초 정답자가 나왔습니다!", "green");
+      }
+      socket.join("solvers::" + session);
+      socket["solved"] = true;
+      socket
+        .to(session)
+        .emit(
+          "solve_cnt",
+          rooms.get(session)["solver"],
+          countSolvers(session) - 1,
+          countRoom(session) - 1
+        );
+      socket.emit(
+        "solve_cnt",
+        rooms.get(session)["solver"],
+        countSolvers(session) - 1,
+        countRoom(session) - 1
+      );
+    }
+    if (!socket["solved"]) {
+      socket.to(session).emit("new_message", socket.nickname, msg);
+    } else {
+      socket
+        .to("solvers::" + session)
+        .emit("new_message", "익명의 정답자", msg);
+    }
   });
 });
 

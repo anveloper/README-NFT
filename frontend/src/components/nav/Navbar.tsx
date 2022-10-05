@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import LogoImg from "../../assets/logo_img.svg";
 import LogoText from "../../assets/logo_text.svg";
 // components
-import ProfileModal from "./ProfileModal";
 import { useAppSelector } from "app/hooks";
 import {
   selectUserAddress,
@@ -25,9 +24,7 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
   const showModal = () => {
     setModalOpen(!modalOpen);
   };
-  useEffect(() => {
-    console.log(mainRef);
-  }, [mainRef]);
+
   return (
     <div className={styles.navBar}>
       <div className={styles.logoBox}>
@@ -36,7 +33,7 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
           <img className={styles.img2} src={LogoText} alt="" />
         </Link>
       </div>
-      {/* {isDev && (
+      {isDev && (
         <div className={styles.navButtonBox}>
           <Link to="/login">
             <button>로그인</button>
@@ -49,10 +46,10 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
           </Link>
           {"개발때만 보여요."}
         </div>
-      )} */}
+      )}
       <div className={styles.navButtonBox}>
         <button
-          style={mainNav == 1 ? { backgroundColor: "#fddf61" } : {}}
+          style={mainNav === 1 ? { backgroundColor: "#fddf61" } : {}}
           onClick={() => {
             mainRef[0].scrollIntoView({ behavior: "smooth" });
           }}
@@ -60,7 +57,7 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
           가이드
         </button>
         <button
-          style={mainNav == 2 ? { backgroundColor: "#fddf61" } : {}}
+          style={mainNav === 2 ? { backgroundColor: "#fddf61" } : {}}
           onClick={() => {
             mainRef[1].scrollIntoView({ behavior: "smooth" });
           }}
@@ -68,7 +65,7 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
           한번 맞춰볼래?
         </button>
         <button
-          style={mainNav == 3 ? { backgroundColor: "#fddf61" } : {}}
+          style={mainNav === 3 ? { backgroundColor: "#fddf61" } : {}}
           onClick={() => {
             mainRef[2].scrollIntoView({ behavior: "smooth" });
           }}
@@ -86,12 +83,7 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
       >
         <img src={userAvatar} alt="" className={styles.avatar} />
         {!modalOpen && <p className={styles.nameTag}>{nickname}</p>}
-        <div className={styles.notificationCounter}></div>
       </div>
-
-      {userAddress && (
-        <ProfileModal modalOpen={modalOpen} showModal={showModal} />
-      )}
     </div>
   );
 };
