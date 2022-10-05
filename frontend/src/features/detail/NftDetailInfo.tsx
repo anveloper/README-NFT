@@ -191,6 +191,7 @@ const NftDetailInfo = (props: any) => {
         </div>
       </div>
       <Modal
+        className={styles.modal_container}
         open={modalOpen}
         close={closeModal}
         fn={buyNftToken}
