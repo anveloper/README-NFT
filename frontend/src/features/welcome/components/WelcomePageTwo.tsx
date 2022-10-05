@@ -31,44 +31,38 @@ const WelcomePageTwo = ({ storyRef }: any) => {
           <NFTCard
             img={dog}
             name="Dog"
-            answer="Dog"
             creater="피자먹는 방태"
-            solver="치킨먹는 방태"
+            owner="치킨먹는 방태"
           />
           <NFTCard
             img={cat}
             name="Cat"
-            answer="Cat"
             creater="피자먹는 고양이"
-            solver="치킨먹는 고양이"
+            owner="치킨먹는 고양이"
           />
           <NFTCard
             img={giraffe}
             name="Giraffe"
-            answer="Giraffe"
             creater="피자먹는 기린"
-            solver="치킨먹는 기린"
+            owner="치킨먹는 기린"
           />
           <NFTCard
             img={lion}
             name="Lion"
-            answer="Lion"
             creater="피자먹는 라이언"
-            solver="치킨먹는 라이언"
+            owner="치킨먹는 라이언"
           />
           <NFTCard
             img={rabbit}
             name="Rabbit"
-            answer="Rabbit"
             creater="피자먹는 토끼"
-            solver="치킨먹는 토끼"
+            owner="치킨먹는 토끼"
           />
           <NFTCard
             img={sheep}
             name="Sheep"
-            answer="Sheep"
             creater="피자먹는 양"
-            solver="치킨먹는 양"
+            owner="치킨먹는 양"
           />
         </div>
       </div>
