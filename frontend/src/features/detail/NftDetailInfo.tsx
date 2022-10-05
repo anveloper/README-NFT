@@ -1,12 +1,14 @@
 import styles from "./NftDetail.module.css";
 import { useNavigate } from "react-router-dom";
-import { SaleReadmeContract, SSFContract, web3 } from "../../web3Config";
+import { MintReadmeContract, SaleReadmeContract, SSFContract, web3 } from "../../web3Config";
 import { useDispatch } from "react-redux";
 import { setIsActive } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
 import { useEffect, useContext, useState } from "react";
 import { useAppSelector } from "app/hooks";
-import { selectUserAddress } from "features/auth/authSlice";
+import { change_date, selectUserAddress } from "features/auth/authSlice";
+import { difference } from "lodash";
+import { setTimeout } from "timers";
 
 interface nftTime {
   year: number;
@@ -18,7 +20,7 @@ interface nftTime {
 }
 
 const NftDetailInfo = (props: any) => {
-  const { isActive, nftOwner, tokenId, nftDetail, nftPrice } = props;
+  const { nftOwner, tokenId, nftDetail, nftPrice } = props;
   const userAddress = useAppSelector(selectUserAddress);
   const [modalOpen, setModalOpen] = useState(false);
   const [nftEndTime, setNftEndTime] = useState<nftTime>({
@@ -29,13 +31,16 @@ const NftDetailInfo = (props: any) => {
     minute: 0,
     second: 0,
   });
+  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [isReady, setIsReady] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(Object);
+  const [isAvail, setIsAvail] = useState(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getTimeInfo = async () => {
     const response = await SaleReadmeContract.methods.readmeTokenEndTime(tokenId).call();
-    // console.log("결과", response);
     await SaleReadmeContract.methods.parseTimestamp(response).call((err: any, res: any) => {
       const nftEndTime: nftTime = {
         year: Number(res.year),
@@ -46,6 +51,8 @@ const NftDetailInfo = (props: any) => {
         second: Number(res.second),
       };
       setNftEndTime(nftEndTime);
+      setEndDate(new Date(nftEndTime.year, nftEndTime.month - 1, nftEndTime.day, nftEndTime.hour, nftEndTime.minute, nftEndTime.second));
+      setIsReady(true);
     });
   };
 
@@ -112,13 +119,35 @@ const NftDetailInfo = (props: any) => {
     getTimeInfo();
   }, []);
 
+  /* 카운트다운 구현 (성진님감사합니다쌍따봉드림) */
+  useEffect(() => {
+    const timeDiff = +endDate - +new Date();
+    let timeLeft = {};
+    const countDown = setInterval(() => {
+      if (isReady && timeDiff > 0) {
+        timeLeft = {
+          days: Math.floor(timeDiff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((timeDiff / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((timeDiff / 1000 / 60) % 60),
+          seconds: Math.floor((timeDiff / 1000) % 60),
+        };
+        setTimeLeft(timeLeft);
+      }
+      if (timeDiff <= 0) {
+        setIsAvail(false);
+      }
+    }, 1000);
+    return () => clearInterval(countDown);
+  }, [isReady, timeLeft, endDate]);
+
   return (
     <>
       <div className={styles.cards}>
         <div className={styles.card_contents_back}>
           <div className={styles.card_contents_back_info}>
+            <div className={styles.card_contents_back_info_child}>판매 정보</div>
             <div className={styles.card_contents_back_info_child}>
-              {isActive ? (
+              {isAvail ? (
                 <>
                   <div>판매 중입니다.</div>
                   <div>즉시 구매하시거나, 경매에 참여할 수 있습니다.</div>
@@ -127,11 +156,6 @@ const NftDetailInfo = (props: any) => {
                   </div>
                 </>
               ) : (
-                // <>
-                //   <div>판매가&nbsp;</div>
-                //   {/* <div style={{ fontSize: "18px", color: "#21658F" }}>{change_date(saleDate.saleEndDay)}</div> */}
-                //   <div>&nbsp;종료됩니다.</div>
-                // </>
                 <>
                   <div>판매 상태가 아닙니다.&nbsp;</div>
                   <div>구매가 제한됩니다.</div>
@@ -153,7 +177,7 @@ const NftDetailInfo = (props: any) => {
               <div>
                 {nftOwner.toLowerCase() === userAddress ? (
                   <>
-                    {isActive ? (
+                    {isAvail ? (
                       <>
                         <button className={styles.card_button} onClick={cancelSale}>
                           판매 취소
@@ -169,7 +193,7 @@ const NftDetailInfo = (props: any) => {
                   </>
                 ) : (
                   <>
-                    <button disabled={!isActive} className={styles.card_button} onClick={openModal}>
+                    <button disabled={isAvail} className={styles.card_button} onClick={openModal}>
                       즉시 구매
                     </button>
                   </>
