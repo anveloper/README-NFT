@@ -7,6 +7,7 @@ export interface AuthState {
   userAddress: string;
   userName: string;
   userAvatar: string;
+  isWelcome: boolean;
   status: "idle" | "loading" | "success" | "failed";
 }
 
@@ -30,6 +31,7 @@ const initialState: AuthState = {
   userAddress: ``,
   userName: `${actionNicknameRandom} ${animalNicknameRandom}`,
   userAvatar: `images/${Math.floor(Math.random() * 50 + 1)}.png`,
+  isWelcome: false,
   status: "idle",
 };
 
@@ -60,6 +62,9 @@ export const authSlice = createSlice({
       console.log(payload);
       state.userAddress = payload;
     },
+    setIsWelcome: (state) => {
+      state.isWelcome = !state.isWelcome;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -77,12 +82,13 @@ export const authSlice = createSlice({
 });
 
 // actions
-export const { logoutUser, login } = authSlice.actions;
+export const { logoutUser, login, setIsWelcome } = authSlice.actions;
 
 // selector
 export const selectUserAddress = (state: RootState) => state.auth.userAddress;
 export const selectUserName = (state: RootState) => state.auth.userName;
 export const selectUserAvatar = (state: RootState) => state.auth.userAvatar;
+export const selectIsWelcome = (state: RootState) => state.auth.isWelcome;
 export default authSlice.reducer;
 
 // util
