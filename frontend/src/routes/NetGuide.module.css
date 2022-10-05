@@ -174,7 +174,7 @@
 
 .WelcomeTitleText {
   position: absolute;
-  top: 15%;
+  top: 5%;
   left: 50%;
   transform: translate(-50%, -15%);
   color: #000000;
@@ -775,7 +775,22 @@
     animation-timing-function: ease-out;
   }
 }
-
+.textBox {
+  position: absolute;
+  top: 25%;
+  left: 65%;
+  width: 30vw;
+  height: 50vh;
+  background-color: white;
+}
+.slider {
+  position: absolute;
+  top: 15%;
+  left: 35%;
+  transform: translate(-50%);
+  width: 50vw;
+  z-index: 50;
+}
 @-webkit-keyframes fade-in {
   0% {
     opacity: 0;
