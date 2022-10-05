@@ -25,9 +25,7 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
   const showModal = () => {
     setModalOpen(!modalOpen);
   };
-  useEffect(() => {
-    console.log(mainRef);
-  }, [mainRef]);
+
   return (
     <div className={styles.navBar}>
       <div className={styles.logoBox}>

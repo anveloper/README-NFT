@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { setIsActive } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
 import { useEffect, useContext, useState } from "react";
-import { SocketContext } from "socketConfig";
 
 const NftDetailInfo = (props: any) => {
   const { isActive, nftOwner, userAddress, tokenId, nftDetail, nftPrice } =
@@ -19,7 +18,6 @@ const NftDetailInfo = (props: any) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const socket = useContext(SocketContext);
 
   const getTimeInfo = async () => {
     await SaleReadmeContract.methods.parseTimestamp(3600).call((res: any) => {
@@ -68,10 +66,6 @@ const NftDetailInfo = (props: any) => {
       .send({ from: userAddress })
       .then((res: any) => {
         console.log(res);
-        socket.emit("sendNotification", {
-          receiverWallet: nftOwner,
-          nftName: nftDetail.name,
-        });
         // 새로고침.
         window.location.replace("/detail/" + tokenId);
         console.log("purchase : ", res);

@@ -67,7 +67,9 @@ const NftItem = (props: any) => {
   }, [props, solveList]);
   const renderName = () => {
     const result = [];
-    if (answer) {
+    if (nft.readmeTokenId <= 50) {
+      return <p>{nft.name}</p>;
+    } else if (answer) {
       for (let i = 0; i < answer.length; i++) {
         result.push(
           <p key={i} className={styles.answer}>
