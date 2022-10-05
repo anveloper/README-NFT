@@ -1,4 +1,4 @@
-import React, { useEffect, FC } from "react";
+import React, { useEffect, FC, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 // state
@@ -13,6 +13,7 @@ import styles from "./Mint.module.css";
 import Loading from "../../components/loading/Loading";
 import { postProblem } from "features/nft/nftSlice";
 import { selectUserAddress } from "features/auth/authSlice";
+import LoadingPage from "components/loading/LoadingPage";
 
 const ipfsUrl =
   process.env.NODE_ENV !== "production"
@@ -26,6 +27,7 @@ const Mint: FC = () => {
   const status = useAppSelector(selectStatus);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
 
   const handleAddItem = async () => {
     const fr = new FileReader();
@@ -45,15 +47,19 @@ const Mint: FC = () => {
         };
         const result = await client.add(JSON.stringify(metadata));
         const tokenURI = "https://ipfs.io/ipfs/" + result.path;
+
+        setLoading(true);
         mintReadmeToken(tokenURI, account, answer, sol)
           .then((receipt: any) => {
+            console.log("receipt : ", receipt);
             console.log(receipt?.events.Mint.returnValues);
             if (receipt.events?.Mint) {
               const tokenId = receipt?.events.Mint.returnValues.tokenId;
               dispatch(postProblem({ userAddress: creator, tokenId }));
               dispatch(postProblem({ userAddress: solver, tokenId }));
             }
-            navigate("/list");
+            navigate("/list", { replace: true });
+            setLoading(false);
           })
           .catch((err: any) => err);
       }
@@ -72,28 +78,33 @@ const Mint: FC = () => {
   }, []);
   return (
     <>
-      <Loading status={status} />
-      <NewHelmet
-        title={`${answer} - 민팅하기`}
-        description={`출제자 ${creator}에 의한 리드미-${answer} 문제와 최초 정답자 ${solver}`}
-      />
-      <div className={styles.container}>
-        <div className={styles.mintCard}>
-          <img src={tmpUrl} alt="" />
-          <div className={styles.content}>
-            <div>정답: {answer}</div>
-            <div>만든이: {creator}</div>
-            <div>맞춘이: {solver}</div>
-            <div>임시 URL: {tmpUrl}</div>
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <>
+          <NewHelmet
+            title={`${answer} - 민팅하기`}
+            description={`출제자 ${creator}에 의한 리드미-${answer} 문제와 최초 정답자 ${solver}`}
+          />
+          <div className={styles.container}>
+            <div className={styles.mintCard}>
+              <img src={tmpUrl} alt="" />
+              <div className={styles.content}>
+                <div>정답: {answer}</div>
+                <div>만든이: {creator}</div>
+                <div>맞춘이: {solver}</div>
+                <div>임시 URL: {tmpUrl}</div>
+              </div>
+              <div className={styles.btnBox}>
+                <a href={tmpUrl} download>
+                  다운받기
+                </a>
+                <button onClick={handleAddItem}>민팅하기</button>
+              </div>
+            </div>
           </div>
-          <div className={styles.btnBox}>
-            <a href={tmpUrl} download>
-              다운받기
-            </a>
-            <button onClick={handleAddItem}>민팅하기</button>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };

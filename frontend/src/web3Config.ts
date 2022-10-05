@@ -22,13 +22,13 @@ export const MintReadmeContract = new web3.eth.Contract(
   process.env.REACT_APP_MINTREADMETOKEN_CA
 );
 
-export const mintReadmeToken = (
+export const mintReadmeToken = async (
   tokenURI: string,
   account: string,
   answer: string,
   solver: string
 ) =>
-  MintReadmeContract.methods
+  await MintReadmeContract.methods
     .create(tokenURI, process.env.REACT_APP_SALEREADMETOKEN_CA, answer, solver)
     .send({ from: account });
 
