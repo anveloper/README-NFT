@@ -11,15 +11,15 @@ import { useEffect, useState, useRef } from "react";
 import { useAppSelector } from "app/hooks";
 import { selectUserAddress } from "features/auth/authSlice";
 import MetaMaskOnboarding from "@metamask/onboarding";
-const WelcomePageEvent = ({ onboarding }: any) => {
+
+const WelcomePageEvent = ({ onboarding, isSsafyNet }: any) => {
   const account = useAppSelector(selectUserAddress);
   const [eventLeft, setEventLeft] = useState(0);
   useEffect(() => {
     DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
       setEventLeft(res);
-      console.log(res);
     });
-  }, []);
+  }, [isSsafyNet]);
 
   const isTokenImported = async () => {
     try {
@@ -103,7 +103,7 @@ const WelcomePageEvent = ({ onboarding }: any) => {
       </button>
       <button className={styles.importSSFButton} onClick={isTokenImported}>
         <img className={styles.eventInfo} src={eventInfo} alt="" />
-        SSAFY 토큰이 보이지 않아요!
+        지갑에 SSAFY 토큰(SSF) 추가하기!
       </button>
     </div>
   );

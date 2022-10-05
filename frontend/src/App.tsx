@@ -35,6 +35,7 @@ function App() {
   const { pathname } = useLocation();
   const isGame = pathname.startsWith("/game");
   const dispatch = useAppDispatch();
+  const [isSsafyNet, setIsSsafyNet] = useState<boolean>(false);
   useEffect(() => {
     async function handleNewAccounts() {
       const accounts = await window.ethereum.request({
@@ -46,8 +47,11 @@ function App() {
       }
     }
     function handleChainChanged(chainId: any) {
+      console.log("network changed");
       if (chainId !== "0x79f5") {
         window.location.reload();
+      } else {
+        setIsSsafyNet(!isSsafyNet);
       }
     }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
@@ -65,7 +69,7 @@ function App() {
   const [mainRef, setMainRef] = useState<HTMLDivElement[]>([]);
   return (
     <div className={styles.container}>
-      <Milestone>
+      <Milestone isSsafyNet={isSsafyNet}>
         <>
           <BackgroundCloud />
           {!isGame && <Navbar mainNav={mainNav} mainRef={mainRef} />}

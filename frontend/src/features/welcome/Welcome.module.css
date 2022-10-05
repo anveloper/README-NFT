@@ -58,7 +58,7 @@
   transform: translate(-50%, -95%);
   background: #fcf5e9;
   border: none;
-  width: 18vw;
+  width: 300px;
   height: 7vh;
   border-radius: 30px;
   font-family: "IM_Hyemin-Bold";
@@ -457,7 +457,8 @@
   color: #ffffff;
   font-size: 20vh;
   letter-spacing: 0.2em;
-  -webkit-animation: fade-in 5s cubic-bezier(0.39, 0.575, 0.565, 1) infinite both;
+  -webkit-animation: fade-in 5s cubic-bezier(0.39, 0.575, 0.565, 1) infinite
+    both;
   animation: fade-in 5s cubic-bezier(0.39, 0.575, 0.565, 1) infinite both;
 }
 

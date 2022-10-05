@@ -6,14 +6,15 @@ import Welcome from "features/welcome/Welcome";
 import { SNSRoutes } from "features/share/SNS";
 interface MilestoneProps {
   children: ReactElement;
+  isSsafyNet: boolean;
 }
-const Milestone = ({ children }: MilestoneProps) => {
+const Milestone = ({ children, isSsafyNet }: MilestoneProps) => {
   const [isWelcome, setIsWelcome] = useState<boolean>(true);
   const userAddress = useAppSelector(selectUserAddress);
   const { pathname } = useLocation();
   if (pathname.startsWith("/readme")) return <SNSRoutes />;
   else if (userAddress && !isWelcome) return children;
-  else return <Welcome setIsWelcome={setIsWelcome} />;
+  else return <Welcome setIsWelcome={setIsWelcome} isSsafyNet={isSsafyNet} />;
 };
 
 export default Milestone;
