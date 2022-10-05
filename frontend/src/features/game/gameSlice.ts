@@ -40,17 +40,6 @@ const initialState: GameState = {
     { title: "zxcv zxcv", host: "asdf", cnt: 3 },
     { title: "asdf", host: "asdf", cnt: 4 },
     { title: "xczv", host: "asdf", cnt: 5 },
-    { title: "dsaf?", host: "asdf", cnt: 2 },
-    { title: "dsva", host: "asdf", cnt: 3 },
-    { title: "asdf", host: "asdf", cnt: 4 },
-    { title: "asdf", host: "asdf", cnt: 5 },
-    { title: "vsa", host: "asdf", cnt: 1 },
-    { title: "sdav", host: "asdf", cnt: 1 },
-    { title: "asvd", host: "asdf", cnt: 1 },
-    { title: "asvd", host: "asdf", cnt: 1 },
-    { title: "asvd", host: "asdf", cnt: 1 },
-    { title: "asvd", host: "asdf", cnt: 1 },
-    { title: "asvd", host: "asdf", cnt: 1 },
   ],
   hostUserName: "",
   roomName: "",
@@ -164,7 +153,6 @@ export const selectStarted = (state: RootState) => state.game.started;
 export const selectSolver = (state: RootState) => state.game.solver;
 export const selectSolversCnt = (state: RootState) => state.game.solversCnt;
 export const selectParticipants = (state: RootState) => state.game.participants;
-
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };

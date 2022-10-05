@@ -1,0 +1,29 @@
+.btnGroup {
+  position: absolute;
+  bottom: 30%;
+  right: 3%;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.btn {
+  margin: 8px;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  font-size: 1.2rem;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #e56161;
+  border: 1px solid #e56161;
+  background-color: transparent;
+}
+.btn:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #e56161cc;
+}
+.active {
+  color: #fff;
+  background-color: #e56161cc;
+}

@@ -54,18 +54,19 @@
   z-index: 2;
   width: 60vw;
   position: absolute;
-  left: -3vw;
-  bottom: -12vh;
-  -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+  left: 0;
+  bottom: 0;
+  color: #b8e5ff;
+  -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s
+    both;
   animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
 }
 .rightCloud {
   z-index: 1;
-  width: 50vw;
-  aspect-ratio: 2/1;
+  width: 60vw;
   position: absolute;
   right: 0;
-  bottom: -12vh;
+  bottom: 0;
   -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
@@ -90,7 +91,7 @@
 .container {
   position: relative;
   width: 100%;
-  min-height: 60vh;
+  min-height: 90vh;
   background-color: #ffffffcc;
   display: flex;
   flex-direction: row;
