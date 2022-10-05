@@ -31,7 +31,7 @@ const initialState: AuthState = {
   userAddress: ``,
   userName: `${actionNicknameRandom} ${animalNicknameRandom}`,
   userAvatar: `images/${Math.floor(Math.random() * 50 + 1)}.png`,
-  isWelcome: false,
+  isWelcome: true,
   status: "idle",
 };
 
