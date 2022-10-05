@@ -61,34 +61,30 @@ const MyNFTCard: FC<IMyNFTCard> = ({
       className={styles.MyNFTCard}
       onClick={() => moveNFTCardDetail(readmeTokenId)}
     >
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          <div className={styles.MyNFTCardImgBox}>
-            <img className={styles.MyNFTCardImg} src={imageURL} alt="" />
-          </div>
+      <div className={styles.MyNFTCardImgBox}>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <img className={styles.MyNFTCardImg} src={imageURL} alt="" />
+        )}
+      </div>
 
-          <div>
-            <div className={styles.MyNFTCardTextBox}>
-              <h4 className={styles.MyNFTCardLeftText}>{name}</h4>
-              <p className={styles.MyNFTCardRightText}>{author}</p>
-            </div>
+      <div>
+        <div className={styles.MyNFTCardTextBox}>
+          <h4 className={styles.MyNFTCardLeftText}>{name}</h4>
+          <p className={styles.MyNFTCardRightText}>{author}</p>
+        </div>
 
-            <div className={styles.MyNFTCardTextBox}>
-              {!readmeTokenPrice ? (
-                <button>판매</button>
-              ) : (
-                <h5 className={styles.MyNFTCardLeftText}>
-                  {readmeTokenPrice} SSF
-                </h5>
-              )}
-              {/* <h5 className={styles.MyNFTCardLeftText}>{readmeTokenPrice} SSF</h5> */}
-              <p className={styles.MyNFTCardRightText}>{description}</p>
-            </div>
-          </div>
-        </>
-      )}
+        <div className={styles.MyNFTCardTextBox}>
+          {!readmeTokenPrice ? (
+            <button>판매</button>
+          ) : (
+            <h5 className={styles.MyNFTCardLeftText}>{readmeTokenPrice} SSF</h5>
+          )}
+          {/* <h5 className={styles.MyNFTCardLeftText}>{readmeTokenPrice} SSF</h5> */}
+          <p className={styles.MyNFTCardRightText}>{description}</p>
+        </div>
+      </div>
     </div>
   );
 };
