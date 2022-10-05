@@ -19,7 +19,7 @@ const LiveList = () => {
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
   const moreRef = useRef<HTMLDivElement | null>(null);
-  const [itemCnt, setItemCnt] = useState(8);
+  const [itemCnt, setItemCnt] = useState(12);
   const [modalOpen, setModalOpen] = useState(false);
   const [registerRoomName, setRegisterRoomName] = useState("");
   const [registrtHostAddress, setRegisterHostAddress] = useState("");
@@ -92,7 +92,7 @@ const LiveList = () => {
     <>
       <div className={styles.container}>
         <div className={styles.liveContainer} ref={moreRef}>
-          {roomList.map((room, index) => {
+          {roomList.map((room: any, index: number) => {
             if (index >= itemCnt) return null;
             return (
               <LiveItem
@@ -113,7 +113,7 @@ const LiveList = () => {
             <div className={styles.moreBtn}>
               <button
                 onClick={() => {
-                  setItemCnt(itemCnt + 4);
+                  setItemCnt(itemCnt + 8);
                   handleScroll();
                 }}
               >
