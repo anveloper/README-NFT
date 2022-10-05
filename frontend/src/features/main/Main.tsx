@@ -19,11 +19,9 @@ import { findSolveList, setRawList } from "../nft/nftSlice";
 import { GetReadmeContract } from "../../web3Config";
 import SaleButton from "./components/SaleButton";
 import { getIntersectionObserver } from "./observer";
-interface Props {
-  setMainNav: Dispatch<SetStateAction<number>>;
-  setMainRef: Dispatch<SetStateAction<HTMLDivElement[]>>;
-}
-const Main = ({ setMainNav, setMainRef }: Props) => {
+import MainNav from "./components/MainNav";
+
+const Main = () => {
   const socket = useContext(SocketContext);
   const userAddress = useAppSelector(selectUserAddress);
   const userName = useAppSelector(selectUserName);
@@ -32,10 +30,13 @@ const Main = ({ setMainNav, setMainRef }: Props) => {
   const guideRef = useRef<HTMLDivElement | null>(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const tabRef = useRef<HTMLDivElement | null>(null);
-  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [registerRoomName, setRegisterRoomName] = useState("");
+
+  const [under, setUnder] = useState("left");
+  const [mainNav, setMainNav] = useState<number>(1);
+  const [mainNavRef, setMainNavRef] = useState<HTMLDivElement[]>([]);
 
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
@@ -55,7 +56,7 @@ const Main = ({ setMainNav, setMainRef }: Props) => {
     setModalOpen(false);
     setRegisterRoomName("");
   };
-
+  
   const handleEnterRoom = () => {
     if (socket) {
       socket.emit("enter_room", userAddress, userName, registerRoomName, (room: string, cnt: number, host: any, data: string) => {
@@ -77,18 +78,30 @@ const Main = ({ setMainNav, setMainRef }: Props) => {
   useEffect(() => {
     const observer = getIntersectionObserver(setMainNav);
     const headers = [guideRef.current, carouselRef.current, tabRef.current];
+
     headers.map((header) => {
       observer.observe(header);
     });
-    setMainRef(headers);
+    console.log(headers);
+    setMainNavRef(headers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div ref={mainRef}>
-      <NewHelmet title="리드미 & NFT" description="README 게임 라이브 목록 및 NFT 목록을 보여줍니다." />
+      <NewHelmet
+        title="리드미 & NFT"
+        description="README 게임 라이브 목록 및 NFT 목록을 보여줍니다."
+      />
+      <MainNav
+        obsNumber={mainNav}
+        mainRef={mainNavRef}
+        under={under}
+        setUnder={setUnder}
+      />
       <Guide guideRef={guideRef} />
       <Carousel carouselRef={carouselRef} />
-      <MainTab tabRef={tabRef} />
+      <MainTab tabRef={tabRef} under={under} setUnder={setUnder} />
       <Outlet />
       <div ref={contentRef} />
       <Modal open={modalOpen} close={closeModal} fn={handleEnterRoom} header="내 마음을 읽어줘 - 방 만들기">
