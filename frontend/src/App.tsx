@@ -61,22 +61,15 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [mainNav, setMainNav] = useState<number>(1);
-  const [mainRef, setMainRef] = useState<HTMLDivElement[]>([]);
   return (
     <div className={styles.container}>
       <Milestone>
         <>
           <BackgroundCloud />
-          {!isGame && <Navbar mainNav={mainNav} mainRef={mainRef} />}
+          {!isGame && <Navbar />}
           <div className={styles.content}>
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <Main setMainNav={setMainNav} setMainRef={setMainRef} />
-                }
-              >
+              <Route path="/" element={<Main />}>
                 <Route index element={<LiveList />} />
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
@@ -92,10 +85,7 @@ function App() {
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
-              <Route
-                path="/mypage"
-                element={<MyPage account={userAddress} />}
-              />
+              <Route path="/mypage" element={<MyPage />} />
               <Route
                 path="/test"
                 element={
