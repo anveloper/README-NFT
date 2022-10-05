@@ -1,7 +1,11 @@
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { useEffect, useRef, useState } from "react";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { login, selectUserAddress } from "features/auth/authSlice";
+import {
+  login,
+  selectUserAddress,
+  setIsWelcome,
+} from "features/auth/authSlice";
 // component
 import WelcomePageOne from "./components/WelcomePageOne";
 import WelcomePageTwo from "./components/WelcomePageTwo";
@@ -17,7 +21,7 @@ import WelcomeNavbar from "./components/WelcomeNavbar";
 import { getIntersectionObserver } from "./observer";
 import WelcomePageEvent from "./components/WelcomePageEvent";
 
-const Welcome = ({ setIsWelcome, isSsafyNet }: any) => {
+const Welcome = ({ isSsafyNet }: any) => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectUserAddress);
   const onboarding = useRef<MetaMaskOnboarding>();
@@ -83,7 +87,7 @@ const Welcome = ({ setIsWelcome, isSsafyNet }: any) => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: "0x79F5" }],
         });
-        setIsWelcome(false);
+        dispatch(setIsWelcome());
       } catch {
         alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
       }

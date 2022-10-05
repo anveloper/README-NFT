@@ -1,5 +1,5 @@
 // core
-import { useState, useEffect, useRef, useContext, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 // state
@@ -56,29 +56,36 @@ const Main = () => {
     setModalOpen(false);
     setRegisterRoomName("");
   };
-  
+
   const handleEnterRoom = () => {
     if (socket) {
-      socket.emit("enter_room", userAddress, userName, registerRoomName, (room: string, cnt: number, host: any, data: string) => {
-        setModalOpen(false);
-        setRegisterRoomName("");
-        dispatch(
-          setRoomInfo({
-            roomName: room,
-            roomCnt: cnt,
-            hostUserName: host,
-            answerLength: 0,
-            participants: JSON.parse(data),
-          })
-        );
-        navigator(`/game/${host}`);
-      });
+      socket.emit(
+        "enter_room",
+        userAddress,
+        userName,
+        registerRoomName,
+        (room: string, cnt: number, host: any, data: string) => {
+          setModalOpen(false);
+          setRegisterRoomName("");
+          dispatch(
+            setRoomInfo({
+              roomName: room,
+              roomCnt: cnt,
+              hostUserName: host,
+              answerLength: 0,
+              participants: JSON.parse(data),
+            })
+          );
+          navigator(`/game/${host}`);
+        }
+      );
     }
   };
   useEffect(() => {
     const observer = getIntersectionObserver(setMainNav);
     const headers = [guideRef.current, carouselRef.current, tabRef.current];
 
+    // eslint-disable-next-line array-callback-return
     headers.map((header) => {
       observer.observe(header);
     });
@@ -103,8 +110,12 @@ const Main = () => {
       <Carousel carouselRef={carouselRef} />
       <MainTab tabRef={tabRef} under={under} setUnder={setUnder} />
       <Outlet />
-      <div ref={contentRef} />
-      <Modal open={modalOpen} close={closeModal} fn={handleEnterRoom} header="내 마음을 읽어줘 - 방 만들기">
+      <Modal
+        open={modalOpen}
+        close={closeModal}
+        fn={handleEnterRoom}
+        header="내 마음을 읽어줘 - 방 만들기"
+      >
         <div className={styles.modalBox}>
           <p className={styles.modalText}>생성할 방의 이름을 입력하세요!</p>
           <input
