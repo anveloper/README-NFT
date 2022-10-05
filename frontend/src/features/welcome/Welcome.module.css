@@ -156,6 +156,14 @@
   z-index: 5;
 }
 
+.youtubeFrame {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  z-index: 200;
+}
+
 .welcome_character {
   position: fixed;
   width: 25vw;
