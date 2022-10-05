@@ -27,7 +27,9 @@ const NftDetailModal = (props: any) => {
       setIsAnswer(true);
       setInfoMsg("정답입니다.");
       dispatch(postProblem({ userAddress, tokenId }));
-      dispatch(findSolveList(userAddress));
+      dispatch(findSolveList(userAddress)).then(() => {
+        dispatch(findSolveList(userAddress));
+      });
       setInputAnswer("");
       close();
     } else if (inputAnswer.length >= 1 && inputAnswer !== answer) {
