@@ -93,11 +93,14 @@
 }
 
 .info {
-  height: 80px;
+  height: 40px;
   padding: 20px;
-  margin-top: 20px;
+  margin-top: 30px;
   border-radius: 20px;
   background-color: #fddf61;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .answer {
@@ -115,7 +118,7 @@
 
 .input {
   display: flex;
-  
+
   margin-left: 10px;
   margin-right: 5px;
 }
@@ -168,7 +171,7 @@
 
 .card_button_close1 {
   background-color: rgba(0, 0, 0, 0);
-  color:rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 0);
 }
 
 .card_button_on,
@@ -189,6 +192,7 @@
 
 .card_button_on,
 .card_button_close {
+  position: relative;
   background-color: #fddf61;
   color: black;
 
@@ -197,6 +201,43 @@
 
 .card_button_off {
   background-color: lightgray;
+}
+
+.arrow_box {
+  position: absolute;
+  top: -105%;
+  left: -13%;
+  /* left: -1 * calc((160px - 100%) / 2); */
+  display: none;
+  width: 160px;
+  height: 35px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  background: #fcf5e9;
+  color: #000000;
+  font-size: 14px;
+  padding: 8px;
+  /* margin: 10px; */
+}
+
+.arrow_box::after {
+  margin-left: -10px;
+  border: solid transparent;
+  border-color: rgba(51, 51, 51, 0);
+  border-bottom-color: #fcf5e9;
+  border-width: 10px;
+  pointer-events: none;
+  content: " ";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  transform: rotate(180deg);
+}
+
+span:hover + p.arrow_box {
+  display: block;
 }
 
 #close1 {

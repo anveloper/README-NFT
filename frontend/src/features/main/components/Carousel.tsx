@@ -52,7 +52,7 @@ const Carousel = ({ carouselRef }: any) => {
           정답을 맞추고, 갖고 싶은 리드미를 거래하세요.
         </p>
       </div>
-      <div>
+      <div className={styles.box}>
         <Slider {...settings}>
           {carouselList &&
             carouselList.map((nft: NftConfig, i: number) => {

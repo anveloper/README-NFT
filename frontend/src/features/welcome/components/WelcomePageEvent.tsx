@@ -59,12 +59,13 @@ const WelcomePageEvent = ({ onboarding, isSsafyNet }: any) => {
         });
         await DrawTokenContract.methods
           .shareToken()
-          .send({ from: account }, ({ receipt, error }: any) => {
+          .send({ from: account }, (receipt: any, error: any) => {
             console.log(receipt);
             console.log(error);
             setLoading(false);
           });
       } catch {
+        setLoading(false);
         alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
         navigate(`/guide`);
       }

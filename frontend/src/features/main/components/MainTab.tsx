@@ -6,9 +6,13 @@ import UnderLine from "./UnderLine";
 import styles from "./MainTab.module.css";
 import BtnLive from "../../../assets/btn/btn_live.svg";
 import BtnNFT from "../../../assets/btn/btn_nft.svg";
-
-const MainTab = ({ tabRef }: any) => {
-  const [under, setUnder] = useState("left");
+interface Props {
+  tabRef: any;
+  under: any;
+  setUnder: any;
+}
+const MainTab = ({ tabRef, under, setUnder }: Props) => {
+  // const [under, setUnder] = useState("left");
   // const tabRef = useRef<HTMLDivElement | null>(null);
   const handleScroll = () => {
     tabRef.current?.scrollIntoView({

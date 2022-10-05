@@ -1,22 +1,20 @@
-import { FC, useState } from "react";
+import { useAppSelector } from "app/hooks";
+import { selectUserAddress } from "features/auth/authSlice";
+import { useState } from "react";
 // components
 import MyInfo from "./components/MyInfo";
 import MyNFTList from "./components/MyNFTList";
 // css
 import styles from "./MyPage.module.css";
 
-interface MyPageProps {
-  account: string;
-}
-
-const MyPage: FC<MyPageProps> = ({ account }) => {
+const MyPage = () => {
+  const userAddress = useAppSelector(selectUserAddress);
   const [NFTListValue, setNFTListValue] = useState("myNFT");
 
-  console.log(account);
   return (
     <div className={styles.MyPage}>
       <div className={styles.MyProfileInfo}>
-        <MyInfo account={account} setNFTListValue={setNFTListValue} />
+        <MyInfo account={userAddress} setNFTListValue={setNFTListValue} />
       </div>
 
       <div className={styles.MyNFTView}>
