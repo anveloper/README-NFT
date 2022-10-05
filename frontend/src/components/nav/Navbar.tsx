@@ -4,11 +4,12 @@ import styles from "./Navbar.module.css";
 import LogoImg from "../../assets/logo_img.svg";
 import LogoText from "../../assets/logo_text.svg";
 // components
-import { useAppSelector } from "app/hooks";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 import {
   selectUserAddress,
   selectUserAvatar,
   selectUserName,
+  setIsWelcome,
 } from "features/auth/authSlice";
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -18,6 +19,7 @@ const Navbar = () => {
   const userAvatar = useAppSelector(selectUserAvatar);
   const [modalOpen, setModalOpen] = useState(false);
   const nickname = useAppSelector(selectUserName);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   return (
@@ -39,6 +41,13 @@ const Navbar = () => {
           <Link to="/test">
             <button>테스트페이지</button>
           </Link>
+          <button
+            onClick={() => {
+              dispatch(setIsWelcome());
+            }}
+          >
+            웰컴페이지
+          </button>
           {"개발때만 보여요."}
         </div>
       )}
