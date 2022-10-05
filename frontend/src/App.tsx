@@ -29,6 +29,7 @@ import TestPage from "./testWeb3/TestPage";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import NFTSale from "./features/nft/NftSaleList";
 import MyMintList from "./features/mint/MyMintList";
+import NetGuide from "routes/NetGuide";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);

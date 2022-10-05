@@ -6,15 +6,16 @@ import styles from "../Welcome.module.css";
 import dog from "../../../assets/nft-img/1.png";
 import eventSSF from "assets/welcome/eventMoney.svg";
 import eventInfo from "assets/welcome/eventInfo.svg";
-import { DrawTokenContract } from "web3Config";
+import { DrawTokenContract, web3 } from "web3Config";
 import { useEffect, useState, useRef } from "react";
 import { useAppSelector } from "app/hooks";
 import { selectUserAddress } from "features/auth/authSlice";
 import MetaMaskOnboarding from "@metamask/onboarding";
-
+import { useNavigate } from "react-router-dom";
 const WelcomePageEvent = ({ onboarding, isSsafyNet }: any) => {
   const account = useAppSelector(selectUserAddress);
   const [eventLeft, setEventLeft] = useState(0);
+  const navigate = useNavigate();
   useEffect(() => {
     DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
       setEventLeft(res);
@@ -60,10 +61,7 @@ const WelcomePageEvent = ({ onboarding, isSsafyNet }: any) => {
           });
       } catch {
         alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
-        window.open(
-          "https://lace-raptorex-71b.notion.site/SSAFY-af21aeede5834fb1a721ffd87ced99bd",
-          "_blank"
-        );
+        navigate(`/guide`);
       }
     } else {
       //안깔려 있으면 설치 유도
