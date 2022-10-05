@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import LogoImg from "../../assets/logo_img.svg";
 import LogoText from "../../assets/logo_text.svg";
@@ -12,18 +12,13 @@ import {
 } from "features/auth/authSlice";
 
 const isDev = process.env.NODE_ENV !== "production";
-interface Props {
-  mainNav: number;
-  mainRef: HTMLDivElement[];
-}
-const Navbar = ({ mainNav, mainRef }: Props) => {
+
+const Navbar = () => {
   const userAddress = useAppSelector(selectUserAddress);
   const userAvatar = useAppSelector(selectUserAvatar);
   const [modalOpen, setModalOpen] = useState(false);
   const nickname = useAppSelector(selectUserName);
-  const showModal = () => {
-    setModalOpen(!modalOpen);
-  };
+  const navigate = useNavigate();
 
   return (
     <div className={styles.navBar}>
@@ -47,39 +42,16 @@ const Navbar = ({ mainNav, mainRef }: Props) => {
           {"개발때만 보여요."}
         </div>
       )}
-      <div className={styles.navButtonBox}>
-        <button
-          style={mainNav === 1 ? { backgroundColor: "#fddf61" } : {}}
-          onClick={() => {
-            mainRef[0].scrollIntoView({ behavior: "smooth" });
-          }}
-        >
-          가이드
-        </button>
-        <button
-          style={mainNav === 2 ? { backgroundColor: "#fddf61" } : {}}
-          onClick={() => {
-            mainRef[1].scrollIntoView({ behavior: "smooth" });
-          }}
-        >
-          한번 맞춰볼래?
-        </button>
-        <button
-          style={mainNav === 3 ? { backgroundColor: "#fddf61" } : {}}
-          onClick={() => {
-            mainRef[2].scrollIntoView({ behavior: "smooth" });
-          }}
-        >
-          실시간/NFT
-        </button>
-      </div>
       <div
         className={
           modalOpen
             ? `${styles.profileTag} ${styles.active}`
             : `${styles.profileTag}`
         }
-        onClick={showModal}
+        onClick={() => {
+          setModalOpen(!modalOpen);
+          navigate("/mypage");
+        }}
       >
         <img src={userAvatar} alt="" className={styles.avatar} />
         {!modalOpen && <p className={styles.nameTag}>{nickname}</p>}
