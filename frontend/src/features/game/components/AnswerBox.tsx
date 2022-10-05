@@ -38,7 +38,7 @@ const AnswerBox = () => {
       answerRef.current?.focus();
       return;
     }
-    if (socket) {
+    if (socket && userAddress === hostUserName) {
       socket.emit("set_answer", hostUserName, newAnswer, (ans: string) => {
         dispatch(setAnswer(ans));
         setAnswerModal(false);
@@ -88,6 +88,9 @@ const AnswerBox = () => {
               else setNewAnswer(e.target.value.substring(0, 9));
             }}
           />
+          <h6 className={styles.answerNoti}>
+            그림 그리기가 완료 되면 제출 버튼을 눌러주세요.
+          </h6>
         </Modal>
         <div className={styles.answerBox}>
           <p style={{ width: "120px" }} />
