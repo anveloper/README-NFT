@@ -90,41 +90,40 @@ const NftItem = (props: any) => {
       className={styles.container}
       onClick={() => moveToDetail(nft.readmeTokenId)}
     >
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <div className={styles.card}>
-          <div className={styles.front}>
-            <Suspense fallback={<p>이미지 로딩중</p>}>
-              <div className={styles.sq}>
-                <p className={styles.nftNumber}>{nft.readmeTokenId}</p>
-                <img className={styles.img} src={imageURL} alt="" />
-              </div>
-            </Suspense>
-            <div className={styles.nftInfo}>{renderName()}</div>
+      <div className={styles.card}>
+        <div className={styles.front}>
+          <div className={styles.sq}>
+            <p className={styles.nftNumber}>{nft.readmeTokenId}</p>
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <img className={styles.img} src={imageURL} alt="" />
+            )}
           </div>
-          <div className={styles.back}>
-            <div>
-              <p>README</p>
-              <p>{name}</p>
-            </div>
-            <div>
-              <p>CREATOR</p>
-              <p>{truncatedAddress(author)}</p>
-            </div>
-            <div>
-              <p>SOLVER</p>
-              <p>{truncatedAddress(description)}</p>
-            </div>
-            <hr className={styles.nftLine} />
-            <div>
-              <p>PRICE</p>
-              <p>{nft.readmeTokenPrice}</p>
-            </div>
-            <ShareBtn tokenId={nft.readmeTokenId} metadata={metadata} />
-          </div>
+
+          <div className={styles.nftInfo}>{renderName()}</div>
         </div>
-      )}
+        <div className={styles.back}>
+          <div>
+            <p>README</p>
+            <p>{name}</p>
+          </div>
+          <div>
+            <p>CREATOR</p>
+            <p>{truncatedAddress(author)}</p>
+          </div>
+          <div>
+            <p>SOLVER</p>
+            <p>{truncatedAddress(description)}</p>
+          </div>
+          <hr className={styles.nftLine} />
+          <div>
+            <p>PRICE</p>
+            <p>{nft.readmeTokenPrice}</p>
+          </div>
+          <ShareBtn tokenId={nft.readmeTokenId} metadata={metadata} />
+        </div>
+      </div>
     </div>
   );
 };

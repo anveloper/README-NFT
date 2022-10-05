@@ -47,33 +47,29 @@ const CarouselItem = (props: any) => {
   };
   return (
     <>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          <button className={styles.carouselContainer} onClick={openModal}>
-            <Suspense fallback={<p>이미지 로딩중</p>}>
-              <div className={styles.sq}>
-                <img className={styles.img} src={imageURL} alt="" />
-              </div>
-            </Suspense>
-            <div className={styles.carouselInfo}>{answerWord()}</div>
-          </button>
-          <div>
-            {modalOpen && (
-              <ModalPortal>
-                <NftDetailModal
-                  open={modalOpen}
-                  close={closeModal}
-                  image={imageURL}
-                  answer={name}
-                  tokenId={nft.readmeTokenId}
-                />
-              </ModalPortal>
-            )}
-          </div>
-        </>
-      )}
+      <button className={styles.carouselContainer} onClick={openModal}>
+        <div className={styles.sq}>
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <img className={styles.img} src={imageURL} alt="" />
+          )}
+        </div>
+        <div className={styles.carouselInfo}>{answerWord()}</div>
+      </button>
+      <div>
+        {modalOpen && (
+          <ModalPortal>
+            <NftDetailModal
+              open={modalOpen}
+              close={closeModal}
+              image={imageURL}
+              answer={name}
+              tokenId={nft.readmeTokenId}
+            />
+          </ModalPortal>
+        )}
+      </div>
     </>
   );
 };
