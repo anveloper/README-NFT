@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { setIsActive } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
 import { useEffect, useContext, useState } from "react";
+import { useAppSelector } from "app/hooks";
+import { selectUserAddress } from "features/auth/authSlice";
 
 interface nftTime {
   year: number,
@@ -16,8 +18,8 @@ interface nftTime {
 }
 
 const NftDetailInfo = (props: any) => {
-  const { isActive, nftOwner, userAddress, tokenId, nftDetail, nftPrice } =
-    props;
+  const { isActive, nftOwner, tokenId, nftDetail, nftPrice } = props;
+  const userAddress = useAppSelector(selectUserAddress);
   const [modalOpen, setModalOpen] = useState(false);
   const [nftEndTime, setNftEndTime] = useState<nftTime>({
     year: 0,
@@ -85,7 +87,8 @@ const NftDetailInfo = (props: any) => {
       .then((res: any) => {
         console.log(res);
         // 새로고침.
-        window.location.replace("/detail/" + tokenId);
+        navigate("/deatil/" + tokenId);
+        // window.location.replace("/detail/" + tokenId);
         console.log("purchase : ", res);
       })
       .catch((err: any) => {
@@ -150,19 +153,13 @@ const NftDetailInfo = (props: any) => {
                   <>
                     {isActive ? (
                       <>
-                        <button
-                          className={styles.card_button}
-                          onClick={cancelSale}
-                        >
+                        <button className={styles.card_button} onClick={cancelSale}>
                           판매 취소
                         </button>
                       </>
                     ) : (
                       <>
-                        <button
-                          className={styles.card_button}
-                          onClick={() => props.setTab("sell")}
-                        >
+                        <button className={styles.card_button} onClick={() => props.setTab("sell")}>
                           즉시 판매
                         </button>
                       </>
@@ -170,11 +167,7 @@ const NftDetailInfo = (props: any) => {
                   </>
                 ) : (
                   <>
-                    <button
-                      disabled={!isActive}
-                      className={styles.card_button}
-                      onClick={openModal}
-                    >
+                    <button disabled={!isActive} className={styles.card_button} onClick={openModal}>
                       즉시 구매
                     </button>
                   </>
@@ -194,6 +187,7 @@ const NftDetailInfo = (props: any) => {
         <div className={styles.modal_img_container}>
           <img className={styles.modal_img} src={nftDetail.imageURL} alt="" />
         </div>
+
         <div>이거 진짜 살거?</div>
         <div>{nftPrice} SSF : 이 가격에 ???</div>
       </Modal>
