@@ -4,12 +4,13 @@
     "phases": [
       {
         "duration": 10,
-        "arrivalRate": 20
+        "arrivalRate": 30
       }
     ]
   },
   "scenarios": [
     {
+      "name": "Join Room & Send MSG",
       "engine": "socketio",
       "flow": [
         {
