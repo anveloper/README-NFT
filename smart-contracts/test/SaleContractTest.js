@@ -1,45 +1,47 @@
-const SsafyToken = artifacts.require("SsafyToken");
-const ReadmeToken = artifacts.require("ReadmeToken");
-const Sale = artifacts.require("Sale");
+//const Migrations = artifacts.require("Migrations");
+const MintReadme = artifacts.require("MintReadmeToken");
+const SaleReadme = artifacts.require("SaleReadmeToken");
+const GetReadme = artifacts.require("GetReadmeToken");
+const Draw = artifacts.require("DrawToken");
+const Ssafy = artifacts.require("SsafyToken");
+
+// module.exports = async function (deployer) {
+//   await deployer.deploy(MintReadme);
+//   await deployer.deploy(SaleReadme, MintReadme.address);
+//   await deployer.deploy(GetReadme, MintReadme.address, SaleReadme.address);
+//   await deployer.deploy(
+//     Draw,
+//     "0x0c54E456CE9E4501D2c43C38796ce3F06846C966",
+//     MintReadme.address,
+//     SaleReadme.address
+//   );
+//   await deployer.deploy(Ssafy);
+// };
+
 
 let ssafyTokenContract, salesFactoryContract, nftContract, salesContract;
 let itemId = 0;
 
-contract("Sale Contract Testing", (accounts) => {
+contract("Minting And Sale Testing", (accounts) => {
   const mintAmount = 10000; // 초기 토큰
 
-  // 테스트 계정 생성
-  const uri1 = "testURI1";
-  const uri2 = "testURI2";
+  console.log('===================ㅅㅣㄴㅏㄹㅣㅇㅗ 1=================')
 
-  async function print(title) {
-    const admin = accounts[0];
-    const seller = accounts[1];
-    const bidder1 = accounts[2];
-    const bidder2 = accounts[3];
-    console.log(`\n--------------------  ${title} --------------------`);
-    console.log(`Admin: ${admin} ${await getBalance(seller)}`);
-    console.log(`Seller: ${seller} ${await getBalance(seller)}`);
-    console.log(`Bidder1: ${bidder1} ${await getBalance(bidder1)}`);
-    console.log(`Bidder2: ${bidder2} ${await getBalance(bidder2)}\n`);
-  }
+  it("MintSale", async () => {
 
-  it("BidBuy", async () => {
-    const seller = accounts[0]; // 나
+    // ㅁㅣㄴㅌㅣㅇㅁㅐㄱㅐㅂㅕㄴㅅㅜ
+    const buyer = accounts[0]; // 나
     const uri = "NFT Metadata"; // 생성할 토큰 메타데이터
+    const answer = "Hyeon";
+    const solver = accounts[7];
 
-    // bid 인자
-    let itemId;
-    let startPrice;
-    let startTime;
-    let endTime;
-    let currencyAddress;
-    let nftAddress;
+    // ㅋㅓㄴㅌㅡㄹㅐㄱㅌㅡ 배포
+    const MintReadmeContract = await MintReadme.deployed();
+    const SaleReadmeContract = await SaleReadme.deployed();
+    
+    // buyerㅇㅡㅣ ㅈㅣㄱㅏㅂ
+    const SsafyContract = await Ssafy.deployed();
 
-    // 배포
-    const SsafyTokenContract = await SsafyToken.deployed();
-    const ReadmeTokenContract = await ReadmeToken.deployed();
-    const SaleContract = await Sale.deployed();
 
     // 시간 제한 함수
     function timeout(ms) {
@@ -94,6 +96,7 @@ contract("Sale Contract Testing", (accounts) => {
     assert.equal(finalowner, BidContract, "Fail to TransferFrom");
   });
 
+  console.log('===================ㅅㅣㄴㅏㄹㅣㅇㅗ 2=================')
   it("Bid and Purchase", async () => {
     const seller = accounts[0];
     const bidder = accounts[1];
