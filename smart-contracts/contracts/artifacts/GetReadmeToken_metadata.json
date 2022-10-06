@@ -22,6 +22,41 @@
 				"type": "constructor"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "readmeTokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "readmeTokenPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "readmeTokenOwner",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "metaDataURI",
+								"type": "string"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct GetReadmeToken.ReadmeTokenData[]",
+						"name": "who",
+						"type": "tuple[]"
+					}
+				],
+				"name": "Logs",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -170,7 +205,7 @@
 						"type": "tuple[]"
 					}
 				],
-				"stateMutability": "view",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -228,11 +263,11 @@
 	},
 	"sources": {
 		"contracts/GetReadmeToken.sol": {
-			"keccak256": "0xd2c14f6cfa4120e0dc8ddc3563aae7144122421a84c86fad1fb55b3ac838f6ff",
+			"keccak256": "0x36f91d7c1532ca1f339868589384dacf09c1e2e4530d4eb1e44b7311dc7e54f4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://00072006907071c6e52acc9df329e62931ecc173bc07f990a002f663b16f57b9",
-				"dweb:/ipfs/QmR4cyWwc6w9wfTmtfnQcHWnQCHYsZiEfy3dst1anJo9jB"
+				"bzz-raw://c98836d2fd40a3f683143058927fac772241d59714a9887d3b37a484d666b5c1",
+				"dweb:/ipfs/QmefXYGGQfQJcNJhYFQGfCLzoBHGekDCHuKvwTFuVALAWT"
 			]
 		},
 		"contracts/MintReadmeToken.sol": {
