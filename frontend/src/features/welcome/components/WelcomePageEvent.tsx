@@ -40,16 +40,17 @@ const WelcomePageEvent = ({ onboarding, isSsafyNet }: any) => {
         },
       });
       if (wasAdded) {
-        console.log("Thanks for your interest!");
+        // console.log("Thanks for your interest!");
       } else {
-        console.log("Your loss!");
+        // console.log("Your loss!");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   const getEventMoney = async () => {
+    let userRejected = false;
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       setLoading(true);
       try {
@@ -57,17 +58,32 @@ const WelcomePageEvent = ({ onboarding, isSsafyNet }: any) => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: "0x79F5" }],
         });
-        await DrawTokenContract.methods
-          .shareToken()
-          .send({ from: account }, (receipt: any, error: any) => {
-            console.log(receipt);
-            console.log(error);
-            setLoading(false);
-          });
       } catch {
         setLoading(false);
         alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
         navigate(`/guide`);
+      }
+      try {
+        await DrawTokenContract.methods
+          .shareToken()
+          .estimateGas({ from: account });
+        // .then((gasAmount: any) => {
+        //   console.log(gasAmount);
+        // });
+        await DrawTokenContract.methods
+          .shareToken()
+          .send({ from: account }, (error: any, receipt: any) => {
+            // console.log(receipt);
+            if (error && error.code === 4001) {
+              userRejected = true;
+            }
+            setLoading(false);
+          });
+      } catch {
+        if (!userRejected) {
+          alert("이미 참여한 계정입니다!");
+        }
+        setLoading(false);
       }
     } else {
       //안깔려 있으면 설치 유도
