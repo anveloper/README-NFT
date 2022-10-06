@@ -51,7 +51,7 @@ const Tutorial = () => {
     {
       v: IMG6,
       text1:
-        "제한 시간에 도달하면 민팅 여부를 묻는 화면이 제시됩니다. 이 때, 정답자가 있다면 정보가 저장됩니다.",
+        "제한 시간에 끝나면 민팅 여부를 묻습니다. 정답자가 있다면 정보가 저장됩니다.",
       text2: "취소를 누르고 제시어를 다시 입력하면 새로운 리드미를 시작합니다.",
     },
     {
@@ -97,7 +97,9 @@ const Tutorial = () => {
         {images.map((item: any, i: number) => {
           return (
             <div className={styles.content} key={i}>
-              <img className={styles.img} src={item.v} alt={`${item.v}`} />
+              <div className={styles.imgBox}>
+                <img className={styles.img} src={item.v} alt={`${item.v}`} />
+              </div>
               <p className={styles.text}>
                 {item.text1}
                 <br />
