@@ -15,10 +15,10 @@ const MainNav = ({ obsNumber, mainRef, under, setUnder }: Props) => {
   //   console.log(obsNumber);
   //   if (obsNumber > 2) console.log(pathname);
   // }, [obsNumber]);
-  useEffect(() => {
-    console.log(obsNumber);
-    console.log(typeof obsNumber);
-  }, [obsNumber]);
+  // useEffect(() => {
+  //   console.log(obsNumber);
+  //   console.log(typeof obsNumber);
+  // }, [obsNumber]);
   return (
     <div className={styles.btnGroup}>
       <button

@@ -38,7 +38,7 @@ const WelcomeNavbar = ({ welcomeNav, welcomeRef }: WelcomeNavbarProps) => {
             welcomeRef[2].scrollIntoView({ behavior: "smooth" });
           }}
         >
-          NFT
+          README
         </h5>
         <h5
           style={welcomeNav == 3 ? { color: "#fddf61" } : {}}

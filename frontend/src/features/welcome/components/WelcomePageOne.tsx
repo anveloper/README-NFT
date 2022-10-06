@@ -18,7 +18,7 @@ const WelcomePageOne = ({ storyRef }: any) => {
         className={styles.youtubeFrame}
         width="888"
         height="500"
-        src="https://www.youtube.com/embed/y3DNIn2Q_1k?autoplay=1&rel=0&showsearch=0&loop=1"
+        src="https://www.youtube.com/embed/y3DNIn2Q_1k?rel=0&showsearch=0&loop=1"
         title="YouTube video player"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

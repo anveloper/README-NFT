@@ -31,7 +31,7 @@ const Welcome = ({ isSsafyNet }: any) => {
   const welcomePageRef = useRef<HTMLDivElement | null>(null);
   const eventRef = useRef<HTMLDivElement | null>(null);
   const storyRef = useRef<HTMLDivElement | null>(null);
-  const nftRef = useRef<HTMLDivElement | null>(null);
+  const readmeRef = useRef<HTMLDivElement | null>(null);
   const gameRef = useRef<HTMLDivElement | null>(null);
   const roadmapRef = useRef<HTMLDivElement | null>(null);
   const teamRef = useRef<HTMLDivElement | null>(null);
@@ -72,7 +72,7 @@ const Welcome = ({ isSsafyNet }: any) => {
     const headers = [
       eventRef.current,
       storyRef.current,
-      nftRef.current,
+      readmeRef.current,
       gameRef.current,
       roadmapRef.current,
       teamRef.current,
@@ -135,7 +135,7 @@ const Welcome = ({ isSsafyNet }: any) => {
       {/* <ParallaxLayer offset={1} speed={-1} factor={1.5}> */}
       {/* <div id="story"> */}
 
-      <WelcomePageTwo nftRef={nftRef} />
+      <WelcomePageTwo readmeRef={readmeRef} />
 
       {/* </div> */}
       {/* </ParallaxLayer> */}

@@ -14,16 +14,16 @@ import rabbit from "../../../assets/nft-img/5.png";
 import sheep from "../../../assets/nft-img/6.png";
 import airplane from "../../../assets/welcome/airplane.svg";
 
-const WelcomePageTwo = ({ nftRef }: any) => {
+const WelcomePageTwo = ({ readmeRef }: any) => {
   return (
-    <div id="2" className={styles.welcomePageTwo} ref={nftRef}>
+    <div id="2" className={styles.welcomePageTwo} ref={readmeRef}>
       <img className={styles.page2_cloud1} src={yellow_cloud} alt="" />
       <img className={styles.page2_cloud2} src={white_cloud} alt="" />
       <img className={styles.page2_cloud3} src={pink_cloud} alt="" />
 
-      <h1 className={styles.WelcomeTitleText}>나만의 NFT를 만들어보세요!</h1>
+      <h1 className={styles.WelcomeTitleText}>나만의 리드미를 만들어보세요!</h1>
       <h4 className={styles.WelcomeDescriptionText}>
-        게임을 통해 그림을 그린 뒤 내가 그린 그림 NFT화가 가능해요!
+        게임을 통해 그림을 그린 뒤 내가 그린 그림을 NFT화가 가능해요!
       </h4>
 
       <div className={styles.NFTCardSlider}>
