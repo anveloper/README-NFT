@@ -14,17 +14,20 @@ import {
 
 const isDev = process.env.NODE_ENV !== "production";
 
-const Navbar = () => {
+const Navbar = ({ mainRef }: any) => {
   const userAddress = useAppSelector(selectUserAddress);
   const userAvatar = useAppSelector(selectUserAvatar);
   const [modalOpen, setModalOpen] = useState(false);
   const nickname = useAppSelector(selectUserName);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const handleScroll = () => {
+    mainRef?.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <div className={styles.navBar}>
-      <div className={styles.logoBox}>
+      <div className={styles.logoBox} onClick={handleScroll}>
         <Link to="/">
           <img className={styles.img1} src={LogoImg} alt="" />
           <img className={styles.img2} src={LogoText} alt="" />
@@ -59,11 +62,38 @@ const Navbar = () => {
         }
         onClick={() => {
           setModalOpen(!modalOpen);
-          navigate("/mypage");
         }}
       >
         <img src={userAvatar} alt="" className={styles.avatar} />
         {!modalOpen && <p className={styles.nameTag}>{nickname}</p>}
+        <div
+          className={
+            modalOpen
+              ? `${styles.moveTab} ${styles.profileOpen}`
+              : `${styles.moveTab} ${styles.profileClose}`
+          }
+        >
+          <Link to="/mypage">마이페이지</Link>
+          <hr className={styles.underLine} />
+          <button
+            onClick={() => {
+              dispatch(setIsWelcome());
+            }}
+            className={styles.profileBtn}
+          >
+            이벤트 페이지
+          </button>
+          <hr className={styles.underLine} />
+          <button
+            onClick={() => {
+              dispatch(setIsWelcome());
+              navigate("/guide");
+            }}
+            className={styles.profileBtn}
+          >
+            가이드 페이지
+          </button>
+        </div>
       </div>
     </div>
   );
