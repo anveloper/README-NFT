@@ -1,7 +1,11 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { GetReadmeContract, MintReadmeContract } from "../../../web3Config";
+import {
+  GetReadmeContract,
+  GetReadmeContractGO,
+  MintReadmeContract,
+} from "../../../web3Config";
 import { useAppSelector } from "../../../app/hooks";
-import { selectUserAddress } from "../../auth/authSlice";
+import { selectIsSSAFY, selectUserAddress } from "../../auth/authSlice";
 import axios from "axios";
 import api from "../../../api/api";
 // components
@@ -38,7 +42,7 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
   const [scrollActive, setScrollActive] = useState(false);
 
   const navigate = useNavigate();
-
+  const isSSAFY = useAppSelector(selectIsSSAFY);
   const logit = () => {
     setScrollY(scrollBox.current.scrollTop);
     if (scrollBox.current.scrollTop > 30) {
@@ -56,9 +60,11 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     try {
       const tempNFTCardArray: IMyNFTCard[] = [];
 
-      const response = await GetReadmeContract.methods
-        .getMyReadmeToken(walletAddress)
-        .call();
+      const response = isSSAFY
+        ? await GetReadmeContract.methods.getMyReadmeToken(walletAddress).call()
+        : await GetReadmeContractGO.methods
+            .getMyReadmeToken(walletAddress)
+            .call();
       console.log(response);
 
       response.map((v: IMyNFTCard) => {
@@ -114,9 +120,13 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
     try {
       const tempNFTCardArray: IMyNFTCard[] = [];
 
-      const response = await GetReadmeContract.methods
-        .getDrawReadmeToken(walletAddress)
-        .call();
+      const response = isSSAFY
+        ? await GetReadmeContract.methods
+            .getDrawReadmeToken(walletAddress)
+            .call()
+        : await GetReadmeContractGO.methods
+            .getDrawReadmeToken(walletAddress)
+            .call();
       console.log(response);
 
       response.map((v: IMyNFTCard) => {
