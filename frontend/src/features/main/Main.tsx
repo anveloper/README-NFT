@@ -21,12 +21,11 @@ import SaleButton from "./components/SaleButton";
 import { getIntersectionObserver } from "./observer";
 import MainNav from "./components/MainNav";
 
-const Main = () => {
+const Main = ({ mainRef }: any) => {
   const socket = useContext(SocketContext);
   const userAddress = useAppSelector(selectUserAddress);
   const userName = useAppSelector(selectUserName);
 
-  const mainRef = useRef<HTMLDivElement | null>(null);
   const guideRef = useRef<HTMLDivElement | null>(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const tabRef = useRef<HTMLDivElement | null>(null);
