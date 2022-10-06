@@ -1,6 +1,6 @@
 // core
 import { useState, useEffect, useRef, useContext } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 // state
 import { setRoomInfo } from "../game/gameSlice";
@@ -116,7 +116,12 @@ const Main = ({ mainRef }: any) => {
         header="내 마음을 읽어줘 - 방 만들기"
       >
         <div className={styles.modalBox}>
-          <p className={styles.modalText}>생성할 방의 이름을 입력하세요!</p>
+          <div className={styles.modalText}>
+            생성할 방의 이름을 입력하세요!
+            <Link to="/tutorial">
+              <button className={styles.tutoBtn}> 튜토리얼</button>
+            </Link>
+          </div>
           <input
             className={styles.modalInput}
             type="text"

@@ -1,8 +1,5 @@
 .container {
-  flex-grow: 1;
   width: 23%;
-  min-width: 210px;
-  max-width: 30%;
   background-color: white;
   display: flex;
   flex-direction: column;
