@@ -87,16 +87,17 @@ const Welcome = ({ isSsafyNet }: any) => {
   const connectWallet = async () => {
     //메타마스크가 깔려있으면
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x79F5" }],
-        });
-        dispatch(setIsWelcome());
-      } catch {
-        alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
-        navigate(`/guide`);
-      }
+      // try {
+      //   await window.ethereum.request({
+      //     method: "wallet_switchEthereumChain",
+      //     params: [{ chainId: "0x79F5" }],
+      //   });
+      //   dispatch(setIsWelcome());
+      // } catch {
+      //   alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
+      //   navigate(`/guide`);
+      // }
+      dispatch(setIsWelcome());
     } else {
       //안깔려 있으면 설치 유도
       alert("메타마스크를 설치해 주세요!");
