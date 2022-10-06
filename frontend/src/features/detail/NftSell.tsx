@@ -1,12 +1,26 @@
 import styles from "./NftDetail.module.css";
 import { useEffect, useState } from "react";
-import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
+import {
+  MintReadmeContract,
+  MintReadMeContractGO,
+  SaleReadmeContract,
+  SaleReadmeContractGO,
+} from "../../web3Config";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { change_date, selectUserAddress } from "../auth/authSlice";
-import { selectNftDetail, selectNftPrice, selectNftOwner } from "./NftDetailSlice";
+import {
+  change_date,
+  selectIsSSAFY,
+  selectUserAddress,
+} from "../auth/authSlice";
+import {
+  selectNftDetail,
+  selectNftPrice,
+  selectNftOwner,
+} from "./NftDetailSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { truncatedAddress } from "../../features/auth/authSlice";
 import { Modal } from "../../components/modal/Modal";
+import LoadingPage from "components/loading/LoadingPage";
 
 const NftSell = (props: any) => {
   const userAddress = useAppSelector(selectUserAddress);
@@ -20,9 +34,11 @@ const NftSell = (props: any) => {
   const [endDay, setEndDay] = useState(new Date());
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAlertOpen, setModalAlertOpen] = useState(false);
+  const [approveLoading, setApproveLoading] = useState(false);
+  const [sellLoading, setSellLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const isSSAFY = useAppSelector(selectIsSSAFY);
   const handleChangePrice = (e: any) => {
     setInputPrice(e.target.value);
   };
@@ -38,22 +54,40 @@ const NftSell = (props: any) => {
   };
 
   const sellReadmeTokens = () => {
+    setSellLoading(true);
     try {
-      SaleReadmeContract.methods
-        .setForSaleReadmeToken(tokenId, inputPrice, inputPeriod)
-        .send({ from: userAddress })
-        .then((res: any) => {
-          console.log("이게 res다. ", res);
-          let saleDate = {
-            saleStartDay: startDay,
-            saleEndDay: endDay,
-          };
-          // dispatch(setSaleDate(saleDate));
-          // 새로고침.
-          window.location.replace("/detail/" + tokenId);
-        });
+      isSSAFY
+        ? SaleReadmeContract.methods
+            .setForSaleReadmeToken(tokenId, inputPrice, inputPeriod)
+            .send({ from: userAddress })
+            .then((res: any) => {
+              console.log("이게 res다. ", res);
+              let saleDate = {
+                saleStartDay: startDay,
+                saleEndDay: endDay,
+              };
+              // dispatch(setSaleDate(saleDate));
+              // 새로고침.
+              window.location.replace("/detail/" + tokenId);
+              setSellLoading(false);
+            })
+        : SaleReadmeContractGO.methods
+            .setForSaleReadmeToken(tokenId, inputPrice, inputPeriod)
+            .send({ from: userAddress })
+            .then((res: any) => {
+              console.log("이게 res다. ", res);
+              let saleDate = {
+                saleStartDay: startDay,
+                saleEndDay: endDay,
+              };
+              // dispatch(setSaleDate(saleDate));
+              // 새로고침.
+              window.location.replace("/detail/" + tokenId);
+              setSellLoading(false);
+            });
     } catch (error) {
       console.log(error);
+      setSellLoading(false);
     }
   };
 
@@ -79,90 +113,143 @@ const NftSell = (props: any) => {
 
   return (
     <>
-      <div className={styles.cards}>
-        <div className={styles.card_contents_back}>
-          <div className={styles.card_contents_back_info}>
-            <div className={styles.card_contents_back_info_child}>판매 권한 설정</div>
-            <div>토큰 거래를 위해 판매 권한을 요청해주세요.</div>
-            <div>
-              <button
-                className={styles.card_button}
-                onClick={() => {
-                  MintReadmeContract.methods.setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true).send({ from: userAddress });
-                }}
-              >
-                판매 권한 요청
-              </button>
-            </div>
+      {sellLoading ? (
+        <LoadingPage />
+      ) : (
+        <>
+          <div className={styles.cards}>
+            {approveLoading ? (
+              <LoadingPage />
+            ) : (
+              <div className={styles.card_contents_back}>
+                <div className={styles.card_contents_back_info}>
+                  <div className={styles.card_contents_back_info_child}>
+                    판매 권한 설정
+                  </div>
+                  <div>토큰 거래를 위해 판매 권한을 요청해주세요.</div>
+                  <div>
+                    <button
+                      className={styles.card_button}
+                      onClick={async () => {
+                        setApproveLoading(true);
+                        isSSAFY
+                          ? await MintReadmeContract.methods
+                              .setApprovalForAll(
+                                process.env.REACT_APP_SALEREADMETOKEN_CA,
+                                true
+                              )
+                              .send({ from: userAddress })
+                          : await MintReadMeContractGO.methods
+                              .setApprovalForAll(
+                                process.env.REACT_APP_SALEREADMETOKEN_CA,
+                                true
+                              )
+                              .send({ from: userAddress });
+                        setApproveLoading(false);
+                      }}
+                    >
+                      판매 권한 요청
+                    </button>
+                  </div>
+                </div>
+                <div className={styles.card_contents_back_info}>
+                  <div className={styles.contents_center}>
+                    <div className={styles.input_place_title}>
+                      판매 정보 입력
+                    </div>
+                  </div>
+                  <div className={styles.input_place}>
+                    <p>가격</p>
+                    <div className={styles.input_price}>
+                      <input
+                        className={styles.input_text}
+                        type="number"
+                        name="inputPrice"
+                        onChange={handleChangePrice}
+                        value={inputPrice}
+                      />
+                      <div>SSF</div>
+                    </div>
+                  </div>
+                  <div className={styles.input_place}>
+                    <p>판매 기간</p>
+                    <div className={styles.input_price}>
+                      <select
+                        className={styles.selectBox}
+                        onChange={handleChangePeriod}
+                      >
+                        <option>기간 선택</option>
+                        <option value="1">1시간</option>
+                        <option value="12">12시간</option>
+                        <option value="24">1일</option>
+                        <option value="168">1주일</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.card_contents_back_info}>
+                  <div className={styles.card_buttons}>
+                    <button className={styles.card_button} onClick={moveToBack}>
+                      이전
+                    </button>
+                    <button className={styles.card_button} onClick={openModal}>
+                      판매 등록
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          <div className={styles.card_contents_back_info}>
-            <div className={styles.contents_center}>
-              <div className={styles.input_place_title}>판매 정보 입력</div>
-            </div>
-            <div className={styles.input_place}>
-              <p>가격</p>
-              <div className={styles.input_price}>
-                <input className={styles.input_text} type="number" name="inputPrice" onChange={handleChangePrice} value={inputPrice} />
-                <div>SSF</div>
+
+          <Modal
+            open={modalOpen}
+            close={closeModal}
+            fn={sellReadmeTokens}
+            header="리드미 판매 확인"
+          >
+            <div className={styles.modal_container}>
+              <img
+                className={styles.modal_img}
+                src={nftDetail.imageURL}
+                alt=""
+              />
+              <div className={styles.modal_info_container}>
+                <div className={styles.modal_info}>
+                  <div className={styles.modal_info_text1}>
+                    <div>판매 가격</div>
+                    <div>{inputPrice} SSF</div>
+                  </div>
+                  <div className={styles.modal_info_text1}>
+                    <div>판매 종료일</div>
+                    <div>{change_date(endDay)}</div>
+                  </div>
+                </div>
+                <div className={styles.modal_info}>
+                  <div className={styles.modal_info_text2}>
+                    <div>해당 리드미를 판매하시겠습니까?</div>
+                  </div>
+                  <div className={styles.modal_info_text2}>
+                    <div>확인 버튼을 누르면 등록이 완료됩니다.</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className={styles.input_place}>
-              <p>판매 기간</p>
-              <div className={styles.input_price}>
-                <select className={styles.selectBox} onChange={handleChangePeriod}>
-                  <option>기간 선택</option>
-                  <option value="1">1시간</option>
-                  <option value="12">12시간</option>
-                  <option value="24">1일</option>
-                  <option value="168">1주일</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className={styles.card_contents_back_info}>
-            <div className={styles.card_buttons}>
-              <button className={styles.card_button} onClick={moveToBack}>
-                이전
-              </button>
-              <button className={styles.card_button} onClick={openModal}>
-                판매 등록
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <Modal open={modalOpen} close={closeModal} fn={sellReadmeTokens} header="리드미 판매 확인">
-        <div className={styles.modal_container}>
-          <img className={styles.modal_img} src={nftDetail.imageURL} alt="" />
-          <div className={styles.modal_info_container}>
-            <div className={styles.modal_info}>
-              <div className={styles.modal_info_text1}>
-                <div>판매 가격</div>
-                <div>{inputPrice} SSF</div>
-              </div>
-              <div className={styles.modal_info_text1}>
-                <div>판매 종료일</div>
-                <div>{change_date(endDay)}</div>
-              </div>
-            </div>
+          </Modal>
+
+          <Modal
+            open={modalAlertOpen}
+            close={closeAlertModal}
+            fn={closeAlertModal}
+            header="리드미 판매 등록 오류"
+          >
             <div className={styles.modal_info}>
               <div className={styles.modal_info_text2}>
-                <div>해당 리드미를 판매하시겠습니까?</div>
-              </div>
-              <div className={styles.modal_info_text2}>
-                <div>확인 버튼을 누르면 등록이 완료됩니다.</div>
+                <div>0보다 큰 값을 입력해주세요.</div>
               </div>
             </div>
-          </div>
-        </div>
-      </Modal>
-      <Modal open={modalAlertOpen} close={closeAlertModal} fn={closeAlertModal} header="리드미 판매 등록 오류">
-        <div className={styles.modal_info}>
-          <div className={styles.modal_info_text2}>
-            <div>0보다 큰 값을 입력해주세요.</div>
-          </div>
-        </div>
-      </Modal>
+          </Modal>
+        </>
+      )}
     </>
   );
 };
