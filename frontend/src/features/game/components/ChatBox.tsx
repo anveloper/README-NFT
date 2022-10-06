@@ -101,6 +101,16 @@ const ChatBox = () => {
                       <p>{msg}</p>
                     </div>
                   );
+                else if (type === "noti")
+                  return (
+                    <div key={index} className={styles.noti}>
+                      <h6>{name}</h6>
+                      <div>
+                        <p className={styles.notiHeader}>리드미 알림</p>
+                        <p>{msg}</p>
+                      </div>
+                    </div>
+                  );
                 else if (type === "system")
                   return (
                     <div key={index} className={styles.system}>
@@ -119,6 +129,16 @@ const ChatBox = () => {
                   return (
                     <div ref={lastRef} key={index} className={styles.mine}>
                       <p>{msg}</p>
+                    </div>
+                  );
+                else if (type === "noti")
+                  return (
+                    <div ref={lastRef} key={index} className={styles.noti}>
+                      <h6>{name}</h6>
+                      <div>
+                        <p className={styles.notiHeader}>리드미 알림</p>
+                        <p>{msg}</p>
+                      </div>
                     </div>
                   );
                 else if (type === "system")

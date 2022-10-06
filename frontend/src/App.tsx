@@ -30,6 +30,7 @@ import MetaMaskOnboarding from "@metamask/onboarding";
 import NFTSale from "./features/nft/NftSaleList";
 import MyMintList from "./features/mint/MyMintList";
 import NetGuide from "routes/NetGuide";
+import Tutorial from "features/tutorial/Tutorial";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
@@ -92,6 +93,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
               <Route path="/mypage" element={<MyPage />} />
+              <Route path="/tutorial" element={<Tutorial/>}/>
               <Route
                 path="/test"
                 element={
