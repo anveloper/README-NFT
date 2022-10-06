@@ -1,12 +1,15 @@
 import styles from "./NftDetail.module.css";
 import { useNavigate } from "react-router-dom";
-import { MintReadmeContract, SaleReadmeContract, SSFContract, web3 } from "../../web3Config";
+import { GetReadmeContract, MintReadmeContract, SaleReadmeContract, SSFContract, web3 } from "../../web3Config";
 import { useDispatch } from "react-redux";
 import { selectIsActive, setIsActive, setNftPrice } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
 import { useEffect, useContext, useState } from "react";
 import { useAppSelector } from "app/hooks";
 import { change_date, selectUserAddress } from "features/auth/authSlice";
+import axios from "axios";
+import { IMyNFTCard } from "features/mypage/components/MyNFTCard";
+import { url } from "inspector";
 
 export interface nftTime {
   year: number;
@@ -15,6 +18,16 @@ export interface nftTime {
   hour: number;
   minute: number;
   second: number;
+}
+
+interface nftCreator {
+  readmeTokenId: string;
+  metaDataURI: string;
+}
+
+interface nftTokenImg {
+  readmeTokenId: string;
+  imageURL: string;
 }
 
 const NftDetailInfo = (props: any) => {
@@ -34,6 +47,8 @@ const NftDetailInfo = (props: any) => {
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [isReady, setIsReady] = useState(false);
   const [request, setRequest] = useState("");
+  const [creator, setCreator] = useState("");
+  const [nftCreatorList, setNftCreatorList] = useState<nftTokenImg[]>([]);
   const isAvail = useAppSelector(selectIsActive);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,6 +68,49 @@ const NftDetailInfo = (props: any) => {
       setEndDate(new Date(nftEndTime.year, nftEndTime.month - 1, nftEndTime.day, nftEndTime.hour, nftEndTime.minute, nftEndTime.second));
       setIsReady(true);
     });
+  };
+
+  const getCreatorReadme = async () => {
+    // 1. creator 가져온다.
+    const response = await MintReadmeContract.methods.getMetadata(tokenId).call();
+    console.log(response);
+    await axios({ url: response })
+      .then((res: any) => {
+        const { author } = res.data;
+        setCreator(author);
+        console.log(creator);
+      })
+      .catch((err) => {});
+
+    // 2. creator가 그린 그림 가져온다.
+    const metaReq = await GetReadmeContract.methods.getDrawReadmeToken(creator).call();
+    const tmpMetaList: nftCreator[] = [];
+    const tmpNftCreatorList: nftTokenImg[] = [];
+    metaReq.map((v: nftCreator) => {
+      console.log(v);
+      tmpMetaList.push({
+        readmeTokenId: v.readmeTokenId,
+        metaDataURI: v.metaDataURI,
+      });
+    });
+
+    tmpMetaList.map(async (v: any) => {
+      console.log(v);
+      await axios({ url: v.metaDataURI })
+        .then((res: any) => {
+          console.log(res);
+          tmpNftCreatorList.push({
+            readmeTokenId: v.readmeTokenId,
+            imageURL: res.data.imageURL,
+          });
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    });
+
+    setNftCreatorList(tmpNftCreatorList);
+    console.log(nftCreatorList);
   };
 
   const cancelSale = async () => {
@@ -159,7 +217,11 @@ const NftDetailInfo = (props: any) => {
     return () => {
       dispatch(setIsActive(true));
     };
-  }, []);
+  }, [nftDetail]);
+
+  useEffect(() => {
+    getCreatorReadme();
+  }, [isReady]);
 
   /* 카운트다운 구현 (성진님감사합니다쌍따봉드림) */
   useEffect(() => {
@@ -212,8 +274,25 @@ const NftDetailInfo = (props: any) => {
             </div>
           </div>
           <div className={styles.card_contents_back_info}>
-            <div>여기다가 경매 관련된걸 넣으면 좋겠는데요</div>
-            <button className={styles.card_button}>경매 참여</button>
+            <div className={styles.card_contents_back_info_child}>창작자가 그린 다른 그림</div>
+            <div className={styles.card_another_container}>
+              {nftCreatorList ? (
+                <>
+                  <div className={styles.card_another_images}>
+                    {nftCreatorList.map((v: any, i: number) => {
+                      console.log(v.metaDataURI);
+                      return <img className={styles.card_another_image} src={v.imageURL} alt="" key={i} />;
+                    })}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className={styles.card_another_noImages}>
+                    <div>창작자가 그린 그림이 없어요.</div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           <div className={styles.card_contents_back_info}>

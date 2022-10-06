@@ -165,13 +165,53 @@
   font-weight: bold;
 }
 
-/* 경매 div */
+/* 다른 그림 div */
 .card_contents_back_info:nth-child(2) {
   grid-row: span 5;
-  padding: 20px;
+  place-items: center;
 
   background-color: #fcf5e9;
+}
+
+.card_another_container {
+  grid-row: span 3;
+  width: 90%;
+  height: 90%;
+  box-sizing: border-box;
+  background-color: #fddf61;
+  border-radius: 20px;
   margin-bottom: 10px;
+  overflow: auto;
+}
+
+/* 스크롤바 숨기기 */
+.card_another_container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.card_another_container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.card_another_images {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card_another_image {
+  width: 33%;
+  aspect-ratio: 12/10;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+
+/* 등록된 그림이 없을 때 */
+.card_another_noImages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* 버튼 div */
