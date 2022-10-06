@@ -8,7 +8,7 @@ const initialState: NftConfig = {
   readmeTokenId: "",
   readmeTokenOwner: "",
   readmeTokenPrice: 0,
-  isActive: false,
+  isActive: true,
   metaData: {
     fileName: "",
     name: "",
