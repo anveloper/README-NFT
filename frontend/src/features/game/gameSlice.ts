@@ -33,7 +33,14 @@ export interface GameState {
   status: "idle" | "loading" | "failed";
   view: number;
 }
-
+const initChat: ChatConfig[] = [
+  { type: "system", name: "관리자", msg: "대화를 시작합니다." },
+  {
+    type: "noti",
+    name: "관리중인 방태",
+    msg: "제시어를 입력하면 게임이 시작되며, 캔버스가 초기화 됩니다. 게임 시작 후에는 호스트만 그림을 그릴 수 있습니다.",
+  },
+];
 const initialState: GameState = {
   roomList: [
     { title: "asdf", host: "asdf", cnt: 1 },
@@ -47,7 +54,7 @@ const initialState: GameState = {
   answer: "",
   answerLength: 0,
   color: "#000000",
-  messages: [{ type: "system", name: "관리자", msg: "대화를 시작합니다." }],
+  messages: initChat,
   timeover: false,
   started: false,
   solver: "",
@@ -86,9 +93,7 @@ export const gameSlice = createSlice({
       state.roomCnt = 0;
       state.answer = "";
       state.color = "#000000";
-      state.messages = [
-        { type: "system", name: "관리자", msg: "대화를 시작합니다." },
-      ];
+      state.messages = initChat;
       state.timeover = false;
       state.started = false;
       state.solver = "";

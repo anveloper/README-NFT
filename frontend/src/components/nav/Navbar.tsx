@@ -22,7 +22,8 @@ const Navbar = ({ mainRef }: any) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleScroll = () => {
-    mainRef?.current.scrollIntoView({ behavior: "smooth" });
+    if (mainRef?.current)
+      mainRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -33,7 +34,7 @@ const Navbar = ({ mainRef }: any) => {
           <img className={styles.img2} src={LogoText} alt="" />
         </Link>
       </div>
-      {isDev && (
+      {/* {isDev && (
         <div className={styles.navButtonBox}>
           <Link to="/login">
             <button>로그인</button>
@@ -53,7 +54,7 @@ const Navbar = ({ mainRef }: any) => {
           </button>
           {"개발때만 보여요."}
         </div>
-      )}
+      )} */}
       <div
         className={
           modalOpen
@@ -91,8 +92,10 @@ const Navbar = ({ mainRef }: any) => {
             }}
             className={styles.profileBtn}
           >
-            가이드 페이지
+            네트워크 가이드
           </button>
+          <hr className={styles.underLine} />
+          <Link to="/tutorial">리드미 튜토리얼</Link>
         </div>
       </div>
     </div>

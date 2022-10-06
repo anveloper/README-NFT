@@ -27,7 +27,8 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
+  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    0.8s both;
   animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
   gap: 5vw;
 }
@@ -35,7 +36,8 @@
 .guideInfo {
   font-family: "NanumSquareRound", "Courier New", Courier, monospace;
   color: #0b0051;
-  -webkit-animation: text-focus-in 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) 1s both;
+  -webkit-animation: text-focus-in 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) 1s
+    both;
   animation: text-focus-in 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) 1s both;
 }
 .guideTitle {
@@ -75,7 +77,8 @@
   position: absolute;
   left: 5%;
   bottom: 30%;
-  -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s both;
+  -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s
+    both;
   animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s both;
 }
 .rightPlane {
@@ -83,7 +86,8 @@
   position: absolute;
   right: 5%;
   bottom: 60%;
-  -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s both;
+  -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s
+    both;
   animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s both;
 }
 
@@ -113,11 +117,13 @@
 }
 .liveContainer {
   padding-top: 3rem;
-  -webkit-animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  -webkit-animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
   animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 .listContainer {
-  -webkit-animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  -webkit-animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
   animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
@@ -166,11 +172,23 @@
   align-items: center;
   gap: 15px;
 }
+
+.tutoBtn,
 .modalText,
 .modalInput {
   font-family: "NanumSquareRound", "Courier New", Courier, monospace;
   color: #534d4d;
   font-size: 1.2rem;
+}
+.tutoBtn {
+  background-color: #79c4f2;
+  border: none;
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+  margin-left: 0.4rem;
+}
+.tutoBtn:hover {
+  cursor: pointer;
 }
 .modalInput {
   /* border: none;
