@@ -3,7 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
 // state
-import { login, selectUserAddress } from "./features/auth/authSlice";
+import {
+  login,
+  selectIsSSAFY,
+  selectUserAddress,
+  setIsSSAFY,
+} from "./features/auth/authSlice";
 // components
 import Navbar from "./components/nav/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
@@ -34,6 +39,7 @@ import Tutorial from "features/tutorial/Tutorial";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
+  const isSSAFY = useAppSelector(selectIsSSAFY);
   const [isSsafyNet, setIsSsafyNet] = useState<boolean>(false);
   const { pathname } = useLocation();
   const mainRef = useRef<HTMLDivElement | null>(null);
@@ -51,11 +57,15 @@ function App() {
     }
     function handleChainChanged(chainId: any) {
       console.log("network changed");
-      if (chainId !== "0x79f5") {
-        window.location.reload();
-      } else {
+      if (chainId === "0x79f5") {
+        dispatch(setIsSSAFY(true));
         setIsSsafyNet(!isSsafyNet);
+      } else if (chainId === "0x5") {
+        dispatch(setIsSSAFY(false));
+      } else {
+        alert("goeril나 SSAFYNet을 사용해 주세요!");
       }
+      window.location.reload();
     }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       window.ethereum.on("accountsChanged", handleNewAccounts);
@@ -67,7 +77,9 @@ function App() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  useEffect(() => {
+    console.log(isSSAFY);
+  }, [isSSAFY]);
   return (
     <div className={styles.container}>
       <Milestone isSsafyNet={isSsafyNet}>
@@ -93,7 +105,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
               <Route path="/mypage" element={<MyPage />} />
-              <Route path="/tutorial" element={<Tutorial/>}/>
+              <Route path="/tutorial" element={<Tutorial />} />
               <Route
                 path="/test"
                 element={

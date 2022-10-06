@@ -2,10 +2,24 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
-import { selectUserAddress } from "../auth/authSlice";
+import {
+  MintReadmeContract,
+  MintReadMeContractGO,
+  SaleReadmeContract,
+  SaleReadmeContractGO,
+} from "../../web3Config";
+import { selectIsSSAFY, selectUserAddress } from "../auth/authSlice";
 import styles from "./NftDetail.module.css";
-import { selectIsActive, selectNftDetail, selectNftOwner, selectNftPrice, setIsActive, setNftDetail, setNftOwner, setNftPrice } from "./NftDetailSlice";
+import {
+  selectIsActive,
+  selectNftDetail,
+  selectNftOwner,
+  selectNftPrice,
+  setIsActive,
+  setNftDetail,
+  setNftOwner,
+  setNftPrice,
+} from "./NftDetailSlice";
 import { truncatedAddress } from "../../features/auth/authSlice";
 import { change_date } from "../../features/auth/authSlice";
 import NftDetailCard from "./components/NftDetailCard";
@@ -23,10 +37,12 @@ const NftDetail = () => {
   const nftOwner = useAppSelector(selectNftOwner);
   const userAddress = useAppSelector(selectUserAddress);
   const [tab, setTab] = useState("info");
-
+  const isSSAFY = useAppSelector(selectIsSSAFY);
   const getMetadata = async () => {
     try {
-      const response = await MintReadmeContract.methods.tokenURI(tokenId).call();
+      const response = isSSAFY
+        ? await MintReadmeContract.methods.tokenURI(tokenId).call()
+        : await MintReadMeContractGO.methods.tokenURI(tokenId).call();
       await axios({ url: response })
         .then((data: any) => {
           dispatch(setNftDetail(data.data));
@@ -41,8 +57,14 @@ const NftDetail = () => {
 
   const getNftInfo = async () => {
     try {
-      const nftPrice = await SaleReadmeContract.methods.getReadmeTokenPrice(tokenId).call();
-      const nftOwner = await MintReadmeContract.methods.ownerOf(tokenId).call();
+      const nftPrice = isSSAFY
+        ? await SaleReadmeContract.methods.getReadmeTokenPrice(tokenId).call()
+        : await SaleReadmeContractGO.methods
+            .getReadmeTokenPrice(tokenId)
+            .call();
+      const nftOwner = isSSAFY
+        ? await MintReadmeContract.methods.ownerOf(tokenId).call()
+        : await MintReadMeContractGO.methods.ownerOf(tokenId).call();
       dispatch(setNftPrice(nftPrice));
       dispatch(setNftOwner(nftOwner));
     } catch (error) {
@@ -59,10 +81,24 @@ const NftDetail = () => {
   return (
     <div className={styles.detail}>
       <div className={styles.detail_container}>
-        <NftDetailCard tokenId={tokenId} nftDetail={nftDetail} nftPrice={nftPrice} nftOwner={nftOwner} />
+        <NftDetailCard
+          tokenId={tokenId}
+          nftDetail={nftDetail}
+          nftPrice={nftPrice}
+          nftOwner={nftOwner}
+        />
         {
           {
-            info: <NftDetailInfo tokenId={tokenId} nftDetail={nftDetail} nftPrice={nftPrice} nftOwner={nftOwner} userAddress={userAddress} setTab={setTab} />,
+            info: (
+              <NftDetailInfo
+                tokenId={tokenId}
+                nftDetail={nftDetail}
+                nftPrice={nftPrice}
+                nftOwner={nftOwner}
+                userAddress={userAddress}
+                setTab={setTab}
+              />
+            ),
             sell: <NftSell />,
           }[tab]
         }
