@@ -1,5 +1,5 @@
 // core
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
 // state
@@ -33,10 +33,11 @@ import NetGuide from "routes/NetGuide";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
+  const [isSsafyNet, setIsSsafyNet] = useState<boolean>(false);
   const { pathname } = useLocation();
+  const mainRef = useRef<HTMLDivElement | null>(null);
   const isGame = pathname.startsWith("/game");
   const dispatch = useAppDispatch();
-  const [isSsafyNet, setIsSsafyNet] = useState<boolean>(false);
   useEffect(() => {
     async function handleNewAccounts() {
       const accounts = await window.ethereum.request({
@@ -71,10 +72,10 @@ function App() {
       <Milestone isSsafyNet={isSsafyNet}>
         <>
           <BackgroundCloud />
-          {!isGame && <Navbar />}
+          {!isGame && <Navbar mainRef={mainRef} />}
           <div className={styles.content}>
             <Routes>
-              <Route path="/" element={<Main />}>
+              <Route path="/" element={<Main mainRef={mainRef} />}>
                 <Route index element={<LiveList />} />
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />

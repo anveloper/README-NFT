@@ -7,6 +7,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  -webkit-animation: opac 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) 0.8s both;
+  animation: opac 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) 0.8s both;
 }
 .btn {
   margin: 8px;
@@ -26,4 +28,21 @@
 .active {
   color: #fff;
   background-color: #e56161cc;
+}
+
+@-webkit-keyframes opac {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes opac {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
