@@ -20,6 +20,7 @@ import welcomeCharacter from "../../assets/welcome/welcome_character.svg";
 import WelcomeNavbar from "./components/WelcomeNavbar";
 import { getIntersectionObserver } from "./observer";
 import WelcomePageEvent from "./components/WelcomePageEvent";
+import { useNavigate } from "react-router-dom";
 
 const Welcome = ({ isSsafyNet }: any) => {
   const dispatch = useAppDispatch();
@@ -32,7 +33,7 @@ const Welcome = ({ isSsafyNet }: any) => {
   const gameRef = useRef<HTMLDivElement | null>(null);
   const roadmapRef = useRef<HTMLDivElement | null>(null);
   const teamRef = useRef<HTMLDivElement | null>(null);
-
+  const navigate = useNavigate();
   //메타마스트 onboarding객체 생성
   useEffect(() => {
     if (!onboarding.current) {
@@ -90,6 +91,7 @@ const Welcome = ({ isSsafyNet }: any) => {
         dispatch(setIsWelcome());
       } catch {
         alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
+        navigate(`/guide`);
       }
     } else {
       //안깔려 있으면 설치 유도
