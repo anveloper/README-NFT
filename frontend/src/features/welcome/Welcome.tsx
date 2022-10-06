@@ -1,7 +1,11 @@
-import { useAppDispatch } from "app/hooks";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 import { useEffect, useRef, useState } from "react";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { login } from "features/auth/authSlice";
+import {
+  login,
+  selectUserAddress,
+  setIsWelcome,
+} from "features/auth/authSlice";
 // component
 import WelcomePageOne from "./components/WelcomePageOne";
 import WelcomePageTwo from "./components/WelcomePageTwo";
@@ -15,13 +19,12 @@ import styles from "./Welcome.module.css";
 import welcomeCharacter from "../../assets/welcome/welcome_character.svg";
 import WelcomeNavbar from "./components/WelcomeNavbar";
 import { getIntersectionObserver } from "./observer";
+import WelcomePageEvent from "./components/WelcomePageEvent";
 
-const Welcome = () => {
+const Welcome = ({ isSsafyNet }: any) => {
   const dispatch = useAppDispatch();
-  const [accounts, setAccounts] = useState<string[]>([]);
+  const account = useAppSelector(selectUserAddress);
   const onboarding = useRef<MetaMaskOnboarding>();
-  const ref = useRef();
-
   const [welcomeNav, setWelcomeNav] = useState<number>(1);
   const [welcomeRef, setWelcomeRef] = useState<HTMLDivElement[]>([]);
   const welcomePageRef = useRef<HTMLDivElement | null>(null);
@@ -39,9 +42,11 @@ const Welcome = () => {
 
   //접속시 깔려 있으면 account state
   useEffect(() => {
-    function handleNewAccounts(newAccounts: string[]) {
-      setAccounts(newAccounts);
-      console.log(accounts);
+    function handleNewAccounts(accounts: string[]) {
+      if (accounts[0].length > 0) {
+        console.log("accountsChaged");
+        dispatch(login(accounts[0]));
+      }
     }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       window.ethereum
@@ -52,11 +57,11 @@ const Welcome = () => {
 
   useEffect(() => {
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-      if (accounts.length > 0) {
+      if (account) {
         onboarding.current.stopOnboarding();
       }
     }
-  }, [accounts]);
+  }, [account]);
 
   useEffect(() => {
     const observer = getIntersectionObserver(setWelcomeNav);
@@ -82,12 +87,13 @@ const Welcome = () => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: "0x79F5" }],
         });
-        dispatch(login(accounts[0]));
+        dispatch(setIsWelcome());
       } catch {
         alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
       }
     } else {
       //안깔려 있으면 설치 유도
+      alert("메타마스크를 설치해 주세요!");
       onboarding.current.startOnboarding();
     }
   };
@@ -109,6 +115,8 @@ const Welcome = () => {
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={0} speed={-1} factor={1.5}> */}
+
+      <WelcomePageEvent onboarding={onboarding} isSsafyNet={isSsafyNet} />
 
       <WelcomePageOne />
 

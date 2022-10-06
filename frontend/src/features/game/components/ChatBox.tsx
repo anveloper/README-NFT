@@ -29,6 +29,9 @@ const ChatBox = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (socket) {
+      // socket.onAny((event) => {
+      //   console.log(`SocketIO Server Event: ${event}`);
+      // }); // 모든 이벤트 리스너
       socket.on("bye", (user: string, cnt: number, data: string) => {
         dispatch(setRoomCnt(cnt));
         dispatch(setParticipants(JSON.parse(data)));
@@ -54,9 +57,8 @@ const ChatBox = () => {
       socket.on("solve_cnt", (solver, solversCnt, roomCnt) => {
         dispatch(setSolvers({ solver, solversCnt, roomCnt }));
       });
-      socket.on("game_start", (answer: string) => {
+      socket.on("game_start", () => {
         dispatch(setStarted(true));
-        dispatch(setAnswerLength(answer.length));
       });
       socket.on("host_leave", () => {
         socket.emit("leave_room", hostUserName);
@@ -89,50 +91,73 @@ const ChatBox = () => {
     <>
       <div ref={boxRef} className={styles.chatBox}>
         <div className={styles.chatList}>
-          {messages.map((m, index) => {
-            const { name, type, msg } = m;
-            if (index !== messages.length - 1) {
-              if (type === "mine")
-                return (
-                  <div key={index} className={styles.mine}>
-                    <p>{msg}</p>
-                  </div>
-                );
-              else if (type === "system")
-                return (
-                  <div key={index} className={styles.system}>
-                    <p>{msg}</p>
-                  </div>
-                );
-              else if (type === "other")
-                return (
-                  <div key={index} className={styles.other}>
-                    <h6>{name}</h6>
-                    <p>{msg}</p>
-                  </div>
-                );
-            } else {
-              if (type === "mine")
-                return (
-                  <div ref={lastRef} key={index} className={styles.mine}>
-                    <p>{msg}</p>
-                  </div>
-                );
-              else if (type === "system")
-                return (
-                  <div ref={lastRef} key={index} className={styles.system}>
-                    <p>{msg}</p>
-                  </div>
-                );
-              else if (type === "other")
-                return (
-                  <div ref={lastRef} key={index} className={styles.other}>
-                    <h6>{name}</h6>
-                    <p>{msg}</p>
-                  </div>
-                );
+          {messages.map(
+            (m: { name: any; type: any; msg: any }, index: number) => {
+              const { name, type, msg } = m;
+              if (index !== messages.length - 1) {
+                if (type === "mine")
+                  return (
+                    <div key={index} className={styles.mine}>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else if (type === "noti")
+                  return (
+                    <div key={index} className={styles.noti}>
+                      <h6>{name}</h6>
+                      <div>
+                        <p className={styles.notiHeader}>리드미 알림</p>
+                        <p>{msg}</p>
+                      </div>
+                    </div>
+                  );
+                else if (type === "system")
+                  return (
+                    <div key={index} className={styles.system}>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else if (type === "other")
+                  return (
+                    <div key={index} className={styles.other}>
+                      <h6>{name}</h6>
+                      <p>{msg}</p>
+                    </div>
+                  );
+              } else {
+                if (type === "mine")
+                  return (
+                    <div ref={lastRef} key={index} className={styles.mine}>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else if (type === "noti")
+                  return (
+                    <div ref={lastRef} key={index} className={styles.noti}>
+                      <h6>{name}</h6>
+                      <div>
+                        <p className={styles.notiHeader}>리드미 알림</p>
+                        <p>{msg}</p>
+                      </div>
+                    </div>
+                  );
+                else if (type === "system")
+                  return (
+                    <div ref={lastRef} key={index} className={styles.system}>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else if (type === "other")
+                  return (
+                    <div ref={lastRef} key={index} className={styles.other}>
+                      <h6>{name}</h6>
+                      <p>{msg}</p>
+                    </div>
+                  );
+                else return null;
+              }
             }
-          })}
+          )}
         </div>
       </div>
       <div className={styles.inputBox}>

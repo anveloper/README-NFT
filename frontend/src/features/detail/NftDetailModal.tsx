@@ -27,7 +27,9 @@ const NftDetailModal = (props: any) => {
       setIsAnswer(true);
       setInfoMsg("정답입니다.");
       dispatch(postProblem({ userAddress, tokenId }));
-      dispatch(findSolveList(userAddress));
+      dispatch(findSolveList(userAddress)).then(() => {
+        dispatch(findSolveList(userAddress));
+      });
       setInputAnswer("");
       close();
     } else if (inputAnswer.length >= 1 && inputAnswer !== answer) {
@@ -111,9 +113,8 @@ const NftDetailModal = (props: any) => {
           <div className={styles.cards_right}>
             <div className={styles.info_box}>
               <div className={styles.info}>
-                {/* { <div style={{ fontSize: "20px" }}>💡</div> } */}
+                {/* {<div style={{ fontSize: "20px" }}>💡</div>} */}
                 <p>리드미의 제목을 맞춰보세요!</p>
-                <p>정답을 맞추면 리드미를 구매할 수 있어요.</p>
               </div>
             </div>
             <div className={styles.answer}>
@@ -151,18 +152,16 @@ const NftDetailModal = (props: any) => {
                 )}
               </div>
             </div>
+
             <div className={styles.card_buttons}>
               <button
-                disabled={!isAnswer}
-                className={
-                  isAnswer
-                    ? `${styles.card_button_on}`
-                    : `${styles.card_button_off}`
-                }
+                className={styles.card_button_on}
                 onClick={() => moveToDetail(tokenId)}
               >
-                자세히 보기
+                <span>자세히 보기</span>
+                <p className={styles.arrow_box}>정답을 확인할 수 있어요!</p>
               </button>
+
               <button
                 className={styles.card_button_on}
                 onClick={() => likeNFT(parseInt(tokenId))}

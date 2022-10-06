@@ -21,6 +21,12 @@
   text-decoration: none;
   box-sizing: border-box;
   transition: all 0.3s;
+  -webkit-user-drag: none;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body {

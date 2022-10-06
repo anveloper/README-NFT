@@ -28,30 +28,7 @@ const Carousel = ({ carouselRef }: any) => {
 
   useEffect(() => {
     if (rawList && rawList.length > 0) {
-      const result: NftConfig[] = [];
-      let cnt = Math.min(rawList.length, 10);
-      for (let i = 0; i < cnt; i++) {
-        const {
-          metaDataURI,
-          readmeTokenId,
-          readmeTokenOwner,
-          readmeTokenPrice,
-          isActive,
-        } = rawList[rawList.length - 1 - i];
-        if (!solveList.includes(Number(readmeTokenId)))
-          // 임시방편
-          result.push({
-            metaDataURI,
-            readmeTokenId,
-            readmeTokenOwner,
-            readmeTokenPrice,
-            metaData: undefined,
-            isActive,
-            //saleDate: undefined, // (정현) NftConfig 수정해서 넣었어욧
-          });
-        else if (cnt < rawList.length - 1) cnt++;
-      }
-      dispatch(setCarouselList(result));
+      dispatch(setCarouselList());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawList, solveList]);
@@ -75,22 +52,23 @@ const Carousel = ({ carouselRef }: any) => {
           정답을 맞추고, 갖고 싶은 리드미를 거래하세요.
         </p>
       </div>
-      <div>
+      <div className={styles.box}>
         <Slider {...settings}>
-          {carouselList.map((nft: NftConfig, i: number) => {
-            return (
-              <div
-                key={i}
-                className={
-                  i === imageIndex
-                    ? `${styles.slide} ${styles.activeSlide}`
-                    : styles.slide
-                }
-              >
-                <CarouselItem nft={nft} metaDataURI={nft.metaDataURI} />
-              </div>
-            );
-          })}
+          {carouselList &&
+            carouselList.map((nft: NftConfig, i: number) => {
+              return (
+                <div
+                  key={i}
+                  className={
+                    i === imageIndex
+                      ? `${styles.slide} ${styles.activeSlide}`
+                      : styles.slide
+                  }
+                >
+                  <CarouselItem nft={nft} metaDataURI={nft.metaDataURI} />
+                </div>
+              );
+            })}
         </Slider>
       </div>
     </div>

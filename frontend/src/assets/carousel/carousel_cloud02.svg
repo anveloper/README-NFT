@@ -1,12 +1,18 @@
-<svg width="967" height="497" viewBox="0 0 967 497" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M605.894 149.187C605.894 200.07 656.806 241.319 719.61 241.319C782.413 241.319 848.825 218.883 848.825 168C848.825 117.117 782.413 57.056 719.61 57.056C656.806 57.056 605.894 98.3047 605.894 149.187Z" fill="white"/>
-<ellipse rx="93.5122" ry="75.7629" transform="matrix(-1 0 0 1 846.512 318.763)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 852.715 267.131)" fill="white"/>
-<ellipse rx="116.328" ry="104.509" transform="matrix(-0.746346 0.665558 0.805345 0.592807 286.28 335.377)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 370.48 183.795)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 457.065 92.1315)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 204.236 255.817)" fill="white"/>
-<ellipse rx="136" ry="112.5" transform="matrix(-1 0 0 1 136 384.5)" fill="white"/>
-<ellipse rx="113.715" ry="92.1315" transform="matrix(-1 0 0 1 599.544 119.256)" fill="white"/>
-<rect width="516" height="249" transform="matrix(-1 0 0 1 834 146)" fill="white"/>
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="레이어_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 939 430" style="enable-background:new 0 0 939 430;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+</style>
+<path class="st0" d="M562.1,161.5c0,55.1,53.2,99.7,118.9,99.7c65.7,0,135.1-24.3,135.1-79.4S746.6,61.8,681,61.8
+	C615.3,61.8,562.1,106.4,562.1,161.5z"/>
+<ellipse class="st0" cx="801.6" cy="347.5" rx="87.8" ry="82.3"/>
+<ellipse class="st0" cx="820.1" cy="289.2" rx="118.9" ry="99.7"/>
+<ellipse transform="matrix(0.2456 -0.9694 0.9694 0.2456 -255.8755 359.7322)" class="st0" cx="103.2" cy="344.3" rx="84.4" ry="104.3"/>
+<ellipse class="st0" cx="305.8" cy="179.9" rx="118.9" ry="99.7"/>
+<ellipse class="st0" cx="406.5" cy="99.7" rx="118.9" ry="99.7"/>
+<ellipse class="st0" cx="144.8" cy="268.6" rx="118.9" ry="99.7"/>
+<ellipse class="st0" cx="469.2" cy="214.9" rx="142.2" ry="121.8"/>
+<ellipse class="st0" cx="555.5" cy="129.1" rx="118.9" ry="99.7"/>
+<rect x="116.9" y="226.3" class="st0" width="683.7" height="203.5"/>
 </svg>

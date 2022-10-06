@@ -56,19 +56,19 @@
   z-index: 2;
   width: 60vw;
   position: absolute;
-  left: -3vw;
-  bottom: -12vh;
+  left: 0;
+  bottom: 0;
+  color: #b8e5ff;
   -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s
     both;
   animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
 }
 .rightCloud {
   z-index: 1;
-  width: 50vw;
-  aspect-ratio: 2/1;
+  width: 60vw;
   position: absolute;
   right: 0;
-  bottom: -12vh;
+  bottom: 0;
   -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
@@ -95,7 +95,7 @@
 .container {
   position: relative;
   width: 100%;
-  min-height: 60vh;
+  min-height: 90vh;
   background-color: #ffffffcc;
   display: flex;
   flex-direction: row;
@@ -167,20 +167,40 @@
 /* modal */
 .modalBox {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 8px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
+
+.tutoBtn,
 .modalText,
 .modalInput {
   font-family: "NanumSquareRound", "Courier New", Courier, monospace;
   color: #534d4d;
   font-size: 1.2rem;
 }
-.modalInput {
+.tutoBtn {
+  background-color: #79c4f2;
   border: none;
-  border-bottom: 2px solid #534d4d;
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+  margin-left: 0.4rem;
 }
+.tutoBtn:hover {
+  cursor: pointer;
+}
+.modalInput {
+  /* border: none;
+  border-bottom: 2px solid #534d4d; */
+  background-color: #fddf61;
+  border: none;
+  border-radius: 20px;
+  width: 80%;
+  height: 40px;
+  padding-left: 20px;
+}
+
 .modalInput:focus {
   border: none;
   outline: none;

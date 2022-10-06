@@ -4,6 +4,7 @@ import {
   NftConfig,
   selectNftList,
   selectRawList,
+  selectSolveList,
   setNftList,
 } from "../nft/nftSlice";
 import NftItem from "../../components/nftItem/NftItem";
@@ -12,9 +13,10 @@ import styles from "./Main.module.css";
 
 const NFTList = () => {
   const rawList = useAppSelector(selectRawList);
+  const solveList = useAppSelector(selectSolveList);
   const nftList = useAppSelector(selectNftList);
   const lastRef = useRef<HTMLButtonElement | null>(null);
-  const [itemCnt, setItemCnt] = useState(8);
+  const [itemCnt, setItemCnt] = useState(12);
   const dispatch = useAppDispatch();
   // mount
   useEffect(() => {
@@ -52,7 +54,7 @@ const NFTList = () => {
       dispatch(setNftList(result));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rawList, itemCnt]);
+  }, [rawList, itemCnt, solveList]);
 
   return (
     <div className={styles.container}>
@@ -67,7 +69,7 @@ const NFTList = () => {
         })}
         {rawList && rawList.length > itemCnt && (
           <div className={styles.moreBtn}>
-            <button onClick={() => setItemCnt(itemCnt + 4)}>더 보기</button>
+            <button onClick={() => setItemCnt(itemCnt + 8)}>더 보기</button>
           </div>
         )}
       </div>

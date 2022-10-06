@@ -13,15 +13,15 @@ const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 root.render(
-  <HelmetProvider>
-    <BrowserRouter>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <SocketProvider value={socket}>
+  <SocketProvider value={socket}>
+    <HelmetProvider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
             <App />
-          </SocketProvider>
-        </PersistGate>
-      </Provider>
-    </BrowserRouter>
-  </HelmetProvider>
+          </PersistGate>
+        </Provider>
+      </BrowserRouter>
+    </HelmetProvider>
+  </SocketProvider>
 );

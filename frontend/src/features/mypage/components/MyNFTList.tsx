@@ -310,7 +310,12 @@ const MyNFTList: FC<MyNFTListProps> = ({ NFTListValue }) => {
                 아직 리드미가 없어요! <br />
                 게임을 통해 리드미를 얻어보세요! <br />
               </p>
-              <button className={styles.movePageButton}>게임하러 가기</button>
+              <button
+                className={styles.movePageButton}
+                onClick={() => navigate("/")}
+              >
+                게임하러 가기
+              </button>
             </div>
             <img className={styles.cat_palette} src={cat_palette} alt="" />
             <img

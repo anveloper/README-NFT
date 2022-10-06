@@ -193,7 +193,7 @@ const CanvasBox = () => {
   const [fileUrl, setFileUrl] = useState("");
   const [newRawData, setNewRawData] = useState("");
   useEffect(() => {
-    if (canvasRef.current) {      
+    if (canvasRef.current) {
       if (socket) socket.emit("get_solver", hostUserName);
       const canvas: HTMLCanvasElement = canvasRef.current;
       const imgBase64 = canvas.toDataURL("image/jpeg", "image/octet-stream");
@@ -248,12 +248,6 @@ const CanvasBox = () => {
           height={300}
           style={{ transform: "scale(0.8)" }}
         />
-        <h6>
-          {"test: "}
-          <a href={fileUrl} download>
-            다운로드
-          </a>
-        </h6>
         <div>정답: {answer}</div>
         <div>만든이: {hostUserName}</div>
         <div>맞춘이: {solver}</div>

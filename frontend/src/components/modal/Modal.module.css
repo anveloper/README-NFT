@@ -48,15 +48,17 @@
 }
 .modal > section > footer {
   padding: 12px 16px;
-  text-align: right;
+  text-align: center;
 }
 .clBtn,
 .scBtn {
-  padding: 6px 12px;
+  width: 100px;
+  padding: 10px 12px;
   color: #534d4d;
   font-family: "NanumSquareRound", "Courier New", Courier, monospace;
   border-radius: 5px;
   font-size: 13px;
+  /* text-align: center; */
 }
 .clBtn {
   background-color: #ffeab6;

@@ -55,11 +55,16 @@
 /* 왼쪽 : 카테고리 분류 */
 .contents:nth-child(1) {
   display: grid;
-  grid-template-rows: repeat(12, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   height: 90vh;
 
   background-color: white;
   margin-left: 20px;
+}
+
+.category_container {
+  display: grid;
+  grid-template-rows: 1fr 2fr;
 }
 
 .category_title {
@@ -139,7 +144,7 @@ input[name="inputMax"] {
   white-space: nowrap;
   font-family: "NanumSquareRoundB";
 
-  background-color: #fddf61;
+  background-color: #fcf5e9;
 }
 
 .category_price_sort {

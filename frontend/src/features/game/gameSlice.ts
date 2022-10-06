@@ -33,24 +33,20 @@ export interface GameState {
   status: "idle" | "loading" | "failed";
   view: number;
 }
-
+const initChat: ChatConfig[] = [
+  { type: "system", name: "관리자", msg: "대화를 시작합니다." },
+  {
+    type: "noti",
+    name: "관리중인 방태",
+    msg: "제시어를 입력하면 게임이 시작되며, 캔버스가 초기화 됩니다. 게임 시작 후에는 호스트만 그림을 그릴 수 있습니다.",
+  },
+];
 const initialState: GameState = {
   roomList: [
-    { title: "혹시", host: "asdf", cnt: 999 },
-    { title: "이 방들이", host: "asdf", cnt: 999 },
-    { title: "보인다면", host: "asdf", cnt: 999 },
-    { title: "새로고침", host: "asdf", cnt: 999 },
-    { title: "해주시겠어요?", host: "asdf", cnt: 999 },
-    { title: "방이름", host: "asdf", cnt: 999 },
-    { title: "뭘로", host: "asdf", cnt: 999 },
-    { title: "더보기", host: "asdf", cnt: 999 },
-    { title: "누르면", host: "asdf", cnt: 999 },
-    { title: "4개 더", host: "asdf", cnt: 999 },
-    { title: "생김", host: "asdf", cnt: 999 },
-    { title: "또 누르면", host: "asdf", cnt: 999 },
-    { title: "또 생기고", host: "asdf", cnt: 999 },
-    { title: "더 없으면", host: "asdf", cnt: 999 },
-    { title: "버튼 사라짐", host: "asdf", cnt: 999 },
+    { title: "asdf", host: "asdf", cnt: 1 },
+    { title: "zxcv zxcv", host: "asdf", cnt: 3 },
+    { title: "asdf", host: "asdf", cnt: 4 },
+    { title: "xczv", host: "asdf", cnt: 5 },
   ],
   hostUserName: "",
   roomName: "",
@@ -58,7 +54,7 @@ const initialState: GameState = {
   answer: "",
   answerLength: 0,
   color: "#000000",
-  messages: [{ type: "system", name: "관리자", msg: "대화를 시작합니다." }],
+  messages: initChat,
   timeover: false,
   started: false,
   solver: "",
@@ -97,9 +93,7 @@ export const gameSlice = createSlice({
       state.roomCnt = 0;
       state.answer = "";
       state.color = "#000000";
-      state.messages = [
-        { type: "system", name: "관리자", msg: "대화를 시작합니다." },
-      ];
+      state.messages = initChat;
       state.timeover = false;
       state.started = false;
       state.solver = "";
@@ -164,7 +158,6 @@ export const selectStarted = (state: RootState) => state.game.started;
 export const selectSolver = (state: RootState) => state.game.solver;
 export const selectSolversCnt = (state: RootState) => state.game.solversCnt;
 export const selectParticipants = (state: RootState) => state.game.participants;
-
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };

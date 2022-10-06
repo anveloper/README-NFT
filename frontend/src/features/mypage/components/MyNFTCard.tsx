@@ -1,5 +1,6 @@
 // image
 import axios from "axios";
+import LoadingSpinner from "components/loading/LoadingSpinner";
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import lion from "../../../assets/characters/lion.svg";
@@ -24,10 +25,12 @@ const MyNFTCard: FC<IMyNFTCard> = ({
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   console.log(readmeTokenId);
   const getNFTDetail = async (metadataURI: string) => {
+    setLoading(true);
     try {
       console.log(metaDataURI);
       await axios({ url: metadataURI }).then((response) => {
@@ -38,6 +41,7 @@ const MyNFTCard: FC<IMyNFTCard> = ({
         setAuthor(author);
         setDescription(description);
         setImageURL(imageURL);
+        setLoading(false);
       });
     } catch (error) {
       console.error(error);
@@ -58,7 +62,11 @@ const MyNFTCard: FC<IMyNFTCard> = ({
       onClick={() => moveNFTCardDetail(readmeTokenId)}
     >
       <div className={styles.MyNFTCardImgBox}>
-        <img className={styles.MyNFTCardImg} src={imageURL} alt="" />
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <img className={styles.MyNFTCardImg} src={imageURL} alt="" />
+        )}
       </div>
 
       <div>
