@@ -88,7 +88,6 @@ const Main = ({ mainRef }: any) => {
     headers.map((header) => {
       observer.observe(header);
     });
-    console.log(headers);
     setMainNavRef(headers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
