@@ -8,6 +8,7 @@ import guide2 from "assets/guide/guide2.svg";
 import guide3 from "assets/guide/guide3.svg";
 import guide4 from "assets/guide/guide4.svg";
 import guide5 from "assets/guide/guide5.svg";
+import copyIcon from "assets/guide/copy.svg";
 
 import Slider from "react-slick";
 import { useState } from "react";
@@ -22,12 +23,13 @@ const NetGuide = () => {
     beforeChange: (current: any, next: any) => setActiveSlide(next),
   };
   const [activeSlide, setActiveSlide] = useState(0);
-  const guides = [
-    `크롬 오른쪽 상단 Extensions에서 Metamask를 실행해 주세요.`,
-    "팝업 상단을 클릭하여 네트워크 추가 하기를 선택해 주세요.",
-    "아래 내용을 입력 후, 저장 해주세요.",
-    "Readme에서는 SSF토큰을 사용합니다! 웰컴 페이지에서 SSF토큰을 지갑에 불러와 주세요",
-  ];
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (error) {}
+  };
+
   return (
     <div className={styles.NetGuide}>
       <img className={styles.guidebook} src={guidebook} alt="" />
@@ -74,14 +76,47 @@ const NetGuide = () => {
             <h4 className={styles.sliderText}>
               아래 내용을 입력 후 저장해주세요. <br /> <br /> <br />
               <br />
-              Network name &nbsp; : &nbsp; SSAFY Network
-              <br /> <br />
-              New RPC URL &nbsp; : &nbsp; http://20.196.209.2:8545 <br />
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                Network name &nbsp; : &nbsp; SSAFY Network &nbsp;
+                <img
+                  style={{ cursor: "pointer" }}
+                  src={copyIcon}
+                  alt=""
+                  onClick={() => handleCopyClipBoard("SSAFY Network")}
+                />
+              </div>
               <br />
-              Chain ID &nbsp; :&nbsp; 31221 <br />
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                New RPC URL &nbsp; : &nbsp; http://20.196.209.2:8545 &nbsp;
+                <img
+                  style={{ cursor: "pointer" }}
+                  src={copyIcon}
+                  alt=""
+                  onClick={() =>
+                    handleCopyClipBoard("http://20.196.209.2:8545")
+                  }
+                />
+              </div>
               <br />
-              Currency symbol&nbsp; :&nbsp; ETH
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                Chain ID &nbsp; :&nbsp; 31221 &nbsp;
+                <img
+                  style={{ cursor: "pointer" }}
+                  src={copyIcon}
+                  alt=""
+                  onClick={() => handleCopyClipBoard("31221")}
+                />
+              </div>
               <br />
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                Currency symbol&nbsp; :&nbsp; ETH &nbsp;
+                <img
+                  style={{ cursor: "pointer" }}
+                  src={copyIcon}
+                  alt=""
+                  onClick={() => handleCopyClipBoard("ETH")}
+                />
+              </div>
             </h4>
           </div>
         </div>
@@ -91,21 +126,19 @@ const NetGuide = () => {
             <img className={styles.guide5} src={guide5} alt="" />
           </div>
           <div className={styles.sliderTextDiv}>
-            <h4 className={styles.sliderText}>
+            <h4 className={styles.sliderEndText}>
               리드미에서는 SSAFY 토큰을 사용합니다! <br /> <br />
               웰컴 페이지에서 'SSF 추가하기'를 클릭하면 등록이 완료됩니다!
             </h4>
+            <button
+              className={styles.moveWelcome}
+              onClick={() => navigate("/")}
+            >
+              웰컴페이지로 이동
+            </button>
           </div>
         </div>
       </Slider>
-      {/* <div className={styles.textBox}></div> */}
-      {/* <button
-        onClick={() => {
-          navigate(`/`);
-        }}
-      >
-        돌아가기
-      </button> */}
     </div>
   );
 };
