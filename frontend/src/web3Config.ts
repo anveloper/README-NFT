@@ -8,27 +8,6 @@ import { SSF } from "./abi/SSFABI";
 
 export const web3 = new Web3(window.ethereum);
 
-const network = window.sessionStorage.getItem("persist:root");
-let auth;
-let isSSAFY;
-if (network) {
-  auth = JSON.parse(network)?.auth;
-  isSSAFY = JSON.parse(auth)?.isSSAFY;
-}
-
-let mintCA = process.env.REACT_APP_MINTREADMETOKEN_CA;
-let saleCA = process.env.REACT_APP_SALEREADMETOKEN_CA;
-let getCA = process.env.REACT_APP_GETREADMETOKEN_CA;
-
-if (isSSAFY) {
-  mintCA = process.env.REACT_APP_MINTREADMETOKEN_CA;
-  saleCA = process.env.REACT_APP_SALEREADMETOKEN_CA;
-  getCA = process.env.REACT_APP_GETREADMETOKEN_CA;
-} else {
-  mintCA = process.env.REACT_APP_MINTREADMETOKEN_CA_GO;
-  saleCA = process.env.REACT_APP_SALEREADMETOKEN_CA_GO;
-  getCA = process.env.REACT_APP_GETREADMETOKEN_CA;
-}
 const ABI = {
   MintReadmeToken: MintReadmeToken,
   SaleReadmeToken: SaleReadmeToken,
@@ -37,12 +16,18 @@ const ABI = {
   DrawToken: DrawToken,
   SSF: SSF,
 };
-// mint
+// mint ssafy
 export const MintReadmeContract = new web3.eth.Contract(
   ABI.MintReadmeToken,
-  mintCA
+  process.env.REACT_APP_MINTREADMETOKEN_CA
+);
+//mint Go
+export const MintReadMeContractGO = new web3.eth.Contract(
+  ABI.MintReadmeToken,
+  process.env.REACT_APP_MINTREADMETOKEN_CA_GO
 );
 
+//mint ssafy
 export const mintReadmeToken = async (
   tokenURI: string,
   account: string,
@@ -50,18 +35,44 @@ export const mintReadmeToken = async (
   solver: string
 ) =>
   await MintReadmeContract.methods
-    .create(tokenURI, saleCA, answer, solver)
+    .create(tokenURI, process.env.REACT_APP_SALEREADMETOKEN_CA, answer, solver)
+    .send({ from: account });
+//mint Go
+export const mintReadmeTokenGo = async (
+  tokenURI: string,
+  account: string,
+  answer: string,
+  solver: string
+) =>
+  await MintReadMeContractGO.methods
+    .create(
+      tokenURI,
+      process.env.REACT_APP_SALEREADMETOKEN_CA_GO,
+      answer,
+      solver
+    )
     .send({ from: account });
 
-// sale
+// sale ssafy
 export const SaleReadmeContract = new web3.eth.Contract(
   ABI.SaleReadmeToken,
   process.env.REACT_APP_SALEREADMETOKEN_CA
 );
+// sale go
+export const SaleReadmeContractGO = new web3.eth.Contract(
+  ABI.SaleReadmeToken,
+  process.env.REACT_APP_SALEREADMETOKEN_CA_GO
+);
 
+//get ssafy
 export const GetReadmeContract = new web3.eth.Contract(
   ABI.GetReadmeToken,
-  getCA
+  process.env.REACT_APP_GETREADMETOKEN_CA
+);
+//get go
+export const GetReadmeContractGO = new web3.eth.Contract(
+  ABI.GetReadmeToken,
+  process.env.REACT_APP_GETREADMETOKEN_CA_GO
 );
 
 export const SSFContract = new web3.eth.Contract(

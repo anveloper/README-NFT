@@ -2,7 +2,11 @@ import React, { useEffect, FC, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 // state
-import { MintReadmeContract, mintReadmeToken } from "../../web3Config";
+import {
+  MintReadmeContract,
+  mintReadmeToken,
+  mintReadmeTokenGo,
+} from "../../web3Config";
 import { selectImgBlob, selectStatus, selectTmpInfo } from "./mintSlice";
 // components
 import NewHelmet from "../../components/NewHelmet";
@@ -12,7 +16,7 @@ import { create } from "ipfs-http-client";
 import styles from "./Mint.module.css";
 import Loading from "../../components/loading/Loading";
 import { postProblem } from "features/nft/nftSlice";
-import { selectUserAddress } from "features/auth/authSlice";
+import { selectIsSSAFY, selectUserAddress } from "features/auth/authSlice";
 import LoadingPage from "components/loading/LoadingPage";
 
 const ipfsUrl =
@@ -28,7 +32,7 @@ const Mint: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
-
+  const isSSAFY = useAppSelector(selectIsSSAFY);
   const handleAddItem = async () => {
     const fr = new FileReader();
     const client = create({ url: ipfsUrl });
@@ -50,19 +54,35 @@ const Mint: FC = () => {
         const tokenURI = "https://ipfs.io/ipfs/" + result.path;
 
         setLoading(true);
-        mintReadmeToken(tokenURI, account, answer, sol)
-          .then((receipt: any) => {
-            console.log(receipt?.events.returnValues);
-            if (receipt.events?.returnValues) {
-              const tokenId = receipt?.events.returnValues.tokenId;
-              dispatch(postProblem({ userAddress: creator, tokenId }));
-              dispatch(postProblem({ userAddress: solver, tokenId }));
-            }
-            console.log("receipt : ", receipt);
-            setLoading(false);
-            navigate("/list", { replace: true });
-          })
-          .catch((err: any) => err);
+        if (isSSAFY) {
+          mintReadmeToken(tokenURI, account, answer, sol)
+            .then((receipt: any) => {
+              console.log(receipt?.events.returnValues);
+              if (receipt.events?.returnValues) {
+                const tokenId = receipt?.events.returnValues.tokenId;
+                dispatch(postProblem({ userAddress: creator, tokenId }));
+                dispatch(postProblem({ userAddress: solver, tokenId }));
+              }
+              console.log("receipt : ", receipt);
+              setLoading(false);
+              navigate("/list", { replace: true });
+            })
+            .catch((err: any) => err);
+        } else {
+          mintReadmeTokenGo(tokenURI, account, answer, sol)
+            .then((receipt: any) => {
+              console.log(receipt?.events.returnValues);
+              if (receipt.events?.returnValues) {
+                const tokenId = receipt?.events.returnValues.tokenId;
+                dispatch(postProblem({ userAddress: creator, tokenId }));
+                dispatch(postProblem({ userAddress: solver, tokenId }));
+              }
+              console.log("receipt : ", receipt);
+              setLoading(false);
+              navigate("/list", { replace: true });
+            })
+            .catch((err: any) => err);
+        }
       }
     };
   };
