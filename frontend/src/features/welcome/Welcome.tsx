@@ -4,6 +4,7 @@ import MetaMaskOnboarding from "@metamask/onboarding";
 import {
   login,
   selectUserAddress,
+  setIsSSAFY,
   setIsWelcome,
 } from "features/auth/authSlice";
 // component
@@ -36,11 +37,21 @@ const Welcome = ({ isSsafyNet }: any) => {
   const roadmapRef = useRef<HTMLDivElement | null>(null);
   const teamRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
+  const [chainId, setChainId] = useState("");
   //메타마스트 onboarding객체 생성
+  const getChainId = async () => {
+    let chain = await window.ethereum.request({ method: "eth_chainId" });
+    setChainId(chain);
+    if (chain !== "0x79F5") {
+      console.log(chain);
+      dispatch(setIsSSAFY(false));
+    }
+  };
   useEffect(() => {
     if (!onboarding.current) {
       onboarding.current = new MetaMaskOnboarding();
     }
+    getChainId();
   }, []);
 
   //접속시 깔려 있으면 account state
@@ -97,7 +108,12 @@ const Welcome = ({ isSsafyNet }: any) => {
       //   alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
       //   navigate(`/guide`);
       // }
-      dispatch(setIsWelcome());
+      if (chainId === "0x79F5" || chainId === "0x5") {
+        dispatch(setIsWelcome());
+      } else {
+        alert("싸피네트워크나 goerli네트워크에 연결해주세요!");
+        navigate("/guide");
+      }
     } else {
       //안깔려 있으면 설치 유도
       alert("메타마스크를 설치해 주세요!");
