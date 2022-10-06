@@ -6,18 +6,22 @@ import NftDetailModal from "../../features/detail/NftDetailModal";
 import blank from "../../assets/template/template_word.svg";
 
 import styles from "./NftItem.module.css";
+import LoadingSpinner from "components/loading/LoadingSpinner";
 const CarouselItem = (props: any) => {
   const { nft } = props;
   const [name, setName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const getMetadata = async (metaDataURI: string) => {
+    setLoading(true);
     await axios({ url: metaDataURI })
       .then((res: any) => {
         const { name, imageURL } = res.data;
         setName(name);
         setImageURL(imageURL);
+        setLoading(false);
       })
       .catch((err) => {});
   };
@@ -44,11 +48,13 @@ const CarouselItem = (props: any) => {
   return (
     <>
       <button className={styles.carouselContainer} onClick={openModal}>
-        <Suspense fallback={<p>이미지 로딩중</p>}>
-          <div className={styles.sq}>
+        <div className={styles.sq}>
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
             <img className={styles.img} src={imageURL} alt="" />
-          </div>
-        </Suspense>
+          )}
+        </div>
         <div className={styles.carouselInfo}>{answerWord()}</div>
       </button>
       <div>

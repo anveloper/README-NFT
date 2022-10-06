@@ -11,6 +11,7 @@ import {
 
 import styles from "./NftItem.module.css";
 import ShareBtn from "./ShareBtn";
+import LoadingSpinner from "components/loading/LoadingSpinner";
 
 const NftItem = (props: any) => {
   const solveList = useAppSelector(selectSolveList);
@@ -34,7 +35,9 @@ const NftItem = (props: any) => {
     description: "",
     imageURL: "",
   });
+  const [loading, setLoading] = useState(true);
   const getMetadata = async (metaDataURI: string) => {
+    setLoading(true);
     await axios({ url: metaDataURI })
       .then((res: any) => {
         const { fileName, name, author, description, imageURL } = res.data;
@@ -51,6 +54,7 @@ const NftItem = (props: any) => {
           description,
           imageURL,
         });
+        setLoading(false);
       })
       .catch((err) => {});
   };
@@ -88,12 +92,15 @@ const NftItem = (props: any) => {
     >
       <div className={styles.card}>
         <div className={styles.front}>
-          <Suspense fallback={<p>이미지 로딩중</p>}>
-            <div className={styles.sq}>
-              <p className={styles.nftNumber}>{nft.readmeTokenId}</p>
+          <div className={styles.sq}>
+            <p className={styles.nftNumber}>{nft.readmeTokenId}</p>
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
               <img className={styles.img} src={imageURL} alt="" />
-            </div>
-          </Suspense>
+            )}
+          </div>
+
           <div className={styles.nftInfo}>{renderName()}</div>
         </div>
         <div className={styles.back}>

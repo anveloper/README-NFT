@@ -16,7 +16,7 @@ const NFTList = () => {
   const solveList = useAppSelector(selectSolveList);
   const nftList = useAppSelector(selectNftList);
   const lastRef = useRef<HTMLButtonElement | null>(null);
-  const [itemCnt, setItemCnt] = useState(8);
+  const [itemCnt, setItemCnt] = useState(12);
   const dispatch = useAppDispatch();
   // mount
   useEffect(() => {
@@ -69,7 +69,7 @@ const NFTList = () => {
         })}
         {rawList && rawList.length > itemCnt && (
           <div className={styles.moreBtn}>
-            <button onClick={() => setItemCnt(itemCnt + 4)}>더 보기</button>
+            <button onClick={() => setItemCnt(itemCnt + 8)}>더 보기</button>
           </div>
         )}
       </div>

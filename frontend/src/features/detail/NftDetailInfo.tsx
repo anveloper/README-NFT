@@ -75,28 +75,39 @@ const NftDetailInfo = (props: any) => {
   };
 
   const buyNftToken = async () => {
+    let balance = 0;
     await SSFContract.methods
-      .approve(process.env.REACT_APP_SALEREADMETOKEN_CA, nftPrice)
-      .send({ from: userAddress })
-      .then((res: any) => {
-        console.log("approve : ", res);
-      })
-      .catch((err: any) => {
-        console.log(err);
+      .balanceOf(userAddress)
+      .call((err: any, res: any) => {
+        balance = res;
       });
-    SaleReadmeContract.methods
-      .purchaseReadmeToken(process.env.REACT_APP_ERC20_CA, tokenId)
-      .send({ from: userAddress })
-      .then((res: any) => {
-        console.log(res);
-        // 새로고침.
-        navigate("/deatil/" + tokenId);
-        // window.location.replace("/detail/" + tokenId);
-        console.log("purchase : ", res);
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
+    console.log(balance);
+    if (balance >= nftPrice) {
+      await SSFContract.methods
+        .approve(process.env.REACT_APP_SALEREADMETOKEN_CA, nftPrice)
+        .send({ from: userAddress })
+        .then((res: any) => {
+          console.log("approve : ", res);
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+      SaleReadmeContract.methods
+        .purchaseReadmeToken(process.env.REACT_APP_ERC20_CA, tokenId)
+        .send({ from: userAddress })
+        .then((res: any) => {
+          console.log(res);
+          // 새로고침.
+          navigate("/deatil/" + tokenId);
+          // window.location.replace("/detail/" + tokenId);
+          console.log("purchase : ", res);
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    } else {
+      alert("잔액이 부족합니다.");
+    }
   };
 
   const openBuyModal = () => {
@@ -198,7 +209,10 @@ const NftDetailInfo = (props: any) => {
                       </>
                     ) : (
                       <>
-                        <button className={styles.card_button} onClick={() => props.setTab("sell")}>
+                        <button
+                          className={styles.card_button}
+                          onClick={() => props.setTab("sell")}
+                        >
                           즉시 판매
                         </button>
                       </>

@@ -1,5 +1,5 @@
 // core
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
 // state
@@ -29,10 +29,13 @@ import TestPage from "./testWeb3/TestPage";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import NFTSale from "./features/nft/NftSaleList";
 import MyMintList from "./features/mint/MyMintList";
+import NetGuide from "routes/NetGuide";
 
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
+  const [isSsafyNet, setIsSsafyNet] = useState<boolean>(false);
   const { pathname } = useLocation();
+  const mainRef = useRef<HTMLDivElement | null>(null);
   const isGame = pathname.startsWith("/game");
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -46,8 +49,11 @@ function App() {
       }
     }
     function handleChainChanged(chainId: any) {
+      console.log("network changed");
       if (chainId !== "0x79f5") {
         window.location.reload();
+      } else {
+        setIsSsafyNet(!isSsafyNet);
       }
     }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
@@ -61,22 +67,15 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [mainNav, setMainNav] = useState<number>(1);
-  const [mainRef, setMainRef] = useState<HTMLDivElement[]>([]);
   return (
     <div className={styles.container}>
-      <Milestone>
+      <Milestone isSsafyNet={isSsafyNet}>
         <>
           <BackgroundCloud />
-          {!isGame && <Navbar mainNav={mainNav} mainRef={mainRef} />}
+          {!isGame && <Navbar mainRef={mainRef} />}
           <div className={styles.content}>
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <Main setMainNav={setMainNav} setMainRef={setMainRef} />
-                }
-              >
+              <Route path="/" element={<Main mainRef={mainRef} />}>
                 <Route index element={<LiveList />} />
                 <Route path="/live" element={<LiveList />} />
                 <Route path="/list" element={<NFTList />} />
@@ -92,10 +91,7 @@ function App() {
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
-              <Route
-                path="/mypage"
-                element={<MyPage account={userAddress} />}
-              />
+              <Route path="/mypage" element={<MyPage />} />
               <Route
                 path="/test"
                 element={
