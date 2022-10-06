@@ -50,18 +50,13 @@ contract DrawToken is ReentrancyGuard{
         }
     }
     require(who == false, "msg.sender is beneficiary");
-
-    // 승인 권한 받은 컨트랙트가 winner에게 1000원 줌
-    uint256 price = 1000; // Checks Effects Interaction Pattern 적용
-    wooToken.transfer(msg.sender, price);
+    
     // 당첨자 목록 추가
     winnerList.push(msg.sender);
-    // 금액 수정
+    // 당첨자 수 수정
     winnerCount = SafeMath.add(winnerCount, 1);
-
     // NFT 소유권 변환
     mintReadmeToken.transferFrom(woo, winner, number);
-
     // 소유 토큰 목록 수정
     mintReadmeToken.removeTokenFromList(winner, woo, number);
 
