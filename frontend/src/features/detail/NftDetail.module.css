@@ -92,10 +92,10 @@
 
 /*----------- 카드 뒷장 ----------*/
 
-/* 카드 뒷장 8분할 */
+/* 카드 뒷장 10분할 */
 .card_contents_back {
   display: grid;
-  grid-template-rows: repeat(8, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   width: 100%;
 }
 
@@ -105,10 +105,19 @@
 
 /* 판매 기간 div */
 .card_contents_back_info:nth-child(1) {
-  grid-row: span 2;
+  grid-row: span 4;
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   place-items: center;
+
+  background-color: #fcf5e9;
+  margin-bottom: 10px;
+}
+
+.card_contents_back_info:nth-child(2) {
+  grid-row: span 4;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
 
   background-color: #fcf5e9;
   margin-bottom: 10px;
@@ -121,7 +130,9 @@
   /* padding: 10px 20px 10px 20px; */
 }
 
+/* 판매 정보 */
 .card_contents_back_info_child:nth-child(1) {
+  grid-row: span 1;
   background-color: #fddf61;
   border-radius: 20px;
   width: 70%;
@@ -129,7 +140,29 @@
 }
 
 .card_contents_back_info_child:nth-child(2) {
-  align-items: center;
+  grid-row: span 2;
+  background-color: white;
+
+  width: 90%;
+  height: 90%;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.card_contents_text1 {
+  border-bottom: 1px solid black;
+}
+
+.card_contents_text2 {
+  font-size: small;
+  text-align: center;
+}
+
+.card_contents_text3 {
+  text-align: center;
+  margin: 5px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 /* 경매 div */
@@ -162,7 +195,7 @@
   padding: 10px 20px 10px 20px;
   margin: 10px;
 
-  font-size: 18px;
+  font-size: 16px;
 
   white-space: nowrap;
   font-family: "NanumSquareRoundB";
@@ -185,6 +218,19 @@ input::-webkit-inner-spin-button {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
+}
+
+.input_place_title {
+  grid-row: span 1;
+  background-color: #fddf61;
+  border-radius: 20px;
+  width: 80%;
+  height: 75%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 /* 라벨, 인풋 1:2 비율로 나눔 */
@@ -288,4 +334,15 @@ input::-webkit-inner-spin-button {
   align-items: center;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.contents_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  place-content: center;
+  place-items: center;
 }

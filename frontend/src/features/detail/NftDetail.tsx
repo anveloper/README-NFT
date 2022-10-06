@@ -57,8 +57,6 @@ const NftDetail = () => {
   }, []);
 
   return (
-    // <div className={styles.sell_background}>
-    //   <BackgroundFlower />
     <div className={styles.detail}>
       <div className={styles.detail_container}>
         <NftDetailCard tokenId={tokenId} nftDetail={nftDetail} nftPrice={nftPrice} nftOwner={nftOwner} />
