@@ -541,6 +541,7 @@
   cursor: pointer;
   color: #ffffff;
   text-shadow: 5px 5px 5px #000000aa;
+  z-index: 1100;
 }
 
 /* WalletAddress */

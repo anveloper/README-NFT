@@ -28,7 +28,9 @@ const Welcome = ({ isSsafyNet }: any) => {
   const [welcomeNav, setWelcomeNav] = useState<number>(1);
   const [welcomeRef, setWelcomeRef] = useState<HTMLDivElement[]>([]);
   const welcomePageRef = useRef<HTMLDivElement | null>(null);
+  const eventRef = useRef<HTMLDivElement | null>(null);
   const storyRef = useRef<HTMLDivElement | null>(null);
+  const nftRef = useRef<HTMLDivElement | null>(null);
   const gameRef = useRef<HTMLDivElement | null>(null);
   const roadmapRef = useRef<HTMLDivElement | null>(null);
   const teamRef = useRef<HTMLDivElement | null>(null);
@@ -67,7 +69,9 @@ const Welcome = ({ isSsafyNet }: any) => {
     const observer = getIntersectionObserver(setWelcomeNav);
 
     const headers = [
+      eventRef.current,
       storyRef.current,
+      nftRef.current,
       gameRef.current,
       roadmapRef.current,
       teamRef.current,
@@ -116,16 +120,20 @@ const Welcome = ({ isSsafyNet }: any) => {
 
       {/* <ParallaxLayer offset={0} speed={-1} factor={1.5}> */}
 
-      <WelcomePageEvent onboarding={onboarding} isSsafyNet={isSsafyNet} />
+      <WelcomePageEvent
+        onboarding={onboarding}
+        isSsafyNet={isSsafyNet}
+        eventRef={eventRef}
+      />
 
-      <WelcomePageOne />
+      <WelcomePageOne storyRef={storyRef} />
 
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={1} speed={-1} factor={1.5}> */}
       {/* <div id="story"> */}
 
-      <WelcomePageTwo storyRef={storyRef} />
+      <WelcomePageTwo nftRef={nftRef} />
 
       {/* </div> */}
       {/* </ParallaxLayer> */}

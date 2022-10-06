@@ -11,7 +11,9 @@ const WelcomePageThree = ({ gameRef }: any) => {
       <h1 className={styles.WelcomeTitleText}>
         게임을 통해 특별한 NFT를 소유하세요!
       </h1>
-      <h4 className={styles.WelcomeDescriptionText}>게임에 관한 설명 텍스트</h4>
+      <h4 className={styles.WelcomeDescriptionText}>
+        제시어를 입력하고 독창적인 나만의 그림을 그리세요!
+      </h4>
 
       <img className={styles.page3_cloud1} src={cloud1} alt="" />
       <img className={styles.page3_cloud2} src={cloud2} alt="" />
