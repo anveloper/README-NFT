@@ -14,19 +14,37 @@ const WelcomeNavbar = ({ welcomeNav, welcomeRef }: WelcomeNavbarProps) => {
       <img className={styles.logo_text_img} src={LogoText} alt="" />
       <div className={styles.WelcomeNavbarLink}>
         <h5
-          style={welcomeNav == 2 ? { color: "#fddf61" } : {}}
+          style={welcomeNav == 0 ? { color: "#fddf61" } : {}}
           className={styles.WelcomeNavbarText}
           onClick={() => {
             welcomeRef[0].scrollIntoView({ behavior: "smooth" });
           }}
         >
+          EVENT
+        </h5>
+        <h5
+          style={welcomeNav == 1 ? { color: "#fddf61" } : {}}
+          className={styles.WelcomeNavbarText}
+          onClick={() => {
+            welcomeRef[1].scrollIntoView({ behavior: "smooth" });
+          }}
+        >
           STORY
+        </h5>
+        <h5
+          style={welcomeNav == 2 ? { color: "#fddf61" } : {}}
+          className={styles.WelcomeNavbarText}
+          onClick={() => {
+            welcomeRef[2].scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          NFT
         </h5>
         <h5
           style={welcomeNav == 3 ? { color: "#fddf61" } : {}}
           className={styles.WelcomeNavbarText}
           onClick={() => {
-            welcomeRef[1].scrollIntoView({ behavior: "smooth" });
+            welcomeRef[3].scrollIntoView({ behavior: "smooth" });
           }}
         >
           GAME
@@ -36,7 +54,7 @@ const WelcomeNavbar = ({ welcomeNav, welcomeRef }: WelcomeNavbarProps) => {
           style={welcomeNav == 4 ? { color: "#fddf61" } : {}}
           className={styles.WelcomeNavbarText}
           onClick={() => {
-            welcomeRef[2].scrollIntoView({ behavior: "smooth" });
+            welcomeRef[4].scrollIntoView({ behavior: "smooth" });
           }}
         >
           ROADMAP
@@ -46,7 +64,7 @@ const WelcomeNavbar = ({ welcomeNav, welcomeRef }: WelcomeNavbarProps) => {
           style={welcomeNav == 5 ? { color: "#fddf61" } : {}}
           className={styles.WelcomeNavbarText}
           onClick={() => {
-            welcomeRef[3].scrollIntoView({ behavior: "smooth" });
+            welcomeRef[5].scrollIntoView({ behavior: "smooth" });
           }}
         >
           TEAM
