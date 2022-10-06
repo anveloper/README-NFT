@@ -9,33 +9,36 @@ interface Props {
   setUnder: any;
 }
 const MainNav = ({ obsNumber, mainRef, under, setUnder }: Props) => {
-  const [mainNav, setMainNav] = useState(obsNumber ?? 1);
   // const { pathname } = useLocation();
   // useEffect(() => {
   //   setMainNav(obsNumber);
   //   console.log(obsNumber);
   //   if (obsNumber > 2) console.log(pathname);
   // }, [obsNumber]);
+  useEffect(() => {
+    console.log(obsNumber);
+    console.log(typeof obsNumber);
+  }, [obsNumber]);
   return (
     <div className={styles.btnGroup}>
       <button
-        className={
-          mainNav === 1 ? `${styles.btn} ${styles.active}` : `${styles.btn}`
+        style={
+          obsNumber == 1 ? { color: "#fff", backgroundColor: "#e56161cc" } : {}
         }
+        className={styles.btn}
         onClick={() => {
           mainRef[0].scrollIntoView({ behavior: "smooth" });
-          setMainNav(1);
         }}
       >
         TOP
       </button>
       <button
-        className={
-          mainNav === 2 ? `${styles.btn} ${styles.active}` : `${styles.btn}`
+        style={
+          obsNumber == 2 ? { color: "#fff", backgroundColor: "#e56161cc" } : {}
         }
+        className={styles.btn}
         onClick={() => {
           mainRef[1].scrollIntoView({ behavior: "smooth" });
-          setMainNav(2);
         }}
       >
         Quiz
@@ -43,10 +46,11 @@ const MainNav = ({ obsNumber, mainRef, under, setUnder }: Props) => {
       <Link to="/live">
         <button
           className={
-            mainNav === 3 ? `${styles.btn} ${styles.active}` : `${styles.btn}`
+            obsNumber == 3 && under === "left"
+              ? `${styles.btn} ${styles.active}`
+              : `${styles.btn}`
           }
           onClick={() => {
-            setMainNav(3);
             setUnder("left");
             mainRef[2].scrollIntoView({ behavior: "smooth" });
           }}
@@ -57,10 +61,11 @@ const MainNav = ({ obsNumber, mainRef, under, setUnder }: Props) => {
       <Link to="/list">
         <button
           className={
-            mainNav === 4 ? `${styles.btn} ${styles.active}` : `${styles.btn}`
+            obsNumber == 3 && under === "right"
+              ? `${styles.btn} ${styles.active}`
+              : `${styles.btn}`
           }
           onClick={() => {
-            setMainNav(4);
             setUnder("right");
             mainRef[2].scrollIntoView({ behavior: "smooth" });
           }}
