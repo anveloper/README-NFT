@@ -8,6 +8,7 @@ import {
   selectIsSSAFY,
   selectUserAddress,
   setIsSSAFY,
+  setIsWelcome,
 } from "./features/auth/authSlice";
 // components
 import Navbar from "./components/nav/Navbar";
@@ -63,6 +64,7 @@ function App() {
       } else if (chainId === "0x5") {
         dispatch(setIsSSAFY(false));
       } else {
+        dispatch(setIsWelcome());
         alert("goeril나 SSAFYNet을 사용해 주세요!");
       }
       window.location.reload();
