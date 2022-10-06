@@ -14,6 +14,8 @@ import { selectIsSSAFY, selectUserAddress } from "../auth/authSlice";
 import styles from "./NftSaleList.module.css";
 import NftSaleListItem from "./NftSaleListItem";
 import tiger from "../../assets/characters/gold_tiger.svg";
+import loadingStyles from "components/loading/Loading.module.css";
+import loadingImg from "assets/loading/loading_page.gif";
 
 interface IMyMintList {
   tokenId: number;
@@ -34,9 +36,12 @@ const NftSaleList = () => {
   const [inputMinPrice, setInputMinPrice] = useState("");
   const [inputMaxPrice, setInputMaxPrice] = useState("");
   const [checkedList, setCheckedList] = useState([]); // 뱃지 리스트
+  const [loading, setLoading] = useState(false);
   const navigator = useNavigate();
   const isSSAFY = useAppSelector(selectIsSSAFY);
+
   const getAllListTokens = async () => {
+    setLoading(true);
     try {
       const response = isSSAFY
         ? await MintReadmeContract.methods.getTotalReadmeToken().call()
@@ -76,8 +81,10 @@ const NftSaleList = () => {
         tmpAllList.push(data);
       }
       setAllList(tmpAllList);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -227,13 +234,29 @@ const NftSaleList = () => {
               </div>
             </div>
           </div>
-          <div>
-            {filteredList.map((nft: IMyMintList, i: number) => {
-              return <NftSaleListItem key={i} nft={nft} />;
-            })}
-          </div>
+          {loading ? (
+            <div className={loadingStyles.loadingPage}>
+              <div className={loadingStyles.loadingItemsCenter}>
+                <img
+                  className={loadingStyles.loadingImg}
+                  src={loadingImg}
+                  alt=""
+                />
+                <h4 className={loadingStyles.loadingText}>
+                  리드미를 불러오는 중이에요!
+                </h4>
+              </div>
+            </div>
+          ) : (
+            <div>
+              {filteredList.map((nft: IMyMintList, i: number) => {
+                return <NftSaleListItem key={i} nft={nft} />;
+              })}
+            </div>
+          )}
         </div>
       </div>
+      <div style={{ height: "50px" }}></div>
     </>
   );
 };
