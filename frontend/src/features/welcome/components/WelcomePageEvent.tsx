@@ -13,7 +13,7 @@ import { selectUserAddress } from "features/auth/authSlice";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "components/loading/LoadingPage";
-const WelcomePageEvent = ({ onboarding, isSsafyNet }: any) => {
+const WelcomePageEvent = ({ onboarding, isSsafyNet, eventRef }: any) => {
   const account = useAppSelector(selectUserAddress);
   const [eventLeft, setEventLeft] = useState(0);
   const navigate = useNavigate();
@@ -96,7 +96,7 @@ const WelcomePageEvent = ({ onboarding, isSsafyNet }: any) => {
   };
 
   return (
-    <div className={styles.welcomePageEvent}>
+    <div className={styles.welcomePageEvent} ref={eventRef}>
       {loading ? (
         <LoadingPage />
       ) : (
