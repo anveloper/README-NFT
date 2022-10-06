@@ -141,7 +141,7 @@ const NftSaleList = () => {
                   id="isOnSale"
                   name="isOnSale"
                   onChange={(e) => {
-                    setIsOnSale(true);
+                    setIsOnSale(!isOnSale);
                   }}
                 />
                 <label htmlFor="isOnSale" className={styles.category_isOnSale_text} />
