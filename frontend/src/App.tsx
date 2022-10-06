@@ -3,7 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation } from "react-router-dom";
 // state
-import { login, selectUserAddress } from "./features/auth/authSlice";
+import {
+  login,
+  selectUserAddress,
+  setIsSSAFY,
+} from "./features/auth/authSlice";
 // components
 import Navbar from "./components/nav/Navbar";
 import BackgroundCloud from "./components/BackgroundCloud";
@@ -51,11 +55,13 @@ function App() {
     }
     function handleChainChanged(chainId: any) {
       console.log("network changed");
-      if (chainId !== "0x79f5") {
-        window.location.reload();
-      } else {
+      if (chainId === "0x79f5") {
+        dispatch(setIsSSAFY(true));
         setIsSsafyNet(!isSsafyNet);
+      } else if (chainId === "0x5") {
+        dispatch(setIsSSAFY(false));
       }
+      window.location.reload();
     }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       window.ethereum.on("accountsChanged", handleNewAccounts);
@@ -93,7 +99,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/game/:roomName" element={<Game />} />
               <Route path="/mypage" element={<MyPage />} />
-              <Route path="/tutorial" element={<Tutorial/>}/>
+              <Route path="/tutorial" element={<Tutorial />} />
               <Route
                 path="/test"
                 element={

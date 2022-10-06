@@ -44,6 +44,7 @@ const Mint: FC = () => {
           author: creator,
           description: sol,
           imageURL: imageURL,
+          image: imageURL,
         };
         const result = await client.add(JSON.stringify(metadata));
         const tokenURI = "https://ipfs.io/ipfs/" + result.path;
