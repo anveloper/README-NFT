@@ -16,7 +16,7 @@
 
 .top_info_text {
   position: absolute;
-  left: 285px;
+  left: 400px;
   top: 30%;
   color: black;
 }
@@ -30,6 +30,12 @@
 .top_info_p {
   font-weight: bold;
   font-size: 24px;
+}
+
+.top_info_img {
+  position: absolute;
+  left: 180px;
+  top: 15%;
 }
 
 .back {
@@ -135,6 +141,7 @@ input[name="inputMax"] {
   cursor: pointer;
   border: none;
   border-radius: 5px;
+  width: 10vw;
 
   padding: 10px 20px 10px 20px;
   margin: 10px;
@@ -145,6 +152,29 @@ input[name="inputMax"] {
   font-family: "NanumSquareRoundB";
 
   background-color: #fcf5e9;
+}
+
+.category_container2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+}
+
+.category_button2 {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  width: 80%;
+  height: 100%;
+  background-color: #fcf5e9;
+  padding: 10px 20px 10px 20px;
+  margin: 10px;
+
+  font-size: 16px;
+
+  white-space: nowrap;
+  font-family: "NanumSquareRoundB";
 }
 
 .category_price_sort {
@@ -207,6 +237,21 @@ input[name="inputMax"] {
   position: relative;
 }
 
+.nftNumber {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 20%;
+  aspect-ratio: 1/1;
+  color: #534d4d;
+  background-image: url("../../assets/template/template_num.svg");
+  background-size: 100% 100%;
+  text-align: center;
+  padding-top: 0.9rem;
+  font-size: 1.4rem;
+  color: white;
+}
+
 /* 이미지 */
 .img {
   width: 89%;
@@ -231,4 +276,9 @@ input:focus::-webkit-input-placeholder,
 textarea:focus::-webkit-input-placeholder {
   /* WebKit browsers */
   color: transparent;
+}
+
+.price_info {
+  display: flex;
+  justify-content: space-between;
 }

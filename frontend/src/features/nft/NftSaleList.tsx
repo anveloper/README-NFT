@@ -8,6 +8,7 @@ import { MintReadmeContract, SaleReadmeContract } from "../../web3Config";
 import { selectUserAddress } from "../auth/authSlice";
 import styles from "./NftSaleList.module.css";
 import NftSaleListItem from "./NftSaleListItem";
+import tiger from "../../assets/characters/gold_tiger.svg";
 
 interface IMyMintList {
   tokenId: number;
@@ -70,6 +71,7 @@ const NftSaleList = () => {
       // 판매중인 리스트
       console.log("전체");
       setFilteredList(allList);
+      console.log(allList);
     } else {
       console.log("조건문");
       let init: IMyMintList[] = [];
@@ -87,16 +89,16 @@ const NftSaleList = () => {
   };
 
   const getDecreasedList = () => {
-    filteredList.sort((a:IMyMintList, b:IMyMintList) : number => Number(b.price) - Number(a.price));
-    console.log(filteredList)
+    filteredList.sort((a: IMyMintList, b: IMyMintList): number => Number(b.price) - Number(a.price));
+    console.log(filteredList);
     setFilteredList([...filteredList]);
-  }
+  };
 
   const getIncreasedList = () => {
-    filteredList.sort((a:IMyMintList, b:IMyMintList) : number => Number(a.price) - Number(b.price));
-    console.log(filteredList)
+    filteredList.sort((a: IMyMintList, b: IMyMintList): number => Number(a.price) - Number(b.price));
+    console.log(filteredList);
     setFilteredList([...filteredList]);
-  }
+  };
 
   const handleInputMinPrice = (e: any) => {
     setInputMinPrice(e.target.value);
@@ -125,6 +127,7 @@ const NftSaleList = () => {
             <div className={styles.top_info_p}>기발한 아이디어의 리드미를 발견했나요?</div>
             <div className={styles.top_info_p}>지금 리드미를 구매해보세요!</div>
           </div>
+          <img className={styles.top_info_img} src={tiger} width={200} alt="" />
         </div>
       </div>
       <div className={styles.back}>
@@ -136,12 +139,13 @@ const NftSaleList = () => {
                 <input
                   type="checkbox"
                   id="isOnSale"
+                  name="isOnSale"
                   onChange={(e) => {
                     setIsOnSale(!isOnSale);
                   }}
                 />
                 <label htmlFor="isOnSale" className={styles.category_isOnSale_text} />
-                <div className={styles.category_isOnSale_text}>판매중</div>
+                <div className={styles.category_isOnSale_text}>판매중 리드미 모아보기</div>
               </div>
             </div>
             <div className={styles.category_container}>
@@ -161,21 +165,16 @@ const NftSaleList = () => {
                 <input type="text" name="inputMin" defaultValue={inputMinPrice} onChange={handleInputMinPrice} placeholder="최저가" />
                 <div className={styles.category_price_range_text}>to</div>
                 <input type="text" name="inputMax" defaultValue={inputMaxPrice} onChange={handleInputMaxPrice} placeholder="최고가" />
+                <button className={styles.category_button} style={{ backgroundColor: "#fddf61" }} onClick={filterData}>
+                  찾기
+                </button>
               </div>
-              <button className={styles.category_button} style={{ backgroundColor: "#fddf61" }} onClick={filterData}>
-                찾기
-              </button>
             </div>
           </div>
-          <div className={styles.contents}>
-            <div className={styles.badge}>
-              <div style={{ marginRight: "10px" }}>설정값</div>
-            </div>
-            <div>
-              {filteredList.map((nft: IMyMintList, i: number) => {
-                return <NftSaleListItem key={i} nft={nft} />;
-              })}
-            </div>
+          <div>
+            {filteredList.map((nft: IMyMintList, i: number) => {
+              return <NftSaleListItem key={i} nft={nft} />;
+            })}
           </div>
         </div>
       </div>
