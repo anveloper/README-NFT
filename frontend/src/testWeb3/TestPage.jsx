@@ -247,6 +247,44 @@ const TestPage = () => {
       setEventLeft(res);
     });
   };
+
+  /* 판매 취소 */
+  const refundToken = async () => {
+    try {
+      console.log("여기 refundsReadmeToken");
+      await SaleReadmeContract.methods
+        .refundsReadmeToken(tokenId)
+        .send({ from: account })
+        .then((res) => {
+          console.log("종료 이후에 판매 취소: ", res);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("refundsReadmeToken 에러.");
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const cancelToken = async () => {
+    try {
+      console.log("여기 cancelReadmeToken");
+      await SaleReadmeContract.methods
+        .cancelReadmeToken(tokenId)
+        .send({ from: account })
+        .then((res) => {
+          console.log("종료 기간 내에 판매 취소: ", res);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("cancelReadmeToken 에러.");
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div style={{ paddingTop: "30px" }}>
       <h2>프라이빗 키 입력</h2>
@@ -377,6 +415,26 @@ const TestPage = () => {
       <button onClick={saleNft}>판매하기</button>
       <h2>판매중인 토큰 목록</h2>
       <button onClick={getOnSale}>조회하기</button>
+      <h2>판매기간 내에 있는 토큰 판매 취소하기</h2>
+      <label htmlFor="tokenId">토큰 Id</label>
+      <input
+        type="text"
+        id="tokenId"
+        onChange={(e) => {
+          setTokenId(e.target.value);
+        }}
+      ></input>
+      <button onClick={cancelToken}>취소하기</button>
+      <h2>판매기간 지난 토큰 판매 취소하기</h2>
+      <label htmlFor="tokenId">토큰 Id</label>
+      <input
+        type="text"
+        id="tokenId"
+        onChange={(e) => {
+          setTokenId(e.target.value);
+        }}
+      ></input>
+      <button onClick={refundToken}>취소하기</button>
       <h2>구매하기</h2>
       <label htmlFor="toBuy">이거 살래</label>
       <input
