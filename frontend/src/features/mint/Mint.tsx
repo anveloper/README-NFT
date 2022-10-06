@@ -51,15 +51,15 @@ const Mint: FC = () => {
         setLoading(true);
         mintReadmeToken(tokenURI, account, answer, sol)
           .then((receipt: any) => {
-            console.log("receipt : ", receipt);
-            console.log(receipt?.events.Mint.returnValues);
-            if (receipt.events?.Mint) {
-              const tokenId = receipt?.events.Mint.returnValues.tokenId;
+            console.log(receipt?.events.returnValues);
+            if (receipt.events?.returnValues) {
+              const tokenId = receipt?.events.returnValues.tokenId;
               dispatch(postProblem({ userAddress: creator, tokenId }));
               dispatch(postProblem({ userAddress: solver, tokenId }));
             }
-            navigate("/list", { replace: true });
+            console.log("receipt : ", receipt);
             setLoading(false);
+            navigate("/list", { replace: true });
           })
           .catch((err: any) => err);
       }
@@ -78,33 +78,31 @@ const Mint: FC = () => {
   }, []);
   return (
     <>
-      {loading ? (
-        <LoadingPage />
-      ) : (
-        <>
-          <NewHelmet
-            title={`${answer} - 민팅하기`}
-            description={`출제자 ${creator}에 의한 리드미-${answer} 문제와 최초 정답자 ${solver}`}
-          />
-          <div className={styles.container}>
-            <div className={styles.mintCard}>
-              <img src={tmpUrl} alt="" />
-              <div className={styles.content}>
-                <div>정답: {answer}</div>
-                <div>만든이: {creator}</div>
-                <div>맞춘이: {solver}</div>
-                <div>임시 URL: {tmpUrl}</div>
-              </div>
-              <div className={styles.btnBox}>
-                <a href={tmpUrl} download>
-                  다운받기
-                </a>
-                <button onClick={handleAddItem}>민팅하기</button>
-              </div>
+      <NewHelmet
+        title={`${answer} - 민팅하기`}
+        description={`출제자 ${creator}에 의한 리드미-${answer} 문제와 최초 정답자 ${solver}`}
+      />
+      <div className={styles.container}>
+        {loading ? (
+          <LoadingPage />
+        ) : (
+          <div className={styles.mintCard}>
+            <img src={tmpUrl} alt="" />
+            <div className={styles.content}>
+              <div>정답: {answer}</div>
+              <div>만든이: {creator}</div>
+              <div>맞춘이: {solver}</div>
+              <div>임시 URL: {tmpUrl}</div>
+            </div>
+            <div className={styles.btnBox}>
+              <a href={tmpUrl} download>
+                다운받기
+              </a>
+              <button onClick={handleAddItem}>민팅하기</button>
             </div>
           </div>
-        </>
-      )}
+        )}
+      </div>
     </>
   );
 };
