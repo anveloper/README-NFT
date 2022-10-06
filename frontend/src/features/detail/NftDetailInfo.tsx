@@ -33,6 +33,7 @@ const NftDetailInfo = (props: any) => {
   });
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [isReady, setIsReady] = useState(false);
+  const [request, setRequest] = useState("");
   const isAvail = useAppSelector(selectIsActive);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -55,7 +56,9 @@ const NftDetailInfo = (props: any) => {
   };
 
   const cancelSale = async () => {
+    // 종료 기간 내에서, 판매되지 않은 리드미 판매 취소하기
     try {
+      console.log("여기 cancelReadmeToken");
       await SaleReadmeContract.methods
         .cancelReadmeToken(tokenId)
         .send({ from: userAddress })
@@ -67,7 +70,27 @@ const NftDetailInfo = (props: any) => {
         })
         .catch((err: any) => {
           console.log(err);
-          alert("에러남.");
+          alert("cancelReadmeToken 에러.");
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const refundSale = async () => {
+    // 종료 기간이 지나고 판매되지 않은 리드미 판매 취소하기
+    try {
+      console.log("여기 refundsReadmeToken");
+      await SaleReadmeContract.methods
+        .refundsReadmeToken(tokenId)
+        .send({ from: userAddress })
+        .then((res: any) => {
+          console.log("종료 이후에 판매 취소: ", res);
+          dispatch(setIsActive(false));
+        })
+        .catch((err: any) => {
+          console.log(err);
+          alert("refundsReadmeToken 에러.");
         });
     } catch (error) {
       console.log(error);
@@ -76,11 +99,9 @@ const NftDetailInfo = (props: any) => {
 
   const buyNftToken = async () => {
     let balance = 0;
-    await SSFContract.methods
-      .balanceOf(userAddress)
-      .call((err: any, res: any) => {
-        balance = res;
-      });
+    await SSFContract.methods.balanceOf(userAddress).call((err: any, res: any) => {
+      balance = res;
+    });
     console.log(balance);
     if (balance >= nftPrice) {
       await SSFContract.methods
@@ -92,7 +113,7 @@ const NftDetailInfo = (props: any) => {
         .catch((err: any) => {
           console.log(err);
         });
-      SaleReadmeContract.methods
+      await SaleReadmeContract.methods
         .purchaseReadmeToken(process.env.REACT_APP_ERC20_CA, tokenId)
         .send({ from: userAddress })
         .then((res: any) => {
@@ -118,8 +139,11 @@ const NftDetailInfo = (props: any) => {
     setBuyModalOpen(false);
   };
 
-  const openCancelModal = () => {
+  const openCancelModal = (req: string) => {
+    console.log("구매 가능?", isAvail);
+    console.log("리퀘스트: ", request);
     setCancelModalOpen(true);
+    setRequest(req);
   };
 
   const closeCancelModal = () => {
@@ -180,7 +204,7 @@ const NftDetailInfo = (props: any) => {
                   <div style={{ fontSize: "18px", marginTop: "5px" }}>❌</div>
                   <div>
                     <div className={styles.card_contents_text3}>판매 상태가 아닙니다.</div>
-                    <div className={styles.card_contents_text3}>소유자가 판매 등록을 완료할 때까지</div>
+                    <div className={styles.card_contents_text3}>소유자가 판매 상태를 관리할 때까지</div>
                     <div className={styles.card_contents_text3}>구매가 제한됩니다.</div>
                   </div>
                 </>
@@ -201,26 +225,33 @@ const NftDetailInfo = (props: any) => {
               <div>
                 {nftOwner.toLowerCase() === userAddress ? (
                   <>
-                    {isAvail && nftPrice !== "0" ? (
+                    {nftPrice !== "0" ? (
                       <>
-                        <button className={styles.card_button} onClick={openCancelModal}>
-                          판매 취소
-                        </button>
+                        {isAvail ? (
+                          <>
+                            <button className={styles.card_button} onClick={() => openCancelModal("cancel")}>
+                              판매 취소 (기간 내)
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button className={styles.card_button} onClick={() => openCancelModal("refund")}>
+                              판매 취소 (기간 외)
+                            </button>
+                          </>
+                        )}
                       </>
                     ) : (
                       <>
-                        <button
-                          className={styles.card_button}
-                          onClick={() => props.setTab("sell")}
-                        >
-                          즉시 판매
+                        <button className={styles.card_button} onClick={() => props.setTab("sell")}>
+                          판매 등록
                         </button>
                       </>
                     )}
                   </>
                 ) : (
                   <>
-                    <button disabled={isAvail} className={styles.card_button} onClick={openBuyModal}>
+                    <button disabled={!isAvail} className={styles.card_button} onClick={openBuyModal}>
                       즉시 구매
                     </button>
                   </>
@@ -255,7 +286,14 @@ const NftDetailInfo = (props: any) => {
           </div>
         </div>
       </Modal>
-      <Modal open={cancelModalOpen} close={closeCancelModal} fn={cancelSale} header="리드미 판매 취소 확인">
+      <Modal
+        open={cancelModalOpen}
+        close={closeCancelModal}
+        fn={() => {
+          request === "cancel" ? cancelSale() : refundSale();
+        }}
+        header="리드미 판매 취소 확인"
+      >
         <div className={styles.modal_info}>
           <div className={styles.modal_info_text2}>
             <div>판매를 취소하시겠습니까?</div>
