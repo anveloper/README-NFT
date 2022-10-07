@@ -42,9 +42,13 @@ const Welcome = ({ isSsafyNet }: any) => {
   const getChainId = async () => {
     let chain = await window.ethereum.request({ method: "eth_chainId" });
     setChainId(chain);
-    if (chain !== "0x79F5") {
+    if (chain !== "0x79f5") {
       console.log(chain);
       dispatch(setIsSSAFY(false));
+    }
+    if (chain === "0x79f5") {
+      console.log(chain);
+      dispatch(setIsSSAFY(true));
     }
   };
   useEffect(() => {
