@@ -42,9 +42,13 @@ const Welcome = ({ isSsafyNet }: any) => {
   const getChainId = async () => {
     let chain = await window.ethereum.request({ method: "eth_chainId" });
     setChainId(chain);
-    if (chain !== "0x79F5") {
+    if (chain !== "0x79f5") {
       console.log(chain);
       dispatch(setIsSSAFY(false));
+    }
+    if (chain === "0x79f5") {
+      console.log(chain);
+      dispatch(setIsSSAFY(true));
     }
   };
   useEffect(() => {
@@ -108,7 +112,7 @@ const Welcome = ({ isSsafyNet }: any) => {
       //   alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
       //   navigate(`/guide`);
       // }
-      if (chainId === "0x79F5" || chainId === "0x5") {
+      if (chainId === "0x79f5" || chainId === "0x5") {
         dispatch(setIsWelcome());
       } else {
         alert("싸피네트워크나 goerli네트워크에 연결해주세요!");

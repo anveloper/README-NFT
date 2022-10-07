@@ -141,7 +141,7 @@ NFT에 관심을 갖고 있으면서 게임을 좋아하는 젊은 세대 및 �
 | ------ | ------------ |
 |[👨🏻‍💻 안성진](https://github.com/anveloper) [📧](mailto:hitedin@gmail.com) | React, TypeScript<br />웹소켓 게임 기능 |
 |[👩🏻‍💻 강정현](https://github.com/taboowiths) [📧](mailto:jhkang9820@gmail.com)   | React, TypeScript<br />웹사이트 전체 디자인 및 UI/UX 기획<br />NFT 상세페이지, 판매 및 구매페이지, 마켓페이지 구성 |
-|[👩🏻‍💻 김주연](https://github.com/Juuyeon) [📧](mailto:jyeon3930@naver.com) |React, TypeScript<br />웹사이트 전체 디자인 및 UI/UX 기획<br />웰컴 페이지 구성|
+|[👩🏻‍💻 김주연](https://github.com/Juuyeon) [📧](mailto:jyeon3930@naver.com) |React, Typescript<br />웹사이트 디자인 <br />웰컴페이지, 마이페이지 구현|
 
 
 
