@@ -1,0 +1,71 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.backArrow {
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  background-color: transparent;
+  border: none;
+  font-size: 1.2rem;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.backArrow:hover {
+  cursor: pointer;
+}
+.slider {
+  width: 80%;
+  height: 80%;
+  background-image: url("../../assets/carousel/carousel_cloud01.svg");
+  background-size: 100% 100%;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+}
+.imgBox {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.img {
+  width: 80%;
+  max-width: 55vw;
+  box-shadow: 5px 5px 5px #00000030;
+}
+.text {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  border: none;
+  font-size: 1.6rem;
+  word-break: break-all;
+  z-index: 1100;
+}
+/* 이게 맞아? */
+.slider > button {
+  transform: scale(2);
+  filter: contrast(0);
+}

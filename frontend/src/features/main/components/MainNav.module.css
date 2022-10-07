@@ -1,0 +1,48 @@
+.btnGroup {
+  position: absolute;
+  bottom: 30%;
+  right: 3%;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  -webkit-animation: opac 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) 0.8s both;
+  animation: opac 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) 0.8s both;
+}
+.btn {
+  margin: 8px;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  font-size: 1.2rem;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #e56161;
+  border: 1px solid #e56161;
+  background-color: transparent;
+}
+.btn:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #e56161cc;
+}
+.active {
+  color: #fff;
+  background-color: #e56161cc;
+}
+
+@-webkit-keyframes opac {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes opac {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,163 @@
+.container {
+  flex-grow: 1;
+  width: 23%;
+  min-width: 210px;
+  max-width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  background: transparent;
+  margin: 1%;
+}
+.sq {
+  width: 100%;
+  aspect-ratio: 12/10;
+  background-image: url("../../assets/template/template_sq.svg");
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.nftNumber {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 20%;
+  aspect-ratio: 1/1;
+  color: #534d4d;
+  background-image: url("../../assets/template/template_num.svg");
+  background-size: 100% 100%;
+  text-align: center;
+  padding-top: 0.9rem;
+  font-size: 1.4rem;
+  color: white;
+}
+.img {
+  width: 89%;
+  aspect-ratio: 12/10;
+  border-radius: 1rem;
+}
+.card {
+  width: 100%;
+  background-color: white;
+  aspect-ratio: 12/11;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.4s;
+  transform-style: preserve-3d;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 5px 5px 5px #00000030;
+}
+.front,
+.back {
+  position: absolute;
+  width: 80%;
+  height: 90%;
+  backface-visibility: hidden;
+}
+.container:hover .card {
+  transform: rotateY(180deg);
+  cursor: pointer;
+}
+.back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2%;
+}
+
+.nftInfo {
+  /* flex-grow: 1; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1%;
+}
+
+.answer {
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  font-size: 1.4rem;
+  padding-top: 0.2rem;
+  text-align: center;
+  min-width: 30px;
+  max-width: 40px;
+  aspect-ratio: 1/1;
+  background-image: url("../../assets/template/template_word.svg");
+  background-size: 100% 100%;
+}
+.back p {
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  font-size: 1.2rem;
+}
+.nftLine {
+  width: 100%;
+}
+.back div {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.shareBtn {
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  font-family: "NanumSquareRound", "Courier New", Courier, monospace;
+  color: #534d4d;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.shareBtn:hover {
+  cursor: pointer;
+}
+
+/* 캐러셀 들어갈 아이템 CSS */
+.carouselContainer {
+  width: 90%;
+  aspect-ratio: 12/11;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 5px 5px 5px #00000030;
+  background-color: white;
+  margin-bottom: 2%;
+}
+.carouselContainer:hover {
+  cursor: pointer;
+}
+.carouselInfo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1%;
+}
+.blank {
+  margin: 4% 0;
+  width: auto;
+  max-width: 40px;
+  aspect-ratio: 1/1;
+}
