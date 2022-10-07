@@ -100,7 +100,7 @@ NFT에 관심을 갖고 있으면서 게임을 좋아하는 젊은 세대 및 �
 
 | 이름 | 개발 내용 |
 | ------ | ------------ |
-|[👨🏻‍💻 안성진](https://github.com/anveloper) [📧](mailto:hitedin@gmail.com)         |              |
+|[👨🏻‍💻 안성진](https://github.com/anveloper) [📧](mailto:hitedin@gmail.com) | 웹소켓 게임 기능 |
 |[👩🏻‍💻 강정현](https://github.com/taboowiths) [📧](mailto:jhkang9820@gmail.com)   |  |
 |[👩🏻‍💻 김주연](https://github.com/Juuyeon) [📧](mailto:jyeon3930@naver.com) 
 
@@ -137,9 +137,9 @@ NFT에 관심을 갖고 있으면서 게임을 좋아하는 젊은 세대 및 �
 
 #### 안성진
 
-> ㅇㅇㅇ
+> Typescript 덕분에 프론트가 더 재미있어졌습니다. 코딩 정말 재미있네요.
 
-
+잔잔하게 재미있는 팀원들을 만나서 즐거웠습니다. 충돌없이 맡은 일에 최선을 다하는 팀원들이 믿음직 스러웠습니다.
 
 #### 강정현
 

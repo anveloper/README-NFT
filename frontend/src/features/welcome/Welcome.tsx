@@ -4,6 +4,7 @@ import MetaMaskOnboarding from "@metamask/onboarding";
 import {
   login,
   selectUserAddress,
+  setIsSSAFY,
   setIsWelcome,
 } from "features/auth/authSlice";
 // component
@@ -20,6 +21,7 @@ import welcomeCharacter from "../../assets/welcome/welcome_character.svg";
 import WelcomeNavbar from "./components/WelcomeNavbar";
 import { getIntersectionObserver } from "./observer";
 import WelcomePageEvent from "./components/WelcomePageEvent";
+import { useNavigate } from "react-router-dom";
 
 const Welcome = ({ isSsafyNet }: any) => {
   const dispatch = useAppDispatch();
@@ -28,16 +30,28 @@ const Welcome = ({ isSsafyNet }: any) => {
   const [welcomeNav, setWelcomeNav] = useState<number>(1);
   const [welcomeRef, setWelcomeRef] = useState<HTMLDivElement[]>([]);
   const welcomePageRef = useRef<HTMLDivElement | null>(null);
+  const eventRef = useRef<HTMLDivElement | null>(null);
   const storyRef = useRef<HTMLDivElement | null>(null);
+  const readmeRef = useRef<HTMLDivElement | null>(null);
   const gameRef = useRef<HTMLDivElement | null>(null);
   const roadmapRef = useRef<HTMLDivElement | null>(null);
   const teamRef = useRef<HTMLDivElement | null>(null);
-
+  const navigate = useNavigate();
+  const [chainId, setChainId] = useState("");
   //메타마스트 onboarding객체 생성
+  const getChainId = async () => {
+    let chain = await window.ethereum.request({ method: "eth_chainId" });
+    setChainId(chain);
+    if (chain !== "0x79F5") {
+      console.log(chain);
+      dispatch(setIsSSAFY(false));
+    }
+  };
   useEffect(() => {
     if (!onboarding.current) {
       onboarding.current = new MetaMaskOnboarding();
     }
+    getChainId();
   }, []);
 
   //접속시 깔려 있으면 account state
@@ -67,7 +81,9 @@ const Welcome = ({ isSsafyNet }: any) => {
     const observer = getIntersectionObserver(setWelcomeNav);
 
     const headers = [
+      eventRef.current,
       storyRef.current,
+      readmeRef.current,
       gameRef.current,
       roadmapRef.current,
       teamRef.current,
@@ -82,14 +98,21 @@ const Welcome = ({ isSsafyNet }: any) => {
   const connectWallet = async () => {
     //메타마스크가 깔려있으면
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x79F5" }],
-        });
+      // try {
+      //   await window.ethereum.request({
+      //     method: "wallet_switchEthereumChain",
+      //     params: [{ chainId: "0x79F5" }],
+      //   });
+      //   dispatch(setIsWelcome());
+      // } catch {
+      //   alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
+      //   navigate(`/guide`);
+      // }
+      if (chainId === "0x79F5" || chainId === "0x5") {
         dispatch(setIsWelcome());
-      } catch {
-        alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
+      } else {
+        alert("싸피네트워크나 goerli네트워크에 연결해주세요!");
+        navigate("/guide");
       }
     } else {
       //안깔려 있으면 설치 유도
@@ -116,16 +139,20 @@ const Welcome = ({ isSsafyNet }: any) => {
 
       {/* <ParallaxLayer offset={0} speed={-1} factor={1.5}> */}
 
-      <WelcomePageEvent onboarding={onboarding} isSsafyNet={isSsafyNet} />
+      <WelcomePageEvent
+        onboarding={onboarding}
+        isSsafyNet={isSsafyNet}
+        eventRef={eventRef}
+      />
 
-      <WelcomePageOne />
+      <WelcomePageOne storyRef={storyRef} />
 
       {/* </ParallaxLayer> */}
 
       {/* <ParallaxLayer offset={1} speed={-1} factor={1.5}> */}
       {/* <div id="story"> */}
 
-      <WelcomePageTwo storyRef={storyRef} />
+      <WelcomePageTwo readmeRef={readmeRef} />
 
       {/* </div> */}
       {/* </ParallaxLayer> */}

@@ -154,7 +154,7 @@ io.on("connection", (socket) => {
   // chat
   socket.on("new_message", (session, msg, done) => {
     console.log(socket["nickname"]);
-    const answer = rooms.get(session)["answer"];
+    const answer = rooms.get(session)?.["answer"];
     if (answer && msg.includes(answer)) {
       if (!rooms.get(session)["solver"]) {
         rooms.get(session)["solver"] = socket["address"];
