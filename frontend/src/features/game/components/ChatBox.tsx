@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 // state
 import {
   selectMessages,
   setMessages,
-  setRoomCnt,
+  // setRoomCnt,
   MSG,
   selectHostUserName,
-  setAnswerLength,
-  setSolvers,
-  setStarted,
-  setParticipants,
+  setIsSoleved,
+  selectIsSolved,
+  // setAnswerLength,
+  // setSolvers,
+  // setStarted,
+  // setParticipants,
 } from "../gameSlice";
 
 import styles from "../Game.module.css";
@@ -25,48 +27,50 @@ const ChatBox = () => {
   const messages = useAppSelector(selectMessages);
   const hostUserName = useAppSelector(selectHostUserName);
   const socket = useContext(SocketContext);
+  const isSolved = useAppSelector(selectIsSolved);
+
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (socket) {
-      // socket.onAny((event) => {
-      //   console.log(`SocketIO Server Event: ${event}`);
-      // }); // 모든 이벤트 리스너
-      socket.on("bye", (user: string, cnt: number, data: string) => {
-        dispatch(setRoomCnt(cnt));
-        dispatch(setParticipants(JSON.parse(data)));
-        dispatch(
-          setMessages(MSG("system", user, `[${user}]님이 퇴장하셨습니다.`))
-        );
-      });
-      socket.on("welcome", (user: string, cnt: number, data: string) => {
-        dispatch(setRoomCnt(cnt));
-        dispatch(setParticipants(JSON.parse(data)));
-        dispatch(
-          setMessages(MSG("system", user, `[${user}]님이 입장하셨습니다.`))
-        );
-      });
-      socket.on("new_message", (user: string, msg: string) => {
-        dispatch(setMessages(MSG("other", user, msg)));
-        // console.log("NewMessage", `${user}: ${msg}`);
-      });
-      socket.on("reset_answer", (cnt) => {
-        socket.emit("reset_answer", hostUserName);
-        dispatch(setAnswerLength(cnt));
-      });
-      socket.on("solve_cnt", (solver, solversCnt, roomCnt) => {
-        dispatch(setSolvers({ solver, solversCnt, roomCnt }));
-      });
-      socket.on("game_start", () => {
-        dispatch(setStarted(true));
-      });
-      socket.on("host_leave", () => {
-        socket.emit("leave_room", hostUserName);
-        navigate("/live");
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  // if (socket) {
+  // socket.onAny((event) => {
+  //   console.log(`SocketIO Server Event: ${event}`);
+  // }); // 모든 이벤트 리스너
+  //   socket.on("bye", (user: string, cnt: number, data: string) => {
+  //     dispatch(setRoomCnt(cnt));
+  //     dispatch(setParticipants(JSON.parse(data)));
+  //     dispatch(
+  //       setMessages(MSG("system", user, `[${user}]님이 퇴장하셨습니다.`))
+  //     );
+  //   });
+  //   socket.on("welcome", (user: string, cnt: number, data: string) => {
+  //     dispatch(setRoomCnt(cnt));
+  //     dispatch(setParticipants(JSON.parse(data)));
+  //     dispatch(
+  //       setMessages(MSG("system", user, `[${user}]님이 입장하셨습니다.`))
+  //     );
+  //   });
+  //   socket.on("new_message", (user: string, msg: string) => {
+  //     dispatch(setMessages(MSG("other", user, msg)));
+  //     // console.log("NewMessage", `${user}: ${msg}`);
+  //   });
+  //   socket.on("reset_answer", (cnt) => {
+  //     socket.emit("reset_answer", hostUserName);
+  //     dispatch(setAnswerLength(cnt));
+  //   });
+  //   socket.on("solve_cnt", (solver, solversCnt, roomCnt) => {
+  //     dispatch(setSolvers({ solver, solversCnt, roomCnt }));
+  //   });
+  //   socket.on("game_start", () => {
+  //     dispatch(setStarted(true));
+  //   });
+  //   socket.on("host_leave", () => {
+  //     socket.emit("leave_room", hostUserName);
+  //     navigate("/live");
+  //   });
+  // }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []); // App.tsx 이동, 두번 출력 로직 제거인데, 주석을 지우진 않겠습니다.
 
   useEffect(() => {
     lastRef.current?.scrollIntoView({
@@ -80,16 +84,27 @@ const ChatBox = () => {
       return;
     }
     if (socket) {
-      socket.emit("new_message", hostUserName, newMessage, (msg: string) => {
-        dispatch(setMessages(MSG("mine", "나", msg)));
-        setNewMessage("");
-        inputRef.current?.focus();
-      });
+      socket.emit(
+        "new_message",
+        hostUserName,
+        newMessage,
+        (msg: string, solved: boolean) => {
+          dispatch(setMessages(MSG("mine", "나", msg)));
+          dispatch(setIsSoleved(solved));
+          setNewMessage("");
+          inputRef.current?.focus();
+        }
+      );
     }
   };
   return (
     <>
-      <div ref={boxRef} className={styles.chatBox}>
+      <div
+        ref={boxRef}
+        className={
+          isSolved ? `${styles.chatBox} ${styles.secret}` : `${styles.chatBox}`
+        }
+      >
         <div className={styles.chatList}>
           {messages.map(
             (m: { name: any; type: any; msg: any }, index: number) => {
@@ -157,6 +172,11 @@ const ChatBox = () => {
                 else return null;
               }
             }
+          )}
+          {isSolved && (
+            <div className={styles.hidden}>
+              <p>정답자 전용 채팅 중 입니다.</p>
+            </div>
           )}
         </div>
       </div>

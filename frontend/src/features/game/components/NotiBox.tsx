@@ -21,7 +21,7 @@ const NotiBox = () => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
+  }, []);
 
   return (
     <div

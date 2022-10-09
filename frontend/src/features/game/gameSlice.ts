@@ -32,6 +32,7 @@ export interface GameState {
   participants: participantConfig[];
   status: "idle" | "loading" | "failed";
   view: number;
+  isSolved: boolean;
 }
 const initChat: ChatConfig[] = [
   { type: "system", name: "관리자", msg: "대화를 시작합니다." },
@@ -62,6 +63,7 @@ const initialState: GameState = {
   participants: [],
   status: "idle",
   view: 0,
+  isSolved: false,
 };
 
 export const gameSlice = createSlice({
@@ -124,6 +126,9 @@ export const gameSlice = createSlice({
     setView: (state, { payload }) => {
       state.view = payload;
     },
+    setIsSoleved: (state, { payload }) => {
+      state.isSolved = payload;
+    },
   },
   extraReducers: {},
 });
@@ -143,6 +148,7 @@ export const {
   setSolver,
   setParticipants,
   setView,
+  setIsSoleved,
 } = gameSlice.actions;
 // selector
 export const selectRoomName = (state: RootState) => state.game.roomName;
@@ -158,6 +164,7 @@ export const selectStarted = (state: RootState) => state.game.started;
 export const selectSolver = (state: RootState) => state.game.solver;
 export const selectSolversCnt = (state: RootState) => state.game.solversCnt;
 export const selectParticipants = (state: RootState) => state.game.participants;
+export const selectIsSolved = (state: RootState) => state.game.isSolved;
 export const MSG = (type: string, name: string, msg: string) => {
   return { type: type, name: name, msg: msg };
 };
