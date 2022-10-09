@@ -16,6 +16,7 @@ import NftSaleListItem from "./NftSaleListItem";
 import tiger from "../../assets/characters/gold_tiger.svg";
 import loadingStyles from "components/loading/Loading.module.css";
 import loadingImg from "assets/loading/loading_page.gif";
+import LoadingPage from "components/loading/LoadingPage";
 
 interface IMyMintList {
   tokenId: number;
@@ -235,18 +236,7 @@ const NftSaleList = () => {
             </div>
           </div>
           {loading ? (
-            <div className={loadingStyles.loadingPage}>
-              <div className={loadingStyles.loadingItemsCenter}>
-                <img
-                  className={loadingStyles.loadingImg}
-                  src={loadingImg}
-                  alt=""
-                />
-                <h4 className={loadingStyles.loadingText}>
-                  리드미를 불러오는 중이에요!
-                </h4>
-              </div>
-            </div>
+            <LoadingPage msg="리드미를 불러오는 중이에요!" />
           ) : (
             <div>
               {filteredList.map((nft: IMyMintList, i: number) => {
