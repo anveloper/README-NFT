@@ -6,7 +6,7 @@ import moment from "moment";
 export interface AuthState {
   userAddress: string;
   userName: string;
-  userAvatar: string;
+  userAvatar: number;
   isWelcome: boolean;
   status: "idle" | "loading" | "success" | "failed";
   isSSAFY: boolean;
@@ -33,7 +33,7 @@ const initialState: AuthState = {
   currentChainId: "",
   userAddress: ``,
   userName: `${actionNicknameRandom} ${animalNicknameRandom}`,
-  userAvatar: `images/${Math.floor(Math.random() * 50 + 1)}.png`,
+  userAvatar: Math.floor(Math.random() * 50),
   isWelcome: true,
   status: "idle",
   isSSAFY: true,

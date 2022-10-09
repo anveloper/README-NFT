@@ -4,6 +4,7 @@ import { useAppSelector } from "../../../app/hooks";
 import cat from "assets/characters/cat.svg";
 import { SSFContract } from "../../../web3Config";
 import { selectUserAvatar, selectUserName } from "../../auth/authSlice";
+import AvatarIMG from "assets/avatar";
 // css
 import styles from "../MyPage.module.css";
 
@@ -13,6 +14,7 @@ interface MyProfileProps {
 
 const MyProfile: FC<MyProfileProps> = ({ account }) => {
   const userAvatar = useAppSelector(selectUserAvatar);
+
   const nickname = useAppSelector(selectUserName);
   const [balance, setBalance] = useState(0);
 
@@ -38,7 +40,11 @@ const MyProfile: FC<MyProfileProps> = ({ account }) => {
   return (
     <div className={styles.MyProfile}>
       <div className={styles.MyProfileImgBox}>
-        <img className={styles.MyProfileImg} src={userAvatar} alt="aa" />
+        <img
+          className={styles.MyProfileImg}
+          src={AvatarIMG[userAvatar]}
+          alt="aa"
+        />
       </div>
 
       <div className={styles.MyProfileTextBox}>
