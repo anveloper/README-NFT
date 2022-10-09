@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import LogoImg from "../../assets/logo_img.svg";
 import LogoText from "../../assets/logo_text.svg";
+import AvatarIMG from "assets/avatar";
 // components
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import {
@@ -12,10 +13,10 @@ import {
   setIsWelcome,
 } from "features/auth/authSlice";
 
-const isDev = process.env.NODE_ENV !== "production";
+// const isDev = process.env.NODE_ENV !== "production";
 
 const Navbar = ({ mainRef }: any) => {
-  const userAddress = useAppSelector(selectUserAddress);
+  // const userAddress = useAppSelector(selectUserAddress);
   const userAvatar = useAppSelector(selectUserAvatar);
   const [modalOpen, setModalOpen] = useState(false);
   const nickname = useAppSelector(selectUserName);
@@ -65,7 +66,7 @@ const Navbar = ({ mainRef }: any) => {
           setModalOpen(!modalOpen);
         }}
       >
-        <img src={userAvatar} alt="" className={styles.avatar} />
+        <img src={AvatarIMG[userAvatar]} alt="" className={styles.avatar} />
         {!modalOpen && <p className={styles.nameTag}>{nickname}</p>}
         <div
           className={
