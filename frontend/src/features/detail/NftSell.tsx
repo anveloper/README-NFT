@@ -1,9 +1,22 @@
 import styles from "./NftDetail.module.css";
 import { useEffect, useState } from "react";
-import { MintReadmeContract, MintReadMeContractGO, SaleReadmeContract, SaleReadmeContractGO } from "../../web3Config";
+import {
+  MintReadmeContract,
+  MintReadMeContractGO,
+  SaleReadmeContract,
+  SaleReadmeContractGO,
+} from "../../web3Config";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { change_date, selectIsSSAFY, selectUserAddress } from "../auth/authSlice";
-import { selectNftDetail, selectNftPrice, selectNftOwner } from "./NftDetailSlice";
+import {
+  change_date,
+  selectIsSSAFY,
+  selectUserAddress,
+} from "../auth/authSlice";
+import {
+  selectNftDetail,
+  selectNftPrice,
+  selectNftOwner,
+} from "./NftDetailSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { truncatedAddress } from "../../features/auth/authSlice";
 import { Modal } from "../../components/modal/Modal";
@@ -94,11 +107,13 @@ const NftSell = (props: any) => {
         <>
           <div className={styles.cards}>
             {approveLoading ? (
-              <LoadingPage />
+              <LoadingPage msg="메타마스크 팝업창의 판매 권한 승인 뒤 판매 정보 입력이 가능합니다." />
             ) : (
               <div className={styles.card_contents_back}>
                 <div className={styles.card_contents_back_info}>
-                  <div className={styles.card_contents_back_info_child}>판매 권한 설정</div>
+                  <div className={styles.card_contents_back_info_child}>
+                    판매 권한 설정
+                  </div>
                   <div>토큰 거래를 위해 판매 권한을 요청해주세요.</div>
                   <div>
                     <button
@@ -106,8 +121,18 @@ const NftSell = (props: any) => {
                       onClick={async () => {
                         setApproveLoading(true);
                         isSSAFY
-                          ? await MintReadmeContract.methods.setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true).send({ from: userAddress })
-                          : await MintReadMeContractGO.methods.setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true).send({ from: userAddress });
+                          ? await MintReadmeContract.methods
+                              .setApprovalForAll(
+                                process.env.REACT_APP_SALEREADMETOKEN_CA,
+                                true
+                              )
+                              .send({ from: userAddress })
+                          : await MintReadMeContractGO.methods
+                              .setApprovalForAll(
+                                process.env.REACT_APP_SALEREADMETOKEN_CA,
+                                true
+                              )
+                              .send({ from: userAddress });
                         setApproveLoading(false);
                       }}
                     >
@@ -117,19 +142,30 @@ const NftSell = (props: any) => {
                 </div>
                 <div className={styles.card_contents_back_info2}>
                   <div className={styles.contents_center}>
-                    <div className={styles.input_place_title}>판매 정보 입력</div>
+                    <div className={styles.input_place_title}>
+                      판매 정보 입력
+                    </div>
                   </div>
                   <div className={styles.input_place}>
                     <p>가격</p>
                     <div className={styles.input_price}>
-                      <input className={styles.input_text} type="number" name="inputPrice" onChange={handleChangePrice} value={inputPrice} />
+                      <input
+                        className={styles.input_text}
+                        type="number"
+                        name="inputPrice"
+                        onChange={handleChangePrice}
+                        value={inputPrice}
+                      />
                       <div>SSF</div>
                     </div>
                   </div>
                   <div className={styles.input_place}>
                     <p>판매 기간</p>
                     <div className={styles.input_price}>
-                      <select className={styles.selectBox} onChange={handleChangePeriod}>
+                      <select
+                        className={styles.selectBox}
+                        onChange={handleChangePeriod}
+                      >
                         <option>기간 선택</option>
                         <option value="1">1시간</option>
                         <option value="12">12시간</option>
@@ -153,9 +189,18 @@ const NftSell = (props: any) => {
             )}
           </div>
 
-          <Modal open={modalOpen} close={closeModal} fn={sellReadmeTokens} header="리드미 판매 확인">
+          <Modal
+            open={modalOpen}
+            close={closeModal}
+            fn={sellReadmeTokens}
+            header="리드미 판매 확인"
+          >
             <div className={styles.modal_container}>
-              <img className={styles.modal_img} src={nftDetail.imageURL} alt="" />
+              <img
+                className={styles.modal_img}
+                src={nftDetail.imageURL}
+                alt=""
+              />
               <div className={styles.modal_info_container}>
                 <div className={styles.modal_info}>
                   <div className={styles.modal_info_text1}>
@@ -179,7 +224,12 @@ const NftSell = (props: any) => {
             </div>
           </Modal>
 
-          <Modal open={modalAlertOpen} close={closeAlertModal} fn={closeAlertModal} header="리드미 판매 등록 오류">
+          <Modal
+            open={modalAlertOpen}
+            close={closeAlertModal}
+            fn={closeAlertModal}
+            header="리드미 판매 등록 오류"
+          >
             <div className={styles.modal_info}>
               <div className={styles.modal_info_text2}>
                 <div>0보다 큰 값을 입력해주세요.</div>
