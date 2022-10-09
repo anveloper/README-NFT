@@ -54,18 +54,18 @@ const Game = () => {
     console.log(socket);
   }, [socket]);
   const handleExit = () => {
-    if (socket) {
-      if (hostUserName === userAddress) {
-        socket.emit(
-          "game_end",
-          hostUserName,
-          (answer: string, solver: string) => {
-            console.log(answer, solver);
-          }
-        );
-      }
-      socket.emit("leave_room", hostUserName);
-    }
+    // if (socket) {
+    //   if (hostUserName === userAddress) {
+    //     socket.emit(
+    //       "game_end",
+    //       hostUserName,
+    //       (answer: string, solver: string) => {
+    //         console.log(answer, solver);
+    //       }
+    //     );
+    //   }
+    //   socket.emit("leave_room", hostUserName);
+    // } // App.tsx 이동, 두번 출력 로직 제거인데, 주석을 지우진 않겠습니다.
     dispatch(resetRoomInfo());
     navigate("/live");
   };

@@ -1,7 +1,7 @@
 // core
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 // state
 import {
   login,
@@ -38,7 +38,23 @@ import MyMintList from "./features/mint/MyMintList";
 import NetGuide from "routes/NetGuide";
 import Tutorial from "features/tutorial/Tutorial";
 
+// socket
+import { SocketContext } from "socketConfig";
+import {
+  MSG,
+  selectHostUserName,
+  setAnswerLength,
+  setIsSoleved,
+  setMessages,
+  setParticipants,
+  setRoomCnt,
+  setSolvers,
+  setStarted,
+} from "features/game/gameSlice";
+
 function App() {
+  const socket = useContext(SocketContext);
+  const hostUserName = useAppSelector(selectHostUserName);
   const userAddress = useAppSelector(selectUserAddress);
   const isSSAFY = useAppSelector(selectIsSSAFY);
   const isWelcome = useAppSelector(selectIsWelcome);
@@ -47,6 +63,7 @@ function App() {
   const mainRef = useRef<HTMLDivElement | null>(null);
   const isGame = pathname.startsWith("/game");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     async function handleNewAccounts() {
       const accounts = await window.ethereum.request({
@@ -84,6 +101,43 @@ function App() {
   useEffect(() => {
     console.log(isSSAFY);
   }, [isSSAFY]);
+
+  useEffect(() => {
+    socket.on("bye", (user: string, cnt: number, data: string) => {
+      dispatch(setRoomCnt(cnt));
+      dispatch(setParticipants(JSON.parse(data)));
+      dispatch(
+        setMessages(MSG("system", user, `[${user}]님이 퇴장하셨습니다.`))
+      );
+    });
+    socket.on("welcome", (user: string, cnt: number, data: string) => {
+      dispatch(setRoomCnt(cnt));
+      dispatch(setParticipants(JSON.parse(data)));
+      dispatch(
+        setMessages(MSG("system", user, `[${user}]님이 입장하셨습니다.`))
+      );
+    });
+    socket.on("new_message", (user: string, msg: string) => {
+      dispatch(setMessages(MSG("other", user, msg)));
+      // console.log("NewMessage", `${user}: ${msg}`);
+    });
+    socket.on("reset_answer", (cnt) => {
+      socket.emit("reset_answer", hostUserName);
+      dispatch(setAnswerLength(cnt));
+      dispatch(setIsSoleved(false));
+    });
+    socket.on("solve_cnt", (solver, solversCnt, roomCnt) => {
+      dispatch(setSolvers({ solver, solversCnt, roomCnt }));
+    });
+    socket.on("game_start", () => {
+      dispatch(setStarted(true));
+    });
+    socket.on("host_leave", () => {
+      socket.emit("leave_room", hostUserName);
+      navigate("/live");
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className={styles.container}>
       <Milestone chainChanged={chainChanged}>
