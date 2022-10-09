@@ -249,8 +249,15 @@
 
   white-space: nowrap;
   font-family: "NanumSquareRoundB";
-
   background-color: #fddf61;
+}
+
+.on {
+  background-color: #fddf61;
+}
+
+.off {
+  background-color: #f2f2f2;
 }
 
 /* --------- 판매 ---------- */
@@ -309,7 +316,7 @@ input::-webkit-inner-spin-button {
 .input_text {
   width: 100%;
   height: 40px;
-  background-color: #fddf61;
+  /* background-color: #fddf61; */
   border: none;
   border-radius: 30px;
   font-weight: bold;
@@ -322,7 +329,7 @@ input::-webkit-inner-spin-button {
 .selectBox {
   width: 100%;
   height: 40px;
-  background-color: #fddf61;
+  /* background-color: #fddf61; */
   border: none;
   border-radius: 30px;
   font-weight: bold;
