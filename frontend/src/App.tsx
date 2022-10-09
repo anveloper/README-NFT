@@ -6,6 +6,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import {
   login,
   selectIsSSAFY,
+  selectIsWelcome,
   selectUserAddress,
   setIsSSAFY,
   setIsWelcome,
@@ -21,7 +22,6 @@ import Mint from "./features/mint/Mint";
 import LiveList from "./features/main/LiveList";
 import NFTList from "./features/main/NFTList";
 import Detail from "./features/detail/NftDetail";
-import Sell from "./features/detail/NftSell";
 import Welcome from "./features/welcome/Welcome";
 import Login from "./features/auth/Login";
 import Game from "./features/game/Game";
@@ -41,7 +41,8 @@ import Tutorial from "features/tutorial/Tutorial";
 function App() {
   const userAddress = useAppSelector(selectUserAddress);
   const isSSAFY = useAppSelector(selectIsSSAFY);
-  const [isSsafyNet, setIsSsafyNet] = useState<boolean>(false);
+  const isWelcome = useAppSelector(selectIsWelcome);
+  const [chainChanged, setChainChanged] = useState<boolean>(false);
   const { pathname } = useLocation();
   const mainRef = useRef<HTMLDivElement | null>(null);
   const isGame = pathname.startsWith("/game");
@@ -58,16 +59,17 @@ function App() {
     }
     function handleChainChanged(chainId: any) {
       console.log("network changed");
+      setChainChanged(!chainChanged);
       if (chainId === "0x79f5") {
         dispatch(setIsSSAFY(true));
-        setIsSsafyNet(!isSsafyNet);
       } else if (chainId === "0x5") {
         dispatch(setIsSSAFY(false));
       } else {
-        dispatch(setIsWelcome());
-        alert("goeril나 SSAFYNet을 사용해 주세요!");
+        if (!isWelcome) {
+          dispatch(setIsWelcome());
+        }
+        // alert("goeril나 SSAFYNet을 사용해 주세요!");
       }
-      window.location.reload();
     }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       window.ethereum.on("accountsChanged", handleNewAccounts);
@@ -84,7 +86,7 @@ function App() {
   }, [isSSAFY]);
   return (
     <div className={styles.container}>
-      <Milestone isSsafyNet={isSsafyNet}>
+      <Milestone chainChanged={chainChanged}>
         <>
           <BackgroundCloud />
           {!isGame && <Navbar mainRef={mainRef} />}
