@@ -6,24 +6,31 @@ import styles from "../Welcome.module.css";
 import dog from "../../../assets/nft-img/1.png";
 import eventSSF from "assets/welcome/eventMoney.svg";
 import eventInfo from "assets/welcome/eventInfo.svg";
-import { DrawTokenContract, web3 } from "web3Config";
-import { useEffect, useState, useRef } from "react";
+import { DrawTokenContract } from "web3Config";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "app/hooks";
-import { selectUserAddress } from "features/auth/authSlice";
+import {
+  selectCurrentChainId,
+  selectIsSSAFY,
+  selectUserAddress,
+} from "features/auth/authSlice";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "components/loading/LoadingPage";
-const WelcomePageEvent = ({ onboarding, isSsafyNet, eventRef }: any) => {
+const WelcomePageEvent = ({ onboarding, eventRef }: any) => {
   const account = useAppSelector(selectUserAddress);
   const [eventLeft, setEventLeft] = useState(0);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const isSSAFY = useAppSelector(selectIsSSAFY);
+  const chainId = useAppSelector(selectCurrentChainId);
   useEffect(() => {
-    DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
-      setEventLeft(res);
-    });
-  }, [isSsafyNet]);
+    if (isSSAFY) {
+      DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
+        setEventLeft(res);
+      });
+    }
+  }, [chainId]);
 
   const isTokenImported = async () => {
     try {
@@ -118,7 +125,7 @@ const WelcomePageEvent = ({ onboarding, isSsafyNet, eventRef }: any) => {
           </div>
 
           <p className={styles.eventText}>
-            {eventLeft
+            {eventLeft && isSSAFY
               ? `${eventLeft}명 남았습니다! 서두르세요!`
               : `먼저 SSAFY 네트워크에 연결해 주세요!`}
           </p>

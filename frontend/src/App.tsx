@@ -1,13 +1,13 @@
 // core
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 // state
 import {
   login,
   selectIsSSAFY,
-  selectIsWelcome,
   selectUserAddress,
+  setCurrentChainId,
   setIsSSAFY,
   setIsWelcome,
 } from "./features/auth/authSlice";
@@ -56,9 +56,6 @@ function App() {
   const socket = useContext(SocketContext);
   const hostUserName = useAppSelector(selectHostUserName);
   const userAddress = useAppSelector(selectUserAddress);
-  const isSSAFY = useAppSelector(selectIsSSAFY);
-  const isWelcome = useAppSelector(selectIsWelcome);
-  const [chainChanged, setChainChanged] = useState<boolean>(false);
   const { pathname } = useLocation();
   const mainRef = useRef<HTMLDivElement | null>(null);
   const isGame = pathname.startsWith("/game");
@@ -72,21 +69,22 @@ function App() {
       if (accounts[0].length > 0) {
         console.log("accountsChaged");
         dispatch(login(accounts[0]));
+        window.location.reload();
       }
     }
     function handleChainChanged(chainId: any) {
       console.log("network changed");
-      setChainChanged(!chainChanged);
+      dispatch(setCurrentChainId(chainId));
       if (chainId === "0x79f5") {
         dispatch(setIsSSAFY(true));
       } else if (chainId === "0x5") {
         dispatch(setIsSSAFY(false));
       } else {
-        if (!isWelcome) {
-          dispatch(setIsWelcome());
-        }
-        // alert("goeril나 SSAFYNet을 사용해 주세요!");
+        dispatch(setIsSSAFY(false));
+        dispatch(setIsWelcome(true));
+        alert("goeril나 SSAFYNet을 사용해 주세요!");
       }
+      window.location.reload();
     }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       window.ethereum.on("accountsChanged", handleNewAccounts);
@@ -96,11 +94,7 @@ function App() {
       window.ethereum.removeListener("accountsChanged", handleNewAccounts);
       window.ethereum.removeListener("chainChanged", handleChainChanged);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    console.log(isSSAFY);
-  }, [isSSAFY]);
 
   useEffect(() => {
     socket.on("bye", (user: string, cnt: number, data: string) => {
@@ -140,7 +134,7 @@ function App() {
   }, []);
   return (
     <div className={styles.container}>
-      <Milestone chainChanged={chainChanged}>
+      <Milestone>
         <>
           <BackgroundCloud />
           {!isGame && <Navbar mainRef={mainRef} />}

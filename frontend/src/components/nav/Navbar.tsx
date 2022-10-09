@@ -78,7 +78,7 @@ const Navbar = ({ mainRef }: any) => {
           <hr className={styles.underLine} />
           <button
             onClick={() => {
-              dispatch(setIsWelcome());
+              dispatch(setIsWelcome(true));
             }}
             className={styles.profileBtn}
           >
@@ -87,7 +87,7 @@ const Navbar = ({ mainRef }: any) => {
           <hr className={styles.underLine} />
           <button
             onClick={() => {
-              dispatch(setIsWelcome());
+              dispatch(setIsWelcome(true));
               navigate("/guide");
             }}
             className={styles.profileBtn}
