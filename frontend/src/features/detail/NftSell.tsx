@@ -36,6 +36,8 @@ const NftSell = (props: any) => {
   const [modalAlertOpen, setModalAlertOpen] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
   const [sellLoading, setSellLoading] = useState(false);
+  const [sellApprove, setSellApprove] = useState(false);
+  const [sellInfo, setSellInfo] = useState(true);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isSSAFY = useAppSelector(selectIsSSAFY);
@@ -117,7 +119,12 @@ const NftSell = (props: any) => {
                   <div>토큰 거래를 위해 판매 권한을 요청해주세요.</div>
                   <div>
                     <button
-                      className={styles.card_button}
+                      className={
+                        sellApprove
+                          ? `${styles.card_button} ${styles.off}`
+                          : `${styles.card_button} ${styles.on}`
+                      }
+                      disabled={sellApprove ? true : false}
                       onClick={async () => {
                         setApproveLoading(true);
                         isSSAFY
@@ -127,13 +134,16 @@ const NftSell = (props: any) => {
                                 true
                               )
                               .send({ from: userAddress })
+                              .then((res: any) => setSellInfo(false))
                           : await MintReadMeContractGO.methods
                               .setApprovalForAll(
                                 process.env.REACT_APP_SALEREADMETOKEN_CA,
                                 true
                               )
-                              .send({ from: userAddress });
+                              .send({ from: userAddress })
+                              .then((res: any) => setSellInfo(false));
                         setApproveLoading(false);
+                        setSellApprove(true);
                       }}
                     >
                       판매 권한 요청
@@ -150,11 +160,16 @@ const NftSell = (props: any) => {
                     <p>가격</p>
                     <div className={styles.input_price}>
                       <input
-                        className={styles.input_text}
+                        className={
+                          sellInfo
+                            ? `${styles.input_text} ${styles.off}`
+                            : `${styles.input_text} ${styles.on}`
+                        }
                         type="number"
                         name="inputPrice"
                         onChange={handleChangePrice}
                         value={inputPrice}
+                        disabled={sellInfo ? true : false}
                       />
                       <div>SSF</div>
                     </div>
@@ -163,8 +178,13 @@ const NftSell = (props: any) => {
                     <p>판매 기간</p>
                     <div className={styles.input_price}>
                       <select
-                        className={styles.selectBox}
+                        className={
+                          sellInfo
+                            ? `${styles.selectBox} ${styles.off}`
+                            : `${styles.selectBox} ${styles.on}`
+                        }
                         onChange={handleChangePeriod}
+                        disabled={sellInfo ? true : false}
                       >
                         <option>기간 선택</option>
                         <option value="1">1시간</option>
@@ -180,7 +200,15 @@ const NftSell = (props: any) => {
                     <button className={styles.card_button} onClick={moveToBack}>
                       이전
                     </button>
-                    <button className={styles.card_button} onClick={openModal}>
+                    <button
+                      className={
+                        sellInfo
+                          ? `${styles.card_button} ${styles.off}`
+                          : `${styles.card_button} ${styles.on}`
+                      }
+                      onClick={openModal}
+                      disabled={sellInfo ? true : false}
+                    >
                       판매 등록
                     </button>
                   </div>
