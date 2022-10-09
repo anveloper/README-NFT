@@ -184,7 +184,7 @@ io.on("connection", (socket) => {
         .to("solvers::" + session)
         .emit("new_message", "익명의 정답자", msg);
     }
-    done(msg);
+    done(msg, socket["solved"]);
   });
   socket.on("set_answer", (session, answer, done) => {
     rooms.get(session)["started"] = false;

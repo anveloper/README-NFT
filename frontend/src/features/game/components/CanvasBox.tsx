@@ -186,7 +186,7 @@ const CanvasBox = () => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
+  }, []);
 
   // =============== file
   const [fileName, setFileName] = useState("");

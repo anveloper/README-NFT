@@ -40,7 +40,7 @@ const TimerBox = () => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
+  }, []);
 
   const handleTimerStart = () => {
     if (socket && userAddress === hostUserName) {
