@@ -9,9 +9,9 @@ const LoadingPage = (props: any) => {
       <div className={styles.loadingItemsCenter}>
         <img className={styles.loadingImg} src={loadingImg} alt="" />
 
-        {props.msg.split("\n").map((line: any) => {
+        {props.msg.split("\n").map((line: any, index: number) => {
           return (
-            <h4 className={styles.loadingText}>
+            <h4 className={styles.loadingText} key={index}>
               {line}
               <br />
             </h4>
