@@ -103,7 +103,7 @@ const Main = ({ mainRef }: any) => {
   }, []);
 
   return (
-    <div ref={mainRef}>
+    <div ref={mainRef} className={styles.mainContainer}>
       <NewHelmet
         title="리드미 & NFT"
         description="README 게임 라이브 목록 및 NFT 목록을 보여줍니다."

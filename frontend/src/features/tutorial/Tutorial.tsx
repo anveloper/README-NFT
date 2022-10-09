@@ -90,8 +90,8 @@ const Tutorial = () => {
           navigate("/");
         }}
       >
-        <RiArrowGoBackLine />
         <p>돌아가기</p>
+        <RiArrowGoBackLine />
       </button>
       <Slider className={styles.slider} {...setting}>
         {images.map((item: any, i: number) => {

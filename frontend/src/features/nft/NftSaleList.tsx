@@ -1,7 +1,7 @@
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { current } from "@reduxjs/toolkit";
 import axios from "axios";
-import { result } from "lodash";
-import React, { useCallback, useEffect, useState } from "react";
+import { result, throttle } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import {
@@ -38,6 +38,7 @@ const NftSaleList = () => {
   const [inputMaxPrice, setInputMaxPrice] = useState("");
   const [checkedList, setCheckedList] = useState([]); // 뱃지 리스트
   const [loading, setLoading] = useState(false);
+  const [hideInfo, setHideInfo] = useState(false);
   const navigator = useNavigate();
   const isSSAFY = useAppSelector(selectIsSSAFY);
 
@@ -83,6 +84,7 @@ const NftSaleList = () => {
       }
       setAllList(tmpAllList);
       setLoading(false);
+      setHideInfo(true);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -151,10 +153,13 @@ const NftSaleList = () => {
   useEffect(() => {
     filterData();
   }, [allList]);
-
   return (
-    <>
-      <div className={styles.back}>
+    <div className={styles.saleContainer}>
+      <div
+        className={
+          hideInfo ? `${styles.back} ${styles.hideInfo}` : `${styles.back}`
+        }
+      >
         <div className={styles.top_info}>
           {/* <img src={market_back} alt="" /> */}
           <div className={styles.top_info_text}>
@@ -238,7 +243,7 @@ const NftSaleList = () => {
           {loading ? (
             <LoadingPage msg="리드미를 불러오는 중이에요!" />
           ) : (
-            <div>
+            <div className={styles.nftListContainer}>
               {filteredList.map((nft: IMyMintList, i: number) => {
                 return <NftSaleListItem key={i} nft={nft} />;
               })}
@@ -246,8 +251,8 @@ const NftSaleList = () => {
           )}
         </div>
       </div>
-      <div style={{ height: "50px" }}></div>
-    </>
+      {/* <div style={{ height: "50px" }}></div> */}
+    </div>
   );
 };
 
