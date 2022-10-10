@@ -131,39 +131,23 @@ const NftDetailModal = (props: any) => {
                   onChange={onChange}
                   value={inputAnswer}
                 />
-                <button
-                  className={styles.input_button}
-                  onClick={() => checkAnswer(inputAnswer)}
-                >
+                <button className={styles.input_button} onClick={() => checkAnswer(inputAnswer)}>
                   제출
                 </button>
               </div>
               <div className={styles.result_msg}>
-                {infoMsg && (
-                  <p
-                    className={
-                      isAnswer
-                        ? `${styles.result_msg_answer}`
-                        : `${styles.result_msg_wrong}`
-                    }
-                  >
-                    {infoMsg}
-                  </p>
-                )}
+                {infoMsg && <p className={isAnswer ? `${styles.result_msg_answer}` : `${styles.result_msg_wrong}`}>{infoMsg}</p>}
               </div>
             </div>
 
             <div className={styles.card_buttons}>
-              <button
-                className={styles.card_button_on}
-                onClick={() => moveToDetail(tokenId)}
-              >
+              <button className={styles.card_button_on} onClick={() => moveToDetail(tokenId)}>
                 <span>자세히 보기</span>
                 <p className={styles.arrow_box}>정답을 확인할 수 있어요!</p>
               </button>
 
               <button
-                className={styles.card_button_on}
+                className={likeButtonText === "찜하기" ? `${styles.card_button_like}` : `${styles.card_button_like_cancel}`}
                 onClick={() => likeNFT(parseInt(tokenId))}
               >
                 {likeButtonText}
