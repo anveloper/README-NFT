@@ -71,6 +71,7 @@ const NftDetailInfo = (props: any) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSSAFY = useAppSelector(selectIsSSAFY);
+
   const getTimeInfo = async () => {
     setCountDownLoading(true);
     const response = isSSAFY
@@ -444,6 +445,11 @@ const NftDetailInfo = (props: any) => {
                                       src={v.imageURL}
                                       alt=""
                                       key={i}
+                                      onClick={() => {
+                                        window.location.replace(
+                                          "/detail/" + v.readmeTokenId
+                                        );
+                                      }}
                                     />
                                   )}
                                 </>
