@@ -142,6 +142,7 @@ function App() {
     });
     socket.on("host_leave", () => {
       socket.emit("leave_room", hostUserName);
+      alert("호스트에 의해 게임이 종료되었습니다.");
       navigate("/live");
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
