@@ -1,15 +1,10 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
 import { current } from "@reduxjs/toolkit";
 import axios from "axios";
-import { result, throttle } from "lodash";
+import { result } from "lodash";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
-import {
-  MintReadmeContract,
-  MintReadMeContractGO,
-  SaleReadmeContract,
-  SaleReadmeContractGO,
-} from "../../web3Config";
+import { MintReadmeContract, MintReadMeContractGO, SaleReadmeContract, SaleReadmeContractGO } from "../../web3Config";
 import { selectIsSSAFY, selectUserAddress } from "../auth/authSlice";
 import styles from "./NftSaleList.module.css";
 import NftSaleListItem from "./NftSaleListItem";
@@ -38,7 +33,7 @@ const NftSaleList = () => {
   const [inputMaxPrice, setInputMaxPrice] = useState("");
   const [checkedList, setCheckedList] = useState([]); // 뱃지 리스트
   const [loading, setLoading] = useState(false);
-  const [hideInfo, setHideInfo] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigator = useNavigate();
   const isSSAFY = useAppSelector(selectIsSSAFY);
 
@@ -49,20 +44,42 @@ const NftSaleList = () => {
         ? await MintReadmeContract.methods.getTotalReadmeToken().call()
         : await MintReadMeContractGO.methods.getTotalReadmeToken().call();
       const tmpAllList: IMyMintList[] = [];
-      // const tmpSaleList: IMyMintList[] = [];
-      for (let i = 0; i < response.length; i++) {
-        const tokenUrl = isSSAFY
-          ? await MintReadmeContract.methods.tokenURI(response[i]).call()
-          : await MintReadMeContractGO.methods.tokenURI(response[i]).call();
+      const tmpSaleList: IMyMintList[] = [];
+      // for (let i = 0; i < response.length; i++) {
+      //   const tokenUrl = isSSAFY
+      //     ? await MintReadmeContract.methods.tokenURI(response[i]).call()
+      //     : await MintReadMeContractGO.methods.tokenURI(response[i]).call();
+      //   const nftPrice = isSSAFY
+      //     ? await SaleReadmeContract.methods.getReadmeTokenPrice(response[i]).call()
+      //     : await SaleReadmeContractGO.methods.getReadmeTokenPrice(response[i]).call();
+      //   const data: IMyMintList = {
+      //     tokenId: response[i],
+      //     fileName: "",
+      //     name: "",
+      //     author: "",
+      //     description: "",
+      //     imageURL: "",
+      //     onSale: false,
+      //     price: "",
+      //   };
+      //   await axios(tokenUrl).then((res: any) => {
+      //     data.fileName = res.data.fileName;
+      //     data.name = res.data.name;
+      //     data.author = res.data.author;
+      //     data.description = res.data.description;
+      //     data.imageURL = res.data.imageURL;
+      //     data.onSale = nftPrice === "0" ? false : true; // false -> 미판매, true -> 판매
+      //     data.price = nftPrice;
+      //   });
+      //   tmpAllList.push(data);
+      // }
+      const promises = response.map(async (e: any) => {
+        const tokenUrl = isSSAFY ? await MintReadmeContract.methods.tokenURI(e).call() : await MintReadMeContractGO.methods.tokenURI(e).call();
         const nftPrice = isSSAFY
-          ? await SaleReadmeContract.methods
-              .getReadmeTokenPrice(response[i])
-              .call()
-          : await SaleReadmeContractGO.methods
-              .getReadmeTokenPrice(response[i])
-              .call();
+          ? await SaleReadmeContract.methods.getReadmeTokenPrice(e).call()
+          : await SaleReadmeContractGO.methods.getReadmeTokenPrice(e).call();
         const data: IMyMintList = {
-          tokenId: response[i],
+          tokenId: e,
           fileName: "",
           name: "",
           author: "",
@@ -80,11 +97,12 @@ const NftSaleList = () => {
           data.onSale = nftPrice === "0" ? false : true; // false -> 미판매, true -> 판매
           data.price = nftPrice;
         });
-        tmpAllList.push(data);
-      }
-      setAllList(tmpAllList);
+        return data;
+      });
+      const results = await Promise.all(promises);
+
+      setAllList(results);
       setLoading(false);
-      setHideInfo(true);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -96,20 +114,13 @@ const NftSaleList = () => {
       // 판매중인 리스트
       console.log("전체");
       setFilteredList(allList);
-      console.log(allList);
     } else {
       console.log("조건문");
       let init: IMyMintList[] = [];
       const result = allList.reduce((acc, cur) => {
         const saleCondition = isOnSale ? parseInt(cur.price) !== 0 : true;
-        const priceMinCondition =
-          inputMinPrice !== ""
-            ? parseInt(cur.price) >= Number(inputMinPrice)
-            : true;
-        const priceMaxCondition =
-          inputMaxPrice !== ""
-            ? parseInt(cur.price) <= Number(inputMaxPrice)
-            : true;
+        const priceMinCondition = inputMinPrice !== "" ? parseInt(cur.price) >= Number(inputMinPrice) : true;
+        const priceMaxCondition = inputMaxPrice !== "" ? parseInt(cur.price) <= Number(inputMaxPrice) : true;
         if (saleCondition && priceMinCondition && priceMaxCondition) {
           acc.push(cur);
         }
@@ -120,19 +131,13 @@ const NftSaleList = () => {
   };
 
   const getDecreasedList = () => {
-    filteredList.sort(
-      (a: IMyMintList, b: IMyMintList): number =>
-        Number(b.price) - Number(a.price)
-    );
+    filteredList.sort((a: IMyMintList, b: IMyMintList): number => Number(b.price) - Number(a.price));
     console.log(filteredList);
     setFilteredList([...filteredList]);
   };
 
   const getIncreasedList = () => {
-    filteredList.sort(
-      (a: IMyMintList, b: IMyMintList): number =>
-        Number(a.price) - Number(b.price)
-    );
+    filteredList.sort((a: IMyMintList, b: IMyMintList): number => Number(a.price) - Number(b.price));
     console.log(filteredList);
     setFilteredList([...filteredList]);
   };
@@ -153,20 +158,15 @@ const NftSaleList = () => {
   useEffect(() => {
     filterData();
   }, [allList]);
+
   return (
-    <div className={styles.saleContainer}>
-      <div
-        className={
-          hideInfo ? `${styles.back} ${styles.hideInfo}` : `${styles.back}`
-        }
-      >
+    <>
+      <div className={styles.back}>
         <div className={styles.top_info}>
           {/* <img src={market_back} alt="" /> */}
           <div className={styles.top_info_text}>
             <div className={styles.top_info_h2}>리드미 마켓</div>
-            <div className={styles.top_info_p}>
-              기발한 아이디어의 리드미를 발견했나요?
-            </div>
+            <div className={styles.top_info_p}>기발한 아이디어의 리드미를 발견했나요?</div>
             <div className={styles.top_info_p}>지금 리드미를 구매해보세요!</div>
           </div>
           <img className={styles.top_info_img} src={tiger} width={200} alt="" />
@@ -176,7 +176,9 @@ const NftSaleList = () => {
         <div className={styles.container}>
           <div className={styles.contents}>
             <div className={styles.category_container}>
-              <div className={styles.category_title}>판매 상태</div>
+              <div className={styles.category_title} onClick={() => setMenuOpen((menuOpen) => !menuOpen)}>
+                판매 상태
+              </div>
               <div className={styles.category_isOnSale}>
                 <input
                   type="checkbox"
@@ -186,28 +188,17 @@ const NftSaleList = () => {
                     setIsOnSale(!isOnSale);
                   }}
                 />
-                <label
-                  htmlFor="isOnSale"
-                  className={styles.category_isOnSale_text}
-                />
-                <div className={styles.category_isOnSale_text}>
-                  판매중 리드미 모아보기
-                </div>
+                <label htmlFor="isOnSale" className={styles.category_isOnSale_text} />
+                <div className={styles.category_isOnSale_text}>판매중 리드미 모아보기</div>
               </div>
             </div>
             <div className={styles.category_container}>
               <div className={styles.category_title}>가격 정렬</div>
               <div className={styles.category_price_sort}>
-                <button
-                  className={styles.category_button}
-                  onClick={getDecreasedList}
-                >
+                <button className={styles.category_button} onClick={getDecreasedList}>
                   가격 높은 순
                 </button>
-                <button
-                  className={styles.category_button}
-                  onClick={getIncreasedList}
-                >
+                <button className={styles.category_button} onClick={getIncreasedList}>
                   가격 낮은 순
                 </button>
               </div>
@@ -215,26 +206,10 @@ const NftSaleList = () => {
             <div className={styles.category_container}>
               <div className={styles.category_title}>가격대 찾기</div>
               <div className={styles.category_price_range}>
-                <input
-                  type="text"
-                  name="inputMin"
-                  defaultValue={inputMinPrice}
-                  onChange={handleInputMinPrice}
-                  placeholder="최저가"
-                />
+                <input type="text" name="inputMin" defaultValue={inputMinPrice} onChange={handleInputMinPrice} placeholder="최저가" />
                 <div className={styles.category_price_range_text}>to</div>
-                <input
-                  type="text"
-                  name="inputMax"
-                  defaultValue={inputMaxPrice}
-                  onChange={handleInputMaxPrice}
-                  placeholder="최고가"
-                />
-                <button
-                  className={styles.category_button}
-                  style={{ backgroundColor: "#fddf61" }}
-                  onClick={filterData}
-                >
+                <input type="text" name="inputMax" defaultValue={inputMaxPrice} onChange={handleInputMaxPrice} placeholder="최고가" />
+                <button className={styles.category_button} style={{ backgroundColor: "#fddf61" }} onClick={filterData}>
                   찾기
                 </button>
               </div>
@@ -243,7 +218,7 @@ const NftSaleList = () => {
           {loading ? (
             <LoadingPage msg="리드미를 불러오는 중이에요!" />
           ) : (
-            <div className={styles.nftListContainer}>
+            <div>
               {filteredList.map((nft: IMyMintList, i: number) => {
                 return <NftSaleListItem key={i} nft={nft} />;
               })}
@@ -251,8 +226,8 @@ const NftSaleList = () => {
           )}
         </div>
       </div>
-      {/* <div style={{ height: "50px" }}></div> */}
-    </div>
+      <div style={{ height: "50px" }}></div>
+    </>
   );
 };
 
