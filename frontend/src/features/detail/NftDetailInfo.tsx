@@ -50,6 +50,7 @@ const NftDetailInfo = (props: any) => {
   const userAddress = useAppSelector(selectUserAddress);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [completeModalOpen, setCompleteModalOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(Object);
   const [nftEndTime, setNftEndTime] = useState<nftTime>({
     year: 0,
@@ -285,7 +286,7 @@ const NftDetailInfo = (props: any) => {
             .then((res: any) => {
               console.log(res);
               // 새로고침.
-              navigate("/mypage");
+              // navigate("/mypage");
               // window.location.replace("/detail/" + tokenId);
               console.log("purchase : ", res);
             })
@@ -298,7 +299,7 @@ const NftDetailInfo = (props: any) => {
             .then((res: any) => {
               console.log(res);
               // 새로고침.
-              navigate("/deatil/" + tokenId);
+              // navigate("/deatil/" + tokenId);
               // window.location.replace("/detail/" + tokenId);
               console.log("purchase : ", res);
             })
@@ -306,6 +307,8 @@ const NftDetailInfo = (props: any) => {
               console.log(err);
             });
       setLoading(false);
+      setBuyModalOpen(false);
+      openCompleteModal();
     } else {
       alert("잔액이 부족합니다.");
       setLoading(false);
@@ -329,6 +332,10 @@ const NftDetailInfo = (props: any) => {
 
   const closeCancelModal = () => {
     setCancelModalOpen(false);
+  };
+
+  const openCompleteModal = () => {
+    setCompleteModalOpen(true);
   };
 
   const moveToBack = () => {
@@ -595,6 +602,22 @@ const NftDetailInfo = (props: any) => {
                 </>
               )}
             </div>
+          </Modal>
+          <Modal
+            open={completeModalOpen}
+            close={() => {
+              navigate("/");
+              setCompleteModalOpen(false);
+            }}
+            fn={() => {
+              navigate("/mypage");
+              setCompleteModalOpen(false);
+            }}
+            header="리드미 구매 완료"
+            cancel="메인"
+            confirm="마이페이지"
+          >
+            <div>리드미 구매가 완료되었습니다!</div>
           </Modal>
         </>
       )}
