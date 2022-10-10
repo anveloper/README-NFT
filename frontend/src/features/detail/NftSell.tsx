@@ -109,7 +109,13 @@ const NftSell = (props: any) => {
         <>
           <div className={styles.cards}>
             {approveLoading ? (
-              <LoadingPage msg="메타마스크 팝업창의 판매 권한 승인 뒤 판매 정보 입력이 가능합니다." />
+              <LoadingPage
+                msg={[
+                  "메타마스크 팝업창의 판매 권한 승인 뒤",
+                  <br />,
+                  "판매 정보 입력이 가능합니다.",
+                ]}
+              />
             ) : (
               <div className={styles.card_contents_back}>
                 <div className={styles.card_contents_back_info}>
@@ -135,13 +141,15 @@ const NftSell = (props: any) => {
                               )
                               .send({ from: userAddress })
                               .then((res: any) => setSellInfo(false))
+                              .catch((err: any) => setApproveLoading(false))
                           : await MintReadMeContractGO.methods
                               .setApprovalForAll(
                                 process.env.REACT_APP_SALEREADMETOKEN_CA,
                                 true
                               )
                               .send({ from: userAddress })
-                              .then((res: any) => setSellInfo(false));
+                              .then((res: any) => setSellInfo(false))
+                              .catch((err: any) => setApproveLoading(false));
                         setApproveLoading(false);
                         setSellApprove(true);
                       }}
