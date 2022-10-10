@@ -8,15 +8,7 @@ const LoadingPage = (props: any) => {
     <div className={styles.loadingPage}>
       <div className={styles.loadingItemsCenter}>
         <img className={styles.loadingImg} src={loadingImg} alt="" />
-
-        {props.msg.split("\n").map((line: any, index: number) => {
-          return (
-            <h4 className={styles.loadingText} key={index}>
-              {line}
-              <br />
-            </h4>
-          );
-        })}
+        <h4 className={styles.loadingText}>{props.msg}</h4>
       </div>
     </div>
   );
