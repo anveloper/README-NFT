@@ -43,36 +43,6 @@ const NftSaleList = () => {
       const response = isSSAFY
         ? await MintReadmeContract.methods.getTotalReadmeToken().call()
         : await MintReadMeContractGO.methods.getTotalReadmeToken().call();
-      const tmpAllList: IMyMintList[] = [];
-      const tmpSaleList: IMyMintList[] = [];
-      // for (let i = 0; i < response.length; i++) {
-      //   const tokenUrl = isSSAFY
-      //     ? await MintReadmeContract.methods.tokenURI(response[i]).call()
-      //     : await MintReadMeContractGO.methods.tokenURI(response[i]).call();
-      //   const nftPrice = isSSAFY
-      //     ? await SaleReadmeContract.methods.getReadmeTokenPrice(response[i]).call()
-      //     : await SaleReadmeContractGO.methods.getReadmeTokenPrice(response[i]).call();
-      //   const data: IMyMintList = {
-      //     tokenId: response[i],
-      //     fileName: "",
-      //     name: "",
-      //     author: "",
-      //     description: "",
-      //     imageURL: "",
-      //     onSale: false,
-      //     price: "",
-      //   };
-      //   await axios(tokenUrl).then((res: any) => {
-      //     data.fileName = res.data.fileName;
-      //     data.name = res.data.name;
-      //     data.author = res.data.author;
-      //     data.description = res.data.description;
-      //     data.imageURL = res.data.imageURL;
-      //     data.onSale = nftPrice === "0" ? false : true; // false -> 미판매, true -> 판매
-      //     data.price = nftPrice;
-      //   });
-      //   tmpAllList.push(data);
-      // }
       const promises = response.map(async (e: any) => {
         const tokenUrl = isSSAFY ? await MintReadmeContract.methods.tokenURI(e).call() : await MintReadMeContractGO.methods.tokenURI(e).call();
         const nftPrice = isSSAFY
