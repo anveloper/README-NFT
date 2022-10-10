@@ -6,6 +6,22 @@
   font-family: "IM_Hyemin-Bold";
 }
 
+.backArrow {
+  font-family: "IM_Hyemin-Bold", "Courier New", Courier, monospace;
+  color: #534d4d;
+  background-color: transparent;
+  border: none;
+  font-size: 1.2rem;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
 .guidebook {
   position: absolute;
   top: 50%;

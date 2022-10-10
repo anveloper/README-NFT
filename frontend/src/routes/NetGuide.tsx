@@ -12,6 +12,7 @@ import copyIcon from "assets/guide/copy.svg";
 
 import Slider from "react-slick";
 import { useState } from "react";
+import { RiArrowGoBackLine } from "react-icons/ri";
 const NetGuide = () => {
   const navigate = useNavigate();
   const setting = {
@@ -32,6 +33,15 @@ const NetGuide = () => {
 
   return (
     <div className={styles.NetGuide}>
+      <button
+        className={styles.backArrow}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <p>돌아가기</p>
+        <RiArrowGoBackLine />
+      </button>
       <img className={styles.guidebook} src={guidebook} alt="" />
       <Slider className={styles.slider} {...setting}>
         <div className={styles.sliderDiv}>
