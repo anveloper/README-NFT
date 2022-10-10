@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Modal.module.css";
 
 export const Modal = (props: any) => {
-  const { open, close, header, fn } = props;
+  const { open, close, header, fn, cancel, confirm } = props;
 
   return (
     <div
@@ -21,14 +21,19 @@ export const Modal = (props: any) => {
           <main>{props.children}</main>
           <footer>
             <button className={styles.clBtn} onClick={close}>
-              취소
+              {cancel}
             </button>
             <button className={styles.scBtn} onClick={fn}>
-              확인
+              {confirm}
             </button>
           </footer>
         </section>
       ) : null}
     </div>
   );
+};
+
+Modal.defaultProps = {
+  cancel: "취소",
+  confirm: "확인",
 };
