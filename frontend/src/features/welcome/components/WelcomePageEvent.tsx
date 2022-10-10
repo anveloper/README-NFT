@@ -69,6 +69,7 @@ const WelcomePageEvent = ({ onboarding, eventRef }: any) => {
         setLoading(false);
         alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
         navigate(`/guide`);
+        return;
       }
       try {
         await DrawTokenContract.methods
