@@ -61,6 +61,7 @@ function App() {
   const isGame = pathname.startsWith("/game");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  //chain Id, account 변화 감지
   useEffect(() => {
     async function handleNewAccounts() {
       const accounts = await window.ethereum.request({
@@ -94,6 +95,19 @@ function App() {
       window.ethereum.removeListener("accountsChanged", handleNewAccounts);
       window.ethereum.removeListener("chainChanged", handleChainChanged);
     };
+  }, []);
+
+  useEffect(() => {
+    const checkNetwork = async () => {
+      if (window.ethereum) {
+        const currentChainId = await window.ethereum.request({
+          method: "eth_chainId",
+        });
+        console.log(currentChainId);
+        dispatch(setCurrentChainId(currentChainId));
+      }
+    };
+    checkNetwork();
   }, []);
 
   useEffect(() => {
