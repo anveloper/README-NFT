@@ -394,7 +394,17 @@ const NftDetailInfo = (props: any) => {
                                   {createrNFTLoading ? (
                                     <LoadingSpinner key={i} />
                                   ) : (
-                                    <img key={i} className={styles.card_another_image} src={v.imageURL} alt="" />
+                                    <img
+                                      className={styles.card_another_image}
+                                      src={v.imageURL}
+                                      alt=""
+                                      key={i}
+                                      onClick={() => {
+                                        window.location.replace(
+                                          "/detail/" + v.readmeTokenId
+                                        );
+                                      }}
+                                    />
                                   )}
                                 </>
                               );
