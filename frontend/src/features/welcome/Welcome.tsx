@@ -55,7 +55,12 @@ const Welcome = () => {
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       window.ethereum
         .request({ method: "eth_requestAccounts" })
-        .then(handleNewAccounts);
+        .then(handleNewAccounts)
+        .catch((error: any) => {
+          if (error.code === 4001) {
+            alert("메타마스크의 계정과 연결해 주세요!");
+          }
+        });
     }
   }, []);
 
