@@ -126,10 +126,7 @@ const Main = ({ mainRef }: any) => {
       >
         <div className={styles.modalBox}>
           <div className={styles.modalText}>
-            생성할 방의 이름을 입력하세요!
-            <Link to="/tutorial">
-              <button className={styles.tutoBtn}> 튜토리얼</button>
-            </Link>
+            <p>생성할 방의 이름을 입력하세요!</p>
           </div>
           <input
             className={styles.modalInput}
@@ -144,6 +141,12 @@ const Main = ({ mainRef }: any) => {
               }
             }}
           />
+          <div className={styles.modalText}>
+            게임 방법이 궁금하다면?
+            <Link to="/tutorial">
+              <button className={styles.tutoBtn}> 튜토리얼</button>
+            </Link>
+          </div>
         </div>
       </Modal>
       <SaleButton />
