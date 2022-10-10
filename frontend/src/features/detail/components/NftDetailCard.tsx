@@ -46,20 +46,20 @@ const NftDetailCard = (props: any) => {
         <img className={styles.card_contents_front_child} src={nftDetail.imageURL} alt="dog" />
         <div className={styles.card_contents_front_child}>
           <div className={styles.card_img_info_child}>
-            <div>Token ID</div>
+            <div>번호</div>
             <div>{tokenId}</div>
           </div>
           <div className={styles.card_img_info_child}>
-            <div>FileName</div>
+            <div>정답</div>
             <div>{nftDetail.name}</div>
           </div>
           <div className={styles.card_img_info_child}>
-            <div>Creator</div>
-            <div>{truncatedAddress(nftDetail.author)}</div>
+            <div>창작자</div>
+            <div>{truncatedAddress(nftDetail.author).toLowerCase()}</div>
           </div>
           <div className={styles.card_img_info_child}>
-            <div>Owner</div>
-            <div>{truncatedAddress(nftOwner)}</div>
+            <div>소유자</div>
+            <div>{truncatedAddress(nftOwner).toLowerCase()}</div>
           </div>
         </div>
         <div className={styles.card_contents_front_child}>
