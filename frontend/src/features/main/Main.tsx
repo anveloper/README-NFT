@@ -151,6 +151,16 @@ const Main = ({ mainRef }: any) => {
       </Modal>
       <SaleButton />
       {socket && socket.connected && <RoomButton setModalOpen={setModalOpen} />}
+      <div
+        style={{
+          width: "100%",
+          height: "4rem",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        Copyright © NFTeam All Rights Reserved.
+      </div>
     </div>
   );
 };
