@@ -12,6 +12,10 @@ import {
   selectUserName,
   setIsWelcome,
 } from "features/auth/authSlice";
+import { CgProfile } from "react-icons/cg";
+import { GiPresent } from "react-icons/gi";
+import { TbNetwork } from "react-icons/tb";
+import { GrGamepad } from "react-icons/gr";
 
 // const isDev = process.env.NODE_ENV !== "production";
 
@@ -75,16 +79,27 @@ const Navbar = ({ mainRef }: any) => {
               : `${styles.moveTab} ${styles.profileClose}`
           }
         >
-          <Link to="/mypage">마이페이지</Link>
-          <hr className={styles.underLine} />
+          <p>내 리드미</p>
+          <Link to="/mypage">
+            <CgProfile />
+            <p>마이 페이지</p>
+          </Link>
+          {/* <hr className={styles.underLine} /> */}
+          <p>안내 페이지</p>
           <button
             onClick={() => {
               dispatch(setIsWelcome(true));
             }}
             className={styles.profileBtn}
           >
-            이벤트 페이지
+            <GiPresent />
+            <p>이벤트 페이지</p>
           </button>
+          <hr className={styles.underLine} />
+          <Link to="/tutorial">
+            <GrGamepad />
+            <p>리드미 튜토리얼</p>
+          </Link>
           <hr className={styles.underLine} />
           <button
             onClick={() => {
@@ -93,10 +108,9 @@ const Navbar = ({ mainRef }: any) => {
             }}
             className={styles.profileBtn}
           >
-            네트워크 가이드
+            <TbNetwork />
+            <p>네트워크 가이드</p>
           </button>
-          <hr className={styles.underLine} />
-          <Link to="/tutorial">리드미 튜토리얼</Link>
         </div>
       </div>
     </div>
