@@ -31,6 +31,11 @@ const NftDetailCard = (props: any) => {
     });
   };
 
+  const sliceText = (textString: String) => {
+    if (textString.length > 10) return textString.slice(0, 6) + "...." + textString.slice(-5);
+    else return textString;
+  };
+
   useEffect(() => {
     getTimeInfo();
   }, []);
@@ -51,7 +56,7 @@ const NftDetailCard = (props: any) => {
           </div>
           <div className={styles.card_img_info_child}>
             <div>정답</div>
-            <div>{nftDetail.name}</div>
+            <div>{sliceText(nftDetail.name)}</div>
           </div>
           <div className={styles.card_img_info_child}>
             <div>창작자</div>
