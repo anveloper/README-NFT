@@ -11,6 +11,7 @@ import MoveSale from "./components/MoveSale";
 import MoveGame from "./components/MoveGame";
 import { SocketContext } from "socketConfig";
 import { truncatedAddress } from "features/auth/authSlice";
+import LoadingSpinner from "components/loading/LoadingSpinner";
 
 const web3 = new Web3(process.env.REACT_APP_ETHEREUM_RPC_URL);
 const MintReadmeContract = new web3.eth.Contract(
@@ -30,13 +31,17 @@ const SNS = () => {
     description: "",
     imageURL: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const getMetadata = async (metadataURI: string) => {
+    setLoading(true);
     try {
       const response = await axios({ url: metadataURI });
       setRtk(response.data);
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -63,11 +68,15 @@ const SNS = () => {
           <div className={styles.title}>README 🎨 내 마음을 읽어줘</div>
           <div className={styles.card}>
             <div className={styles.sq}>
-              <img
-                className={styles.img}
-                src={rtk.imageURL}
-                alt={`README ${id}번째 토큰 이미지 `}
-              />
+              {loading ? (
+                <LoadingSpinner />
+              ) : (
+                <img
+                  className={styles.img}
+                  src={rtk.imageURL}
+                  alt={`README ${id}번째 토큰 이미지 `}
+                />
+              )}
             </div>
             <div className={styles.infoBox}>
               <div>

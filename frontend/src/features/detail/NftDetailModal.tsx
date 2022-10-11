@@ -32,6 +32,7 @@ const NftDetailModal = (props: any) => {
       });
       setInputAnswer("");
       close();
+      alert("정답입니다.");
     } else if (inputAnswer.length >= 1 && inputAnswer !== answer) {
       setIsAnswer(false);
       setInfoMsg("오답입니다! 다시 시도해보세요.");
