@@ -1,7 +1,7 @@
 import { current } from "@reduxjs/toolkit";
 import axios from "axios";
 import { result } from "lodash";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { MintReadmeContract, MintReadMeContractGO, SaleReadmeContract, SaleReadmeContractGO } from "../../web3Config";
@@ -12,6 +12,7 @@ import tiger from "../../assets/characters/gold_tiger.svg";
 import loadingStyles from "components/loading/Loading.module.css";
 import loadingImg from "assets/loading/loading_page.gif";
 import LoadingPage from "components/loading/LoadingPage";
+import { createImportSpecifier } from "typescript";
 
 interface IMyMintList {
   tokenId: number;
@@ -29,12 +30,12 @@ const NftSaleList = () => {
   const [filteredList, setFilteredList] = useState<IMyMintList[]>([]);
   const [isOnSale, setIsOnSale] = useState(false);
   const [isIncrease, setIsIncrease] = useState(false);
+  const [isDecrease, setIsDecrease] = useState(false);
   const [inputMinPrice, setInputMinPrice] = useState("");
   const [inputMaxPrice, setInputMaxPrice] = useState("");
-  const [checkedList, setCheckedList] = useState([]); // 뱃지 리스트
   const [loading, setLoading] = useState(false);
   const [hideInfo, setHideInfo] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const navigator = useNavigate();
   const isSSAFY = useAppSelector(selectIsSSAFY);
 
@@ -103,15 +104,29 @@ const NftSaleList = () => {
   };
 
   const getDecreasedList = () => {
+    setIsIncrease(false);
     filteredList.sort((a: IMyMintList, b: IMyMintList): number => Number(b.price) - Number(a.price));
     console.log(filteredList);
     setFilteredList([...filteredList]);
   };
 
   const getIncreasedList = () => {
+    setIsDecrease(false);
     filteredList.sort((a: IMyMintList, b: IMyMintList): number => Number(a.price) - Number(b.price));
     console.log(filteredList);
     setFilteredList([...filteredList]);
+  };
+
+  const sortedReset = () => {
+    setIsIncrease(false);
+    setIsDecrease(false);
+    getAllListTokens();
+  };
+
+  const PriceReset = () => {
+    setInputMinPrice("");
+    setInputMaxPrice("");
+    getAllListTokens();
   };
 
   const handleInputMinPrice = (e: any) => {
@@ -148,42 +163,78 @@ const NftSaleList = () => {
         <div className={styles.container}>
           <div className={styles.contents}>
             <div className={styles.category_container}>
-              <div className={styles.category_title} onClick={() => setMenuOpen((menuOpen) => !menuOpen)}>
-                판매 상태
-              </div>
-              <div className={styles.category_isOnSale}>
-                <input
-                  type="checkbox"
-                  id="isOnSale"
-                  name="isOnSale"
-                  onChange={(e) => {
-                    setIsOnSale(!isOnSale);
-                  }}
-                />
-                <label htmlFor="isOnSale" className={styles.category_isOnSale_text} />
-                <div className={styles.category_isOnSale_text}>판매중 리드미 모아보기</div>
-              </div>
-            </div>
-            <div className={styles.category_container}>
-              <div className={styles.category_title}>가격 정렬</div>
-              <div className={styles.category_price_sort}>
-                <button className={styles.category_button} onClick={getDecreasedList}>
-                  가격 높은 순
-                </button>
-                <button className={styles.category_button} onClick={getIncreasedList}>
-                  가격 낮은 순
-                </button>
+              <input type="checkbox" id="category_title1" />
+              <label htmlFor="category_title1">
+                Status<em></em>
+              </label>
+
+              <div className={styles.category_contents}>
+                <div className={styles.category_isOnSale}>
+                  <input
+                    type="checkbox"
+                    id="isOnSale"
+                    name="isOnSale"
+                    onChange={(e) => {
+                      setIsOnSale(!isOnSale);
+                    }}
+                  />
+                  <label htmlFor="isOnSale" className={styles.category_isOnSale_text} />
+                  <div className={styles.category_isOnSale_text}>판매중 리드미 모아보기</div>
+                </div>
               </div>
             </div>
             <div className={styles.category_container}>
-              <div className={styles.category_title}>가격대 찾기</div>
-              <div className={styles.category_price_range}>
-                <input type="text" name="inputMin" defaultValue={inputMinPrice} onChange={handleInputMinPrice} placeholder="최저가" />
-                <div className={styles.category_price_range_text}>to</div>
-                <input type="text" name="inputMax" defaultValue={inputMaxPrice} onChange={handleInputMaxPrice} placeholder="최고가" />
-                <button className={styles.category_button} style={{ backgroundColor: "#fddf61" }} onClick={filterData}>
-                  찾기
+              <input type="checkbox" id="category_title2" />
+              <label htmlFor="category_title2">
+                Sort<em></em>
+              </label>
+              <div className={styles.category_contents_sort}>
+                <div className={styles.category_price_select}>
+                  <input
+                    type="radio"
+                    id="sortedByIncrease"
+                    name="sortedBy"
+                    onChange={getIncreasedList}
+                    checked={isIncrease}
+                    onClick={() => setIsIncrease(!isIncrease)}
+                  />
+                  <label htmlFor="sortedByIncrease">가격 낮은 순</label>
+                </div>
+                <div className={styles.category_price_select}>
+                  <input
+                    type="radio"
+                    id="sortedByDecrease"
+                    name="sortedBy"
+                    onChange={getDecreasedList}
+                    checked={isDecrease}
+                    onClick={() => setIsDecrease(!isDecrease)}
+                  />
+                  <label htmlFor="sortedByDecrease">가격 높은 순</label>
+                </div>
+                <button className={styles.category_button_reset} onClick={sortedReset}>
+                  초기화
                 </button>
+              </div>
+            </div>
+            <div className={styles.category_container}>
+              <input type="checkbox" id="category_title3" />
+              <label htmlFor="category_title3">
+                Price<em></em>
+              </label>
+              <div className={styles.category_contents_price}>
+                <div className={styles.category_price_range}>
+                  <input ref={inputRef} type="text" name="inputMinMax" value={inputMinPrice} onChange={handleInputMinPrice} placeholder="최저가" />
+                  <div className={styles.category_price_range_text}>to</div>
+                  <input ref={inputRef} type="text" name="inputMinMax" value={inputMaxPrice} onChange={handleInputMaxPrice} placeholder="최고가" />
+                </div>
+                <div>
+                  <button className={styles.category_button} onClick={filterData}>
+                    찾기
+                  </button>
+                  <button className={styles.category_button_reset} onClick={PriceReset}>
+                    초기화
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -191,7 +242,7 @@ const NftSaleList = () => {
             <LoadingPage msg="리드미를 불러오는 중이에요!" />
           ) : (
             <div className={styles.nftListContainer}>
-              {filteredList.reverse().map((nft: IMyMintList, i: number) => {
+              {filteredList.map((nft: IMyMintList, i: number) => {
                 return <NftSaleListItem key={i} nft={nft} />;
               })}
             </div>
