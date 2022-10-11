@@ -115,6 +115,22 @@
   margin-bottom: 10px;
 }
 
+.card_contents_back_approve {
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background-color: #fcf5e9;
+  margin-bottom: 10px;
+  height: 200px;
+}
+
+.card_contents_sale_info {
+  border-radius: 20px;
+  margin-bottom: 10px;
+  height: 268px;
+  background-color: #fcf5e9;
+}
+
 .card_contents_back_notSale {
   display: flex;
   justify-content: center;
@@ -160,7 +176,8 @@
 
 /* 판매 정보 */
 .card_contents_back_info_child:nth-child(1) {
-  margin-top: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   grid-row: span 1;
   background-color: #fddf61;
   border-radius: 20px;
@@ -211,6 +228,7 @@
 
 /* 다른 그림 div */
 .card_contents_back_info:nth-child(2) {
+  /* .card_contents_back_sale_info { */
   grid-row: span 5;
   place-items: center;
 
@@ -278,7 +296,7 @@
   border-radius: 5px;
 
   padding: 10px 20px 10px 20px;
-  margin: 10px;
+  margin: 15px;
 
   font-size: 16px;
 
@@ -328,6 +346,7 @@ input::-webkit-inner-spin-button {
 .input_place {
   display: grid;
   grid-template-columns: 1fr 2fr;
+  margin-bottom: 10px;
 
   padding-left: 20px;
   padding-right: 20px;
@@ -439,4 +458,5 @@ input::-webkit-inner-spin-button {
   justify-content: center;
   place-content: center;
   place-items: center;
+  margin-bottom: 20px;
 }
