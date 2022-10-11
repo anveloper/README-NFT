@@ -51,6 +51,7 @@ const NftDetailInfo = (props: any) => {
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [completeModalOpen, setCompleteModalOpen] = useState(false);
+  const [balanceModalOpen, setBalanceModalOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(Object);
   const [nftEndTime, setNftEndTime] = useState<nftTime>({
     year: 0,
@@ -289,6 +290,7 @@ const NftDetailInfo = (props: any) => {
               // navigate("/mypage");
               // window.location.replace("/detail/" + tokenId);
               console.log("purchase : ", res);
+              openCompleteModal();
             })
             .catch((err: any) => {
               console.log(err);
@@ -302,15 +304,16 @@ const NftDetailInfo = (props: any) => {
               // navigate("/deatil/" + tokenId);
               // window.location.replace("/detail/" + tokenId);
               console.log("purchase : ", res);
+              openCompleteModal();
             })
             .catch((err: any) => {
               console.log(err);
             });
       setLoading(false);
       setBuyModalOpen(false);
-      openCompleteModal();
     } else {
-      alert("잔액이 부족합니다.");
+      // alert("잔액이 부족합니다.");
+      openBalanceModal();
       setLoading(false);
     }
   };
@@ -336,6 +339,10 @@ const NftDetailInfo = (props: any) => {
 
   const openCompleteModal = () => {
     setCompleteModalOpen(true);
+  };
+
+  const openBalanceModal = () => {
+    setBalanceModalOpen(true);
   };
 
   const moveToBack = () => {
@@ -618,6 +625,16 @@ const NftDetailInfo = (props: any) => {
             confirm="마이페이지"
           >
             <div>리드미 구매가 완료되었습니다!</div>
+          </Modal>
+          <Modal
+            open={balanceModalOpen}
+            close={() => {
+              setBalanceModalOpen(false);
+            }}
+            fn={() => setBalanceModalOpen(false)}
+            header="지갑 잔액 부족"
+          >
+            <div>잔액이 부족합니다!</div>
           </Modal>
         </>
       )}

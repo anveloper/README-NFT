@@ -22,6 +22,7 @@ import WelcomeNavbar from "./components/WelcomeNavbar";
 import { getIntersectionObserver } from "./observer";
 import WelcomePageEvent from "./components/WelcomePageEvent";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "components/modal/Modal";
 
 const Welcome = () => {
   const dispatch = useAppDispatch();
@@ -38,6 +39,9 @@ const Welcome = () => {
   const teamRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const chainId = useAppSelector(selectCurrentChainId);
+  const [openConnectWalletModal, setOpenConnectWalletModal] = useState(false);
+  const [openConnectNetModal, setOpenConnectNetModal] = useState(false);
+  const [openInstallWalletModal, setOpenInstallWalletModal] = useState(false);
 
   useEffect(() => {
     if (!onboarding.current) {
@@ -58,7 +62,8 @@ const Welcome = () => {
         .then(handleNewAccounts)
         .catch((error: any) => {
           if (error.code === 4001) {
-            alert("메타마스크의 계정과 연결해 주세요!");
+            // alert("메타마스크의 계정과 연결해 주세요!");
+            openConnectWalletAlertModal();
           }
         });
     }
@@ -97,20 +102,44 @@ const Welcome = () => {
       if (chainId === "0x79f5" || chainId === "0x5") {
         dispatch(setIsWelcome(false));
       } else {
-        alert("싸피네트워크나 goerli네트워크에 연결해주세요!");
-        navigate("/guide");
+        openConnectNetworkAlertModal();
+        // alert("싸피네트워크나 goerli네트워크에 연결해주세요!");
+        // navigate("/guide");
       }
     } else {
       //안깔려 있으면 설치 유도
-      alert("메타마스크를 설치해 주세요!");
-      onboarding.current.startOnboarding();
+      // alert("메타마스크를 설치해 주세요!");
+      // onboarding.current.startOnboarding();
+      openInstallAlertModal();
     }
   };
 
+  const openConnectWalletAlertModal = () => {
+    setOpenConnectWalletModal(true);
+  };
+
+  const closeConnectWalletAlertModal = () => {
+    setOpenConnectWalletModal(false);
+  };
+
+  const openConnectNetworkAlertModal = () => {
+    setOpenConnectNetModal(true);
+  };
+
+  const closeConnectNetworkAlertModal = () => {
+    setOpenConnectNetModal(false);
+  };
+
+  const openInstallAlertModal = () => {
+    setOpenInstallWalletModal(true);
+  };
+
+  const closeInstallAlertModal = () => {
+    setOpenInstallWalletModal(false);
+  };
+
   return (
-    // <Parallax ref={ref} pages={6}>
     <div className={styles.Welcome} ref={welcomePageRef}>
-      {/* <ParallaxLayer offset={0} speed={1} factor={6}> */}
       <img
         className={styles.welcome_character}
         src={welcomeCharacter}
@@ -119,55 +148,41 @@ const Welcome = () => {
       />
 
       <WelcomeNavbar welcomeNav={welcomeNav} welcomeRef={welcomeRef} />
-
-      {/* <ScrollPage /> */}
-      {/* </ParallaxLayer> */}
-
-      {/* <ParallaxLayer offset={0} speed={-1} factor={1.5}> */}
-
       <WelcomePageEvent onboarding={onboarding} eventRef={eventRef} />
-
       <WelcomePageOne storyRef={storyRef} />
-
-      {/* </ParallaxLayer> */}
-
-      {/* <ParallaxLayer offset={1} speed={-1} factor={1.5}> */}
-      {/* <div id="story"> */}
-
       <WelcomePageTwo readmeRef={readmeRef} />
-
-      {/* </div> */}
-      {/* </ParallaxLayer> */}
-
-      {/* <ParallaxLayer offset={2} speed={0.1} factor={1.5}> */}
-      {/* <div id="game"> */}
-
       <WelcomePageThree gameRef={gameRef} />
-
-      {/* </div> */}
-      {/* </ParallaxLayer> */}
-
-      {/* <ParallaxLayer offset={3} speed={0.1} factor={1.5}> */}
-      {/* <div id="roadmap"> */}
-
       <WelcomePageFour roadmapRef={roadmapRef} />
-
-      {/* </div> */}
-      {/* </ParallaxLayer> */}
-
-      {/* <ParallaxLayer offset={4} speed={0.1} factor={1.5}> */}
-      {/* <div id="team"> */}
-
       <WelcomePageFive teamRef={teamRef} />
-
-      {/* </div> */}
-      {/* </ParallaxLayer> */}
-
-      {/* <ParallaxLayer offset={5} speed={0.1} factor={1.5}> */}
       <WelcomePageSix />
-      {/* </ParallaxLayer> */}
+
+      <Modal
+        open={openConnectWalletModal}
+        close={closeConnectWalletAlertModal}
+        header="메타마스크 연결"
+        fn={closeConnectWalletAlertModal}
+      >
+        <div>메타마스크 계정과 연결해주세요!</div>
+      </Modal>
+
+      <Modal
+        open={openConnectNetModal}
+        close={closeConnectNetworkAlertModal}
+        header="싸피 네트워크 연결"
+        fn={() => navigate("/guide")}
+      >
+        <div>싸피 네트워크 또는 goerli 네트워크로 연결해주세요!</div>
+      </Modal>
+
+      <Modal
+        open={openInstallWalletModal}
+        close={closeInstallAlertModal}
+        header="메타마스크 설치"
+        fn={() => onboarding.current.startOnboarding()}
+      >
+        <div>메타마스크를 설치해 주세요!</div>
+      </Modal>
     </div>
-    // </Parallax>
   );
 };
 
