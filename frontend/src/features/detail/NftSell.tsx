@@ -118,7 +118,7 @@ const NftSell = (props: any) => {
               />
             ) : (
               <div className={styles.card_contents_back}>
-                <div className={styles.card_contents_back_info}>
+                <div className={styles.card_contents_back_approve}>
                   <div className={styles.card_contents_back_info_child}>
                     판매 권한 설정
                   </div>
@@ -158,9 +158,9 @@ const NftSell = (props: any) => {
                     </button>
                   </div>
                 </div>
-                <div className={styles.card_contents_back_info2}>
+                <div className={styles.card_contents_sale_info}>
                   <div className={styles.contents_center}>
-                    <div className={styles.input_place_title}>
+                    <div className={styles.card_contents_back_info_child}>
                       판매 정보 입력
                     </div>
                   </div>
