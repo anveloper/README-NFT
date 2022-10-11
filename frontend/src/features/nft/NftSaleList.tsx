@@ -118,15 +118,19 @@ const NftSaleList = () => {
   };
 
   const sortedReset = () => {
-    setIsIncrease(false);
-    setIsDecrease(false);
-    getAllListTokens();
+    if (isIncrease || isDecrease) {
+      setIsIncrease(false);
+      setIsDecrease(false);
+      getAllListTokens();
+    }
   };
 
   const PriceReset = () => {
-    setInputMinPrice("");
-    setInputMaxPrice("");
-    getAllListTokens();
+    if (inputMaxPrice || inputMinPrice) {
+      setInputMinPrice("");
+      setInputMaxPrice("");
+      getAllListTokens();
+    }
   };
 
   const handleInputMinPrice = (e: any) => {
