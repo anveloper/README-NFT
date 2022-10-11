@@ -6,12 +6,7 @@ import LogoText from "../../assets/logo_text.svg";
 import AvatarIMG from "assets/avatar";
 // components
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import {
-  selectUserAddress,
-  selectUserAvatar,
-  selectUserName,
-  setIsWelcome,
-} from "features/auth/authSlice";
+import { selectUserAddress, selectUserAvatar, selectUserName, setIsWelcome } from "features/auth/authSlice";
 import { CgProfile } from "react-icons/cg";
 import { GiPresent } from "react-icons/gi";
 import { TbNetwork } from "react-icons/tb";
@@ -27,8 +22,7 @@ const Navbar = ({ mainRef }: any) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleScroll = () => {
-    if (mainRef?.current)
-      mainRef.current.scrollIntoView({ behavior: "smooth" });
+    if (mainRef?.current) mainRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -61,31 +55,21 @@ const Navbar = ({ mainRef }: any) => {
         </div>
       )} */}
       <div
-        className={
-          modalOpen
-            ? `${styles.profileTag} ${styles.active}`
-            : `${styles.profileTag}`
-        }
+        className={modalOpen ? `${styles.profileTag} ${styles.active}` : `${styles.profileTag}`}
         onClick={() => {
           setModalOpen(!modalOpen);
         }}
       >
         <img src={AvatarIMG[userAvatar]} alt="" className={styles.avatar} />
         {!modalOpen && <p className={styles.nameTag}>{nickname}</p>}
-        <div
-          className={
-            modalOpen
-              ? `${styles.moveTab} ${styles.profileOpen}`
-              : `${styles.moveTab} ${styles.profileClose}`
-          }
-        >
-          <p>내 리드미</p>
+        <div className={modalOpen ? `${styles.moveTab} ${styles.profileOpen}` : `${styles.moveTab} ${styles.profileClose}`}>
+          <p style={{ paddingTop: "5px", paddingBottom: "5px" }}>내 리드미</p>
           <Link to="/mypage">
             <CgProfile />
             <p>마이 페이지</p>
           </Link>
           {/* <hr className={styles.underLine} /> */}
-          <p>안내 페이지</p>
+          <p style={{ paddingTop: "5px", paddingBottom: "5px" }}>안내 페이지</p>
           <button
             onClick={() => {
               dispatch(setIsWelcome(true));
