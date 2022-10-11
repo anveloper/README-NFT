@@ -17,6 +17,7 @@ import {
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { useNavigate } from "react-router-dom";
 import LoadingPage from "components/loading/LoadingPage";
+import { Modal } from "components/modal/Modal";
 const WelcomePageEvent = ({ onboarding, eventRef }: any) => {
   const account = useAppSelector(selectUserAddress);
   const [eventLeft, setEventLeft] = useState(0);
@@ -24,6 +25,10 @@ const WelcomePageEvent = ({ onboarding, eventRef }: any) => {
   const [loading, setLoading] = useState(false);
   const isSSAFY = useAppSelector(selectIsSSAFY);
   const chainId = useAppSelector(selectCurrentChainId);
+  const [netModalOpen, setNetModalOpen] = useState(false);
+  const [eventModalOpen, setEventModalOpen] = useState(false);
+  const [installModalOpen, setInstallModalOpen] = useState(false);
+
   useEffect(() => {
     if (isSSAFY) {
       DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
@@ -31,6 +36,18 @@ const WelcomePageEvent = ({ onboarding, eventRef }: any) => {
       });
     }
   }, [chainId]);
+
+  const openNetModal = () => {
+    setNetModalOpen(true);
+  };
+
+  const openEventModal = () => {
+    setEventModalOpen(true);
+  };
+
+  const openInstallModal = () => {
+    setInstallModalOpen(true);
+  };
 
   const isTokenImported = async () => {
     try {
@@ -67,8 +84,9 @@ const WelcomePageEvent = ({ onboarding, eventRef }: any) => {
         });
       } catch {
         setLoading(false);
-        alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
-        navigate(`/guide`);
+        // alert("가이드에 따라 ssafy 네트워크를 추가해 주세요!");
+        // navigate(`/guide`);
+        openNetModal();
         return;
       }
       try {
@@ -89,14 +107,16 @@ const WelcomePageEvent = ({ onboarding, eventRef }: any) => {
           });
       } catch {
         if (!userRejected) {
-          alert("이미 참여한 계정입니다!");
+          // alert("이미 참여한 계정입니다!");
+          openEventModal();
         }
         setLoading(false);
       }
     } else {
       //안깔려 있으면 설치 유도
-      alert("메타마스크를 설치해 주세요!");
-      onboarding.current.startOnboarding();
+      // alert("메타마스크를 설치해 주세요!");
+      // onboarding.current.startOnboarding();
+      openInstallModal();
     }
     DrawTokenContract.methods.getWinnerCount().call((err: any, res: any) => {
       setEventLeft(res);
@@ -141,6 +161,36 @@ const WelcomePageEvent = ({ onboarding, eventRef }: any) => {
           </button>
         </>
       )}
+      <Modal
+        open={netModalOpen}
+        close={() => setNetModalOpen(false)}
+        header="싸피 네트워크 연결"
+        fn={() => {
+          setNetModalOpen(false);
+          navigate("/guide");
+        }}
+      >
+        <div>가이드에 따라 ssafy 네트워크를 추가해 주세요!</div>
+      </Modal>
+      <Modal
+        open={eventModalOpen}
+        close={() => setEventModalOpen(false)}
+        header="이벤트 참여 완료"
+        fn={() => setEventModalOpen(false)}
+      >
+        <div>이미 참여한 계정입니다!</div>
+      </Modal>
+      <Modal
+        open={installModalOpen}
+        close={() => setInstallModalOpen(false)}
+        header="메타마스크 설치"
+        fn={() => {
+          setInstallModalOpen(false);
+          onboarding.current.startOnboarding();
+        }}
+      >
+        <div>메타마스크를 설치해 주세요!</div>
+      </Modal>
     </div>
   );
 };

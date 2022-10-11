@@ -171,7 +171,7 @@ const Welcome = () => {
         header="싸피 네트워크 연결"
         fn={() => navigate("/guide")}
       >
-        <div>싸피네트워크나 goerli네트워크에 연결해주세요!</div>
+        <div>싸피 네트워크 또는 goerli 네트워크로 연결해주세요!</div>
       </Modal>
 
       <Modal
