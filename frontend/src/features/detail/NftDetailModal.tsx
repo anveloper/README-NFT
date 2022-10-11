@@ -9,7 +9,7 @@ import styles from "./NftDetailModal.module.css";
 
 const NftDetailModal = (props: any) => {
   const userAddress = useAppSelector(selectUserAddress);
-  const { close, image, answer, tokenId } = props;
+  const { close, image, answer, tokenId, setCorrectAnswer } = props;
   const [inputAnswer, setInputAnswer] = useState("");
   const [isAnswer, setIsAnswer] = useState(false);
   const [infoMsg, setInfoMsg] = useState("");
@@ -32,7 +32,8 @@ const NftDetailModal = (props: any) => {
       });
       setInputAnswer("");
       close();
-      alert("정답입니다.");
+      // alert("정답입니다.");
+      setCorrectAnswer(true);
     } else if (inputAnswer.length >= 1 && inputAnswer !== answer) {
       setIsAnswer(false);
       setInfoMsg("오답입니다! 다시 시도해보세요.");
@@ -132,23 +133,43 @@ const NftDetailModal = (props: any) => {
                   onChange={onChange}
                   value={inputAnswer}
                 />
-                <button className={styles.input_button} onClick={() => checkAnswer(inputAnswer)}>
+                <button
+                  className={styles.input_button}
+                  onClick={() => checkAnswer(inputAnswer)}
+                >
                   제출
                 </button>
               </div>
               <div className={styles.result_msg}>
-                {infoMsg && <p className={isAnswer ? `${styles.result_msg_answer}` : `${styles.result_msg_wrong}`}>{infoMsg}</p>}
+                {infoMsg && (
+                  <p
+                    className={
+                      isAnswer
+                        ? `${styles.result_msg_answer}`
+                        : `${styles.result_msg_wrong}`
+                    }
+                  >
+                    {infoMsg}
+                  </p>
+                )}
               </div>
             </div>
 
             <div className={styles.card_buttons}>
-              <button className={styles.card_button_on} onClick={() => moveToDetail(tokenId)}>
+              <button
+                className={styles.card_button_on}
+                onClick={() => moveToDetail(tokenId)}
+              >
                 <span>자세히 보기</span>
                 <p className={styles.arrow_box}>정답을 확인할 수 있어요!</p>
               </button>
 
               <button
-                className={likeButtonText === "찜하기" ? `${styles.card_button_like}` : `${styles.card_button_like_cancel}`}
+                className={
+                  likeButtonText === "찜하기"
+                    ? `${styles.card_button_like}`
+                    : `${styles.card_button_like_cancel}`
+                }
                 onClick={() => likeNFT(parseInt(tokenId))}
               >
                 {likeButtonText}
