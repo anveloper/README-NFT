@@ -410,37 +410,29 @@ const NftDetailInfo = (props: any) => {
                           <LoadingSpinner />
                         ) : (
                           <>
-                            <div className={styles.card_contents_text1}>
-                              판매중인 리드미입니다.
+                            <div className={styles.card_contents_back_sale}>
+                              <div style={{ fontSize: "16px", marginTop: "1px", marginRight: "5px" }}>⭕️</div>
+                              <div className={styles.card_contents_text3}>구매 가능한 리드미입니다.</div>
                             </div>
-                            <div>
-                              <div>
-                                {timeLeft.days}일 {timeLeft.hours}시간{" "}
-                                {timeLeft.minute}분 {timeLeft.seconds}초 후에
-                                종료됩니다.
+                            <div className={styles.card_contents_back_sale_info}>
+                              <div className={styles.card_contents_text1}>
+                                {timeLeft.days}일 {timeLeft.hours}시간 {timeLeft.minutes}분 {timeLeft.seconds}초
                               </div>
-                              <div className={styles.card_contents_text2}>
-                                ({change_date(endDate)})
-                              </div>
+                              <div className={styles.card_contents_text2}>이후에 판매가 종료됩니다.</div>
+                              <div className={styles.card_contents_text2}>({change_date(endDate)})</div>
                             </div>
                           </>
                         )}
                       </>
                     ) : (
                       <>
-                        <div style={{ fontSize: "18px", marginTop: "5px" }}>
-                          ❌
+                        <div className={styles.card_contents_back_notSale}>
+                          <div style={{ fontSize: "16px", marginTop: "1px", marginRight: "5px" }}>❌</div>
+                          <div className={styles.card_contents_text3}>구매 불가능한 리드미입니다.</div>
                         </div>
                         <div>
-                          <div className={styles.card_contents_text3}>
-                            판매 상태가 아닙니다.
-                          </div>
-                          <div className={styles.card_contents_text3}>
-                            소유자가 판매 상태를 관리할 때까지
-                          </div>
-                          <div className={styles.card_contents_text3}>
-                            구매가 제한됩니다.
-                          </div>
+                          <div className={styles.card_contents_text3}>소유자가 판매 상태를 관리할 때까지</div>
+                          <div className={styles.card_contents_text3}>구매가 제한됩니다.</div>
                         </div>
                       </>
                     )}
@@ -471,9 +463,7 @@ const NftDetailInfo = (props: any) => {
                                       alt=""
                                       key={i}
                                       onClick={() => {
-                                        window.location.replace(
-                                          "/detail/" + v.readmeTokenId
-                                        );
+                                        window.location.replace("/detail/" + v.readmeTokenId);
                                       }}
                                     />
                                   )}
