@@ -1,5 +1,5 @@
 // core
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 // state
@@ -51,6 +51,7 @@ import {
   setSolvers,
   setStarted,
 } from "features/game/gameSlice";
+import { Modal } from "components/modal/Modal";
 
 function App() {
   const socket = useContext(SocketContext);
@@ -61,6 +62,17 @@ function App() {
   const isGame = pathname.startsWith("/game");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [openConnectNetModal, setOpenConnectNetModal] = useState(false);
+  const [openGameModal, setOpenGameModal] = useState(false);
+
+  const openConnectAlertModal = () => {
+    setOpenConnectNetModal(true);
+  };
+
+  const openGameAlertModal = () => {
+    setOpenGameModal(true);
+  };
+
   //chain Id, account 변화 감지
   useEffect(() => {
     async function handleNewAccounts() {
@@ -83,7 +95,8 @@ function App() {
       } else {
         dispatch(setIsSSAFY(false));
         dispatch(setIsWelcome(true));
-        alert("goeril나 SSAFYNet을 사용해 주세요!");
+        openConnectAlertModal();
+        // alert("goeril나 SSAFYNet을 사용해 주세요!");
       }
       window.location.reload();
     }
@@ -142,8 +155,9 @@ function App() {
     });
     socket.on("host_leave", () => {
       socket.emit("leave_room", hostUserName);
-      alert("호스트에 의해 게임이 종료되었습니다.");
-      navigate("/live");
+      openGameAlertModal();
+      // alert("호스트에 의해 게임이 종료되었습니다.");
+      // navigate("/live");
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -185,6 +199,29 @@ function App() {
           </div>
         </>
       </Milestone>
+
+      <Modal
+        open={openConnectNetModal}
+        close={() => setOpenConnectNetModal(false)}
+        header="메타마스크 네트워크 연결"
+        fn={() => setOpenConnectNetModal(false)}
+      >
+        <div>goeril나 SSAFYNet을 사용해 주세요!</div>
+      </Modal>
+      <Modal
+        open={openGameModal}
+        close={() => {
+          setOpenGameModal(false);
+          navigate("/live");
+        }}
+        header="게임 종료"
+        fn={() => {
+          setOpenGameModal(false);
+          navigate("/live");
+        }}
+      >
+        <div>호스트에 의해 게임이 종료되었습니다.</div>
+      </Modal>
     </div>
   );
 }
