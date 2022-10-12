@@ -1,12 +1,13 @@
 // core
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 // state
 import {
   login,
   selectIsSSAFY,
   selectUserAddress,
+  setCurrentChainId,
   setIsSSAFY,
   setIsWelcome,
 } from "./features/auth/authSlice";
@@ -21,7 +22,6 @@ import Mint from "./features/mint/Mint";
 import LiveList from "./features/main/LiveList";
 import NFTList from "./features/main/NFTList";
 import Detail from "./features/detail/NftDetail";
-import Sell from "./features/detail/NftSell";
 import Welcome from "./features/welcome/Welcome";
 import Login from "./features/auth/Login";
 import Game from "./features/game/Game";
@@ -38,14 +38,42 @@ import MyMintList from "./features/mint/MyMintList";
 import NetGuide from "routes/NetGuide";
 import Tutorial from "features/tutorial/Tutorial";
 
+// socket
+import { SocketContext } from "socketConfig";
+import {
+  MSG,
+  selectHostUserName,
+  setAnswerLength,
+  setIsSoleved,
+  setMessages,
+  setParticipants,
+  setRoomCnt,
+  setSolvers,
+  setStarted,
+} from "features/game/gameSlice";
+import { Modal } from "components/modal/Modal";
+
 function App() {
+  const socket = useContext(SocketContext);
+  const hostUserName = useAppSelector(selectHostUserName);
   const userAddress = useAppSelector(selectUserAddress);
-  const isSSAFY = useAppSelector(selectIsSSAFY);
-  const [isSsafyNet, setIsSsafyNet] = useState<boolean>(false);
   const { pathname } = useLocation();
   const mainRef = useRef<HTMLDivElement | null>(null);
   const isGame = pathname.startsWith("/game");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [openConnectNetModal, setOpenConnectNetModal] = useState(false);
+  const [openGameModal, setOpenGameModal] = useState(false);
+
+  const openConnectAlertModal = () => {
+    setOpenConnectNetModal(true);
+  };
+
+  const openGameAlertModal = () => {
+    setOpenGameModal(true);
+  };
+
+  //chain Id, account 변화 감지
   useEffect(() => {
     async function handleNewAccounts() {
       const accounts = await window.ethereum.request({
@@ -54,18 +82,21 @@ function App() {
       if (accounts[0].length > 0) {
         console.log("accountsChaged");
         dispatch(login(accounts[0]));
+        window.location.reload();
       }
     }
     function handleChainChanged(chainId: any) {
       console.log("network changed");
+      dispatch(setCurrentChainId(chainId));
       if (chainId === "0x79f5") {
         dispatch(setIsSSAFY(true));
-        setIsSsafyNet(!isSsafyNet);
       } else if (chainId === "0x5") {
         dispatch(setIsSSAFY(false));
       } else {
-        dispatch(setIsWelcome());
-        alert("goeril나 SSAFYNet을 사용해 주세요!");
+        dispatch(setIsSSAFY(false));
+        dispatch(setIsWelcome(true));
+        openConnectAlertModal();
+        // alert("goeril나 SSAFYNet을 사용해 주세요!");
       }
       window.location.reload();
     }
@@ -77,14 +108,62 @@ function App() {
       window.ethereum.removeListener("accountsChanged", handleNewAccounts);
       window.ethereum.removeListener("chainChanged", handleChainChanged);
     };
+  }, []);
+
+  useEffect(() => {
+    const checkNetwork = async () => {
+      if (window.ethereum) {
+        const currentChainId = await window.ethereum.request({
+          method: "eth_chainId",
+        });
+        console.log(currentChainId);
+        dispatch(setCurrentChainId(currentChainId));
+      }
+    };
+    checkNetwork();
+  }, []);
+
+  useEffect(() => {
+    socket.on("bye", (user: string, cnt: number, data: string) => {
+      dispatch(setRoomCnt(cnt));
+      dispatch(setParticipants(JSON.parse(data)));
+      dispatch(
+        setMessages(MSG("system", user, `[${user}]님이 퇴장하셨습니다.`))
+      );
+    });
+    socket.on("welcome", (user: string, cnt: number, data: string) => {
+      dispatch(setRoomCnt(cnt));
+      dispatch(setParticipants(JSON.parse(data)));
+      dispatch(
+        setMessages(MSG("system", user, `[${user}]님이 입장하셨습니다.`))
+      );
+    });
+    socket.on("new_message", (user: string, msg: string) => {
+      dispatch(setMessages(MSG("other", user, msg)));
+      // console.log("NewMessage", `${user}: ${msg}`);
+    });
+    socket.on("reset_answer", (cnt) => {
+      socket.emit("reset_answer", hostUserName);
+      dispatch(setAnswerLength(cnt));
+      dispatch(setIsSoleved(false));
+    });
+    socket.on("solve_cnt", (solver, solversCnt, roomCnt) => {
+      dispatch(setSolvers({ solver, solversCnt, roomCnt }));
+    });
+    socket.on("game_start", () => {
+      dispatch(setStarted(true));
+    });
+    socket.on("host_leave", () => {
+      socket.emit("leave_room", hostUserName);
+      openGameAlertModal();
+      // alert("호스트에 의해 게임이 종료되었습니다.");
+      // navigate("/live");
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    console.log(isSSAFY);
-  }, [isSSAFY]);
   return (
     <div className={styles.container}>
-      <Milestone isSsafyNet={isSsafyNet}>
+      <Milestone>
         <>
           <BackgroundCloud />
           {!isGame && <Navbar mainRef={mainRef} />}
@@ -120,6 +199,29 @@ function App() {
           </div>
         </>
       </Milestone>
+
+      <Modal
+        open={openConnectNetModal}
+        close={() => setOpenConnectNetModal(false)}
+        header="메타마스크 네트워크 연결"
+        fn={() => setOpenConnectNetModal(false)}
+      >
+        <div>goeril나 SSAFYNet을 사용해 주세요!</div>
+      </Modal>
+      <Modal
+        open={openGameModal}
+        close={() => {
+          setOpenGameModal(false);
+          navigate("/live");
+        }}
+        header="게임 종료"
+        fn={() => {
+          setOpenGameModal(false);
+          navigate("/live");
+        }}
+      >
+        <div>호스트에 의해 게임이 종료되었습니다.</div>
+      </Modal>
     </div>
   );
 }

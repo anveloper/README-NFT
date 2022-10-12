@@ -6,10 +6,11 @@ import moment from "moment";
 export interface AuthState {
   userAddress: string;
   userName: string;
-  userAvatar: string;
+  userAvatar: number;
   isWelcome: boolean;
   status: "idle" | "loading" | "success" | "failed";
   isSSAFY: boolean;
+  currentChainId: string;
 }
 
 const actionNicknameList = [
@@ -29,9 +30,10 @@ const animalNicknameRandom =
   animalNicknameList[Math.floor(Math.random() * animalNicknameList.length)];
 
 const initialState: AuthState = {
+  currentChainId: "",
   userAddress: ``,
   userName: `${actionNicknameRandom} ${animalNicknameRandom}`,
-  userAvatar: `images/${Math.floor(Math.random() * 50 + 1)}.png`,
+  userAvatar: Math.floor(Math.random() * 50),
   isWelcome: true,
   status: "idle",
   isSSAFY: true,
@@ -64,11 +66,14 @@ export const authSlice = createSlice({
       console.log(payload);
       state.userAddress = payload;
     },
-    setIsWelcome: (state) => {
-      state.isWelcome = !state.isWelcome;
+    setIsWelcome: (state, { payload }) => {
+      state.isWelcome = payload;
     },
     setIsSSAFY: (state, { payload }) => {
       state.isSSAFY = payload;
+    },
+    setCurrentChainId: (state, { payload }) => {
+      state.currentChainId = payload;
     },
   },
   extraReducers: (builder) => {
@@ -87,8 +92,13 @@ export const authSlice = createSlice({
 });
 
 // actions
-export const { logoutUser, login, setIsWelcome, setIsSSAFY } =
-  authSlice.actions;
+export const {
+  logoutUser,
+  login,
+  setIsWelcome,
+  setIsSSAFY,
+  setCurrentChainId,
+} = authSlice.actions;
 
 // selector
 export const selectUserAddress = (state: RootState) => state.auth.userAddress;
@@ -96,6 +106,8 @@ export const selectUserName = (state: RootState) => state.auth.userName;
 export const selectUserAvatar = (state: RootState) => state.auth.userAvatar;
 export const selectIsWelcome = (state: RootState) => state.auth.isWelcome;
 export const selectIsSSAFY = (state: RootState) => state.auth.isSSAFY;
+export const selectCurrentChainId = (state: RootState) =>
+  state.auth.currentChainId;
 export default authSlice.reducer;
 
 // util

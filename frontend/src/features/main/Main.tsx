@@ -4,11 +4,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 // state
 import { setRoomInfo } from "../game/gameSlice";
-import {
-  selectIsSSAFY,
-  selectUserAddress,
-  selectUserName,
-} from "../auth/authSlice";
+import { selectIsSSAFY, selectUserAddress, selectUserName } from "../auth/authSlice";
 import RoomButton from "./components/RoomButton";
 // component
 import NewHelmet from "../../components/NewHelmet";
@@ -68,26 +64,20 @@ const Main = ({ mainRef }: any) => {
 
   const handleEnterRoom = () => {
     if (socket) {
-      socket.emit(
-        "enter_room",
-        userAddress,
-        userName,
-        registerRoomName,
-        (room: string, cnt: number, host: any, data: string) => {
-          setModalOpen(false);
-          setRegisterRoomName("");
-          dispatch(
-            setRoomInfo({
-              roomName: room,
-              roomCnt: cnt,
-              hostUserName: host,
-              answerLength: 0,
-              participants: JSON.parse(data),
-            })
-          );
-          navigator(`/game/${host}`);
-        }
-      );
+      socket.emit("enter_room", userAddress, userName, registerRoomName, (room: string, cnt: number, host: any, data: string) => {
+        setModalOpen(false);
+        setRegisterRoomName("");
+        dispatch(
+          setRoomInfo({
+            roomName: room,
+            roomCnt: cnt,
+            hostUserName: host,
+            answerLength: 0,
+            participants: JSON.parse(data),
+          })
+        );
+        navigator(`/game/${host}`);
+      });
     }
   };
   useEffect(() => {
@@ -103,33 +93,17 @@ const Main = ({ mainRef }: any) => {
   }, []);
 
   return (
-    <div ref={mainRef}>
-      <NewHelmet
-        title="리드미 & NFT"
-        description="README 게임 라이브 목록 및 NFT 목록을 보여줍니다."
-      />
-      <MainNav
-        obsNumber={mainNav}
-        mainRef={mainNavRef}
-        under={under}
-        setUnder={setUnder}
-      />
+    <div ref={mainRef} className={styles.mainContainer}>
+      <NewHelmet title="리드미 & NFT" description="README 게임 라이브 목록 및 NFT 목록을 보여줍니다." />
+      <MainNav obsNumber={mainNav} mainRef={mainNavRef} under={under} setUnder={setUnder} />
       <Guide guideRef={guideRef} />
       <Carousel carouselRef={carouselRef} />
       <MainTab tabRef={tabRef} under={under} setUnder={setUnder} />
       <Outlet />
-      <Modal
-        open={modalOpen}
-        close={closeModal}
-        fn={handleEnterRoom}
-        header="내 마음을 읽어줘 - 방 만들기"
-      >
+      <Modal open={modalOpen} close={closeModal} fn={handleEnterRoom} header="내 마음을 읽어줘 - 방 만들기">
         <div className={styles.modalBox}>
           <div className={styles.modalText}>
-            생성할 방의 이름을 입력하세요!
-            <Link to="/tutorial">
-              <button className={styles.tutoBtn}> 튜토리얼</button>
-            </Link>
+            <p>생성할 방의 이름을 입력하세요!</p>
           </div>
           <input
             className={styles.modalInput}
@@ -144,10 +118,26 @@ const Main = ({ mainRef }: any) => {
               }
             }}
           />
+          <div className={styles.modalText_small}>
+            게임 방법이 궁금하다면?
+            <Link to="/tutorial">
+              <button className={styles.tutoBtn}>튜토리얼</button>
+            </Link>
+          </div>
         </div>
       </Modal>
       <SaleButton />
       {socket && socket.connected && <RoomButton setModalOpen={setModalOpen} />}
+      <div
+        style={{
+          width: "100%",
+          height: "4rem",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        Copyright © NFTeam All Rights Reserved.
+      </div>
     </div>
   );
 };

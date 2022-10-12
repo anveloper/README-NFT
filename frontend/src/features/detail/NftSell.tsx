@@ -1,9 +1,22 @@
 import styles from "./NftDetail.module.css";
 import { useEffect, useState } from "react";
-import { MintReadmeContract, MintReadMeContractGO, SaleReadmeContract, SaleReadmeContractGO } from "../../web3Config";
+import {
+  MintReadmeContract,
+  MintReadMeContractGO,
+  SaleReadmeContract,
+  SaleReadmeContractGO,
+} from "../../web3Config";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { change_date, selectIsSSAFY, selectUserAddress } from "../auth/authSlice";
-import { selectNftDetail, selectNftPrice, selectNftOwner } from "./NftDetailSlice";
+import {
+  change_date,
+  selectIsSSAFY,
+  selectUserAddress,
+} from "../auth/authSlice";
+import {
+  selectNftDetail,
+  selectNftPrice,
+  selectNftOwner,
+} from "./NftDetailSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { truncatedAddress } from "../../features/auth/authSlice";
 import { Modal } from "../../components/modal/Modal";
@@ -23,6 +36,8 @@ const NftSell = (props: any) => {
   const [modalAlertOpen, setModalAlertOpen] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
   const [sellLoading, setSellLoading] = useState(false);
+  const [sellApprove, setSellApprove] = useState(false);
+  const [sellInfo, setSellInfo] = useState(true);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isSSAFY = useAppSelector(selectIsSSAFY);
@@ -94,42 +109,91 @@ const NftSell = (props: any) => {
         <>
           <div className={styles.cards}>
             {approveLoading ? (
-              <LoadingPage />
+              <LoadingPage
+                msg={[
+                  "메타마스크 팝업창의 판매 권한 승인 뒤",
+                  <br />,
+                  "판매 정보 입력이 가능합니다.",
+                ]}
+              />
             ) : (
               <div className={styles.card_contents_back}>
-                <div className={styles.card_contents_back_info}>
-                  <div className={styles.card_contents_back_info_child}>판매 권한 설정</div>
+                <div className={styles.card_contents_back_approve}>
+                  <div className={styles.card_contents_back_info_child}>
+                    판매 권한 설정
+                  </div>
                   <div>토큰 거래를 위해 판매 권한을 요청해주세요.</div>
                   <div>
                     <button
-                      className={styles.card_button}
+                      className={
+                        sellApprove
+                          ? `${styles.card_button} ${styles.off}`
+                          : `${styles.card_button} ${styles.on}`
+                      }
+                      disabled={sellApprove ? true : false}
                       onClick={async () => {
                         setApproveLoading(true);
                         isSSAFY
-                          ? await MintReadmeContract.methods.setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true).send({ from: userAddress })
-                          : await MintReadMeContractGO.methods.setApprovalForAll(process.env.REACT_APP_SALEREADMETOKEN_CA, true).send({ from: userAddress });
+                          ? await MintReadmeContract.methods
+                              .setApprovalForAll(
+                                process.env.REACT_APP_SALEREADMETOKEN_CA,
+                                true
+                              )
+                              .send({ from: userAddress })
+                              .then((res: any) => setSellInfo(false))
+                              .catch((err: any) => setApproveLoading(false))
+                          : await MintReadMeContractGO.methods
+                              .setApprovalForAll(
+                                process.env.REACT_APP_SALEREADMETOKEN_CA,
+                                true
+                              )
+                              .send({ from: userAddress })
+                              .then((res: any) => setSellInfo(false))
+                              .catch((err: any) => setApproveLoading(false));
                         setApproveLoading(false);
+                        setSellApprove(true);
                       }}
                     >
                       판매 권한 요청
                     </button>
                   </div>
                 </div>
-                <div className={styles.card_contents_back_info2}>
+                <div className={styles.card_contents_sale_info}>
                   <div className={styles.contents_center}>
-                    <div className={styles.input_place_title}>판매 정보 입력</div>
+                    <div className={styles.card_contents_back_info_child}>
+                      판매 정보 입력
+                    </div>
                   </div>
                   <div className={styles.input_place}>
                     <p>가격</p>
                     <div className={styles.input_price}>
-                      <input className={styles.input_text} type="number" name="inputPrice" onChange={handleChangePrice} value={inputPrice} />
+                      <input
+                        className={
+                          sellInfo
+                            ? `${styles.input_text} ${styles.off}`
+                            : `${styles.input_text} ${styles.on}`
+                        }
+                        type="number"
+                        name="inputPrice"
+                        onChange={handleChangePrice}
+                        value={inputPrice}
+                        disabled={sellInfo ? true : false}
+                      />
                       <div>SSF</div>
                     </div>
                   </div>
                   <div className={styles.input_place}>
                     <p>판매 기간</p>
                     <div className={styles.input_price}>
-                      <select className={styles.selectBox} onChange={handleChangePeriod}>
+                      <select
+                        className={
+                          sellInfo
+                            ? `${styles.selectBox} ${styles.off}`
+                            : `${styles.selectBox} ${styles.on}`
+                        }
+                        onChange={handleChangePeriod}
+                        disabled={sellInfo ? true : false}
+                      >
                         <option>기간 선택</option>
                         <option value="1">1시간</option>
                         <option value="12">12시간</option>
@@ -144,7 +208,15 @@ const NftSell = (props: any) => {
                     <button className={styles.card_button} onClick={moveToBack}>
                       이전
                     </button>
-                    <button className={styles.card_button} onClick={openModal}>
+                    <button
+                      className={
+                        sellInfo
+                          ? `${styles.card_button} ${styles.off}`
+                          : `${styles.card_button} ${styles.on}`
+                      }
+                      onClick={openModal}
+                      disabled={sellInfo ? true : false}
+                    >
                       판매 등록
                     </button>
                   </div>
@@ -153,9 +225,18 @@ const NftSell = (props: any) => {
             )}
           </div>
 
-          <Modal open={modalOpen} close={closeModal} fn={sellReadmeTokens} header="리드미 판매 확인">
+          <Modal
+            open={modalOpen}
+            close={closeModal}
+            fn={sellReadmeTokens}
+            header="리드미 판매 확인"
+          >
             <div className={styles.modal_container}>
-              <img className={styles.modal_img} src={nftDetail.imageURL} alt="" />
+              <img
+                className={styles.modal_img}
+                src={nftDetail.imageURL}
+                alt=""
+              />
               <div className={styles.modal_info_container}>
                 <div className={styles.modal_info}>
                   <div className={styles.modal_info_text1}>
@@ -179,7 +260,12 @@ const NftSell = (props: any) => {
             </div>
           </Modal>
 
-          <Modal open={modalAlertOpen} close={closeAlertModal} fn={closeAlertModal} header="리드미 판매 등록 오류">
+          <Modal
+            open={modalAlertOpen}
+            close={closeAlertModal}
+            fn={closeAlertModal}
+            header="리드미 판매 등록 오류"
+          >
             <div className={styles.modal_info}>
               <div className={styles.modal_info_text2}>
                 <div>0보다 큰 값을 입력해주세요.</div>

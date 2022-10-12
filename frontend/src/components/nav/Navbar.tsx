@@ -3,27 +3,26 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import LogoImg from "../../assets/logo_img.svg";
 import LogoText from "../../assets/logo_text.svg";
+import AvatarIMG from "assets/avatar";
 // components
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import {
-  selectUserAddress,
-  selectUserAvatar,
-  selectUserName,
-  setIsWelcome,
-} from "features/auth/authSlice";
+import { selectUserAddress, selectUserAvatar, selectUserName, setIsWelcome } from "features/auth/authSlice";
+import { CgProfile } from "react-icons/cg";
+import { GiPresent } from "react-icons/gi";
+import { TbNetwork } from "react-icons/tb";
+import { GrGamepad } from "react-icons/gr";
 
-const isDev = process.env.NODE_ENV !== "production";
+// const isDev = process.env.NODE_ENV !== "production";
 
 const Navbar = ({ mainRef }: any) => {
-  const userAddress = useAppSelector(selectUserAddress);
+  // const userAddress = useAppSelector(selectUserAddress);
   const userAvatar = useAppSelector(selectUserAvatar);
   const [modalOpen, setModalOpen] = useState(false);
   const nickname = useAppSelector(selectUserName);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleScroll = () => {
-    if (mainRef?.current)
-      mainRef.current.scrollIntoView({ behavior: "smooth" });
+    if (mainRef?.current) mainRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -56,46 +55,46 @@ const Navbar = ({ mainRef }: any) => {
         </div>
       )} */}
       <div
-        className={
-          modalOpen
-            ? `${styles.profileTag} ${styles.active}`
-            : `${styles.profileTag}`
-        }
+        className={modalOpen ? `${styles.profileTag} ${styles.active}` : `${styles.profileTag}`}
         onClick={() => {
           setModalOpen(!modalOpen);
         }}
       >
-        <img src={userAvatar} alt="" className={styles.avatar} />
+        <img src={AvatarIMG[userAvatar]} alt="" className={styles.avatar} />
         {!modalOpen && <p className={styles.nameTag}>{nickname}</p>}
-        <div
-          className={
-            modalOpen
-              ? `${styles.moveTab} ${styles.profileOpen}`
-              : `${styles.moveTab} ${styles.profileClose}`
-          }
-        >
-          <Link to="/mypage">마이페이지</Link>
-          <hr className={styles.underLine} />
+        <div className={modalOpen ? `${styles.moveTab} ${styles.profileOpen}` : `${styles.moveTab} ${styles.profileClose}`}>
+          <p style={{ paddingTop: "5px", paddingBottom: "5px" }}>내 리드미</p>
+          <Link to="/mypage">
+            <CgProfile />
+            <p>마이 페이지</p>
+          </Link>
+          {/* <hr className={styles.underLine} /> */}
+          <p style={{ paddingTop: "5px", paddingBottom: "5px" }}>안내 페이지</p>
           <button
             onClick={() => {
-              dispatch(setIsWelcome());
+              dispatch(setIsWelcome(true));
             }}
             className={styles.profileBtn}
           >
-            이벤트 페이지
+            <GiPresent />
+            <p>이벤트 페이지</p>
           </button>
+          <hr className={styles.underLine} />
+          <Link to="/tutorial">
+            <GrGamepad />
+            <p>리드미 튜토리얼</p>
+          </Link>
           <hr className={styles.underLine} />
           <button
             onClick={() => {
-              dispatch(setIsWelcome());
+              dispatch(setIsWelcome(true));
               navigate("/guide");
             }}
             className={styles.profileBtn}
           >
-            네트워크 가이드
+            <TbNetwork />
+            <p>네트워크 가이드</p>
           </button>
-          <hr className={styles.underLine} />
-          <Link to="/tutorial">리드미 튜토리얼</Link>
         </div>
       </div>
     </div>
