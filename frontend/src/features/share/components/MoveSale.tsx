@@ -10,7 +10,7 @@ const MoveSale = () => {
     <button
       className={styles.btn}
       onClick={() => {
-        window.location.href = "https://j7b108.p.ssafy.io/sale";
+        window.location.href = "https://[도메인]/sale";
         return null;
       }}
     >

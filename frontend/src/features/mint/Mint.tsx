@@ -21,8 +21,8 @@ import LoadingPage from "components/loading/LoadingPage";
 
 const ipfsUrl =
   process.env.NODE_ENV !== "production"
-    ? "http://j7b108.p.ssafy.io:5001"
-    : "https://j7b108.p.ssafy.io";
+    ? "http://[도메인]:5001"
+    : "https://[도메인]";
 
 const Mint: FC = () => {
   const account = useAppSelector(selectUserAddress);

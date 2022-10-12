@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `readme` /*!40100 DEFAULT CHARACTER SET utf8mb4 C
 USE `readme`;
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
--- Host: j7b108.p.ssafy.io    Database: readme
+-- Host: [도메인]    Database: readme
 -- ------------------------------------------------------
 -- Server version	8.0.30-0ubuntu0.20.04.2
 

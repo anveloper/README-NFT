@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = SocketIO(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://j7b108.p.ssafy.io"],
+    origin: ["http://localhost:3000", "https://[도메인]"],
   },
 });
 

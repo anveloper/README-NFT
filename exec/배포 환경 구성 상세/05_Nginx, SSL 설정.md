@@ -4,8 +4,8 @@
 
 > nginx, Let's Encrypt
 
-|                            Nginx                             |                        Let's Encrypt                         |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                                                      Nginx                                                      |                                                                              Let's Encrypt                                                                               |
+| :-------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | ![image](https://user-images.githubusercontent.com/93081720/191642177-285bdd09-71f7-471f-afa4-a356c0d901e5.png) | <img src="https://user-images.githubusercontent.com/93081720/191642327-817e9ce2-b3ff-43c1-a01b-9cbb9867231c.png" referrerpolicy="no-referrer" alt="image" width="500px"> |
 
 <br>
@@ -49,10 +49,10 @@ sudo systemctl stop nginx
 > sudo letsencrypt certonly --standalone -d <도메인>
 
 ```
-sudo letsencrypt certonly --standalone -d j7b108.p.ssafy.io
+sudo letsencrypt certonly --standalone -d [도메인]
 ```
 
-이메일 입력, 구성 선택 등 메시지를 따라서 진행한 뒤에  "Congratulations!"로 시작하는 문구가 보이면, 인증서 발급이 완료된 것임
+이메일 입력, 구성 선택 등 메시지를 따라서 진행한 뒤에 "Congratulations!"로 시작하는 문구가 보이면, 인증서 발급이 완료된 것임
 
 ![화면 캡처 2022-09-15 102320](https://user-images.githubusercontent.com/93081720/192927381-0f8add5a-542e-4298-a876-317c24fc755b.png)
 
@@ -80,7 +80,7 @@ server {
         location /{
                 proxy_pass http://localhost:3000;
         }
-		
+
     	# 백엔드 연결(포트 번호는 본인의 백엔드 포트번호를 입력)
         location /api {
                 proxy_pass http://localhost:8080/api;
@@ -88,21 +88,21 @@ server {
 
     listen 443 ssl; # managed by Certbot
     # 도메인 이름을 써줘야함
-    ssl_certificate /etc/letsencrypt/live/j7b108.p.ssafy.io/fullchain.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/[도메인]/fullchain.pem; # managed by Certbot
     # 도메인 이름을 써줘야함
-    ssl_certificate_key /etc/letsencrypt/live/j7b108.p.ssafy.io/privkey.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/[도메인]/privkey.pem; # managed by Certbot
     # include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     # ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 }
 
 server {
     # 도메인 이름을 입력
-    if ($host = j7b108.p.ssafy.io) {
+    if ($host = [도메인]) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
         listen 80;
-        server_name j7b108.p.ssafy.io;
+        server_name [도메인];
     return 404; # managed by Certbot
 }
 ```
@@ -182,7 +182,7 @@ sudo ufw enable으로 방화벽을 활성화 한 다음에 sudo ufw status로 �
 
 ```nginx
 	location /swagger-ui {
-		return 301  http://j7b108.p.ssafy.io:8085/swagger-ui/index.html;
+		return 301  http://[도메인]:8085/swagger-ui/index.html;
 	}
 ```
 
@@ -198,10 +198,10 @@ http://도메인/readme/1, http://도메인/readme/16과 같이 들어온다고 
 
 ```nginx
 	location /readme/ {
-		return 301 http://j7b108.p.ssafy.io:3000$request_uri;
+		return 301 http://[도메인]:3000$request_uri;
 	}
 ```
 
 - `$request_uri`라는 nginx 변수를 통해서 맵핑해주면 된다.
-  - /readme/ 이후에 들어온 요청에 대한 파라미터 값을 /readme/와 함께 그대로 반환한다. 
-- j7b108.p.ssafy.io는 `$host`로 쓸 수 있긴 하다.
+  - /readme/ 이후에 들어온 요청에 대한 파라미터 값을 /readme/와 함께 그대로 반환한다.
+- [도메인]는 `$host`로 쓸 수 있긴 하다.

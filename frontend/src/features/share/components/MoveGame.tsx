@@ -11,7 +11,7 @@ const MoveGame = (props: any) => {
     <button
       className={className}
       onClick={() => {
-        window.location.href = "https://j7b108.p.ssafy.io/live";
+        window.location.href = "https://[도메인]/live";
         return null;
       }}
     >

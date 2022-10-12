@@ -11,7 +11,7 @@ const ShareBtn = ({ tokenId, metadata }: ShareBtnProps) => {
   const handleShare = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const targetUrl = `http://j7b108.p.ssafy.io/readme/${tokenId}/`;
+    const targetUrl = `http://[도메인]/readme/${tokenId}/`;
     if (window.Kakao) {
       const kakao = window.Kakao;
       if (!kakao.isInitialized()) {

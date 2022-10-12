@@ -11,7 +11,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://j7b108.p.ssafy.io", "https://j7b108.p.ssafy.io", "http://localhost:3000")
+                .allowedOrigins("http://[도메인]", "https://[도메인]", "http://localhost:3000")
                 .allowedMethods(
                         HttpMethod.GET.name(),
                         HttpMethod.POST.name(),

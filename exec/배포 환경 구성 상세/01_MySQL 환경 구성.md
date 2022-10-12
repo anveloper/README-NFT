@@ -4,8 +4,8 @@
 
 > MySQL
 
-|                            MySQL                             |
-| :----------------------------------------------------------: |
+|                                                                                          MySQL                                                                                          |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://user-images.githubusercontent.com/93081720/191645601-4e8f6ea0-ec6b-43fb-b2bc-5c974d859380.png" referrerpolicy="no-referrer" alt="image" width="500px" height="300px"> |
 
 <br>
@@ -26,8 +26,6 @@ MySQL 환경 구성에는 EC2에 직접 설치하는 방법과 도커 허브에�
 sudo apt update
 ```
 
-
-
 #### MySQL 설치
 
 ```bash
@@ -40,8 +38,6 @@ sudo apt install mysql-server
 sudo systemctl status mysql
 ```
 
-
-
 #### MySQL root 계정 접속
 
 입력 시, 비밀번호를 입력하라고 뜨나, 아직 비밀번호가 설정된 상태가 아니므로 아무거나 입력해도 접속 가능함
@@ -49,8 +45,6 @@ sudo systemctl status mysql
 ```
 sudo mysql -u root -p
 ```
-
-
 
 #### 유저 권한 설정
 
@@ -86,16 +80,12 @@ EXIT;
 sudo service mysql restart
 ```
 
-
-
 #### 사용할 DB 생성
 
 ```sql
 create database {사용할 DB명};
 show databases;
 ```
-
-
 
 #### 사용할 계정 생성
 
@@ -119,8 +109,6 @@ create user 'nfteam'@'%' identified by 'asd123';
 
 - `%`: 외부 호스트 접근 권한 부여
 
-
-
 #### 계정 접근 권한 부여
 
 ```sql
@@ -131,7 +119,7 @@ grant all privileges on {DB명}.* to '{username}'@'{host}';
   - 모든 권한을 부여한다는 의미(다른 옵션으로 일부만 부여 가능함)
 - DB명.테이블명
   - 어떤 DB의 특정 테이블에 권한을 부여한다는 의미
-  - *으로 쓸 경우 해당 DB의 모든 테이블을 의미
+  - \*으로 쓸 경우 해당 DB의 모든 테이블을 의미
 - 변경사항 적용
 
 ```sql
@@ -144,8 +132,6 @@ FLUSH PRIVILEGES;
 SHOW GRANTS FOR [사용자 계정명];
 SHOW GRANTS FOR '{username}'@'{host}';
 ```
-
-
 
 #### 외부 접속 허용하기
 
@@ -165,14 +151,11 @@ EXIT;
 service mysql restart
 ```
 
-
-
 #### 확인
 
 ```
-Hostname : j7b108.p.ssafy.io
+Hostname : [도메인]
 Port : 3306
 Username : 사용계정명
 Password : 비밀번호
 ```
-
