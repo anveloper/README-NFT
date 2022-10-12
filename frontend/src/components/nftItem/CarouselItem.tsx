@@ -7,12 +7,15 @@ import blank from "../../assets/template/template_word.svg";
 
 import styles from "./NftItem.module.css";
 import LoadingSpinner from "components/loading/LoadingSpinner";
+import { Modal } from "components/modal/Modal";
 const CarouselItem = (props: any) => {
   const { nft } = props;
   const [name, setName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [correctAnswer, setCorrectAnswer] = useState(false);
+  const [answerModalOpen, setAnswerModalOpen] = useState(false);
 
   const getMetadata = async (metaDataURI: string) => {
     setLoading(true);
@@ -45,6 +48,16 @@ const CarouselItem = (props: any) => {
     }
     return result;
   };
+
+  useEffect(() => {
+    if (correctAnswer) {
+      console.log("정답 모달 열기");
+      setAnswerModalOpen(true);
+      console.log("answermodalopen : ", answerModalOpen);
+      setCorrectAnswer(false);
+    }
+  }, [correctAnswer]);
+
   return (
     <>
       <button className={styles.carouselContainer} onClick={openModal}>
@@ -66,9 +79,23 @@ const CarouselItem = (props: any) => {
               image={imageURL}
               answer={name}
               tokenId={nft.readmeTokenId}
+              setCorrectAnswer={setCorrectAnswer}
             />
           </ModalPortal>
         )}
+      </div>
+
+      <div>
+        <ModalPortal>
+          <Modal
+            open={answerModalOpen}
+            close={() => setAnswerModalOpen(false)}
+            header="리드미 정답 맞추기"
+            fn={() => setAnswerModalOpen(false)}
+          >
+            <div>정답입니다!</div>
+          </Modal>
+        </ModalPortal>
       </div>
     </>
   );

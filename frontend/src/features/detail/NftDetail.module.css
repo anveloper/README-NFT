@@ -46,7 +46,7 @@
 /* 이미지 */
 .card_contents_front_child:nth-child(1) {
   width: 100%;
-  aspect-ratio: 12/11;
+  aspect-ratio: 12/10;
   grid-row: span 4;
   border-radius: 1rem;
 
@@ -90,6 +90,7 @@
   background-color: #fcf5e9;
 }
 
+/*------------------------------*/
 /*----------- 카드 뒷장 ----------*/
 
 /* 카드 뒷장 10분할 */
@@ -107,13 +108,56 @@
 .card_contents_back_info:nth-child(1) {
   grid-row: span 4;
   display: grid;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   place-items: center;
 
   background-color: #fcf5e9;
   margin-bottom: 10px;
 }
 
+.card_contents_back_approve {
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background-color: #fcf5e9;
+  margin-bottom: 10px;
+  height: 200px;
+}
+
+.card_contents_sale_info {
+  border-radius: 20px;
+  margin-bottom: 10px;
+  height: 268px;
+  background-color: #fcf5e9;
+}
+
+.card_contents_back_notSale {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 6vh;
+
+  background: #ffd0bf;
+  border-radius: 30px;
+}
+
+.card_contents_back_sale {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 6vh;
+
+  background: #b8e5ff;
+  border-radius: 30px;
+}
+
+.card_contents_back_sale_info {
+  margin-bottom: 10px;
+}
+
+/* 창작자 그린 그림 배경 */
 .card_contents_back_info:nth-child(2) {
   grid-row: span 4;
   display: grid;
@@ -132,29 +176,46 @@
 
 /* 판매 정보 */
 .card_contents_back_info_child:nth-child(1) {
+  margin-top: 10px;
+  margin-bottom: 10px;
   grid-row: span 1;
   background-color: #fddf61;
   border-radius: 20px;
   width: 70%;
-  height: 60%;
+  height: 5vh;
+}
+
+.card_contents_back_sale_contents {
+  display: flex;
+  flex-direction: row;
+}
+
+.card_contents_back_sale_count {
+  width: 90%;
+  height: 8vh;
+  margin: 10px;
+  display: flex;
+  background-color: #b8e5ff;
 }
 
 .card_contents_back_info_child:nth-child(2) {
-  grid-row: span 2;
+  grid-row: span 3;
   background-color: white;
 
   width: 90%;
   height: 90%;
   border-radius: 20px;
-  margin-bottom: 10px;
 }
 
 .card_contents_text1 {
-  border-bottom: 1px solid black;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 16px;
 }
 
 .card_contents_text2 {
-  font-size: small;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -167,20 +228,11 @@
 
 /* 다른 그림 div */
 .card_contents_back_info:nth-child(2) {
+  /* .card_contents_back_sale_info { */
   grid-row: span 5;
   place-items: center;
 
   background-color: #fcf5e9;
-}
-
-.card_contents_back_info2 {
-  grid-row: span 5;
-  display: grid;
-  grid-template-rows: repeat(4, 1fr);
-
-  border-radius: 20px;
-  background-color: #fcf5e9;
-  margin-bottom: 10px;
 }
 
 .card_another_container {
@@ -215,6 +267,7 @@
   padding: 5px;
   box-sizing: border-box;
   border-radius: 20px;
+  cursor: pointer;
 }
 
 /* 등록된 그림이 없을 때 */
@@ -243,14 +296,21 @@
   border-radius: 5px;
 
   padding: 10px 20px 10px 20px;
-  margin: 10px;
+  margin: 15px;
 
   font-size: 16px;
 
   white-space: nowrap;
   font-family: "NanumSquareRoundB";
-
   background-color: #fddf61;
+}
+
+.on {
+  background-color: #fddf61;
+}
+
+.off {
+  background-color: #f2f2f2;
 }
 
 /* --------- 판매 ---------- */
@@ -286,6 +346,7 @@ input::-webkit-inner-spin-button {
 .input_place {
   display: grid;
   grid-template-columns: 1fr 2fr;
+  margin-bottom: 10px;
 
   padding-left: 20px;
   padding-right: 20px;
@@ -309,7 +370,7 @@ input::-webkit-inner-spin-button {
 .input_text {
   width: 100%;
   height: 40px;
-  background-color: #fddf61;
+  /* background-color: #fddf61; */
   border: none;
   border-radius: 30px;
   font-weight: bold;
@@ -322,7 +383,7 @@ input::-webkit-inner-spin-button {
 .selectBox {
   width: 100%;
   height: 40px;
-  background-color: #fddf61;
+  /* background-color: #fddf61; */
   border: none;
   border-radius: 30px;
   font-weight: bold;
@@ -397,4 +458,5 @@ input::-webkit-inner-spin-button {
   justify-content: center;
   place-content: center;
   place-items: center;
+  margin-bottom: 20px;
 }

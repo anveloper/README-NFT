@@ -15,7 +15,11 @@ import { selectIsActive, setIsActive, setNftPrice } from "./NftDetailSlice";
 import { Modal } from "../../components/modal/Modal";
 import { useEffect, useContext, useState } from "react";
 import { useAppSelector } from "app/hooks";
-import { change_date, selectIsSSAFY, selectUserAddress } from "features/auth/authSlice";
+import {
+  change_date,
+  selectIsSSAFY,
+  selectUserAddress,
+} from "features/auth/authSlice";
 import axios from "axios";
 import { IMyNFTCard } from "features/mypage/components/MyNFTCard";
 import { url } from "inspector";
@@ -46,6 +50,8 @@ const NftDetailInfo = (props: any) => {
   const userAddress = useAppSelector(selectUserAddress);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [completeModalOpen, setCompleteModalOpen] = useState(false);
+  const [balanceModalOpen, setBalanceModalOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(Object);
   const [nftEndTime, setNftEndTime] = useState<nftTime>({
     year: 0,
@@ -63,67 +69,96 @@ const NftDetailInfo = (props: any) => {
   const [countDownLoading, setCountDownLoading] = useState(true);
   const [createrNFTLoading, setCreaterNFTLoading] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
   const isAvail = useAppSelector(selectIsActive);
+  const [ready, setReady] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSSAFY = useAppSelector(selectIsSSAFY);
+
   const getTimeInfo = async () => {
     setCountDownLoading(true);
     const response = isSSAFY
       ? await SaleReadmeContract.methods.readmeTokenEndTime(tokenId).call()
       : await SaleReadmeContractGO.methods.readmeTokenEndTime(tokenId).call();
     isSSAFY
-      ? await SaleReadmeContract.methods.parseTimestamp(response).call((err: any, res: any) => {
-          const nftEndTime: nftTime = {
-            year: Number(res.year),
-            month: Number(res.month),
-            day: Number(res.day),
-            hour: Number(res.hour),
-            minute: Number(res.minute),
-            second: Number(res.second),
-          };
-          setNftEndTime(nftEndTime);
-          setEndDate(new Date(nftEndTime.year, nftEndTime.month - 1, nftEndTime.day, nftEndTime.hour, nftEndTime.minute, nftEndTime.second));
-          setIsReady(true);
-          setCountDownLoading(false);
-        })
-      : await SaleReadmeContractGO.methods.parseTimestamp(response).call((err: any, res: any) => {
-          const nftEndTime: nftTime = {
-            year: Number(res.year),
-            month: Number(res.month),
-            day: Number(res.day),
-            hour: Number(res.hour),
-            minute: Number(res.minute),
-            second: Number(res.second),
-          };
-          setNftEndTime(nftEndTime);
-          setEndDate(new Date(nftEndTime.year, nftEndTime.month - 1, nftEndTime.day, nftEndTime.hour, nftEndTime.minute, nftEndTime.second));
-          setIsReady(true);
-          setCountDownLoading(false);
-        });
+      ? await SaleReadmeContract.methods
+          .parseTimestamp(response)
+          .call((err: any, res: any) => {
+            const nftEndTime: nftTime = {
+              year: Number(res.year),
+              month: Number(res.month),
+              day: Number(res.day),
+              hour: Number(res.hour),
+              minute: Number(res.minute),
+              second: Number(res.second),
+            };
+            setNftEndTime(nftEndTime);
+            setEndDate(
+              new Date(
+                nftEndTime.year,
+                nftEndTime.month - 1,
+                nftEndTime.day,
+                nftEndTime.hour,
+                nftEndTime.minute,
+                nftEndTime.second
+              )
+            );
+            setIsReady(true);
+            setCountDownLoading(false);
+          })
+      : await SaleReadmeContractGO.methods
+          .parseTimestamp(response)
+          .call((err: any, res: any) => {
+            const nftEndTime: nftTime = {
+              year: Number(res.year),
+              month: Number(res.month),
+              day: Number(res.day),
+              hour: Number(res.hour),
+              minute: Number(res.minute),
+              second: Number(res.second),
+            };
+            setNftEndTime(nftEndTime);
+            setEndDate(
+              new Date(
+                nftEndTime.year,
+                nftEndTime.month - 1,
+                nftEndTime.day,
+                nftEndTime.hour,
+                nftEndTime.minute,
+                nftEndTime.second
+              )
+            );
+            setIsReady(true);
+            setCountDownLoading(false);
+          });
   };
 
-  const getCreatorReadme = async () => {
+  const getCreator = async () => {
+    console.log("ready");
     // 1. creator 가져온다.
     setCreaterNFTLoading(true);
-    const response = isSSAFY ? await MintReadmeContract.methods.getMetadata(tokenId).call() : await MintReadMeContractGO.methods.getMetadata(tokenId).call();
-    console.log(response);
+    const response = isSSAFY
+      ? await MintReadmeContract.methods.getMetadata(tokenId).call()
+      : await MintReadMeContractGO.methods.getMetadata(tokenId).call();
     await axios({ url: response })
       .then((res: any) => {
         const { author } = res.data;
         setCreator(author);
-        console.log(creator);
       })
       .catch((err) => {});
+    console.log("ready 1");
+  };
 
+  const getCreatorReadme = async () => {
     // 2. creator가 그린 그림 가져온다.
     const metaReq = isSSAFY
       ? await GetReadmeContract.methods.getDrawReadmeToken(creator).call()
       : await GetReadmeContractGO.methods.getDrawReadmeToken(creator).call();
+    console.log("ready 2");
     const tmpMetaList: nftCreator[] = [];
     const tmpNftCreatorList: nftTokenImg[] = [];
     metaReq.map((v: nftCreator) => {
-      console.log(v);
       tmpMetaList.push({
         readmeTokenId: v.readmeTokenId,
         metaDataURI: v.metaDataURI,
@@ -131,10 +166,8 @@ const NftDetailInfo = (props: any) => {
     });
 
     tmpMetaList.map(async (v: any) => {
-      console.log(v);
       await axios({ url: v.metaDataURI })
         .then((res: any) => {
-          console.log(res);
           tmpNftCreatorList.push({
             readmeTokenId: v.readmeTokenId,
             imageURL: res.data.imageURL,
@@ -144,10 +177,10 @@ const NftDetailInfo = (props: any) => {
           console.log(err);
         });
     });
+    console.log("ready 3");
 
     setNftCreatorList(tmpNftCreatorList);
     setCreaterNFTLoading(false);
-    console.log(nftCreatorList);
   };
 
   const cancelSale = async () => {
@@ -226,12 +259,17 @@ const NftDetailInfo = (props: any) => {
 
   const buyNftToken = async () => {
     setLoading(true);
-    let balance = 0;
-    await SSFContract.methods.balanceOf(userAddress).call((err: any, res: any) => {
-      balance = res;
-    });
-    console.log(balance);
-    if (balance >= nftPrice) {
+    let balance = "";
+    await SSFContract.methods
+      .balanceOf(userAddress)
+      .call((err: any, res: string) => {
+        balance = res;
+      });
+    console.log(typeof balance);
+    console.log("NFT price : ", typeof nftPrice);
+
+    if (parseInt(balance) >= parseInt(nftPrice)) {
+      setLoadingStep(1);
       await SSFContract.methods
         .approve(process.env.REACT_APP_SALEREADMETOKEN_CA, nftPrice)
         .send({ from: userAddress })
@@ -241,6 +279,7 @@ const NftDetailInfo = (props: any) => {
         .catch((err: any) => {
           console.log(err);
         });
+      setLoadingStep(2);
       isSSAFY
         ? await SaleReadmeContract.methods
             .purchaseReadmeToken(process.env.REACT_APP_ERC20_CA, tokenId)
@@ -248,9 +287,10 @@ const NftDetailInfo = (props: any) => {
             .then((res: any) => {
               console.log(res);
               // 새로고침.
-              navigate("/deatil/" + tokenId);
+              // navigate("/mypage");
               // window.location.replace("/detail/" + tokenId);
               console.log("purchase : ", res);
+              openCompleteModal();
             })
             .catch((err: any) => {
               console.log(err);
@@ -261,16 +301,19 @@ const NftDetailInfo = (props: any) => {
             .then((res: any) => {
               console.log(res);
               // 새로고침.
-              navigate("/deatil/" + tokenId);
+              // navigate("/deatil/" + tokenId);
               // window.location.replace("/detail/" + tokenId);
               console.log("purchase : ", res);
+              openCompleteModal();
             })
             .catch((err: any) => {
               console.log(err);
             });
       setLoading(false);
+      setBuyModalOpen(false);
     } else {
-      alert("잔액이 부족합니다.");
+      // alert("잔액이 부족합니다.");
+      openBalanceModal();
       setLoading(false);
     }
   };
@@ -294,6 +337,14 @@ const NftDetailInfo = (props: any) => {
     setCancelModalOpen(false);
   };
 
+  const openCompleteModal = () => {
+    setCompleteModalOpen(true);
+  };
+
+  const openBalanceModal = () => {
+    setBalanceModalOpen(true);
+  };
+
   const moveToBack = () => {
     navigate(-1);
   };
@@ -306,8 +357,10 @@ const NftDetailInfo = (props: any) => {
   }, [nftDetail]);
 
   useEffect(() => {
+    console.log("실행");
+    getCreator();
     getCreatorReadme();
-  }, [isReady]);
+  }, [creator]);
 
   /* 카운트다운 구현 (성진님감사합니다쌍따봉드림) */
   useEffect(() => {
@@ -333,13 +386,21 @@ const NftDetailInfo = (props: any) => {
   return (
     <>
       {loading ? (
-        <LoadingPage />
+        <LoadingPage
+          msg={[
+            `구매 ${loadingStep}/2 단계 진행중`,
+            <br />,
+            "메타마스크 팝업창을 확인해주세요!",
+          ]}
+        />
       ) : (
         <>
           <div className={styles.cards}>
             <div className={styles.card_contents_back}>
               <div className={styles.card_contents_back_info}>
-                <div className={styles.card_contents_back_info_child}>판매 정보</div>
+                <div className={styles.card_contents_back_info_child}>
+                  판매 정보
+                </div>
 
                 <div className={styles.card_contents_back_info_child}>
                   <>
@@ -349,11 +410,15 @@ const NftDetailInfo = (props: any) => {
                           <LoadingSpinner />
                         ) : (
                           <>
-                            <div className={styles.card_contents_text1}>판매중인 리드미입니다.</div>
-                            <div>
-                              <div>
-                                {timeLeft.days}일 {timeLeft.hours}시간 {timeLeft.minute}분 {timeLeft.seconds}초 후에 종료됩니다.
+                            <div className={styles.card_contents_back_sale}>
+                              <div style={{ fontSize: "16px", marginTop: "1px", marginRight: "5px" }}>⭕️</div>
+                              <div className={styles.card_contents_text3}>구매 가능한 리드미입니다.</div>
+                            </div>
+                            <div className={styles.card_contents_back_sale_info}>
+                              <div className={styles.card_contents_text1}>
+                                {timeLeft.days}일 {timeLeft.hours}시간 {timeLeft.minutes}분 {timeLeft.seconds}초
                               </div>
+                              <div className={styles.card_contents_text2}>이후에 판매가 종료됩니다.</div>
                               <div className={styles.card_contents_text2}>({change_date(endDate)})</div>
                             </div>
                           </>
@@ -361,9 +426,11 @@ const NftDetailInfo = (props: any) => {
                       </>
                     ) : (
                       <>
-                        <div style={{ fontSize: "18px", marginTop: "5px" }}>❌</div>
+                        <div className={styles.card_contents_back_notSale}>
+                          <div style={{ fontSize: "16px", marginTop: "1px", marginRight: "5px" }}>❌</div>
+                          <div className={styles.card_contents_text3}>구매 불가능한 리드미입니다.</div>
+                        </div>
                         <div>
-                          <div className={styles.card_contents_text3}>판매 상태가 아닙니다.</div>
                           <div className={styles.card_contents_text3}>소유자가 판매 상태를 관리할 때까지</div>
                           <div className={styles.card_contents_text3}>구매가 제한됩니다.</div>
                         </div>
@@ -373,7 +440,9 @@ const NftDetailInfo = (props: any) => {
                 </div>
               </div>
               <div className={styles.card_contents_back_info}>
-                <div className={styles.card_contents_back_info_child}>창작자가 그린 다른 그림</div>
+                <div className={styles.card_contents_back_info_child}>
+                  창작자가 그린 다른 그림
+                </div>
                 <div className={styles.card_another_container}>
                   {createrNFTLoading ? (
                     <LoadingSpinner />
@@ -383,13 +452,20 @@ const NftDetailInfo = (props: any) => {
                         <>
                           <div className={styles.card_another_images}>
                             {nftCreatorList.map((v: any, i: number) => {
-                              // console.log(v.metaDataURI);
                               return (
                                 <>
                                   {createrNFTLoading ? (
                                     <LoadingSpinner key={i} />
                                   ) : (
-                                    <img className={styles.card_another_image} src={v.imageURL} alt="" key={i} />
+                                    <img
+                                      className={styles.card_another_image}
+                                      src={v.imageURL}
+                                      alt=""
+                                      key={i}
+                                      onClick={() => {
+                                        window.location.replace("/detail/" + v.readmeTokenId);
+                                      }}
+                                    />
                                   )}
                                 </>
                               );
@@ -421,13 +497,19 @@ const NftDetailInfo = (props: any) => {
                           <>
                             {isAvail ? (
                               <>
-                                <button className={styles.card_button} onClick={() => openCancelModal("cancel")}>
+                                <button
+                                  className={styles.card_button}
+                                  onClick={() => openCancelModal("cancel")}
+                                >
                                   판매 취소
                                 </button>
                               </>
                             ) : (
                               <>
-                                <button className={styles.card_button} onClick={() => openCancelModal("refund")}>
+                                <button
+                                  className={styles.card_button}
+                                  onClick={() => openCancelModal("refund")}
+                                >
                                   판매 취소
                                 </button>
                               </>
@@ -435,7 +517,10 @@ const NftDetailInfo = (props: any) => {
                           </>
                         ) : (
                           <>
-                            <button className={styles.card_button} onClick={() => props.setTab("sell")}>
+                            <button
+                              className={styles.card_button}
+                              onClick={() => props.setTab("sell")}
+                            >
                               판매 등록
                             </button>
                           </>
@@ -443,7 +528,11 @@ const NftDetailInfo = (props: any) => {
                       </>
                     ) : (
                       <>
-                        <button disabled={!isAvail} className={styles.card_button} onClick={openBuyModal}>
+                        <button
+                          disabled={!isAvail}
+                          className={styles.card_button}
+                          onClick={openBuyModal}
+                        >
                           즉시 구매
                         </button>
                       </>
@@ -453,9 +542,18 @@ const NftDetailInfo = (props: any) => {
               </div>
             </div>
           </div>
-          <Modal open={buyModalOpen} close={closeBuyModal} fn={buyNftToken} header="리드미 구매 확인">
+          <Modal
+            open={buyModalOpen}
+            close={closeBuyModal}
+            fn={buyNftToken}
+            header="리드미 구매 확인"
+          >
             <div className={styles.modal_container}>
-              <img className={styles.modal_img} src={nftDetail.imageURL} alt="" />
+              <img
+                className={styles.modal_img}
+                src={nftDetail.imageURL}
+                alt=""
+              />
               <div className={styles.modal_info_container}>
                 <div className={styles.modal_info}>
                   <div className={styles.modal_info_text1}>
@@ -501,6 +599,32 @@ const NftDetailInfo = (props: any) => {
                 </>
               )}
             </div>
+          </Modal>
+          <Modal
+            open={completeModalOpen}
+            close={() => {
+              navigate("/");
+              setCompleteModalOpen(false);
+            }}
+            fn={() => {
+              navigate("/mypage");
+              setCompleteModalOpen(false);
+            }}
+            header="리드미 구매 완료"
+            cancel="메인"
+            confirm="마이페이지"
+          >
+            <div>리드미 구매가 완료되었습니다!</div>
+          </Modal>
+          <Modal
+            open={balanceModalOpen}
+            close={() => {
+              setBalanceModalOpen(false);
+            }}
+            fn={() => setBalanceModalOpen(false)}
+            header="지갑 잔액 부족"
+          >
+            <div>잔액이 부족합니다!</div>
           </Modal>
         </>
       )}

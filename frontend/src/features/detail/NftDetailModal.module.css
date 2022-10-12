@@ -176,7 +176,9 @@
 
 .card_button_on,
 .card_button_off,
-.card_button_close {
+.card_button_close,
+.card_button_like,
+.card_button_like_cancel {
   border: none;
   border-radius: 5px;
 
@@ -195,12 +197,23 @@
   position: relative;
   background-color: #fddf61;
   color: black;
-
   cursor: pointer;
 }
 
 .card_button_off {
   background-color: lightgray;
+}
+
+.card_button_like {
+  background-color: #ff6969;
+  color: white;
+  cursor: pointer;
+}
+
+.card_button_like_cancel {
+  background-color: lightgray;
+  color: black;
+  cursor: pointer;
 }
 
 .arrow_box {

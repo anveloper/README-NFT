@@ -9,7 +9,7 @@ import styles from "./NftDetailModal.module.css";
 
 const NftDetailModal = (props: any) => {
   const userAddress = useAppSelector(selectUserAddress);
-  const { close, image, answer, tokenId } = props;
+  const { close, image, answer, tokenId, setCorrectAnswer } = props;
   const [inputAnswer, setInputAnswer] = useState("");
   const [isAnswer, setIsAnswer] = useState(false);
   const [infoMsg, setInfoMsg] = useState("");
@@ -32,6 +32,8 @@ const NftDetailModal = (props: any) => {
       });
       setInputAnswer("");
       close();
+      // alert("정답입니다.");
+      setCorrectAnswer(true);
     } else if (inputAnswer.length >= 1 && inputAnswer !== answer) {
       setIsAnswer(false);
       setInfoMsg("오답입니다! 다시 시도해보세요.");
@@ -163,7 +165,11 @@ const NftDetailModal = (props: any) => {
               </button>
 
               <button
-                className={styles.card_button_on}
+                className={
+                  likeButtonText === "찜하기"
+                    ? `${styles.card_button_like}`
+                    : `${styles.card_button_like_cancel}`
+                }
                 onClick={() => likeNFT(parseInt(tokenId))}
               >
                 {likeButtonText}
